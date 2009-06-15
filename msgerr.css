@@ -1,0 +1,108 @@
+.unnamed1 {
+	background-color: #FFFFFF;
+	color: #000000;
+	background-repeat: repeat;
+	background-position: center center;
+	border: 1px solid;
+	background-attachment: fixed;
+	clear: left;
+	float: left;
+	height: auto;
+	width: auto;
+	list-style-position: inside;
+	list-style-type: none;
+}
+
+
+.unnamed2 {
+	background-color: #999999;
+	background-repeat: repeat;
+	background-position: center center;
+	border: 2px solid;
+	background-attachment: fixed;
+	clear: left;
+	float: left;
+	height: auto;
+	width: auto;
+	list-style-position: inside;
+	list-style-type: none;
+}
+
+
+.header {
+	background-color: #3030fF;
+	color: #ffffff;
+	background-repeat: repeat;
+	background-position: center center;
+	border: 1px solid;
+	background-attachment: fixed;
+	clear: left;
+	float: left;
+	height: auto;
+	width: auto;
+	list-style-position: inside;
+	list-style-type: none;
+}
+
+
+.headerred {
+	background-color: #FF3030;
+	color: #ffffff;
+	background-repeat: repeat;
+	background-position: center center;
+	border: 1px solid;
+	background-attachment: fixed;
+	clear: left;
+	float: left;
+	height: auto;
+	width: auto;
+	list-style-position: inside;
+	list-style-type: none;
+}
+
+
+.headeryellow {
+	background-color: #ffff30;
+	color: #000000;
+	background-repeat: repeat;
+	background-position: center center;
+	border: 1px solid;
+	background-attachment: fixed;
+	clear: left;
+	float: left;
+	height: auto;
+	width: auto;
+	list-style-position: inside;
+	list-style-type: none;
+}
+
+
+.headergreen {
+	background-color: #30ff30;
+	color: #000000;
+	background-repeat: repeat;
+	background-position: center center;
+	border: 1px solid;
+	background-attachment: fixed;
+	clear: left;
+	float: left;
+	height: auto;
+	width: auto;
+	list-style-position: inside;
+	list-style-type: none;
+}
+
+
+
+.minb {
+		background-color: #FFFFFF;
+	background-repeat: repeat;
+	border-right:#cccccc solid 2px;
+	border-bottom:#cccccc solid 2px; 
+	border-top:#f5f5f5 solid 1px;
+	border-left:#f5f5f5 solid 1px; 
+	font-family:Arial;
+	font-size:13px;
+	background-color:white;
+	cursor:default;
+}
