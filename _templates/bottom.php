@@ -57,9 +57,7 @@ for ($a=0;$a<$pgcnt;$a++) {
  
     /*<!-- конец навигации -->*/ ?>
 	</div>
+                        <div class="service">Service provided by <a class="service" href="#">Dj--alex</a></div>
 </body>
 </html>
-                        <div style="text-align: center; margin-top: 1.0em;">
-                        Service provided by <a href="#">Dj--alex</a>
-                        </div>
                 

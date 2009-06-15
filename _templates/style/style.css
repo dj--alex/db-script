@@ -516,3 +516,17 @@ blockquote  {
 	font-size: 88%;
 	
 }
+/* Та хрень снизу, на которой написано  Service provided by Dj--alex*/
+.service {
+	text-align: center;
+	color:white;
+	background-color: #333;
+
+	}
+	
+.service a {
+	text-align: center;
+	color:gray;
+	background-color: #333;
+	}
+/* end*/
