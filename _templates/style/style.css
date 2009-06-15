@@ -530,3 +530,10 @@ blockquote  {
 	background-color: #333;
 	}
 /* end*/
+
+/* HACK для class WrapX */
+#wrapx {
+	margin-left: 12px;
+	margin-right: 12px;
+	}
+/* конец HACK FOR WrapX */
