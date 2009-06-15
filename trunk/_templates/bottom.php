@@ -25,9 +25,9 @@
 			<div class="contact">
 				<h6><?=cmsg (CONINF)?></h6>
 				<ul>
-					<li><?=cmsg (MAINDEV)?>: <a href="#">dj--alex@ya.ru</a></li>
+					<li><?=cmsg (MAINDEV)?>: <a href="mailto:dj--alex@ya.ru?subject=DBscript">dj--alex</a></li>
 					
-					<li><?=cmsg (DESIGN)?>: <a href="#">DeusModus@mail.ru</a></li>
+					<li><?=cmsg (DESIGN)?>: <a href="mailto:DeusModus@mail.ru?subject=DBscriptDESIGN">DeusModus</a></li>
 				</ul>
 			</div>
 		</div>
