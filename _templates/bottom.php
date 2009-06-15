@@ -27,7 +27,7 @@
 				<ul>
 					<li><?=cmsg (MAINDEV)?>: <a href="#">dj--alex@ya.ru</a></li>
 					
-					<li><?=cmsg (DESIGN)?>: <a href="#">DeusModus@Mangos.ru</a></li>
+					<li><?=cmsg (DESIGN)?>: <a href="#">DeusModus@mail.ru</a></li>
 				</ul>
 			</div>
 		</div>
