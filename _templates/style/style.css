@@ -635,3 +635,23 @@ h2 {
 	margin: 0px;
 	background: url('../images/bginput.gif') repeat-x;
 	}
+	
+input[name=userfile] {
+	margin-left: 500px;
+	padding: 0 0 0 0 ;
+	}
+	
+input[name=go],input[name=go]:hover  {
+	margin-left: 584px;
+	padding: 0 0 0 0 ;
+	}
+	
+table td {
+    border:1;
+	}
+table tr {
+    border:1;
+	padding-left:2px;
+	font-size:14px;
+	max-width:400px;
+	}
