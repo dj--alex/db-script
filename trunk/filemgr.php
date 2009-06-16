@@ -303,7 +303,7 @@ if (($pid==1)AND($prauth[$ADM][12])) {
 
 	?> <input type = hidden name = path<?=$pid ;?> value ="<?=$path ?>" >
 <?
-	IF ($file) { echo "<BR>".cmsg ("FMG_FILDB").":<select name =fileforaction".$pid." size = 10>";
+	IF ($file) { echo "<BR>".cmsg ("FMG_FILDB").":<select name =fileforaction".$pid.">"; //ИМХО size=10 здесь опционально нужно вводить. Или убирать нахрен. Весь вид портит.
 	for ($a=0;$a<$dircnt;$a++) {
 		if (($file[$a][0])===".") continue;
 		if (($file[$a][0])==="..") continue;

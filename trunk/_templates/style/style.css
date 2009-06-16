@@ -415,10 +415,10 @@ blockquote  {
 }
 #bottom .txt  {
 	float: left;
-	width: 420px;
+	width: 400px;
 	padding: 0 0 0 35px;
 	color: #FFF;
-	font-size: 78%;
+	font-size: 68%;
 }
 .contact  {
 	width: 265px;
@@ -536,4 +536,73 @@ blockquote  {
 	margin-left: 12px;
 	margin-right: 12px;
 	}
-/* конец HACK FOR WrapX */
+
+/* Добиваем до нормального вида злосчастную таблицу Изменить в DBmanager */
+#dbmanager_edit {
+	margin-left:14px;
+	margin-top:13px;
+	margin-bottom:13px;
+	border:3px;
+	border-style:dashed;
+	border-color: gray;
+	}
+table#dbmanager_edit td {
+    border:0;
+	}
+table#dbmanager_edit tr {
+    border:0;
+	padding-left:2px;
+	font-size:14px;
+	background: url('../images/bg_search.gif') repeat-x;
+	}
+#dbmanager_textarea {
+	height: 17px;
+	padding: 0 0 0 0 ;
+	border: 1px;
+	border-style: dotted;
+	border-color:green;
+	margin: 0px;
+	background: url('../images/bg_but_act.gif') repeat-x;
+	}
+	
+
+#dbmanager_text{
+	height: 17px;
+	padding: 0 0 0 0 ;
+	margin-left:2px;
+	border: 1px;
+	border-style: dotted;
+	border-color:green;
+	background: url('../images/bg_subscribe.gif') repeat-x;
+	opacity: 0.8;
+	}
+input[type=submit] {
+	margin-top:2px;
+	text-align:center;
+	height: 20px;
+	width:100px;
+	margin-left:2px;
+	border: 0px;
+	background: url('../images/button.gif') repeat-x;
+	opacity: 0.7
+	}
+
+input[type="submit"]:hover {
+	margin-top:2px;
+	height: 20px;
+	width:100px;
+	padding: 0 0 0 0 ;
+	margin-left:2px;
+	border: 0px;
+	background: url('../images/button.gif') repeat-x;
+	opacity: 1;
+	}
+input[type="text"] {
+	height: 17px;
+	padding: 0 0 0 0 ;
+	border: 1px;
+	border-style: dotted;
+	border-color:green;
+	margin: 0px;
+	background: url('../images/bg_but_act.gif') repeat-x;
+	}

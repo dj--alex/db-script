@@ -553,7 +553,7 @@ if ($oldcoreedit)
 			?>
 			<textarea name=z<?=$a; ?> cols=30 rows=1><?=$myrow[$a]?></textarea><br><? ;
 			}
-	if (!$oldcoreedit) { echo "<table border=3 width=100% bordercolor=#602621>";
+	if (!$oldcoreedit) { echo "<table border=3 width=0% bordercolor=#602621>";
 		for ($a=0;$a<count ($mycol);$a++)
 			{ //hdr text	//	
 				if ($prauth[$ADM][41])echo "<tr>";//optional   Box,not linear edit.
@@ -1483,7 +1483,7 @@ if (($write==cmsg ("WF_HDRSQL_REAL"))AND ($prdbdata[$tbl][12]=="mysql")) {
 <option value=modify><? lprint ("WF_ROW_MOD");?></option>
 </select>
 <?="<br>".cmsg ("WF_NNAMROW").":";
-    echo "<input type=text name=newname><br>";
+    echo "<input type=text id=dbmanager_text name=newname><br>";
 	checkbox ($views,"views") ; echo cmsg ("WF_LOG")."<br>";  ?>
 <? submitkey ("write","WF_MODSTRC_SQL");
 	echo "<br><br>".cmsg ("WF_NEWPARAM")."<br>";
@@ -1491,11 +1491,11 @@ if (($write==cmsg ("WF_HDRSQL_REAL"))AND ($prdbdata[$tbl][12]=="mysql")) {
 		echo cmsg ("WF_PROTROW").":";	printfield ($data,"nfieldexch");
 		echo cmsg ("RECOMM")."<br>";
 			echo cmsg ("WF_NROWDAT").":";
-    echo "<input type=text name=newdatatype><br>";
+    echo "<input type=text id=dbmanager_text name=newdatatype><br>";
 			echo cmsg ("WF_NROWLEN").":";
-    echo "<input type=text name=newlen><br>";
+    echo "<input type=text id=dbmanager_text name=newlen><br>";
 			echo cmsg ("WF_NROWFLAG").":";
-    echo "<input type=text name=newflags><br>";
+    echo "<input type=text id=dbmanager_text name=newflags><br>";
 	}
 //модуль обработки
 	if ($write==cmsg("WF_MODSTRC_SQL")) { //++
@@ -1568,7 +1568,7 @@ if (($write==cmsg ("WF_HDRSQL_REAL"))AND ($prdbdata[$tbl][12]=="mysql")) {
 	printfield ($data,"nfield");
 	echo cmsg ("WF_EXCHROW").":";	printfield ($data,"nfieldexch");
 	echo "<br>".cmsg ("WF_NNAMROW").":";
- echo "	<input type=text name=newname> <br>";
+ echo "	<input type=text id=dbmanager_text name=newname> <br>";
 	lprint ("WF_SELACT");
 	?>
 		<select name =action >
@@ -2290,11 +2290,12 @@ $datasplitters=explode (",",$prdbdata[$tbl][20]);
 			?>
 			<textarea name=z<?=$a; ?> cols=40 rows=1><?=$myrow[$a]?></textarea><br><? ;
 			}
-	if (!$oldcoreedit) { echo "<table border=3 width=100% bordercolor=#602621>";
+			//В этом месте происходит инициализация генератора таблицы для dbmanager_редактор
+	if (!$oldcoreedit) { echo "<table id=dbmanager_edit>";
 		for ($a=0;$a<$mycols;$a++)
 			{ //hdr text
 	if ($prauth[$ADM][41]) echo "<tr>";//optional   Box,not linear edit.
-			echo "<td>$mycol[$a] ";
+			echo "<tr><td>$mycol[$a] "; // Как я понял, $prauth[$ADM] позволяет где-то в настройках это сделать, но ИМХО нерационально таблицы в строчку редавтировать.
 			if ($mycol[$md2column]===$mycol[$a]) echo "<i><b>(ID1)</i></b>";
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<i><b>(ID2)</i></b>";
 		
@@ -2305,12 +2306,13 @@ $datasplitters=explode (",",$prdbdata[$tbl][20]);
 			?>			</td>
 			<? if ($prauth[$ADM][41]) echo "</tr><tr>"; //optional Box,not linear edit.
 ?>
-			<td><textarea name=z<?=$a; ?> cols=<?=$lensa;?> rows=1><?=$myrow[$a]?></textarea><br></td><? 
+			<td><textarea id=dbmanager_textarea name=z<?=$a; ?> cols=<?=$lensa;?> rows=1><?=$myrow[$a]?></textarea></td><? 
 			//echo "<tr>";//optionalBox,not linear edit.
 			
 			} //field text
 			
 			echo "</table>";
+			//Конец генератора таблицы для dbmanager_редактор
 	}
 	// проверка заморозки
 	$values=$values."'";
