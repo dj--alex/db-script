@@ -290,7 +290,7 @@ blockquote  {
 }
 .buttons li  {
 	float: left;
-	border: 1px solid #323334;
+	border: 0;
 	background: #023568 url('../images/bg_but_inact.gif') repeat-x 0 100% !important;
 	margin: 15px 25px 0 0;
 	padding: 0 !important;
@@ -565,12 +565,21 @@ table#dbmanager_edit tr {
 	background: url('../images/bg_but_act.gif') repeat-x;
 	}
 	
-
+textarea {
+	height: 17px;
+	padding: 0 0 0 0 ;
+	border: 1px;
+	border-style: dotted;
+	border-color:green;
+	margin: 0px;
+	background: url('../images/bginput.gif') repeat-x;
+	background-position:bottom;
+	opacity: 0.8;
+	}
 #dbmanager_text{
 	height: 17px;
 	padding: 0 0 0 0 ;
 	margin-left:2px;
-	border: 1px;
 	border-style: dotted;
 	border-color:green;
 	background: url('../images/bg_subscribe.gif') repeat-x;
@@ -580,21 +589,20 @@ input[type=submit] {
 	margin-top:2px;
 	text-align:center;
 	height: 20px;
-	width:100px;
 	margin-left:2px;
 	border: 0px;
-	background: url('../images/button.gif') repeat-x;
+	background: url('../images/button_alt.gif') repeat-x;
 	opacity: 0.7
 	}
 
 input[type="submit"]:hover {
 	margin-top:2px;
 	height: 20px;
-	width:100px;
 	padding: 0 0 0 0 ;
 	margin-left:2px;
 	border: 0px;
-	background: url('../images/button.gif') repeat-x;
+	background: url('../images/button_alt.gif') repeat-x;
+	border=0;
 	opacity: 1;
 	}
 input[type="text"] {
@@ -604,5 +612,5 @@ input[type="text"] {
 	border-style: dotted;
 	border-color:green;
 	margin: 0px;
-	background: url('../images/bg_but_act.gif') repeat-x;
+	background: url('../images/bginput.gif') repeat-x;
 	}
