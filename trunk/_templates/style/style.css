@@ -626,3 +626,12 @@ h2 {
 	margin-top:24px;
 	color:white !important;
 	}
+.text {
+	height: 17px;
+	padding: 0 0 0 0 ;
+	border: 1px;
+	border-style: dotted;
+	border-color:green;
+	margin: 0px;
+	background: url('../images/bginput.gif') repeat-x;
+	}
