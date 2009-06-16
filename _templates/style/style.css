@@ -614,3 +614,9 @@ input[type="text"] {
 	margin: 0px;
 	background: url('../images/bginput.gif') repeat-x;
 	}
+select {
+	background: url('../images/select.gif') repeat-x;
+	}
+option {
+	background: url('../images/select.gif') repeat-x;
+	}
