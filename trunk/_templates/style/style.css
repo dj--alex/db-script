@@ -591,7 +591,7 @@ input[type=submit] {
 	height: 20px;
 	margin-left:2px;
 	border: 0px;
-	background: url('../images/button_alt.gif') repeat-x;
+	background: url('../images/button_alt.gif') repeat-x  !important;
 	opacity: 0.7
 	}
 
@@ -601,7 +601,7 @@ input[type="submit"]:hover {
 	padding: 0 0 0 0 ;
 	margin-left:2px;
 	border: 0px;
-	background: url('../images/button_alt.gif') repeat-x;
+	background: url('../images/button_alt.gif') repeat-x !important;
 	border=0;
 	opacity: 1;
 	}
@@ -619,4 +619,10 @@ select {
 	}
 option {
 	background: url('../images/select.gif') repeat-x;
+	}
+h2 {
+	font-size:14;
+	margin-left: 50px;
+	margin-top:24px;
+	color:white !important;
 	}
