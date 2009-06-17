@@ -63,6 +63,7 @@ blockquote  {
 	width: 920px;
 	margin: 0 auto;
 	position: relative;
+	background: url('../images/container_bg2.png');
 }
 /* header ------------------------------------------------------------------- */
 #header  {
