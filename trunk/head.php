@@ -1,7 +1,7 @@
 <?php // MAIN HEADER , loading automating delayed in FS ul-dl mode
 //echo "Session=";print_r ($_SESSION);  	echo "dbsa=$dbsa"; //ept session
 // EXTERNAL JAVASCRIPT  - задание каскадных стилей для программы и кнопок - интерфейс
-// 3.6.06 edition
+// 3.6.06 edition    if (!$trafeconom) $idadd=" id=\"".$name."\" ";
  	global $verhead;	
 $verhead="Header v3.6.1 (c) dj--alex"; //hide
 ?>

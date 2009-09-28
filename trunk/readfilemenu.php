@@ -11,7 +11,9 @@ hidekey ("intf","master-mode");
 	hidekey ("selectenable",0); 
 	hidekey ("limitenable",0); 
 	hidekey ("kol",$kol);
-	hidekey ("groupdb",$groupdb);	
+	hidekey ("groupdb",$groupdb);
+        hidekey ("ipfilter",$ipfilter);
+        hidekey ("page",$page);
 	hidekey ("live",$live);
  submitkey ("write","SEARCH");
  
@@ -24,7 +26,7 @@ hidekey ("intf","master-mode");
 if (($adm==1)OR($defselect==0))
 	{
 if ($pr[19]) $mode15=7;
-//для ГМ-ского выбора опций пока нет режима.  $prauth[$ADM][21]+8=29 и далее личные настр.<B></B>
+//для ГМ-ского выбора опций пока нет режима.  $prauth[$ADM][21]+8=29 и далее личные настр.<bb></bb>
 // всего - Разрешать себе обзор для категорий  Перманентно  Добавить кнопку  мультипоиск  5 переменных
 // Разрешать юзерам Мультипоиск Перманентно  - 
 // также если мастер режим не разрешен действуют стандартные настройки  если ГМ поставил галку default - 
@@ -100,7 +102,7 @@ if ($readfile==false) {
 $deftbl=$pr[16]; 
 if (($adm==1)OR($deftbl==="")) {
 	echo "<br>";
-	printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"tbl",lprint ("SELLINK"),$groupdb); //NO Master mode
+	printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"tbl",lprint ("SELLINK"),$groupdb,$ipfilter,6); //NO Master mode
 	//submitkey ($write,"A_USRGO"); не нужна! :) 
 	
 }

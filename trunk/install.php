@@ -7,7 +7,7 @@ $nomnu=1;$coreloadskip=1; $debugmode=false;
 //if (!$languageprofile) $languageprofile="english";
 @mkdir ("_conf");// langset  styles  required
 require ('dbscore.lib'); // i/o file  INCLUDED!
-$verinst="Install v4.0 (c) dj--alex";// service hide
+$verinst="Install v4.0.91 (c) dj--alex";// service hide
 $debugmode=false;$pr[8]=1; //debug off
  echo " ".$verprogram."<br>$verinst<br>";
 if (!isset ($verprogram)) die ("Core loading failed!");
@@ -60,11 +60,11 @@ if ($step) {
 //============================================//
 if ($step==1)
 { 	
-	echo "".cmsg (INST_SQL)."<br>";
-	lprint (A_LOG_DB);  inputtext ("LOGINSQL",15,"root");echo "<br>";
-	lprint (A_PS_DB); inputtext ("PASSSQL",15,"");echo "<br>";
-	echo "<br>".cmsg (INST_SQL2); inputtext ("IPDEFSERVSQL",15,"127.0.0.1"); echo "<br>";
-	echo "<br>".cmsg (INST_SQL3); echo "<br>";
+	echo "".cmsg ("INST_SQL")."<br>";
+	lprint ("A_LOG_DB");  inputtext ("LOGINSQL",15,"root");echo "<br>";
+	lprint ("A_PS_DB"); inputtext ("PASSSQL",15,"");echo "<br>";
+	echo "<br>".cmsg ("INST_SQL2"); inputtext ("IPDEFSERVSQL",15,"127.0.0.1"); echo "<br>";
+	echo "<br>".cmsg ("INST_SQL3"); echo "<br>";
 	submitkey ("loginstate","DALEE");
 	hidekey ("step",2); 
 	
@@ -77,13 +77,13 @@ if ($step>1) {
 
 //============================================//
 if ($step==2)
-{ 
-	@$connect=mysql_connect ($mainhostmysql, $LOGINSQL , $PASSSQL);
+{  //$mainhostmysql
+	@$connect=mysql_connect ($IPDEFSERVSQL, $LOGINSQL , $PASSSQL);
 	if ($connect===false) {sqlerr ();} else {echo "";}//lprint (SQLDOWN);
 	echo "".cmsg (INST_SU)."<br>"; 
 	
-	lprint (A_LOG_DB);inputtext ("LOGINUSER",15,"TEST");echo "<br>";
-	lprint (A_PS_DB); inputtext ("PASSWORDUSER",15,"TEST");echo "<br>";
+	lprint ("LOGIN_SUSER");inputtext ("LOGINUSER",15,"TEST");echo "<br>";
+	lprint ("PASS_SUSER"); inputtext ("PASSWORDUSER",15,"TEST");echo "<br>";
 	//checkbox ($a,"oldenc");echo "".cmsg (INST_OLDENC)."<br>";
 	submitkey ("loginstate","DALEE");
 	hidekey ("step",3); 
@@ -98,8 +98,8 @@ if ($step>2) {
 if ($step==3)
 {
 	// LOGINUSER 	PASSWORDUSER<br> autologin removed
-	echo "<br>".cmsg (INST_FMG_DEF_FLD)."<br>";inputtext ("fmgfldr",15,"");
-	echo "<br>";checkbox ("","sharedconf"); echo cmsg (INST_SHARED_1)."<br>";
+	echo "<br>".cmsg ("INST_FMG_DEF_FLD")."<br>";inputtext ("fmgfldr",15,"");
+	echo "<br>";checkbox ("","sharedconf"); echo cmsg ("INST_SHARED_1")."<br>";
 	submitkey ("loginstate","DALEE");
 	hidekey ("step",4); 
 	
@@ -114,7 +114,7 @@ if ($step>3) {
 //============================================//
 if ($step==4)
 {
-	echo "<br>".cmsg (INST_CNF_CRT)."<br>";
+	echo "<br>".cmsg ("INST_CNF_CRT")."<br>";
 	submitkey ("loginstate","DALEE");
 	hidekey ("step",5);
 //$lscontent=splitcfgline ($lscontent);
@@ -269,10 +269,12 @@ $gmplevel="a¦d¦a¦a¦d¦d¦d¦d¦d¦d¦a¦d¦d¦d¦d¦a¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d
 $ADMM=0;
 for ($a=0;$a<200;$a++) {
 	$prauth[$ADMM][$a]="0";
+	if (($a>24)AND($a<37)) $prauth[$ADMM][$a]="1";
 }
 $prauth[$ADMM][0]=stripslashes ($LOGINUSER); 			$prauth[$ADMM][1]=hashgen ($PASSWORDUSER);$prauth[$ADMM][42]=1;
 $prauth[$ADMM][15]=$prauth[$ADMM][0];$prauth[$ADMM][22]=$lang;
 $prauth[$ADMM][21]="Default";$prauth[$ADMM][10]=10;
+
 $prauth[1]=$prauth[0];
 //..$prauth="";// òóò äîáàâëÿåì íàøåãî þçåðà
 	 @$tempdescr=csvopen ("_conf/gmdata.cfg","w",1);
@@ -352,7 +354,7 @@ if (($step==5)AND(!$sharedconf)) $step=7;
 
 if ($step==5)
 {   if ($sharedconf) {
-	lprint (INST_SHARED_SEL);echo "<br>";
+	lprint ("INST_SHARED_SEL");echo "<br>";
 		// ôàéëû ê ýòîìó ìîìåíòó óæå äîëæíû áûòü ñãåíåðèðîâàíû è õîòÿ áû áûòü â íàëè÷èè
 		$path=getcwd ()."/_conf/";	//	$path2=$fldup."/_conf";$path3=getcwd ()."/_langdb/";
 		$mask="*.cfg";	$protect[]="*.php";$nameselect="files";
@@ -363,6 +365,7 @@ if ($step==5)
 	}
 	// echo "<select namegetcwd ()."/_conf/";=files>";	for ($a=0;$a<8;$a++) {		echo "<option name=\"value\">".$file[$a]."</option>";	}	// echo "</select>";
 	echo "<br>".cmsg ("")."<br>";
+        if ($_ENV["NUMBER_OF_PROCESSORS"]==false) echo "";
 	submitkey ("loginstate","DALEE");
 	hidekey ("step",6); 
 	
@@ -376,7 +379,7 @@ if ($step>5) {
 
 
 if ($step==6)
-{  echo cmsg (SHARED_CONF)."<br>";
+{  echo cmsg ("SHARED_CONF")."<br>";
 	for ($a=0;$a<count ($files);$a++) {
 	print ($files[$a]."<br>");	
 	$pr[34]=0;
@@ -405,8 +408,8 @@ if ($step>6) {
 //============================================//
 if ($step==7)
 { 
-	echo "<br>".cmsg (INST_NOTE_DB)."<br>";
-	//echo "<br>".cmsg (INST_RMV)."<br>";
+	echo "<br>".cmsg ("INST_NOTE_DB")."<br>";
+	//echo "<br>".cmsg ("INST_RMV")."<br>";
 	submitkey ("loginstate","DALEE");
 	hidekey ("step",8); 
 }
@@ -416,7 +419,7 @@ if ($step>7) {
 //============================================//
 if ($step==8)
 {	 
-	echo "<br>".cmsg (INST_READY)."<br>";
+	echo "<br>".cmsg ("INST_READY")."<br>";
 	echo "<br>".cmsg ("")."<br>";
 	submitkey ("loginstate","FINISH");
 	hidekey ("step",9);//   LAST STEP

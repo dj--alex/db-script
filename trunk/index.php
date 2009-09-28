@@ -1,11 +1,12 @@
 <?	// Äàííàÿ ïğîãğàììà îòíîñèòñÿ ê ïàêåòó DBSCRIPT v2.1 (ñ) dj--alex
 //header ("Location: main.php");
 //$nomnu=1;
+@$a=opendir ("_conf"); if ($a==false) Header("Location: install.php");
 	require ('dbscore.lib'); // ôóíêöèÿ ïîäãîòîâêè ê ğàáîòå è àâòîğèçàöèè
 
 if ($frameoldcore==0) {require_once ("main.php");}
 ?>
-<b><h3><font color=red><a href="login.php"><?=cmsg (ENTER); ?></b></h></a>
+<b><h3><font color=red><a href="login.php"><?=cmsg ("ENTER"); ?></b></h></a>
 <br>
 <?
 echo "</font>".date ("d.m.Y H-i-s")."<br>";

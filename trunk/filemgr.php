@@ -1,11 +1,57 @@
 <?php 
 require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
 if (!$activation) exit;
-$verfilemgr="Filemgr  v 3.6.11  (c) dj--alex ";
+$verfilemgr="Filemgr  v 4.0.97 (c) dj--alex ";
   $enterpoint=$verfilemgr;#end of conf
 // вот наша буферизация - ob_start();ob_end_flush();
 autoexecsql (); 
 @ import_request_variables ("PG","");
+
+ if ($coreredir=="SH_UPDD_FL")  { //not forced, not automatically  // подстройка для автопредложения share
+    $cmd=cmsg ("FMG_SHARE");
+    $fileforaction=$destinationfilename;
+    $filesize=$filesizeinmb;
+    // echo "Redirect accepted from fmgr side<br>;";
+    $cmd{0}=cmsg ("FMG_SHARE");
+    //$cmd{1}=cmsg ("FMG_SHARE");
+    $pid=0;
+ }
+
+if (($c)OR ($f)) if ($pr[74]) { lprint ("DWN_LNK_DIS");msgexiterror ("notright","","disable");exit;}
+
+if ($c) {  //нам пришла ссылка на файл!  возрадуемся!
+    for ($a=0;$a<$filcount;$a++) {    //echo $table[$a][4]."<br>";
+    if ($fildata[$a][4]==$c) { $filerealid=$a;$pathwithfile=$fildata[$a][5];$commfile=$fildata[$a][7];};    //if (==$pathandfile) lprint (FSH_EXST_AN_USR); //трёхмерный массив :))
+}
+if ($commfile==false) {$f=$c;} else {
+echo cmsg ("COMMFILE")."$commfile<br>";
+ echo "<a href='filemgr.php?f=".$c."'>Download!</a><br>";
+exit;}
+}
+if ($f) {  //нам пришла ссылка на файл!  возрадуемся!
+    for ($a=0;$a<$filcount;$a++) {    //echo $table[$a][4]."<br>";
+    if ($fildata[$a][4]==$f) { $filerealid=$a;$pathwithfile=$fildata[$a][5];};    //if (==$pathandfile) lprint (FSH_EXST_AN_USR); //трёхмерный массив :))
+}
+// RIGHTS пока не проверяются..чисто проврка.
+//echo "будет скачан $pathwithfile <br>";
+$share=$fildata[$filerealid][1];
+//echo " GEN USR LINK  ".$fildata[$filerealid][2]."......".$prauth[$ADM][0]."<br><br>";
+$userlist[]=$fildata[$filerealid][2];$username=$prauth[$ADM][0];
+if ($share=="FMG_UNSHARE") die ("unsupported");
+if ($share=="GENLNK_UNREG") $enabledownload=1;
+if ($share=="GENLNK_REG") if ($prauth[$ADM][0]!=="UNKNOWN") { $enabledownload=1;}
+else {msgexiterror ("notrights","F_DWN_REG You not in userlist this file! ","filemgr.php");} //msgexit update req!!!!
+if ($share=="GEN_PLVL_USR") if (($fildata[$filerealid][3]+1)<$prauth[$ADM][10])  { $enabledownload=1;}
+else {msgexiterror ("notrights","F_DWN_PLVL You not in userlist this file! ","filemgr.php");}
+if ($share=="GENLNK_USR")  if (in_array ($username,$userlist)) { $enabledownload=1; }
+else {msgexiterror ("notrights","F_DWN_USR You not in userlist this file! ","filemgr.php");}
+if (!$enabledownload) die ("not allowed!!");
+
+if ($enabledownload) { logwrite ("FMG_LNK_DL $prauth[$ADM][0] download file $pathwithfile)" );ob_clean (); sendfile ($pathwithfile);exit;};
+
+} //окончание работы с ссылкой и выдачей файла и возврат к норм работе
+
+
 //print_r ($_POST);
 //принимаем графические переменные и преобразовываем их в cmd
 if ($prauth[$ADM][40]) $noscreenmode=1;
@@ -25,6 +71,8 @@ if ($prauth[$ADM][40]) $noscreenmode=1;
  if (isset ($FMG_NEW_x)) $cmd{$pid}=cmsg ("FMG_NEW");
  if (isset ($FMG_DOWNLOAD_x)) $cmd{$pid}=cmsg ("FMG_DOWNLOAD");
  if ($codekey!==5) if (isset ($FMG_UPLOAD_x)) $cmd{$pid}=cmsg ("FMG_UPLOAD");
+ if ($codekey!==5) if (isset ($FMG_SHARE_x)) $cmd{$pid}=cmsg ("FMG_SHARE");
+ if ($codekey!==5) if (isset ($FMG_UNZIP_x)) $cmd{$pid}=cmsg ("FMG_UNZIP");
  if (isset ($FMG_REF_x)) $cmd{$pid}=cmsg ("FMG_REF");
  if (isset ($FMG_RESET_x)) $cmd{$pid}=cmsg ("FMG_RESET");
  if ($codekey!==5) if (isset ($FMG_CPY_F_x)) $cmd{$pid}=cmsg ("FMG_CPY_F");
@@ -41,7 +89,7 @@ if ($prauth[$ADM][40]) $cmdtmp=$cmd;
 	$$cmdname=$cmd{$a};
 	//echo "$a=".$$cmd{$a}.";;";	
 	}
-//CFG OPT FUTURE  Filemgr ne trebuet registracii и скачивать можно без нее.
+//Filemgr ne trebuet registracii и скачивать можно без нее.
 //echo $sd[10];
 //echo "erogog;rgrtgrg;grggg;jljlrg;rtjglrjglrglrglrjg;rjgrg;jg;ij;;'osf'rsg'rsg";
 //print_r ($POST);
@@ -49,16 +97,37 @@ if ($prauth[$ADM][40]) $cmdtmp=$cmd;
 
 if (isset($_FILES["userfile"])) { 
  if ($codekey==7) demo ();
- if (!$path) { echo "Path потерян... конец операции...";exit;} else { $err=uploadfile ($path,"original");}
+ if (!$path) { echo "Path потерян... конец операции...";exit;} else {
+     if ($pr[68]) $redirecttoshare=1;
+     $err=uploadfile ($path,"original");}
  if ($err==false) echo "upload fail.";  if ($err==true)  echo "upload complete.";
   exit;}
 
   //echo "OSTYPE==$OSTYPE";
   if ($pr[41]) $defaultpath=$pr[41]; else {
-if ($OSTYPE=="LINUX") $defaultpath=getcwd ()."/";#config
-if ($OSTYPE=="WINDOWS") $defaultpath=getcwd ()."\\";#config
+   if ($OSTYPE=="LINUX") $defaultpath=getcwd ()."/";#config
+   if ($OSTYPE=="WINDOWS") $defaultpath=getcwd ()."\\";#config
   }
-  if (($sd[10])AND($ADM==0)) {$prauth[0][9]="on";$prauth[0][7]="on"; $prauth[0][37]="1";$defaultpath=$sd[10];}
+  if ($prauth[$ADM][50]==true) { if ($userfilesfolder) $defaultpath=$userfilesfolder;
+
+  if ($prauth[$ADM][53]) { $defaultpath=$prauth[$ADM][53];}
+   if ($pr[41]==false) {if ($OSTYPE=="LINUX") $defaultpath.="/";#config
+   if ($OSTYPE=="WINDOWS") $defaultpath.="\\";#config
+     ;// personal folder added
+   }
+   
+};
+
+  
+  if (($sd[10])AND($ADM==0)) {
+      $prauth[0][37]="1";$defaultpath=$sd[10];// restriction right on unregistered user
+   
+        if ($pr[66]) $prauth[0][54]="on";// пока что зависит от прав на Upload // echo cmsg ("FMG_SHARE");
+        if ($pr[67]) $prauth[0][9]="on"; //echo cmsg ("FMG_DOWNLOAD");
+        if ($pr[71]) $prauth[0][36]="on";// echo cmsg ("FMG_UPLOAD");
+        if ($pr[72]) $prauth[0][7]="on";//echo cmsg ("NAVI")."<br>";
+
+      }
   
 // в ядре произвести аналогичное изменение.
 $filemgrmod=$sd[8];
@@ -72,12 +141,74 @@ if ($prauth[$ADM][37]) $maxmgrs=$prauth[$ADM][37]; else $maxmgrs=2;
 	$strokaname="stroka".$a;//$$strokaname=$stroka{$a};//$cmd1=$cmd{1};  $cmd2=$cmd{2};
 	$pathname="path".$a;//$$pathname=$path{$a};
 	$fileforactionname="fileforaction".$a;//$$fileforactionname=$fileforaction{$a};
+    // вот здесь будет внедрение multiple files CFG OPT FUTURE
 	$maskname="mask".$a;//$$maskname=$mask{$a};
 	$cmd=${$cmdname};$stroka=${$strokaname};$path=${$pathname};$fileforaction=${$fileforactionname};$mask=${$maskname};
 	//echo "cmd1=$cmd1;<br>";
 	if ($nokeys==1) nokeys (1);
   if ($daysleft<1) expire ();
 
+//moved TO Up -- SHARE APPLYING STEP 2 --
+//global $username,$share,$write,$file;
+if ($go==cmsg (FMG_SHARE))
+{
+
+        if ((!$prauth[$ADM][54])AND($coreredir!="step2")) { lprint ("DIS") ; exit;};
+
+    if ($username) @$userlist=implode ($username,",");
+    if ($share!=="GENLNK_USR") $userlist="";
+    if ($file===false) exit;
+    //echo "share=$share us=$userlist groupplevels=$groupplevels w=$write file=$file yes=$yes<br>";
+  $hash=md5($prauth[$ADM][0].$file);
+  $pathandfile=$file;
+
+        
+  //check alreasy exist and receive ID
+$count=$filcount;//echo "Counts found files.cfg: ".$count."<br>";
+if ($share=="") { lprint (FSH_NO); exit; };
+for ($a=0;$a<$count;$a++) {
+    //echo $table[$a][4]."<br>";
+    if ($share!=="FMG_UNSHARE") if ($fildata[$a][4]==$hash) { lprint ("FSH_EXST"); exit  ; }
+    if ($share!=="FMG_UNSHARE") if ($fildata[$a][5]==$pathandfile) lprint ("FSH_EXST_AN_USR"); //трёхмерный массив :))
+    if ($share=="FMG_UNSHARE") if ($fildata[$a][5]==$pathandfile) { $filefound=1;};
+    if ($share=="FMG_UNSHARE")  if ($fildata[$a][4]==$hash) { lprint ("LNK_RMV");
+        $fildata[$a]="";fclose ($filescfg) ;$filescfg=csvopen ("_conf/files.cfg","w",1); //reopen for write
+        $x=writefullcsv ($filescfg,$filheader,$filplevels,$fildata); // надо себе напомнить чтоб не забывал переоткрывать файл в w
+echo $x;   //writing new stroke to _conf\files.cfg
+    logwrite ("FMG_UNSHARE $share (usr=$userlist) (plvl=$groupplevels) $pathandfile");exit;
+    }
+}
+if (($share=="FMG_UNSHARE")AND($filefound==0)) { lprint ("UNSH_FAIL");exit;};
+    $count=$count-1;$id=$count;
+   $fildata[$count][0]=$id;   $fildata[$count][1]=$share;
+   $fildata[$count][2]=$userlist;   $fildata[$count][3]=$groupplevels;
+   $fildata[$count][4]=$hash;   $fildata[$count][5]=$pathandfile;
+   $fildata[$count][6]=$yes;   $fildata[$count][7]=$commfile;   $fildata[$count][8]=date("d.m.Y H:i:s");
+   $fildata[$count][9]="0";   $fildata[$count][10]="0";   $fildata[$count][11]="0".$addOSenter;
+ echo "Your link to file: <a href='filemgr.php?c=".$fildata[$count][4]."'>link</a><br>";
+ //echo "server name=".$_SERVER['SERVER_NAME']."<br>"; echo "php self=".$_SERVER['PHP_SELF']."<br>"; echo "doc root=".$_SERVER['DOCUMENT_ROOT']."<br>";
+$link="<br>http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][4]."<br><br>";
+
+echo $link;
+//echo "hash from filesdata-2 massive: ".$table[$count][4]."<br>";
+//echo "writefullcsv вернул:";
+fclose ($filescfg) ;//fclose ($file);
+$filescfg=csvopen ("_conf/files.cfg","w",1);
+
+//$testlinuxlinefeed=1;  надо не этот параметр врубать а вручную .add дописывать
+//echo "блять че ему еще не так суке гребаной :($filescfg,$filheader,$filplevels,$fildata). заебал глючить, я просто перенес модуль.<br>";
+//мат не убирать, именно это и помогло программе
+$x=writefullcsv ($filescfg,$filheader,$filplevels,$fildata); // надо себе напомнить чтоб не забывал переоткрывать файл в w
+echo $x;
+   //writing new stroke to _conf\files.cfg
+    logwrite ("FMG_SHARE $share (usr=$userlist) (plvl=$groupplevels) $pathandfile");
+
+if ($debugmode) readfile ("_conf/files.cfg");  //debug//
+exit;
+}
+//moved TO Up -- SHARE APPLYING STEP 2 -- ENDING
+
+if ($sd[27]) echo $sd[27]."<br>";
 	//echo "<br>zad per<br>$cmd={$cmdname};$stroka={$strokaname};$path={$pathname};$fileforaction={$fileforactionname};$mask={$maskname};<br>";
 	//echo "<br>cmd=$cmd,cmd1=$cmd1,str=$stroka,p=$path,f=$fileforaction,m=$mask,PID=$a,an PID=$pid<br>";
 if ($prauth[$ADM][40]) { $cmd=$cmdtmp; lprint ("DEBUGMSG");echo ":".	cmsg ("GMP_40")."<br>";	}
@@ -87,10 +218,12 @@ if ($prauth[$ADM][40]) { $cmd=$cmdtmp; lprint ("DEBUGMSG");echo ":".	cmsg ("GMP_
 	if ($a<$maxmgrs) echo "<hr>";
 	}
 
+
+
 function filemgr ($cmd,$stroka,$path,$fileforaction,$mask,$pid){  // is a part filemgr- fileio
 	//hidekey ("pidептвоюмать",$pid);
 	global $defaultpath,$protect,$prauth,$ADM,$pr,$sd;//..,$file
-	global $filemgrmod,$daysleft,$codekey,$noscreenmode,$maxmgrs,$OSTYPE;
+	global $filemgrmod,$daysleft,$codekey,$noscreenmode,$maxmgrs,$OSTYPE,$coreredir;
 		if ($codekey==4) needupgrade ();
 
 //echo "ACTION:cmd=$cmd,str ok,path ok,file=$fileforaction,pid=$pid>";// -+++- 
@@ -101,6 +234,7 @@ function filemgr ($cmd,$stroka,$path,$fileforaction,$mask,$pid){  // is a part f
 if (($cmd==cmsg("FMG_CPY_F"))and($prauth[$ADM][12])) {global $path2;copy($path.$fileforaction,$path2.$fileforaction);echo "copy($path$fileforaction,$path2);"; echo "Копирование завершено";};
 if (($cmd==cmsg("FMG_MOV_F"))and($prauth[$ADM][12])) {global $path2;copy($path.$fileforaction,$path2.$fileforaction);unlink ($path.$fileforaction);
 echo "Перемещение завершено";};
+
 	if (($cmd==cmsg("FMG_DOWNLOAD"))and($prauth[$ADM][9])) { ob_clean ();$err=sendfile ($path.$fileforaction);};
 if (($cmd==cmsg("FMG_UPLOAD"))and($prauth[$ADM][36])) { 
 	$path=del_endslash ($path);
@@ -113,6 +247,44 @@ if (($cmd==cmsg("FMG_UPLOAD"))and($prauth[$ADM][36])) {
 hidekey ("write",$cmd);
 exit;//moved from non-function zone
 }
+
+//if (($cmd==cmsg("FMG_UNSHARE"))and($prauth[$ADM][36])) {    echo "not implemented";}
+if ((($cmd==cmsg("FMG_SHARE"))and($prauth[$ADM][36])) OR ($coreredir=="SH_UPDD_FL")) {
+	$path=del_endslash ($path); // -- SHARE STEP 1 -- 
+    $file=$path."/".$fileforaction;
+    if ($coreredir=="SH_UPDD_FL") { global $destinationfilename,$filesizeinmb;
+            $file=$destinationfilename; 
+                                };
+    	?><form enctype="multipart/form-data" action="filemgr.php" method="post"><?
+    echo "File: $file<br>";
+    lprint (GEN_OPT);echo "<br>";
+ radio ("share","FMG_UNSHARE","FMG_UNSHARE"); echo "<br>";
+ radio ("share","GENLNK_UNREG","GENLNK_UNREG");echo "<br>";
+ if (!$pr[70]) { radio ("share","GENLNK_REG","GENLNK_REG");echo "<br>";
+ radio ("share","GEN_PLVL_USR","GEN_PLVL_USR");echo "<select name=groupplevels>";
+		for ($a=0;$a<10;$a++){			echo "<option>".$a;			}
+echo "</select>";echo "<br>";
+
+radio ("share","GENLNK_USR","GENLNK_USR");echo "<br>";
+
+    echo "<select name=\"username[]\" multiple size=15>";
+    for ($a=1;$a<count ($prauth);$a++) {
+	echo "<option>".$prauth[$a][0]."";$cnt++;
+}
+echo "</select>"; }
+echo "<br>";
+lprint (COMM);inputtext ("commfile",15,$commfile);echo "<br>";
+checkbox (1,"yes"); lprint (GEN_FL_EPX);
+echo "<br>";
+if ($coreredir=="SH_UPDD_FL") { hidekey ("coreredir","step2");};
+    hidekey ("file",$file);
+    submitkey ("go","FMG_SHARE");
+	hidekey ("pid",$pid);?></form>
+<?=" ";
+hidekey ("write",$cmd);
+exit;//moved from non-function zone -- SHARE STEP 1 -- ENDING
+}
+//
 //	echo "Мы получили из пред сессии  $cmd $fileforaction!<br> <BR>";   ikonki mlya !
 //echo "<br>".cmsg ("FMG_MHLP")."<br>";  ХЕЛП ОТКЛЮЧЕН
  if ($noscreenmode==false) { echo "" ;};
@@ -169,6 +341,34 @@ if (($cmd==cmsg("FMG_EXECUTE"))and($prauth[$ADM][8])) {
 	echo cmsg ("FMG_MOD_OUT")."<br>";
 }  
 
+if (($cmd==cmsg("FMG_UNZIP"))and($prauth[$ADM][12])) {
+    $file=$path.$fileforaction;//rar_open rar_list PHP by standart is unsupported!!!
+$zip = zip_open($file);
+if ($zip) {
+
+while ($zip_entry = zip_read($zip)) {
+echo "Name: " . zip_entry_name($zip_entry) . "\n";
+echo "Actual Filesize: " . zip_entry_filesize($zip_entry) . "\n";
+echo "Compressed Size: " . zip_entry_compressedsize($zip_entry) . "\n";
+echo "Compression Method: " . zip_entry_compressionmethod($zip_entry) . "\n";
+
+if (zip_entry_open($zip, $zip_entry, "r")) {
+echo "File Contents:\n";
+$buf = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
+//echo "$buf\n";
+$x=fopen ($path.zip_entry_name($zip_entry),"w");
+fwrite ($x,$buf);
+fclose ($x);
+
+zip_entry_close($zip_entry);
+}
+echo "\n";
+
+}
+zip_close($zip);
+}
+}
+
 if (($cmd==cmsg("FMG_DEL"))and($prauth[$ADM][13])) {
 	if ($codekey==7) demo ();
 	@$err1=unlink ($path.$fileforaction);
@@ -176,7 +376,7 @@ if (($cmd==cmsg("FMG_DEL"))and($prauth[$ADM][13])) {
 	}
 if (($cmd==cmsg("FMG_NEW"))and($prauth[$ADM][12])) {
 	//if ($codekey==7) demo ();
-	$err=fopen($path.$stroka,"r"); if ($err==false) $err=fopen ($path.$stroka,"a");}
+	@$err=fopen($path.$stroka,"r"); if ($err==false) $err=fopen ($path.$stroka,"a");}
 
 if (($cmd==cmsg("FMG_REN"))and($prauth[$ADM][12])) {
 	if ($codekey==7) demo ();
@@ -192,7 +392,7 @@ if (($cmd==cmsg("FMG_EDIT"))and($prauth[$ADM][12])) {
 if ($pr[12]) {$act="FILEMGR_CMD $cmd $file($path $fileforaction) word=$stroka"; 
 if ($cmd!==cmsg("FMG_ENTER")AND($cmd!==cmsg("FMG_EXIT"))) logwrite ($act) ;
 	};  // логируемся
-// } else { echo "<br><font color=red>".cmsg ("LIM")."</font>".cmsg ("FMG_HLP2");}
+// } else { echo "<br><font color=red id=errfnt>".cmsg ("LIM")."</font>".cmsg ("FMG_HLP2");}
 
 #selectin files using  fileio.php
 if ((!$path)OR($cmd==cmsg("FMG_RESET"))) { $path=$defaultpath;$mask="*.*";$file="";$stroka=""; };
@@ -229,7 +429,9 @@ $dircnt= count ($file);
 
 //lprint ("FMG_CREATE"); 
 	if ($ADM>0) inputtext("stroka".$pid,15,$stroka);//<textarea type = text name=stroka<?=$pid  cols= 15 rows=1 wrap=NONE><?=$stroka; </textarea>
-	lprint ("FMG_MASK");inputtext ("mask".$pid,15,$mask); //<textarea type = text name=mask<?=$pid  cols= 7 rows=1 wrap=NONE><?=$mask; </textarea> <?
+        if ($ADM>0) { $hidefolder=$prauth[$ADM][52];} else {$hidefolder=$pr[73];};
+        if (!$hidefolder) { lprint ("FMG_MASK");inputtext ("mask".$pid,15,$mask);} //<textarea type = text name=mask<?=$pid  cols= 7 rows=1 wrap=NONE><?=$mask; </textarea> <?
+        
  if ($noscreenmode) {	
  	if ($prauth[$ADM][7]) { //FMG.pid удален
  		echo "generate cmd$pid<br>";
@@ -244,6 +446,7 @@ $dircnt= count ($file);
 		if ($prauth[$ADM][12]) { 
 	 submitkey ("cmd","FMG_MKDIR");
 	 submitkey ("cmd","FMG_JOINFIL");
+         submitkey ("cmd","FMG_UNZIP");
 	 submitkey ("cmd","FMG_REN"); 
 	 submitkey ("cmd","FMG_EDIT"); 
 	 submitkey ("cmd","FMG_NEW"); 			}
@@ -253,10 +456,17 @@ $dircnt= count ($file);
 		 if ($prauth[$ADM][9]) {
 	 submitkey ("cmd","FMG_DOWNLOAD");}
 		 if ($prauth[$ADM][36]) {
-	 submitkey ("cmd","FMG_UPLOAD"); 		} // CFG OPT FUTURE ..отделить разрешение на закачку файлй
-	 submitkey ("cmd","FMG_REF"); 
-	 submitkey ("cmd","FMG_RESET");		 
-	 submitkey ("cmd","FMG_MASKAPPLY");
+	 submitkey ("cmd","FMG_UPLOAD");
+         }
+ if ($prauth[$ADM][54]) {
+ 	 submitkey ("cmd","FMG_SHARE");
+//	 submitkey ("cmd","FMG_UNSHARE");
+
+} 
+if(!$pr[75]){submitkey ("cmd","FMG_REF");
+	 submitkey ("cmd","FMG_RESET");
+}
+	 if (!$hidefolder) submitkey ("cmd","FMG_MASKAPPLY");
 		}
 
 
@@ -276,6 +486,7 @@ if ($prauth[$ADM][7]) {
  submitimg ("cmd".$pid,"FMG_EDIT","_ico/edit.png");
  submitimg ("cmd".$pid,"FMG_NEW","_ico/newfile.png");
  submitimg ("cmd".$pid,"FMG_JOINFIL","_ico/joinfiles.png");
+ submitimg ("cmd".$pid,"FMG_UNZIP","_ico/backup.png");
  }
  if ($prauth[$ADM][13]) {
  if ($prauth[$ADM][5]==true) submitimg ("cmd".$pid,"FMG_DELALL","_ico/removefolder.png");
@@ -284,12 +495,22 @@ if ($prauth[$ADM][7]) {
  if ($prauth[$ADM][9]) {
  submitimg ("cmd".$pid,"FMG_DOWNLOAD","_ico/download.png");
  }
+
+
  if ($prauth[$ADM][36]) {
- submitimg ("cmd".$pid,"FMG_UPLOAD","_ico/upload.png");
+  if(!$pr[75]){ submitimg ("cmd".$pid,"FMG_UPLOAD","_ico/upload.png"); }
+  if($pr[75]){ submitimg ("cmd".$pid,"FMG_UPLOAD","_ico/uploadalt.png"); }
+ }
+ if ($prauth[$ADM][54]) {
+ submitimg ("cmd".$pid,"FMG_SHARE","_ico/w_accept.png");
+ //submitimg ("cmd".$pid,"FMG_UNSHARE","_ico/w_close.png");
+
   }
+  if(!$pr[75]){
  submitimg ("cmd".$pid,"FMG_REF","_ico/refresh.png");
  submitimg ("cmd".$pid,"FMG_RESET","_ico/reset.png");
- submitimg ("cmd".$pid,"FMG_MASKAPPLY","_ico/stargreen.png");
+  }
+  if (!$hidefolder) submitimg ("cmd".$pid,"FMG_MASKAPPLY","_ico/stargreen.png");
 
 	 }
 	 
@@ -303,7 +524,8 @@ if (($pid==1)AND($prauth[$ADM][12])) {
 
 	?> <input type = hidden name = path<?=$pid ;?> value ="<?=$path ?>" >
 <?
-	IF ($file) { echo "<BR>".cmsg ("FMG_FILDB").":<select name =fileforaction".$pid.">"; //ИМХО size=10 здесь опционально нужно вводить. Или убирать нахрен. Весь вид портит.
+   if ($hidefolder) unset ($file); //no filelist 
+	IF ($file) { echo "<BR>".cmsg ("FMG_FILDB").":<select name =fileforaction".$pid." multiple size = ".$prauth[$ADM][49].">";
 	for ($a=0;$a<$dircnt;$a++) {
 		if (($file[$a][0])===".") continue;
 		if (($file[$a][0])==="..") continue;
@@ -316,7 +538,82 @@ if (($pid==1)AND($prauth[$ADM][12])) {
 	echo "</select></form>";
 	}
 	
-	echo "".(int)(@disk_total_space($path)/(1024*1024))."Mb ";
-echo "/".(int)(@disk_free_space($path)/(1024*1024))."Mb";
+	echo "Free ".(int)(@disk_free_space($path)/(1024*1024))."Mb ";
+echo " of ".(int)(@disk_total_space($path)/(1024*1024*1024))."Gb";
 }
+
+// ADDED FUNCTIONS FROM PHP.NET  WRITTEN NON DJ--ALEX
+function zip_read2(&$fp)
+{
+  if(!$fp) return false;
+
+  $next = $fp['pointer'] + 1;
+  if($next >= count($fp['contents'])) return false;
+
+  $fp['pointer'] = $next;
+  return $fp['contents'][$next];
+}
+function zip_entry_name2(&$res)
+{
+  if(!$res) return false;
+  return $res['name'];
+}
+function zip_entry_filesize2(&$res)
+{
+  if(!$res) return false;
+  return $res['length'];
+}
+function zip_entry_open2(&$fp, &$res)
+{
+  if(!$res) return false;
+
+  $cmd = 'unzip -p '.shellfix($fp['name']).' '.shellfix($res['name']);
+
+  $res['fp'] = popen($cmd, 'r');
+  return !!$res['fp'];
+}
+function zip_entry_read2(&$res, $nbytes)
+{
+  return fread($res['fp'], $nbytes);
+}
+function zip_entry_close2(&$res)
+{
+  fclose($res['fp']);
+  unset($res['fp']);
+}
+
+function ShellFix($s)
+{
+  return "'".str_replace("'", "'\''", $s)."'";
+}
+
+function zip_open2($s)
+{
+  $fp = @fopen($s, 'rb');
+  if(!$fp) return false;
+
+  $lines = Array();
+  $cmd = 'unzip -v '.shellfix($s);
+  exec($cmd, $lines);
+
+  $contents = Array();
+  $ok=false;
+  foreach($lines as $line)
+  {
+    if($line[0]=='-') { $ok=!$ok; continue; }
+    if(!$ok) continue;
+
+    $length = (int)$line;
+    $fn = trim(substr($line,58));
+
+    $contents[] = Array('name' => $fn, 'length' => $length);
+  }
+
+  return
+    Array('fp'       => $fp,
+          'name'     => $s,
+          'contents' => $contents,
+          'pointer'  => -1);
+}
+
 ?>
