@@ -1,7 +1,7 @@
 <? 
 //SITE UNKNOWN  PROGRAMM CREATED BY DJ--ALEX
  	global $vergetfile;	
-$vergetfile="Search v3.5.31 (c) dj--alex";
+$vergetfile="Search v4.0.97 (c) dj--alex";
 	require_once ('dbscore.lib');
 	if ($auth==cmsg("AUTHEN")) {
 	 {
@@ -42,7 +42,14 @@ if ($pr[37]) {// analog in writefile
 	//section select group
     
 	//	hidekey ("groupdb",$groupdb);print_r ($list);	//	print_r ($a);
-	groupdbprint ($list,"Group",$prdbdata,$tbl,$groupdb);
+        $grouplist=groupdbfielddetect ($prdbdata,17);// set group as field
+        $groupdbthisname="groupdb";
+	groupdbprint ($grouplist,"Group",$prdbdata,$tbl,$groupdb);
+        
+        $grouplist2=groupdbfielddetect ($prdbdata,6);// set IP as field
+        $groupdbthisname="ipfilter";// in future - add this variable to f
+        groupdbprint ($grouplist2,"IP",$prdbdata,$tbl,$ipfilter);// IP CFG OPT FUTURE groupdbfielddetect
+//        ..print_r ($grouplist);        print_r ($grouplist2);
 	submitkey ("write","SELECT");
 	if ($prauth[$ADM][2]) submitkey ("live","LIVEMOD");echo "*";
 	if ($live) echo "in future release!";
@@ -60,10 +67,14 @@ if ($pr[37]) {// analog in writefile
     <input type=hidden name=printlimit value=<?=$printlimit; ?>></input>
     <input type=hidden name=field value=<?=$field; ?>></input>
     <input type=hidden name=groupdb value=<?=$groupdb; ?>></input>
+    <input type=hidden name=ipfilter value=<?=$ipfilter; ?>></input>
+    <input type=hidden name=page value=<?=0; ?>></input>
     <input type=hidden name=live value=<?=$live; ?>></input>
 		 <?
-	
-printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"tbl",cmsg("SELLINK"),$groupdb);
+
+        //if (($groupdb!=="Unsorted")or ($ipfilter!=="Unsorted")) зачем вообще это условие?
+ printlink ($prauth,$prdbdata,$ADM,$tbl,0,"tbl",cmsg("SELLINK"),$groupdb,$ipfilter,6);
+//if  printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"tbl",cmsg("SELLINK"),$ipfilter);
 submitkey ($write,"A_USRGO");
   } ;
  if (($adm==0)AND($deftbl==true)) { ?> 
@@ -79,7 +90,7 @@ echo "</form>";
 	if ($pr[11]) { echo "<br>".cmsg("GF_USRDIS_A_WARN"); }
     } else if ($pr[11]) { echo "<br>".cmsg("GF_USRDIS_U_WARN"); }
 	fclose ($desc);
-	
+	showshortlog ();
  print "$sd[2]";
 ?>
 

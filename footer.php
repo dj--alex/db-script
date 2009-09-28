@@ -1,5 +1,5 @@
 <!--startscript--><?php //help system link
-// 3.6.06 edition
+// 3.6.06 edition     if (!$trafeconom) $idadd=" id=\"".$name."\" ";
 global $pr,$dbstyle3en,$pgcnt,$pgcontent,$pgheader,$pgplevel,$languageprofile,$enrestmenu,$menuloaded;
 if (($enrestmenu)AND($menuloaded!==1)) if ((!$pr[54])AND($dbstyle3en)) {
 	require_once("_templates/bottom.php");
@@ -33,7 +33,13 @@ if (($prauth[$ADM][160]==true)) { //в будущем разделить??
   //}
 		echo "<h".$shriftsize.">";	echo "</html><!--endscript-->";
 if (($enrestmenu)AND(!$menuloaded)) echo "</div>";
-
+//только для тест версий - вывод надписи
+if (($codekey==7)OR($codekey==9)) {
+?><div id="menu" style="position:absolute; z-index:2; left: 10px; top: 16px;" ><h2><font color=red><bb>DEMO</bb></a></font></h2></div><?
+}
+if (($codekey==8)OR($codekey==10))  {
+?><div id="menu" style="position:absolute; z-index:2; left: 10px; top: 16px;" ><h2><font color=red><bb>TEST</bb></a></font></h2></div><?
+}
 
 
 

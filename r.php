@@ -56,7 +56,7 @@ $vID=cmddecode ($vID);
 //commands using help
 if ($cmd[1]==="help") {
 	if ($cmd[0]==="auth") { echo lprint ("CMDAUTHINF").""; exit; }
-	if ($cmd[0]==="status") { echo lprint ("CMDSTASUSINF").""; exit; }
+	
 	if ($cmd[0]==="open") { echo lprint ("CMDOPENINF").""; exit; }
 	if ($cmd[0]==="plevel") { echo lprint ("CMDPLEVELINF").""; exit; }
 	if ($cmd[0]==="pname") { echo lprint ("CMDPNAMEINF").""; exit; }
@@ -66,7 +66,7 @@ if ($cmd[1]==="help") {
 	if ($cmd[0]==="errors") { echo lprint ("CMDERRORINF").""; exit; }
 	if ($cmd[0]==="admin") { echo lprint ("CMDADMINF").""; exit; }
 	if ($cmd[0]==="ver") { echo lprint ("CMDVERINF").""; exit; }
-
+        if ($cmd[0]==="status") { echo lprint ("CMDSTASUSINF").""; exit; }
 
 
 }
@@ -101,7 +101,48 @@ if ($cmd[0]==="help") { if ($adm==1) {
 		if ($cmd[0]==="save") { lprint ("NOTIMPL"); exit; }
 		if ($cmd[0]==="edit") editstart () ;
 		if ($cmd[0]==="filemgr") filemgrstart () ;
-		if ($cmd[0]==="status") { lprint ("NOTIMPL");exit;}
+		if ($cmd[0]==="status") {
+                    echo "Status :: <br>";
+                    $srvcount=count($srvdata)-1;
+                    echo "Servers:$srvcount<br>";
+                    for ($a=1;$a<$srvcount;$a++) {
+                       //echo "hide passed!"; echo "ipat kolotit Server #".$srvdata[$a][0]."<br>";
+                        if ($srvdata[$a][8]) if (($srvdata[$a][7])<($prauth[$ADM][10]+1)) {
+                                   //     echo "plevel passed!<br>";ccука заклинило его на первой записи,урод.
+                                  $fp = @fsockopen ($srvdata[$a][1],$srvdata[$a][4],$error,$errstr,1);
+                                  $x="error=$error; rrstr=$errstr<br>";
+                               //..   echo "блджад!! $a";
+                                  if ($fp) { $online="Online";} else {$online="Offline";};
+                                  if ($prauth[$ADM][10]>0) $service=$srvdata[$a][4]; //only for stuff
+                              echo "#".$srvdata[$a][0]." Host: ".$srvdata[$a][1]." Service:".$service." (".$srvdata[$a][5].") State:".$online."<br>";
+
+                            }
+                            //	NOT USED $connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+                        
+                                //$a,"ID¦ServerIP¦Login¦Password¦Port¦DbType¦Info¦Plvl¦Hide".$addOSenter);
+                    }
+                    exit;}
+
+               if ($cmd[0]==="cmd") {
+                    echo "Command :: ".$cmd[1]."<br>";
+                    $cmcount=count($cmdata)-1;
+                    //echo "Servers:$cmcount<br>";
+                    for ($a=1;$a<$cmcount;$a++) {
+                       //echo "hide passed!"; echo "ipat kolotit Server #".$srvdata[$a][0]."<br>";
+                        if ($cmdata[$a][8]) if (($cmdata[$a][3])<($prauth[$ADM][10]+1)){
+                         //echo "bldjad ".$cmdata[$a][1]."===".$cmd[1]."<br>";;
+                         if ($cmdata[$a][1]===$cmd[1]) {
+                                 $command = "".$cmdata[$a][2]."";
+                               echo "now run : $command";
+                                $x= passthru($command,$output) ;
+                                //echo "x=";print_r ($x);
+                                //echo "output=";print_r ($output)
+                                } ;
+                            }
+                       //"ID¦Command¦Parameters¦PLVL¦Info¦ReqPage¦ReqData¦ReqAutorun¦P".$addOSenter);
+                    }
+                    exit;}
+
 
 
 		if (!isset ($mode)) {$mode=$m;}	//."&mode=".  -->  ."&m=".
@@ -136,11 +177,13 @@ if ($cmd[0]==="help") { if ($adm==1) {
 	<?
 	submitkey ("write","CF_USRS");
 	submitkey ("write","CF_DB");
-	//submitkey ("write","CF_ED");
+	submitkey ("write","CF_FIL");
 	submitkey ("write","CF_DWORD");
 	submitkey ("write","CF_PAGES");
 	submitkey ("write","CF_STYL");
 	submitkey ("write","CF_LSET");
+        submitkey ("write","CF_SRV");
+        if ($prauth[$ADM][42]) submitkey ("write","CF_CMD");
 	echo  "</form>";exit;
 		}
 
@@ -155,11 +198,13 @@ if ($cmd[0]==="help") { if ($adm==1) {
 			if ($cmd[0]=="phpinfo") {phpinfo ();exit;};
 			if ($cmd[0]=="gmdata") { $tbl=$cmd[0];$namebas=$tbl;};
 			if ($cmd[0]=="dbdata") {$tbl=$cmd[0];$namebas=$tbl;};
-			if ($cmd[0]=="editor") {$tbl=$cmd[0];$namebas=$tbl;};
+			if ($cmd[0]=="files") {$tbl=$cmd[0];$namebas=$tbl;};
 			if ($cmd[0]=="denywords") {$tbl=$cmd[0];$namebas=$tbl;};
 			if ($cmd[0]=="pages") {$tbl=$cmd[0];$namebas=$tbl;};// dalee chastx from libmysql
 			if ($cmd[0]=="styles") {$tbl=$cmd[0];$namebas=$tbl;};
 			if ($cmd[0]=="langset") {$tbl=$cmd[0];$namebas=$tbl;};// dalee chastx from libmysql
+                        if ($cmd[0]=="srvlist") {$tbl=$cmd[0];$namebas=$tbl;};// dalee chastx from libmysql
+                        if ($cmd[0]=="cmdlines") {$tbl=$cmd[0];$namebas=$tbl;};// dalee chastx from libmysql
     		if ($tbl===$cmd[0]) $vID="";
     		
     		if ($cmd[0]=="J3QQ4-H7H2V-2HCH4-M3HK8-6M8VW") {window ("","");echo "Many years ago exist a windows 98se operating system...";closewindow();exit;}
@@ -256,7 +301,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 		if ($vID===".ver") {
 			echo lprint ("VCORE").": ".$verprogram."<br>";
 			echo lprint ("VCONF").": ".$pr[1]."<br>";
-
+                              //echo "env data<br><br>";print_r ($_SERVER["argc"]);                              print_r ($_ENV);                              echo "srv data<br><br>";                              print_r ($_SERVER);                              //print_r ($_SYSTEM);
 			if ($pr[36]=="on") { lprint ("AUTH_OLDCOREON")."<br>"; };
 			$path=getcwd ()."/";
 			$mask="*.php";
@@ -268,14 +313,14 @@ if ($cmd[0]==="help") { if ($adm==1) {
 				$modules[]=searchplus ($path.$files[$a][0],"NOPRINT","ver&(c)");
 			}
 			unset ($files);
-	echo "";if ($live) echo "<font color=green>live</font>!!";
+	echo "";if ($live) echo "<font color=green id=xfnt>live</font>!!";
 			// а теперь убираем части програмного кода :)
 			echo "<br>";
 			if (strlen ($registeredto)>0) echo lprint ("REGTO")." $registeredto<br> ".cmsg ("ADM_@")." $adminmail<br>";
 			echo lprint ("YVDBS").": $yourvrs<br>";
 			if ($nokeys!=1) {
 				if (($daysleft!=="unlimited")AND(!($daysleft<1))) echo lprint ("DAYREM").": $daysleft<br><br>";
-				if (($daysleft!=="unlimited")AND($daysleft<1)) echo "<font color=red>".cmsg ("DBSEXPIRE")."!</font><br>";		} else { lprint ("KEY_NO");}
+				if (($daysleft!=="unlimited")AND($daysleft<1)) echo "<font color=red id=errfnt>".cmsg ("DBSEXPIRE")."!</font><br>";		} else { lprint ("KEY_NO");}
 				lprint ($comm);
 				echo "<br><br>";
 				echo lprint ("VERINSIDESCRIPTS").":<br>";
@@ -316,7 +361,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 //<input type=hidden name=colfind value=<?=$colfind; 
 ?> <form action="r.php" method=post>
 	<? 
-echo "!";if ($live) echo "<font color=green>live</font>!";
+echo "!";if ($live) echo "<font color=green id=xfnt>live</font>!";
 		hidekey ("intf","master-mode");
 		hidekey ("vID",$vID);//vid1 fixed   lost selection during db select  CFG OPT FUT 
 	hidekey ("vID2",$vID2);
@@ -333,11 +378,12 @@ echo "!";if ($live) echo "<font color=green>live</font>!";
 	hidekey ("kol",$kol);
 	hidekey ("live",$live);
 	hidekey ("groupdb",$groupdb);
-	if (!$pr[7])  print lprint ("CONNLINK:")."<font color=green>".$prdbdata[$tbl][1]."</font>"; // perekl zapr
+        hidekey ("ipfilter",$ipfilter);
+	if (!$pr[7])  print lprint ("CONNLINK:")."<font color=green id=xfnt>".$prdbdata[$tbl][1]."</font>"; // perekl zapr
 
 	if ((($adm==1)OR($deftbl==false))AND($pr[7])) { //перекл разр
 		$writefile=0; // пришлось добавить такую вот затычку ,без нее и список думает что это редактор :)
-		printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"tbl",lprint ("CONNLINK:"),$groupdb);// master mode menu
+		printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"tbl",lprint ("CONNLINK:"),$groupdb,$ipfilter,6);// master mode menu
 		If ($prauth[$ADM][3]==true) {$writefile=1;} ;//разрешение показывать кнопку редактирования 
 		if ($ADM<1) {$adm=0;$writefile=0;		}
 		submitkey ("write","A_USRGO");
@@ -379,7 +425,7 @@ echo "!";if ($live) echo "<font color=green>live</font>!";
 
 			if (($mode<>2)AND($mode<>4)AND(strlen($vID)<$sd[13]))
 			{
-				print "<b>Ошибка ввода</b><br>";
+				print "<bb>Ошибка ввода</bb><br>";
 				echo "Недостаточно информации для поиска. Необходимо написать как минимум $sd[13] букв.";echo "<form  action=disable method=post>"; hidekey ("go","Назад");echo "</form> ";
 				exit (1);
 			}
@@ -410,7 +456,7 @@ if ($tbl) if (($usemysql!=="mysql")AND($usemysql!=="fdb")) msgexiterror ("SCP",$
 			//MYSQLMODESTART
 //вывод комментариев, для них не требуются права
 if (($cm==1)AND($mode==0)) {
-print "<html><b>".cmsg ("COMM").":</b><br>";
+print "<html><bb>".cmsg ("COMM").":</bb><br>";
 // вообшще вместо этого безобразия надо бы сделать просто JS ку   //print $d ;//method2
 $comfile="_local/scrcomm/".$scrdir."/".$vID.".txt";
 @ $wr = fopen ($comfile,"r");
@@ -478,7 +524,7 @@ if ($vID=="") if (($go=="Обзор")OR($mode==5)OR($mode==9)OR($mode==4)) { echo "";
 			if ($multisearch==1) {
 				for ($aa=0;$aa<$mvcnt;$aa++)  {$vID=$mv[$aa];
 				$vID= trim ($vID);
-				echo "<font color=magenta><b>№ ".($aa+1)." - $mv[$aa] <br></font></b>";
+				echo "<font color=magenta><bb>№ ".($aa+1)." - $mv[$aa] <br></font></bb>";
 				search () ;}
 			}
 			// multisearch end
@@ -507,7 +553,7 @@ function search ()
 
 				//процедура поиска по имени - mode 1 - SQL
 				if (($mode == 1)AND($prdbdata[$tbl][12]=="mysql")) {
-					@$connect = mysql_connect ($prdbdata[$tbl][6], $sd[14] , $sd[17]);
+					@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
 					@mysql_select_db ($prdbdata[$tbl][9], $connect);
 					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 					global $query,$connect;
@@ -520,7 +566,7 @@ function search ()
 				}
 				//процедура поиска по коду  - mode 2 - SQL
 				if (($mode == 2)AND($prdbdata[$tbl][12]=="mysql")) {
-					$connect = mysql_connect ($prdbdata[$tbl][6], $sd[14] , $sd[17]);
+					$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
 					mysql_select_db ($prdbdata[$tbl][9], $connect);
 					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 					global $query,$connect;
@@ -538,7 +584,7 @@ function search ()
 
 				//mode 3 процедура SQL поиска по категории
 				if (($mode == 3)AND($prdbdata[$tbl][12]=="mysql")) {
-					$connect = mysql_connect ($prdbdata[$tbl][6], $sd[14] , $sd[17]);
+					$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
 					mysql_select_db ($prdbdata[$tbl][9], $connect);
 					if ($categorymode==false) {   msgexiterror ("nocategory",$mode,"disable");  }
 					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
@@ -554,7 +600,7 @@ function search ()
 
 
 				if ($mode == 9) {
-					$connect = mysql_connect ($prdbdata[$tbl][6], $sd[14] , $sd[17]);
+					$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
 					mysql_select_db ($prdbdata[$tbl][9], $connect);
 					global $fullfield;
 					if ($categorymode==false) {   msgexiterror ("nocategory",$mode,"disable");  }
@@ -618,7 +664,7 @@ echo " </form> ";
 
 				//mode 6 процедура SQL поиска по выбранной колонке
 				if (($mode == 6)AND($prdbdata[$tbl][12]=="mysql")) {
-					$connect = mysql_connect ($prdbdata[$tbl][6], $sd[14] , $sd[17]);
+					$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
 					global $categorymode,$mode;
 					global $mode6,$m6field,$m6count;
 					global $mycols,$mycol,$del,$res16,$presettedmode,$selectedfield,$fields;
@@ -860,11 +906,11 @@ hidekey ("kol",$kol);
 								if (($findid1!==false)OR($found==1))  {
 									$scrnum=$dbc[$scrcolumn];$found=1;//$findrecords++; # возможно ошибка 2-раза
 									$data=wordwrap ($dbc[$b],82,"\n");
-									if (($findid1!==false)AND($b==0)) { echo "<b><cite>$data</cite></b></tr>"; continue; }
-									//if (($findid2!==false)AND($b==0)) { echo "<b><cite>$data</cite></b></tr>"; continue; }
+									if (($findid1!==false)AND($b==0)) { echo "<bb><cite>$data</cite></bb></tr>"; continue; }
+									//if (($findid2!==false)AND($b==0)) { echo "<bb><cite>$data</cite></bb></tr>"; continue; }
 									if (($hostmysqlselect==1)&&($b==0)) { echo "</tr>" ;continue ; }
 									if ($data=="") { echo "</tr>" ;continue ; }
-									echo "<td><b>$z[$b]</b>: "."$data<br></td><td>";//$findrecords++;
+									echo "<td><bb>$z[$b]</bb>: "."$data<br></td><td>";//$findrecords++;
 									if ($b==1) screen ();
 									echo "</td></tr>";
 									if ($b==($k-1)) { echo "<br>";$findrecords++; }
@@ -872,7 +918,7 @@ hidekey ("kol",$kol);
 
 								if (($vID=="!101")AND($content1!=="")AND($content1int==0))
 								{
-									$findrecords++;echo "<b><i>".strtoupper($content1)."</i></b>";?>				<form action="r.php" method=post><? 	hidekey ("go",$content1);
+									$findrecords++;echo "<bb><ii>".strtoupper($content1)."</ii></bb>";?>				<form action="r.php" method=post><? 	hidekey ("go",$content1);
 									hidekey ("vID",$content1); hidekey ("mode",3);
 									hidekey ("adm",$adm);	hidekey ("commode",$commode);				hidekey ("tbl",$tbl); echo "</form>" ; break;
 								} //!101
@@ -884,7 +930,7 @@ hidekey ("kol",$kol);
 //DELETED
 
 		if ((($findrecords===0)AND($adm==1)) OR (($findrecords===0)AND($pr[3]==1))) {
-		print "<font color=red><b>Не найдено</b><br></font>";
+		print "<font color=red id=errfnt><bb>Не найдено</bb><br></font>";
 		}
 		// restart engine m3с1
 				fclose ($f);if ($multisearch==0) {echo "Всего значений : $findrecords<br><br> ";exit (1); }
@@ -933,17 +979,17 @@ hidekey ("kol",$kol);
 							if (($findid1!==false)OR($found==1)) {
 								$scrnum=$dbc[$scrcolumn];$found=1;//$findrecords++;
 								$data=wordwrap ($dbc[$b],82,"\n");
-								if (($findid1!==false)AND($b==0)) { echo "<b><cite>$data</cite></b></tr>"; continue; }
+								if (($findid1!==false)AND($b==0)) { echo "<bb><cite>$data</cite></bb></tr>"; continue; }
 								if (($hostmysqlselect==1)&&($b==0)) { echo "</tr>" ;continue ; }
 								if ($data=="") { echo "</tr>" ;continue ; }
-								echo "<td><b>$z[$b]</b>: "."$data<br></td><td>";
+								echo "<td><bb>$z[$b]</bb>: "."$data<br></td><td>";
 								if ($b==1) screen ();
 								echo "</td></tr>";
 								if ($b==($k-1)) { echo "<br>";$findrecords++; }
 
 							}
 							if (($vID=="!101")AND($content1!=="")) {
-								$findrecords++;echo "<b><i>".strtoupper($content1)."</i></b>";?>				<form action="r.php" method=post> <?
+								$findrecords++;echo "<bb><ii>".strtoupper($content1)."</ii></bb>";?>				<form action="r.php" method=post> <?
 		hidekey ("vID",$content1); hidekey ("mode",3);
 		hidekey ("adm",$adm);	hidekey ("commode",$commode);
 		hidekey ("tbl",$tbl);	hidekey ("go",$content1);
@@ -955,7 +1001,7 @@ hidekey ("kol",$kol);
 							if ($categorymode===3) {
 
 								if ((($findrecords===0)AND($adm==1)) OR (($findrecords===0)AND($pr[3]==1))) {
-									print "<font color=red><b>Не найдено</b><br></font>";
+									print "<font color=red id=errfnt><bb>Не найдено</bb><br></font>";
 									print "Среди категорий не удалось найти искомую группу.<br>Поискать среди наименований?";
 		?>
 				<form action="r.php" method=post><?
@@ -971,10 +1017,10 @@ hidekey ("kol",$kol);
 								if (($findid2!==false)OR($found==2)) {
 									$scrnum=$dbc[$scrcolumn];$found=2;
 									$data=wordwrap ($dbc[$b],82,"\n");
-									if (($findid1!==false)AND($b==0)) { echo "<b><cite>$data</cite></b></tr>"; continue; }
+									if (($findid1!==false)AND($b==0)) { echo "<bb><cite>$data</cite></bb></tr>"; continue; }
 									if (($hostmysqlselect==1)&&($b==0)) { echo "</tr>" ;continue ; }
 									if ($data=="") { echo "</tr>" ;continue ; }
-									echo "<td><b>$z[$b]</b>: "."$data<br></td><td>";
+									echo "<td><bb>$z[$b]</bb>: "."$data<br></td><td>";
 									if ($b==1) screen ();
 									echo "</td></tr>";
 									if ($b==($k-1)) { echo "<br>"; $findrecords++;}
@@ -983,7 +1029,7 @@ hidekey ("kol",$kol);
 						}
 				}
 				if ((($findrecords===0)AND($adm==1)) OR (($findrecords===0)AND($pr[3]==1))) {
-					print "<font color=red><b>Не найдено</b><br></font>";
+					print "<font color=red id=errfnt><bb>Не найдено</bb><br></font>";
 						}
 
 
@@ -1008,7 +1054,7 @@ hidekey ("kol",$kol);
 				global $query,$connect;
 				global $mzdata,$mycols,$myrow;
 				global $findrecords,$scrcolumn;
-				$connect = mysql_connect ($prdbdata[$tbl][6], $sd[14] , $sd[17]);
+				$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
 				mysql_select_db ($prdbdata[$tbl][9], $connect);
 				$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 				$query = "SELECT * FROM `".$prdbdata[$tbl][5]."`";
@@ -1020,7 +1066,7 @@ hidekey ("kol",$kol);
 			
 			
 			if (($mode == 4)AND($prdbdata[$tbl][12]=="fdb"))
-			{ echo "<u>Режим отображения всех данных.</u>";	$multisearch=0;
+			{ echo "<uu>Режим отображения всех данных.</uu>";	$multisearch=0;
 			$data=readdescripters ();$f=$data[4];
 			//$f=$data[4];  ++$enabledataconnreturn=1; ошибка init 495
 			for ($a=0;$dbc=xfgetcsv ($f,512,"¦");$a++) {
@@ -1106,7 +1152,7 @@ hidekey ("kol",$kol);
 						echo "<br>";
 						$comm=@file_get_contents ($comfile,"r");
 						$aaa=strpos ($comm, $vID);
-						if ($aaa!==false) echo "<font color=gray>".$filescb[$aa]." содержит </font><br>".$comm."<br><br>";
+						if ($aaa!==false) echo "<font color=gray id=dfnt>".$filescb[$aa]." содержит </font><br>".$comm."<br><br>";
 					}
 
 				}
