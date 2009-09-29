@@ -1,23 +1,30 @@
 html,
+/*плашки по бокам*/
 body  {
 	margin: 0;
 	padding: 0;
 	background: #333;
+
 }
 body  {
 	background: #333;
 	font: 100.01% Arial, sans-serif;
-}
+    }
+    /*влияет на навигацию */
 a  {
 	text-decoration: none;
+
 }
+/* портит минименю*/
 imgxxx  {
 	border: none;
 	display: block;
+    
 }
 h1  {
 	margin: 15px 0;
 	font: bold 26px/30px Arial, sans-serif;
+ 
 }
 h3  {
 	margin: 15px 0 -15px 0;
@@ -36,10 +43,12 @@ h6  {
 }
 p  {
 	margin: 15px 0;
+    
 }
 ol  {
 	margin: 20px 0;
 	padding: 0 0 0 70px;
+    
 }
 ol li  {
 	padding: 5px 0;
@@ -63,18 +72,20 @@ blockquote  {
 	width: 920px;
 	margin: 0 auto;
 	position: relative;
-	background: url('../images/container_bg2.png');
+
 }
 /* header ------------------------------------------------------------------- */
 #header  {
 	height: 83px;
 		background: #333;
+        
 }
 /* logo */
 #logo  {
 	float: left;
 	margin: 0 13px;
 	display: inline;
+
 }
 /* drop layer */
 #dropform  {
@@ -84,12 +95,13 @@ blockquote  {
 	right: 110px;
 	background: #033669 url('../images/bg_dropform.gif') repeat-x 0 100%;
 	width: 140px;
-	padding: 5px 20px;
+    padding: 5px 20px;
 	font: 75%/150% Arial, sans-serif;
 }
 #dropform form  {
 	margin: 0;
 	padding: 0;
+
 }
 #dropform label  {
 	display: block;
@@ -119,7 +131,7 @@ blockquote  {
 	display: block;
 }
 
-/* top navigation */
+/* top navigation  login*/
 #top-navigation  {
 	margin: 0;
 	padding: 0 45px;
@@ -165,6 +177,7 @@ blockquote  {
 	background: #2E5D8B url('../images/bg_navigation.gif') repeat-x 0 100%;
 	position: relative;
 }
+/*декорация меню */
 #navigation a  {
 	padding: 5px 15px;
 	float: left;
@@ -248,12 +261,12 @@ blockquote  {
 	clear: both;
 	background: #<?=$rgbfon ?>;
 	color: #<?=$rgbtext ?>;
-}
+    }
 .doors  {
 	margin: 0 8px;
 	background: url('../images/grad.gif') repeat-x;
 	position: relative;
-}
+    }
 .door-left  {
 	background: url('../images/leftdoor.gif') no-repeat;
 }
@@ -316,7 +329,7 @@ blockquote  {
 .hd  {
 	margin: 10px auto;
 	padding-right: 10px;
-}
+    }
 #subscribe  {
 	position: absolute;
 	top: 204px;
@@ -324,7 +337,7 @@ blockquote  {
 	z-index: 80;
 	background: #D7B062 url('../images/bg_subscribe.gif') repeat-x;
 	font: bold 75%/180% Arial, sans-serif;
-}
+   }
 #subscribe a  {
 	padding: 4px 8px 4px 25px;
 	color: #FFF;
@@ -375,7 +388,6 @@ blockquote  {
 	background: #369 url('../images/bg_footer.gif') repeat-x 0 100%;
 	width: 100%;
 	overflow: hidden;
-	
 }
 .paypal  {
 	float: left;
@@ -539,7 +551,7 @@ blockquote  {
 	}
 
 /* Добиваем до нормального вида злосчастную таблицу Изменить в DBmanager */
-#dbmanager_edit {
+#dbmgr_edit {
 	margin-left:14px;
 	margin-top:13px;
 	margin-bottom:13px;
@@ -547,16 +559,16 @@ blockquote  {
 	border-style:dashed;
 	border-color: gray;
 	}
-table#dbmanager_edit td {
+table#dbmgr_edit td {
     border:0;
 	}
-table#dbmanager_edit tr {
+table#dbmgr_edit tr {
     border:0;
 	padding-left:2px;
 	font-size:14px;
 	background: url('../images/bg_search.gif') repeat-x;
 	}
-#dbmanager_textarea {
+#dbmgr_txta {
 	height: 17px;
 	padding: 0 0 0 0 ;
 	border: 1px;
@@ -567,7 +579,7 @@ table#dbmanager_edit tr {
 	}
 	
 textarea {
-	height: 17px;
+	<!--height: 17px; BUG FIXED -->
 	padding: 0 0 0 0 ;
 	border: 1px;
 	border-style: dotted;
@@ -577,7 +589,7 @@ textarea {
 	background-position:bottom;
 	opacity: 0.8;
 	}
-#dbmanager_text{
+#dbmgr_txt{
 	height: 17px;
 	padding: 0 0 0 0 ;
 	margin-left:2px;
@@ -593,7 +605,7 @@ input[type=submit] {
 	margin-left:2px;
 	border: 0px;
 	background: url('../images/button_alt.gif') repeat-x  !important;
-	opacity: 0.7
+	opacity: 0.8
 	}
 
 input[type="submit"]:hover {
@@ -643,7 +655,7 @@ input[name=userfile] {
 	}
 	
 input[name=go],input[name=go]:hover  {
-	margin-left: 584px;
+	xmargin-left: 584px;
 	padding: 0 0 0 0 ;
 	}
 	
