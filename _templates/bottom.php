@@ -6,10 +6,10 @@
 		<!-- Нажняя часть -->*/?>
 		<div id="bottom">
 			<ul class="second-navigation">
-				<li><a href="http://dj.chg.su/dbscript" id="off_site"><?=cmsg (DEVSIT)?></a></li>
-				<li><a href="http://dj.chg.su/dbscript/DBSCRIPTinstruction.doc" id="sn_tutorials"><?=cmsg (MANUAL)?></a></li>
-				<li><a href="r.php?viewid=.ver&base=0" id="addons_download"><?=cmsg (VERS)?></a></li>
-				<li><a href="mailto:dj--alex@ya.ru" id="sn_signup"><?if ($codekey>6) lprint (REGI_DBS);?></a></li>
+				<li><a href="http://dj.chg.su/dbscript" id="off_site"><?=cmsg ("DEVSIT")?></a></li>
+				<li><a href="http://dj.chg.su/dbscript/DBSCRIPTinstruction.doc" id="sn_tutorials"><?=cmsg ("MANUAL")?></a></li>
+				<li><a href="r.php?viewid=.ver&base=0" id="addons_download"><?=cmsg ("VERS")?></a></li>
+				<li><a href="mailto:dj--alex@ya.ru" id="sn_signup"><?if ($codekey>6) lprint ("REGI_DBS");?></a></li>
 			</ul>
 			<div class="txt">
 		<? 
@@ -23,11 +23,12 @@
 		?>
 			</div>
 			<div class="contact">
-				<h6><?=cmsg (CONINF)?></h6>
+				<h6><?=cmsg ("CONINF")?></h6>
 				<ul>
-					<li><?=cmsg (MAINDEV)?>: <a href="mailto:dj--alex@ya.ru?subject=DBscript">dj--alex</a></li>
+					<li><?=cmsg ("MAINDEV")?>: <a href="mailto:dj--alex@ya.ru?subject=DBscript">dj--alex</a></li>
 					
-					<li><?=cmsg (DESIGN)?>: <a href="mailto:DeusModus@mail.ru?subject=DBscriptDESIGN">DeusModus</a></li>
+					<li><?=cmsg ("DESIGN")?>: <a href="mailto:DeusModus@mail.ru?subject=DBscriptDESIGN">DeusModus</a></li>
+                    	<li><?=cmsg ("ICQSUPPORT")?>: <a href="icq:492-386-106">Shkent</a></li>
 				</ul>
 			</div>
 		</div>
@@ -58,6 +59,7 @@ for ($a=0;$a<$pgcnt;$a++) {
     /*<!-- конец навигации -->*/ ?>
 	</div>
                         <div class="service">Service provided by <a class="service" href="#">Dj--alex</a></div>
+                        
 </body>
 </html>
-                
+
