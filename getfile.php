@@ -1,4 +1,14 @@
-<? 
+<?
+
+
+/*  кусок из середины
+$stroka="<div id=23> Я люблю мангос, но </nobr> иногда косячу</br>";
+$a1=strpos ($stroka,"</nobr>")+7;  $a2=strpos($stroka,"</br>") ;
+$res=substr ($stroka,$a1,$a2);
+echo $res;
+exit;
+*/
+
 //SITE UNKNOWN  PROGRAMM CREATED BY DJ--ALEX
  	global $vergetfile;	
 $vergetfile="Search v4.0.97 (c) dj--alex";

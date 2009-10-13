@@ -142,10 +142,10 @@ $categorymode=$prdbdata[$tbl][7];	$scrcolumn=$prdbdata[$tbl][8];
 $tblmysqlselect=$prdbdata[$tbl][9];	
 $md1column=$prdbdata[$tbl][10];		if ($md1column==="") $md1column=1 ;	//reset to default
 $md2column=$prdbdata[$tbl][11];		if ($md2column==="") $md2column=0;	//reset to default
-$usemysql=$prdbdata[$tbl][12];		$writeright=$prdbdata[$tbl][13];
+$dbtype=$prdbdata[$tbl][12];		$writeright=$prdbdata[$tbl][13];
 $needrights=$prdbdata[$tbl][14];		$virtualid=$prdbdata[$tbl][15];
 $reserved16=$prdbdata[$tbl][16];	    $res16=$reserved16;$reserved17=$prdbdata[$tbl][17];
-
+$dbtype=$prdbdata[$tbl][12];
 $floodlimit=$sd[12];
 
 
@@ -168,7 +168,7 @@ if ($prauth[$ADM][2]) {  //модуль совместимости с conf файлами.
 	if ($namebas=="") { $namebas=$tbl;$filbas=$tbl.".cfg";$cfgmod=1;};
 }
 
-if ($tbl) if (($prdbdata[$tbl][12]!=="mysql")AND($prdbdata[$tbl][12]!=="fdb")) msgexiterror ("SCP","Alias=$tbl,as =".$prdbdata[$tbl][12],"admin.php");
+if ($tbl) if (($prdbdata[$tbl][12]!=="mysql")AND($prdbdata[$tbl][12]!=="fdb")AND($prdbdata[$tbl][12]!=="pg")AND($prdbdata[$tbl][12]!=="ibase")) msgexiterror ("SCP","Alias=$tbl,as =".$prdbdata[$tbl][12],"admin.php");
 if ($cfgmod==2) msgexiterror ("nologsedit",$namebas,"w.php");
 
 ?>
@@ -193,7 +193,7 @@ if (($cfgmod<1)AND($prauth[$ADM][2])) {
 
 
 
-if ($namebas==false) {echo "<br><font color=red id=errfnt>";lprint ("WF_NOLNK");echo "</font><br>";$menudisable=1;} else {echo "<br>";lprint ("CONNLINK:");echo "<font color=green id=xfnt> $namebas ($tbl) [$tablemysqlselect'$tblmysqlselect server $hostmysqlselect]<br></font>";}
+if ($namebas==false) {echo "<br><font color=red id=errfnt>";lprint ("WF_NOLNK");echo "</font><br>";$menudisable=1;} else {echo "<br>";lprint ("CONNLINK:");echo "<font color=green id=xfnt> $namebas ($tbl) [$tablemysqlselect'$tblmysqlselect ".$prdbdata[$tbl][12]." server $hostmysqlselect]<br></font>";}
 print "<input type=hidden name=tbl value=$tbl>";
 	hidekey ("live",$live); 
 if ($menudisable==0) {
@@ -208,9 +208,9 @@ if ($prauth[$ADM][6]) { submitkey ("write","KEY_HEAD");}; //CFG OPT FUTURE!
 if ($prauth[$ADM][10]) { submitkey ("write","KEY_AN"); }; 
 if ($prauth[$ADM][35]) { submitkey ("write","KEY_MASEXC"); };  //CFG OPT FUTURE!
 if (($prauth[$ADM][35])AND(!$cfgmod)) { submitkey ("write","KEY_MASCPY"); };  //CFG OPT FUTURE!
-if (($prauth[$ADM][35])AND(!$cfgmod)and($prdbdata[$tbl][12]=="mysql")) { submitkey ("write","KEY_SHOWCODE"); };  //CFG OPT FUTURE!
-if (($prauth[$ADM][34])and($prdbdata[$tbl][12]=="mysql")) { submitkey ("write","KEY_EXECUTE"); };  //CFG OPT FUTURE!
-if (($prauth[$ADM][43])and($prdbdata[$tbl][12]=="mysql")) { submitkey ("write","BACKUPS"); };  //CFG OPT FUTURE!
+if (($prauth[$ADM][35])AND(!$cfgmod)and($prdbdata[$tbl][12]!="fdb")) { submitkey ("write","KEY_SHOWCODE"); };  //CFG OPT FUTURE!
+if (($prauth[$ADM][34])and($prdbdata[$tbl][12]!="fdb")) { submitkey ("write","KEY_EXECUTE"); };  //CFG OPT FUTURE!
+if (($prauth[$ADM][43])and($prdbdata[$tbl][12]!="fdb")) { submitkey ("write","BACKUPS"); };  //CFG OPT FUTURE!
 
 
 }
@@ -289,7 +289,7 @@ if (($prauth[$ADM][18]>0)AND($noaddmode==1))
 $mznumb=array ();lprint ("WF_CMPALL"); echo "<br>";
 // ВСТРОИТЬ, МОДЕРНИЗИРОВАТЬ  	$query=$query.") AND `".$mycol[$md2column]."` NOT LIKE '%".$vID."%'";
 // TEST ZONE
-	//SQL$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+	//SQL$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$res16=$prdbdata[$tbl][16];// Лимит колонок
 	 global $presettedmode,$categorymode,$m6field,$m6count,$mode,$fields;//декодирование строки
 	global $selectedfield,$multisearch;	global $categorymode,$mode;
@@ -309,7 +309,7 @@ decodecols ();
 			echo "DEBUG CSV counter $mzcnt<br>";
 //			echo "DEBUG CSV massive 0 elementorig ".$mzdata[0]." selected==".$mode6[0]." selected number ==".$mznumb[0]."<br><br>"; 
 $myrow=array ();$selected=array ();//added
-//SQL	$result = mysql_query ($query, $connect);
+//SQL	$result = dbs_query ($query,$connect,$dbtype);
 	// END TEST
 for ($aaa=0;$aaa<count ($mode6);$aaa++)	{ $fndcolumn=$mznumb[$aaa];
 //echo "mz $mzdata[0]  fnd $fndcolumn<br>";
@@ -395,11 +395,11 @@ if ($write==cmsg ("KEY_S_UNDO")) {
            $query=str_replace ("<cr_lf>","\n",$query);//enabling change \n to <cr_lf>  reroll
            $query=str_replace ("<R>","\r",$query);//enabling change \n to <cr_lf>  reroll
 	echo "==>$query<br>";
-	$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+	$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	echo "Select db: ".$prdbdata[$tbl][9]."<br>";
-	mysql_select_db ($prdbdata[$tbl][9], $connect);
+	dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	executesql ($query,$connect,1);
-	$a=sqlerr ();
+	$a=dbserr ();
 	if ($a) { lprint (NO_DB_QUE) ;}
 	$action="KEY_S_UNDO db:".$prdbdata[$tbl][9]." tab".$prdbdata[$tbl][6]." cannot request data ";logwrite ($action);
 }
@@ -924,9 +924,9 @@ checkbox ($cmpifchg,"cmpifchg") ; echo "<font color=gray id=dfnt>".cmsg ("WF_CMP
 //модуль запуска 
 //сделать возможно одновременную или раздельную правки?
 //SQL HEADER
-if (($write==cmsg("KEY_HEAD"))AND ($prdbdata[$tbl][12]=="mysql")) {
+if (($write==cmsg("KEY_HEAD"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	 	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+	 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	 	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
  if ($data==-1) exit; 
 	 echo "<br>".cmsg ("WF_HDSEL")."<br>";
@@ -935,15 +935,16 @@ if (($write==cmsg("KEY_HEAD"))AND ($prdbdata[$tbl][12]=="mysql")) {
  	 submitkey ("write","WF_STRC_SQL"); 	 
  	 submitkey ("write","WF_STRC_DAT");echo "<br><br>";
  	 submitkey ("write","CFG_COPY");submitkey ("write","WF_NEW_TAB");
+         submitkey ("write","WF_SHOW_TAB_CRT");
  	  
 }
 
 
 //модуль запуска 
 //сделать возможно одновременную или раздельную правки?
-if (($write==cmsg("BACKUPS"))AND ($prdbdata[$tbl][12]=="mysql")) {
+if (($write==cmsg("BACKUPS"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	 	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+	 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	 infrestsql($connect,$prdbdata,$tbl);
 
 	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
@@ -973,25 +974,25 @@ if (($write==cmsg("BACKUPS"))AND ($prdbdata[$tbl][12]=="mysql")) {
 
 
 // RESTORING FROM SAVED DATABASE IN OTHER DATABASE&&**
-if (($write==cmsg("WF_BCK_UNARCH"))AND ($prdbdata[$tbl][12]=="mysql")) {
-@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+if (($write==cmsg("WF_BCK_UNARCH"))AND ($prdbdata[$tbl][12]!="fdb")) {
+@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
 lprint (W_BCK_UNARCH_TIP);
 $separator="¦";lprint ("GEN_DB_SEL");
 $cmd="SHOW DATABASES";
-$a=mysql_query ($cmd,$connect);
+$a=dbs_query ($cmd,$connect,$dbtype);;
 if ($a==false) echo "connection die";
 echo "<br>Source:<select name=source>";
-while ($result=mysql_fetch_row ($a)) {
+while ($result=dbs_fetch_row ($a,$dbtype)) {
 	if ($result[0]=="information_schema") continue;
 	if ($result[0]=="mysql") continue;
 	if (strpos ($result[0],"backup")!==FALSE) echo "<option>".$result[0]."";
 }
 echo "</select>";
-echo"<br>Target:";$a=mysql_query ($cmd,$connect);
+echo"<br>Target:";$a=dbs_query ($cmd,$connect,$dbtype);;
 if ($a==false) echo "connection die";
 echo "<select name=dest>";
-while ($result=mysql_fetch_row ($a)) {
+while ($result=dbs_fetch_row ($a,$dbtype)) {
 	if ($result[0]=="information_schema") continue;
 	if ($result[0]=="mysql") continue;
 	echo "<option>".$result[0]."";
@@ -1009,7 +1010,7 @@ if ($write=="WF_BCK_UNARCH") {
 	echo "Restoring from -live- backup <br>";
 set_time_limit(0);// CFG OPT FUTURE?
 //echo $sd[14].$sd[17];
-$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 if ($newdb) $dest=$newdb;
 	copydatabase ($source,$dest,$connect);
 	$action="WF_BCK_UNARCH ".$source.".".$dest.".".$connect." ";logwrite ($action);		
@@ -1018,9 +1019,9 @@ if ($newdb) $dest=$newdb;
 
 
 // Запускной модуль создания бэкапа
-if (($write==cmsg("WF_BCK_ARCH"))AND ($prdbdata[$tbl][12]=="mysql")) {
+if (($write==cmsg("WF_BCK_ARCH"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	 	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+	 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$backupdbname="backup"; // backup+DATABASEname-opt+data-opt+text-opt;
 	if ($addname) $backupdbname.=$prdbdata[$tbl][9]."_";
 	if ($adddata) $backupdbname.=date ("dmY")."_";
@@ -1036,9 +1037,9 @@ submitkey ("start","START");
 
 // модуль создания живого бэкапа
 //CREATING DUMP AT SQL SIDE AS COPY SQL DATABASE
-if (($start)AND($backupdbname)AND ($prdbdata[$tbl][12]=="mysql")) {echo "Создается -живой- бэкап $backupdbname...<br>";
+if (($start)AND($backupdbname)AND ($prdbdata[$tbl][12]!="fdb")) {echo "Создается -живой- бэкап $backupdbname...<br>";
 set_time_limit(0);// CFG OPT FUTURE?
-@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	copydatabase ($prdbdata[$tbl][9],$backupdbname,$connect);
  $action="DB_COPY ".$prdbdata[$tbl][9].".".$backupdbname.".".$connect." ";logwrite ($action);		
 }
@@ -1046,11 +1047,11 @@ set_time_limit(0);// CFG OPT FUTURE?
 //copy full tables   копирование полный таблиц
 //#########################################################################
 /// /CREATING DUMP AND EXECUTING AT REMOTE SERVER   NA - NOT USED TMP
-if (($write==cmsg("WF_BCK_TRANS"))AND ($prdbdata[$tbl][12]=="mysql")) {
-	@$connect2 = mysql_connect ($mysqlserver2, $sd[14] , $sd[17]);	
+if (($write==cmsg("WF_BCK_TRANS"))AND ($prdbdata[$tbl][12]!="fdb")) {
+	@$connect2 = dbs_connect ($mysqlserver2,$sd[14],$sd[17],$dbtype);
 	 set_time_limit(0);// CFG OPT FUTURE?
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	 	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+	 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$dumpdbname="backup"; // backup+DATABASEname-opt+data-opt+text-opts;
 	if ($addname) $dumpdbname.=$prdbdata[$tbl][9]."_";
 	if ($adddata) $dumpdbname.=date ("dmY")."_";
@@ -1074,22 +1075,22 @@ submitkey ("start","SQL_REM_START");
 
 //TRANSPORT TO ANOTHER SQL SERVER??
 //CREATING DUMP AT DBSCRIPT SIDE AS ONE SQL FILE
-if (($start==cmsg ("SQL_REM_START"))AND($dumpdbname)AND ($prdbdata[$tbl][12]=="mysql")AND(!$pr[20])) {
-	@$connect2 = mysql_connect ($mysqlserver2, $sd[14] , $sd[17]);	
+if (($start==cmsg ("SQL_REM_START"))AND($dumpdbname)AND ($prdbdata[$tbl][12]!="fdb")AND(!$pr[20])) {
+	@$connect2 = dbs_connect ($mysqlserver2,$sd[14],$sd[17],$dbtype);
 	echo cmsg (W_CRT_DMP)." $backupdbname...<br>";
 	echo "Режим: Dbscript side, data";
 	if ($structure) echo "+structure";
 	echo "<br>";
-@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$query="CREATE DATABASE IF NOT EXISTS `$backupdbname`;";
-	$silent=0;mysql_query ($query);
+	$silent=0;dbs_query ($query,$connect,$dbtype);
 	//generate table list
 	echo "connecting..".$prdbdata[$tbl][9]."<br>";
-	mysql_selectdb ($prdbdata[$tbl][9],$connect);
+	dbs_selectdb ($prdbdata[$tbl][9],$connect,$dbtype);
 $cmd="SHOW TABLES";
-$a=mysql_query ($cmd,$connect);
+$a=dbs_query ($cmd,$connect,$dbtype);;
 
-while ($result=mysql_fetch_row ($a)) {
+while ($result=dbs_fetch_row ($a,$dbtype)) {
 	$tablelist[]=$result[0];$tables++;//echo "table added to list ::".$result[0]."<br>";
 	}
 	@$a=opendir ("_local/dump"); if ($a==false) mkdir ("_local/dump");@closedir ($a);
@@ -1109,8 +1110,8 @@ for ($a=0;$a<count ($tablelist);$a++) {
     
 	if ($structure) { //if ($debugmode)	echo "DEBUG $query.<br>";
 		$query="SHOW CREATE TABLE `".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`;"; //OPT STRUCTURE
-		$result=mysql_query ($query); sqlerr();
-	for ($c=0;$myrow = @mysql_fetch_row($result);$c++) {
+		$result=dbs_query ($query,$connect,$dbtype); sqlerr();
+	for ($c=0;$myrow = @dbs_fetch_row ($result,$dbtype);$c++) {
     	$insertone=$myrow[1].";";
     	//if ($views) echo $insertone;
  		if ($OSTYPE=="LINUX") $insertone.="\n";
@@ -1123,9 +1124,9 @@ for ($a=0;$a<count ($tablelist);$a++) {
 	
 	//if ($debugmode)	echo "DEBUG $query.<br>";
 	$query="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`;";
-	$result=mysql_query ($query); sqlerr();
+	$result=dbs_query ($query,$connect,$dbtype); sqlerr();
 // печать   формирование текста запроса
-	for ($c=0;$myrow = @mysql_fetch_row($result);$c++) {
+	for ($c=0;$myrow = @dbs_fetch_row ($result,$dbtype);$c++) {
     	$mycols=count ($myrow);
 		$insertone=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`",$myrow,$mycols);
  		if ($OSTYPE=="LINUX") $insertone.="\n";
@@ -1155,10 +1156,10 @@ $action="WF_BCK_TRANS;SQL_REM_START $dumpdbname-->$dumpfile -l $lines -t $table 
 
 
 //MENU DBS SIDE DUMP 
-if (($write==cmsg("WF_BCK_FILEDUMP_ARCH"))AND ($prdbdata[$tbl][12]=="mysql")) {
+if (($write==cmsg("WF_BCK_FILEDUMP_ARCH"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	 set_time_limit(0);// CFG OPT FUTURE?
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	 	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+	 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$dumpdbname="backup"; // backup+DATABASEname-opt+data-opt+text-opts;
 	if ($addname) $dumpdbname.=$prdbdata[$tbl][9]."_";
 	if ($adddata) $dumpdbname.=date ("dmY")."_";
@@ -1180,16 +1181,16 @@ if (!$pr[20]) submitkey ("start","SELF_BCK");
 
 
 //восстановить копии таблиц SQL
-if (($write==cmsg("WF_BCK_COPYTBL_UNARCH"))AND ($prdbdata[$tbl][12]=="mysql")) {
+if (($write==cmsg("WF_BCK_COPYTBL_UNARCH"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	echo "WF_BCK_COPYTBL_UNARCH<br>";
 }
 
 
 //MENU SQL SIDE ;Сделать копии таблиц SQL
-if (($write==cmsg("WF_BCK_COPYTBL_ARCH"))AND ($prdbdata[$tbl][12]=="mysql")) {
+if (($write==cmsg("WF_BCK_COPYTBL_ARCH"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	 set_time_limit(0);// CFG OPT FUTURE?
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	 	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+	 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$dumpdbname="backup"; // backup+DATABASEname-opt+data-opt+text-opts;
 	if ($addname) $dumpdbname.=$prdbdata[$tbl][9]."_";
 	if ($adddata) $dumpdbname.=date ("dmY")."_";
@@ -1209,11 +1210,11 @@ submitkey ("start","SQL_BCK");
 
 
 //CREATING DUMP AT SQL SIDE AS FILETABLES
-if (($start==cmsg ("SQL_BCK"))AND($dumpdbname)AND ($prdbdata[$tbl][12]=="mysql")) {
+if (($start==cmsg ("SQL_BCK"))AND($dumpdbname)AND ($prdbdata[$tbl][12]!="fdb")) {
 	set_time_limit(0);// CFG OPT FUTURE?
 	echo cmsg (W_CRT_DMP)." $dumpdbname...<br>";
 	echo "Режим: SQL side<br>";
-@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	//generate table list
 	echo "connecting..".$prdbdata[$tbl][9]."<br>";
 	$file=$pr[39];
@@ -1222,20 +1223,20 @@ if (($start==cmsg ("SQL_BCK"))AND($dumpdbname)AND ($prdbdata[$tbl][12]=="mysql")
 	//opendir ($file.$dumpdbname)	;
 		 if ($file==false) die ("File to backup set to NULL!<bR>");
 	//echo "File:$file<br>";
-	mysql_selectdb ($prdbdata[$tbl][9],$connect);
+	dbs_selectdb ($prdbdata[$tbl][9],$connect,$dbtype);
 	
 	$cmd="SHOW TABLES";// может выделить просмотр баз данных и таблиц в отдельные процедуры и их везде сделать стартовыми?
-$a=mysql_query ($cmd,$connect);	
-while ($result=mysql_fetch_row ($a)) {
+$a=dbs_query ($cmd,$connect,$dbtype);;
+while ($result=dbs_fetch_row ($a,$dbtype)) {
 	$tablelist[]=$result[0];$cnt++;//echo "table added to list ::".$result[0]."<br>";
 	}
 	
 for ($a=0;$a<count ($tablelist);$a++) {
  $query="BACKUP TABLE `".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."` TO  '".$file.$dumpdbname."';";
-	$e=mysql_query ($query);
+	$e=dbs_query ($query,$connect,$dbtype);
 	echo "DEBUG $query.<br>";//if (!$pr[8])	
 	sqlerr();
-	while ($res=mysql_fetch_row ($e)) {
+	while ($res=dbs_fetch_row ($e,$dbtype)) {
 	echo $res[1]."::".$res[2]."::".$res[3]."<br>";	//echo "table added to list ::".$result[0]."<br>";
 	}
 	
@@ -1246,21 +1247,21 @@ for ($a=0;$a<count ($tablelist);$a++) {
 }	
 
 //CREATING DUMP AT DBSCRIPT SIDE AS ONE SQL FILE
-if (($start==cmsg ("SELF_BCK"))AND($dumpdbname)AND ($prdbdata[$tbl][12]=="mysql")AND(!$pr[20])) {
+if (($start==cmsg ("SELF_BCK"))AND($dumpdbname)AND ($prdbdata[$tbl][12]!="fdb")AND(!$pr[20])) {
 	echo cmsg (W_CRT_DMP)." $backupdbname...<br>";
 	echo "Режим: Dbscript side, data";
 	if ($structure) echo "+structure";
 	echo "<br>";
-@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$query="CREATE DATABASE IF NOT EXISTS `$backupdbname`;";
-	$silent=0;mysql_query ($query);
+	$silent=0;dbs_query ($query,$connect,$dbtype);
 	//generate table list
 	echo "connecting..".$prdbdata[$tbl][9]."<br>";
-	mysql_selectdb ($prdbdata[$tbl][9],$connect);
+	dbs_selectdb ($prdbdata[$tbl][9],$connect,$dbtype);
 $cmd="SHOW TABLES";
-$a=mysql_query ($cmd,$connect);
+$a=dbs_query ($cmd,$connect,$dbtype);;
 
-while ($result=mysql_fetch_row ($a)) {
+while ($result=dbs_fetch_row ($a,$dbtype)) {
 	$tablelist[]=$result[0];$tables++;//echo "table added to list ::".$result[0]."<br>";
 	}
 	@$a=opendir ("_local/dump"); if ($a==false) mkdir ("_local/dump");@closedir ($a);
@@ -1280,8 +1281,8 @@ for ($a=0;$a<count ($tablelist);$a++) {
     
 	if ($structure) { //if ($debugmode)	echo "DEBUG $query.<br>";
 		$query="SHOW CREATE TABLE `".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`;"; //OPT STRUCTURE
-		$result=mysql_query ($query); sqlerr();
-	for ($c=0;$myrow = @mysql_fetch_row($result);$c++) {
+		$result=dbs_query ($query,$connect,$dbtype); sqlerr();
+	for ($c=0;$myrow = @dbs_fetch_row ($result,$dbtype);$c++) {
     	$insertone=$myrow[1].";";
     	//if ($views) echo $insertone;
  		if ($OSTYPE=="LINUX") $insertone.="\n";
@@ -1294,9 +1295,9 @@ for ($a=0;$a<count ($tablelist);$a++) {
 	
 	//if ($debugmode)	echo "DEBUG $query.<br>";
 	$query="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`;";
-	$result=mysql_query ($query); sqlerr();
+	$result=dbs_query ($query,$connect,$dbtype); sqlerr();
 // печать   формирование текста запроса
-	for ($c=0;$myrow = @mysql_fetch_row($result);$c++) {
+	for ($c=0;$myrow = @dbs_fetch_row ($result,$dbtype);$c++) {
     	$mycols=count ($myrow);
 		$insertone=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`",$myrow,$mycols);
 		//что генерируется при ' внутри и как оно потом выполняется
@@ -1328,18 +1329,18 @@ $action="SELF_BCK_DBS_SIDE $dumpdbname-->$backupdbname -l $lines -t tables -e $e
 
 //Restore from file dump at dbscript folder
 //восстановить из дампа в папке dbscript
-if (($write==cmsg("WF_BCK_FILEDUMP_UNARCH"))AND ($prdbdata[$tbl][12]=="mysql")) {
-@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+if (($write==cmsg("WF_BCK_FILEDUMP_UNARCH"))AND ($prdbdata[$tbl][12]!="fdb")) {
+@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 if ($connect==false) {sqlerr($connect);exit;}
 if ($dblk) hidekey ("dblk",$dblk);
 	checkbox ($forcedb,"forcedb");lprint ("FORCE_DB");echo ":";
 $cmd="SHOW DATABASES";
-$a=mysql_query ($cmd,$connect);
+$a=dbs_query ($cmd,$connect,$dbtype);;
 if ($a==false) {sqlerr($a);exit;}
 //.. здесь где то проверку пути надо улучшить если коннект не дали - дать другой
 // echo "<form action=dblinker.php method=post>"; needed for?   unknown
 echo "<select name=dbselected>";
-while ($result=mysql_fetch_row ($a)) {
+while ($result=dbs_fetch_row ($a,$dbtype)) {
 	if ($result[0]=="information_schema") continue;
 	if ($result[0]=="mysql") continue;
 	echo "<option>".$result[0]."";
@@ -1378,7 +1379,7 @@ echo "</form>";
 if (($dump)AND($start==cmsg(DALEE))) {
 if (($dblk)AND(!$forcedb)) {$forcedb=1;$dbselected=$dblk;	}
 	$path=getcwd ()."/_local/dump/";
-      	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+      	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
           sqlerr ($connect);
                	$dumpfile=$dump[0];
 	$f=fopen ($path.$dumpfile,"rb");
@@ -1394,16 +1395,16 @@ if (($dblk)AND(!$forcedb)) {$forcedb=1;$dbselected=$dblk;	}
 						//dump are normal?  check ' inside dump text  
 						$b=str_replace ("SELECT DATABASE ","CREATE DATABASE ",$a);//3.5.25 ver only 
 						$a=str_replace ("SELECT DATABASE ","USE ",$a);
-						mysql_query ($b,$connect);
+						dbs_query ($b,$connect,$dbtype);;
 						echo "<br>".cmsg (W_NDB_FORC2)."($a)<br>";
 						}
-	if ($najti3!==false) {mysql_query ($a,$connect);
+	if ($najti3!==false) {dbs_query ($a,$connect,$dbtype);;
 						$a=str_replace ("create database if not exists","USE ",$a);
 						echo "<br>".cmsg (W_NDB_FORC)."($a)<br>";
 							}
 	if ($forcedb) {
 			$cmd="USE $dbselected;";
-			$res=mysql_query ($cmd,$connect); 
+			$res=dbs_query ($cmd,$connect,$dbtype);;
                         sqlerr ($res); // а если базу нигде не задали , что с ней делать?  пришить первую попавшуюся.
 			//if ($a) echo "forced select $cmd<br>"; оно вызывало баг 1111111
 				}
@@ -1411,7 +1412,7 @@ if (($dblk)AND(!$forcedb)) {$forcedb=1;$dbselected=$dblk;	}
 	if ($najti!==false)	{$query.=$a;}
 	if ($views) echo "<br>EXECUTING:".$query."<br>";
         
-	$result=mysql_query ($query,$connect);
+	$result=dbs_query ($query,$connect,$dbtype);
 	$query="";
 	$queries++;
 	//if ($queries) ob_flush();//die ("lim");
@@ -1442,10 +1443,10 @@ lprint (COMPLETED);exit; //теперь не должно быть никаких First select id please
  
 
 //модуль запуска 
-if (($write==cmsg ("CFG_COPY"))AND ($prdbdata[$tbl][12]=="mysql")) { 
+if (($write==cmsg ("CFG_COPY"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	readdescripters (); if ($data==-1) exit; 
 	//     echo $mznumb[3].$mycols; echo $res16; echo $a; копия модуля из начала writefile
 printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"source",cmsg ("WF_MAS_SRC"),$groupdb,$ipfilter,6);
@@ -1470,10 +1471,10 @@ printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"destination",cmsg ("WF_MAS_DE
 	
 	
 //модуль запуска 
-if (($write==cmsg ("WF_HDRSQL_REAL"))AND ($prdbdata[$tbl][12]=="mysql")) { 
+if (($write==cmsg ("WF_HDRSQL_REAL"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	readdescripters (); if ($data==-1) exit;  
 }
 
@@ -1485,10 +1486,10 @@ if (($write==cmsg ("WF_HDRSQL_REAL"))AND ($prdbdata[$tbl][12]=="mysql")) {
 	}
 
 //модуль запуска
-	if (($write==cmsg  ("WF_STRC_SQL"))AND ($prdbdata[$tbl][12]=="mysql")) { 
+	if (($write==cmsg  ("WF_STRC_SQL"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters (); if ($data==-1) exit; 
 	echo cmsg ("WF_SELROW").":";
 	printfield ($data,"field");
@@ -1540,13 +1541,13 @@ if (($write==cmsg ("WF_HDRSQL_REAL"))AND ($prdbdata[$tbl][12]=="mysql")) {
 
 // создание таблицы
 //модуль запуска
-	if (($write==cmsg  ("WF_NEW_TAB"))AND ($prdbdata[$tbl][12]=="mysql")) { 
+	if (($write==cmsg  ("WF_NEW_TAB"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters (); if ($data==-1) exit; 
 			echo cmsg ("WF_NEW_TAB_INFO").":";	echo "<br>";
-			lprint (WF_NEW_NAME);inputtxt("newtable",25);
+			lprint ("WF_NEW_NAME");inputtxt("newtable",25);
 	 submitkey ("write","WF_ADD_TAB_SQL");	
 	}
 //модуль обработки
@@ -1554,14 +1555,14 @@ if (($write==cmsg ("WF_HDRSQL_REAL"))AND ($prdbdata[$tbl][12]=="mysql")) {
 			if ($codekey==7) demo ();
 		if ($codekey==4) needupgrade ();
 		if (($newtable=="")) { lprint ("WF_ROW_NODATA"); exit ;};
-@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 		$exec="CREATE TABLE `".$newtable."` (
   `id` bigint(20) unsigned NOT NULL auto_increment COMMENT 'Identifier' ,
     PRIMARY KEY  (`id`) ); ";
 
   if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	$a=mysql_query($exec,$connect); 
+	$a=dbs_query($exec,$connect,$dbtype);
 	echo "executing: $exec ; Status=$a";
 	if ($pr[12]) {$act="WF_NEW_TAB (".$prdbdata[$tbl][9]."'".$newtable.") state $a "; logwrite ($act) ;};
 
@@ -1569,6 +1570,27 @@ if (($write==cmsg ("WF_HDRSQL_REAL"))AND ($prdbdata[$tbl][12]=="mysql")) {
 
 
 
+	if ($write==cmsg("WF_SHOW_TAB_CRT")) { //++
+			if ($codekey==7) demo ();
+		if ($codekey==4) needupgrade ();
+	//	if (($newtable=="")) { lprint ("WF_ROW_NODATA"); exit ;};
+        @$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9],$connect,$dbtype);
+        $query="SHOW CREATE TABLE `".$prdbdata[$tbl][5]."`;";
+        //$query="SHOW CREATE TABLE `".$prdbdata[$tbl][9].".".$prdbdata[$tbl][5]."`;";  млять  че этому уроду надо,
+
+  if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
+	$a=dbs_query($query,$connect,$dbtype);
+        //echo " $a=dbs query  as $query,$connect,$dbtype<br>";
+        //$a=mysql_query($query,$connect); так нет, а  напрямую работает !!! оно издевается
+	//echo "executed: $query ; Status=$a  Count=".count ($a)."<br>";
+        $result=dbs_fetch_row ($a,$dbtype);
+        echo "$result[1]";
+        //print ($a[1][0]);
+      // $x=executesql ($query,$connect,1);echo $x;
+	if ($pr[12]) {$act="WF_SHOW_CRT_TAB (".$prdbdata[$tbl][9]."'".$prdbdata[$tbl][5].") state $a "; logwrite ($act) ;};
+        exit;
+	}
 
 
 
@@ -1578,7 +1600,7 @@ if (($write==cmsg ("WF_HDRSQL_REAL"))AND ($prdbdata[$tbl][12]=="mysql")) {
 
 //модуль запуска 
 
-	if (($write==cmsg ("WF_STRC_DAT"))AND ($prdbdata[$tbl][12]=="mysql")OR($write==cmsg ("WF_MODSTRC_DAT"))AND ($prdbdata[$tbl][12]=="fdb")) { 
+	if (($write==cmsg ("WF_STRC_DAT"))AND ($prdbdata[$tbl][12]!="fdb")OR($write==cmsg ("WF_MODSTRC_DAT"))AND ($prdbdata[$tbl][12]=="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
 	$data=readdescripters (); if ($data==-1) exit; 
 	$data[0]=$data[3];// убираем нах заголовки от SQL
@@ -1614,10 +1636,10 @@ if ($write==cmsg ("WF_MODSTRC_DAT2")) { //++
 
 
 //модуль запуска 
-if (($write==cmsg ("WF_HDRSQL_VIRT"))AND ($prdbdata[$tbl][12]=="mysql")) { //++
+if (($write==cmsg ("WF_HDRSQL_VIRT"))AND ($prdbdata[$tbl][12]!="fdb")) { //++
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters (); if ($data==-1) exit; 
 	$mycol=$data[0];
 	@$f=csvopen ("_data/".$filbas,"r","0");$new=0;
@@ -1648,8 +1670,8 @@ if (($write==cmsg ("WF_HDRSQL_VIRT"))AND ($prdbdata[$tbl][12]=="mysql")) { //++
 //CSV HEADE
 if (($write==cmsg("KEY_LINKING"))) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters (); if ($data==-1) exit; 
 	$mycol=$data[0];
 //join cmd   fil=$fil  plevel=$plevel
@@ -1793,15 +1815,16 @@ if (($write==cmsg("KEY_HEAD"))AND ($prdbdata[$tbl][12]=="fdb")) {
   		 submitkey ("write","WF_MODSTRC_DAT");echo "<br><br>";
  	 submitkey ("write","WF_ARCH");
   submitkey ("write","WF_UNARCH");
+
 }
 
 //модуль  обработки
 // Перезапись заголовка CSV(DAT) для SQL  подойдет для конфы!
-if (($write==cmsg ("WF_HDR_REWR"))AND ($prdbdata[$tbl][12]=="mysql")) {
+if (($write==cmsg ("WF_HDR_REWR"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN"); exit;};
 	  //условие не выполняется
-	$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	mysql_select_db ($prdbdata[$tbl][9], $connect);
+	$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();	
 	@$f=csvopen ("_data/".$filbas,"r","1");$new=0;
 		$z=xfgetcsv ($f,2024,"¦"); $p=xfgetcsv ($f,2024,"¦");
@@ -1859,9 +1882,9 @@ if ($write==cmsg ("WF_ARCH")) {
 @$f=csvopen ($dir.$filbas.".backup.dat","delete",0);  //backup module
 @$f=csvopen ($dir.$filbas,"copy",$dir.$filbas.".backup.dat");//backup module
 @$f=csvopen ($dir.$filbas,"copy",$dir.$filbas.".backup".date ("m.d.y H-i-s").".dat");//backup module
-if ($prdbdata[$tbl][12]=="mysql") { 
-	$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	mysql_select_db ($prdbdata[$tbl][9], $connect);
+if ($prdbdata[$tbl][12]!="fdb") {
+	$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	readdescripters ();
 	backupsql($connect,$prdbdata,$tbl);
 	};   // сохранение для SQL в отдельной базе бэкап
@@ -1873,9 +1896,9 @@ if ($write==cmsg ("WF_UNARCH")) {
 	$dir="_data/"; if ($cfgmod==1) $dir="_conf/";
 @$f=csvopen ($dir.$filbas,"delete",0);  //backup module
 @$f=csvopen ($dir.$filbas.".backup.dat","copy",$dir.$filbas);//backup module
-if ($prdbdata[$tbl][12]=="mysql") { 
-	$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	mysql_select_db ($prdbdata[$tbl][9], $connect);
+if ($prdbdata[$tbl][12]!="fdb") {
+	$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	readdescripters ();
 	restoresql($connect,$prdbdata,$tbl);
 	};  
@@ -1915,16 +1938,16 @@ if ($write==cmsg ("KEY_COMM")) {
 			}
 			
 	}
-	if (($prdbdata[$tbl][12]=="mysql")) {
-	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+	if (($prdbdata[$tbl][12]!="fdb")) {
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 		if ($data==-1) exit;
 
 	$cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$vID."'";
 		if (($virtualid)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
-	$result = mysql_query ($cmd, $connect);
-	$myrow = mysql_fetch_row($result);
+	$result = dbs_query ($cmd, $connect,$dbtype);
+	$myrow = dbs_fetch_row ($result,$dbtype);
 	//проверка не занят ли ID
 	if ($myrow===false) { echo cmsg ("QUE_EMP")."<br>";		exit;	}
 	@$crc=crc32(trim(implode (";",$myrow)));
@@ -2009,13 +2032,13 @@ echo "_FILES STATE: $file<br>";
 // -----------------------------------------------------------------
 //MYSQL SECTION
 //модуль запуска
-if (($write==cmsg ("KEY_VIEW"))AND($prdbdata[$tbl][12]=="mysql")) {
+if (($write==cmsg ("KEY_VIEW"))AND($prdbdata[$tbl][12]!="fdb")) {
 	if ($vID==false)
 { 
   msgexiterror ("needcode",$mode,"w.php");
 } 
-	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 	global $query,$connect;
 	global $mzdata,$mycols,$myrow;
@@ -2049,12 +2072,12 @@ if ((($prauth[$ADM][18])>0)AND($noaddmode==1)) {
 	global $mycols,$mycol,$del,$res16,$presettedmode,$selectedfield;
 	global $partquery,$vID,$fields,$multisearch;
 
-	if (($mode == 6)AND($prdbdata[$tbl][12]=="mysql")) {
-	$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+	if (($mode == 6)AND($prdbdata[$tbl][12]!="fdb")) {
+	$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$res16=$prdbdata[$tbl][16];// Лимит колонок
 	//декодирование строки
 prefixdecode ($indata);
-		mysql_select_db ($prdbdata[$tbl][9], $connect);
+		dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 		global $mzdata; //$mycol[$md1column]".."
 $mode6=array ();
@@ -2064,7 +2087,7 @@ decodecols ();
 //	echo $query;
 //if ($virtualid==1) { $query = $query." AND ".$mycol[$virtualid]."= '".$vID2."'";};
 //бесполезно ибо сравнивается с любым полем, если только переписать с учетом 2 полей целую функцию
-	$result = mysql_query ($query, $connect);
+	$result = dbs_query ($query,$connect,$dbtype);
 //	echo "mycols $mycols mz  $mzdata[1]";  
 selectedprintsql ($data);
 	if ($multisearch==0) {exit (1); }
@@ -2075,9 +2098,9 @@ selectedprintsql ($data);
  //from readfile partends
 //=========================================
 //модуль запуска и обработки
-if (($write==cmsg("KEY_AN"))AND($prdbdata[$tbl][12]=="mysql")) {
-	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+if (($write==cmsg("KEY_AN"))AND($prdbdata[$tbl][12]!="fdb")) {
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 	//функция подсчета значений в таблице
 	if ($data==-1) exit;
@@ -2085,8 +2108,8 @@ if (($write==cmsg("KEY_AN"))AND($prdbdata[$tbl][12]=="mysql")) {
 	echo "<br>";// $mycol[$md2column]<br>";
 	$maxquery="SELECT MAX(`".$mycol[$md2column]."`)FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`";
 	$countquery="SELECT Count(`".$mycol[$md2column]."`)FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`";
-	$result=mysql_query ($countquery, $connect);	$counttbl = mysql_fetch_row($result);
-	$result = mysql_query ($maxquery, $connect);	$maxtbl = mysql_fetch_row($result);
+	$result=dbs_query ($countquery,$connect,$dbtype);	$counttbl = dbs_fetch_row ($result,$dbtype);
+	$result = dbs_query ($maxquery,$connect,$dbtype);;	$maxtbl = dbs_fetch_row ($result,$dbtype);
 	//	распечатка данных из дескрипторов
  echo "<table id=execsql border=3 width=100% bordercolor=#000099 ><tr>";
  echo "<td>headerreal</td><td>plevels</td><td>headerrealnumbers</td><td>headervirtual</td><td>datatypos</td><td>fieldlen</td></tr><tr>";
@@ -2139,10 +2162,10 @@ echo "</form>";
 
 
 //модуль запуска 
-if (($write==cmsg ("KEY_DATA"))AND($prdbdata[$tbl][12]=="mysql")) {
+if (($write==cmsg ("KEY_DATA"))AND($prdbdata[$tbl][12]!="fdb")) {
 	if ($vID==="") { lprint ("WF_FSELID")."<br>"; exit;};
-	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 		if ($data==-1) exit;
 		//datafieldcolsel это No# колонки с data переданный из поиска
@@ -2158,8 +2181,8 @@ for ($a=0;$a<count ($datacols);$a++) {
 	echo "type:DATA table:".$prdbdata[$tbl][5]." column:".$mycol[$datafieldcolsel]." (No $datafieldcolsel) datafieldID=$datafieldID separator:".$datasplitters[$datafieldID]." (SPC)<br>";
 	$cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$vID."'";
 		if (($virtualid)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
-	$result = mysql_query ($cmd, $connect);
-	$myrow = mysql_fetch_row($result);
+	$result = dbs_query ($cmd, $connect,$dbtype);
+	$myrow = dbs_fetch_row ($result,$dbtype);
 	//prepare new data
 	@$g=csvopen ("_data/".$datafilehdr[$datafieldID],"r",0); //хедер и сплиттер пока всегда будут первые ,упрощено!!! CFG OPT FUT
 	@$mycoldat=fread ($g,1000);
@@ -2218,9 +2241,9 @@ submitkey ("write","KEY_S_DATA");echo "<br>";
 //==========================
 //=========================================
 //модуль  обработки
-if (($write==cmsg("KEY_S_DATA"))AND($prdbdata[$tbl][12]=="mysql")) {
-	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+if (($write==cmsg("KEY_S_DATA"))AND($prdbdata[$tbl][12]!="fdb")) {
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();
 	//datafieldcolsel это No# колонки с data переданный из поиска
 	$datacols=explode (",",$prdbdata[$tbl][18]);
@@ -2249,16 +2272,16 @@ echo "crc code given:$crc<br>";
 	//проверка старых данных для CRC i UnDO / проверить надо только ДАТА!!
 	$cmd="SELECT '".$mycol[$datafieldcolsel]."' FROM `".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$myrow[$md2column]."'";
 	if ($virtualid==true) { $addcmd=" AND ".$mycoldat[$virtualid]."= '".$myrow[$virtualid]."'"; $cmd.=$addcmd;};
-	$result = mysql_query ($cmd, $connect);	
+	$result = dbs_query ($cmd, $connect,$dbtype);
 	echo "cmd=$cmd, result=$result <br>";
-	$myrowold = mysql_fetch_row($result);
+	$myrowold = dbs_fetch_row ($result,$dbtype);
 	if ($myrowold==false) {lprint ("WF_EDITNOTADD");echo "<br>"; 
 	/*//процедура undo старого ID сохранить надо только ДАТА!!!
 		$cmd="SELECT '".$mycol[$datafieldcolsel]."' FROM `".$prdbdata[$tbl][5]."`  WHERE  ".$mycol[$md2column]."='".$origid1."'";
 		if ($virtualid==true) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$origid2."'";};
-		$result=mysql_query ($cmd,$connect);
+		$result=dbs_query ($cmd,$connect,$dbtype);;
 		echo "cmd=$cmd, result=$result <br>";
-		$myrowold=mysql_fetch_row($result); // тут false если то значит ппц :) 
+		$myrowold=dbs_fetch_row ($result,$dbtype); // тут false если то значит ппц :)
 		*/
 	} // 2 раза проверяет одно значение в базе только разными методами.
 	// nen надо просто сверить data в undo   и записать новое значение.
@@ -2273,7 +2296,7 @@ echo "crc code given:$crc<br>";
 	echo "data for check : myrowold=$olddata '".$myrowold."'<br>";
 	echo "data for chk: values=$values <br>";
 	$cmd="UPDATE `".$prdbdata[$tbl][5]."` SET `".$mycol[$datafieldcolsel]."`='".$values."');";
-	$a=mysql_query ($cmd);  // условие обновлено
+	$a=dbs_query ($cmd,$connect,$dbtype);  // условие обновлено
 	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
 	if ($views) {echo cmsg ("WF_EXQUE")."$cmd<br>"; } else { echo cmsg ("WF_ADDFAIL")."$myrow[0]<br>";}
 	if ($a==true) { echo $myrow[0].cmsg ("WF_UPDOK")."!<br>";} else { 
@@ -2281,8 +2304,8 @@ echo "crc code given:$crc<br>";
 	if ($pr[12]) {$act="EDIT_SQL_TYPE_DATA  B $tbl($nametbl) Find$vID Cmd $cmd"; logwrite ($act) ;undolog ($act,$undodata); };  
 	//CFG OPT FUTURE - some action like backup not logging!!!!
 	//if ($views) echo cmsg ("WF_EXQUE")."$cmd<br><br>";
- echo cmsg ("WF_QUECOMP").mysql_affected_rows ().cmsg ("WF_Q1")."<br>";
-$silent=0;$errno=sqlerr ();// пишет ошибку и ее код  и его же возвращает
+ echo cmsg ("WF_QUECOMP").dbs_affected_rows ().cmsg ("WF_Q1")."<br>";
+$silent=0;$errno=dbserr ();// пишет ошибку и ее код  и его же возвращает
 //endof executing
 submitkey ("write","WF_UNDO_LAST");
 }
@@ -2292,10 +2315,10 @@ submitkey ("write","WF_UNDO_LAST");
 
 
 //модуль запуска 
-if (($write==cmsg ("KEY_EDIT"))AND($prdbdata[$tbl][12]=="mysql")) {
+if (($write==cmsg ("KEY_EDIT"))AND($prdbdata[$tbl][12]!="fdb")) {
 	if ($vID==="") { lprint ("WF_FSELID")."<br>"; exit;};
-	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 		if ($data==-1) exit;
 if ($prdbdata[$tbl][18]) {//dly redaktirowainya data
@@ -2309,8 +2332,8 @@ $datasplitters=explode (",",$prdbdata[$tbl][20]);
 
 	$cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$vID."'";
 		if (($virtualid)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
-	$result = mysql_query ($cmd, $connect);
-	$myrow = mysql_fetch_row($result);
+	$result = dbs_query ($cmd, $connect,$dbtype);
+	$myrow = dbs_fetch_row ($result,$dbtype);
 	//проверка не занят ли ID
 	if ($myrow===false) { echo cmsg ("QUE_EMP")."<br>";		exit;	}
 	@$crc=crc32(trim(implode (";",$myrow)));
@@ -2384,9 +2407,9 @@ submitkey ("write","KEY_S_EDIT");echo "<br>";
 
 //=========================================
 //модуль  обработки
-if (($write==cmsg("KEY_S_EDIT"))AND($prdbdata[$tbl][12]=="mysql")) {
-	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+if (($write==cmsg("KEY_S_EDIT"))AND($prdbdata[$tbl][12]!="fdb")) {
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();
 	// заменен vID -> $myrow[$md2column]   myrowid->$myrow[$virtualid]
 // сборка всех переменных в values и myrow[]
@@ -2418,14 +2441,14 @@ if ($unfreez) {
 	//проверка старых данных для CRC i UnDO
 	$cmd="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$myrow[$md2column]."'";
 	if ($virtualid==true) { $addcmd=" AND ".$mycol[$virtualid]."= '".$myrow[$virtualid]."'"; $cmd.=$addcmd;};
-	$result = mysql_query ($cmd, $connect);	
-	$myrowold = mysql_fetch_row($result);
+	$result = dbs_query ($cmd, $connect,$dbtype);
+	$myrowold = dbs_fetch_row ($result,$dbtype);
 	if ($myrowold==false) {lprint ("WF_EDITNOTADD");echo "<br>"; 
 	//процедура undo старого ID
 		$cmd="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE  ".$mycol[$md2column]."='".$origid1."'";
 		if ($virtualid==true) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$origid2."'";};
-		$result=mysql_query ($cmd,$connect);
-		$myrowold=mysql_fetch_row($result); // тут false если то значит ппц :) 
+		$result=dbs_query ($cmd,$connect,$dbtype);;
+		$myrowold=dbs_fetch_row ($result,$dbtype); // тут false если то значит ппц :)
 	}
 	@$olddata=implode (";",$myrowold); // вот это и надо сохранять и откатывать
 	$undodata=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrowold,$mycols);
@@ -2443,16 +2466,16 @@ if ($unfreez) {
 	// это удаление старого ID если был
 
 
-	$a=mysql_query ($cmd);  // условие обновлено
+	$a=dbs_query ($cmd,$connect,$dbtype);  // условие обновлено
 	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
 	if ($a==true) { echo $myrow[0].cmsg ("WF_DELOK")."!<br>";} else { echo cmsg ("WF_DELFAIL")."$myrow[0]<br>";}
-	$a=mysql_query ($cmd2);  // условие обновлено
+	$a=dbs_query ($cmd2,$connect,$dbtype);  // условие обновлено
 	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
 	if ($a==true) { echo $myrow[0].cmsg ("WF_DELOK")."!<br>";} else { echo cmsg ("WF_DELFAIL")."$myrow[0]<br>";}
 
 
 	$cmd="INSERT INTO `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` VALUES ($values)";
-	$a=mysql_query ($cmd);//сделать любое кол-во
+	$a=dbs_query ($cmd,$connect,$dbtype);//сделать любое кол-во
 	$cmd="REPLACE INTO `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` VALUES ($values)";
 	if ($enfreez) {
 		if (($codekey==9)or($codekey==7)) demo ();
@@ -2470,8 +2493,8 @@ if ($unfreez) {
             $baseID=$tbl;$hostIP=$prdbdata[$tbl][6];
             logwrite ($act) ;undolog ($act,$undodata,$baseID,$hostIP); };
 	//if ($views) echo cmsg ("WF_EXQUE")."$cmd<br><br>";
- echo cmsg ("WF_QUECOMP").mysql_affected_rows ().cmsg ("WF_Q1")."<br>";
-$silent=0;$errno=sqlerr ();// пишет ошибку и ее код  и его же возвращает
+ echo cmsg ("WF_QUECOMP").dbs_affected_rows ().cmsg ("WF_Q1")."<br>";
+$silent=0;$errno=dbserr ();// пишет ошибку и ее код  и его же возвращает
 submitkey ("write","WF_UNDO_LAST");
 //endof executing
 }
@@ -2481,19 +2504,19 @@ submitkey ("write","WF_UNDO_LAST");
 
 //=========================================
 //модуль запуска 
-if (($write==cmsg ("KEY_ADD"))AND($prdbdata[$tbl][12]=="mysql")) {
-	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+if (($write==cmsg ("KEY_ADD"))AND($prdbdata[$tbl][12]!="fdb")) {
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 		if ($data==-1) exit;
 	if ($data==-1) exit;
 	$maxquery="SELECT MAX(`".$mycol[$md2column]."`)FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`";
-	$result = mysql_query ($maxquery, $connect);	$maxtbl = mysql_fetch_row($result);
+	$result = dbs_query ($maxquery,$connect,$dbtype);;	$maxtbl = dbs_fetch_row ($result,$dbtype);
 	echo cmsg ("WF_1NOTUSED").": ".($maxtbl[0]+1)."<bR>";
 	$cmd="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$vID."'";
 	if (($virtualid>0)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
-	$result = mysql_query ($cmd, $connect);
-	$myrow = mysql_fetch_row($result);
+	$result = dbs_query ($cmd, $connect,$dbtype);
+	$myrow = dbs_fetch_row ($result,$dbtype);
 //проверка не занят ли ID
 	if ($myrow===false) { 
 		echo cmsg ("QUE_EMP")."<br>";
@@ -2540,9 +2563,9 @@ if (($write==cmsg ("KEY_ADD"))AND($prdbdata[$tbl][12]=="mysql")) {
 //=========================================
 
 //модуль обработки
-if (($write==cmsg ("KEY_S_ADD"))AND($prdbdata[$tbl][12]=="mysql")) {
-	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+if (($write==cmsg ("KEY_S_ADD"))AND($prdbdata[$tbl][12]!="fdb")) {
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();
 
 // сборка всех переменных в values и myrow[]
@@ -2556,7 +2579,7 @@ if (($write==cmsg ("KEY_S_ADD"))AND($prdbdata[$tbl][12]=="mysql")) {
 // сборка всех переменных в values и myrow[]
 //тут надо бы undo
 	$cmd="INSERT INTO `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` VALUES ($values)";
-	$a=mysql_query ($cmd);//сделать любое кол-во
+	$a=dbs_query ($cmd,$connect,$dbtype);//сделать любое кол-во
 	$cmd="REPLACE INTO `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` VALUES ($values)";
 	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
 	if ($a==true) { echo $myrow[0].cmsg ("WF_ADDED").".<br>";	if ($views) echo cmsg ("WF_EXQUE")."$cmd<br>"; } else 	{
@@ -2568,8 +2591,8 @@ if (($write==cmsg ("KEY_S_ADD"))AND($prdbdata[$tbl][12]=="mysql")) {
             logwrite ($act) ; undolog ($act,$undodata,$baseID,$hostIP);}; // логируемся
 	 //executing+errlogделаем нормальную обработку ошибок  исп всегда этот модуль
 	 	     //if ($views) echo cmsg ("WF_EXQUE")."$cmd<br><br>";
- echo cmsg ("WF_QUECOMP").mysql_affected_rows ().cmsg ("WF_Q1")."<br>";
-$silent=0;$errno=sqlerr ();// пишет ошибку и ее код  и его же возвращает
+ echo cmsg ("WF_QUECOMP").dbs_affected_rows ().cmsg ("WF_Q1")."<br>";
+$silent=0;$errno=dbserr ();// пишет ошибку и ее код  и его же возвращает
 submitkey ("write","WF_UNDO_LAST");
 //endof executing
 }
@@ -2577,7 +2600,7 @@ submitkey ("write","WF_UNDO_LAST");
 
 //=========================================
 //модуль запуска 
-if (($write==cmsg ("KEY_DEL"))AND($prdbdata[$tbl][12]=="mysql")) {
+if (($write==cmsg ("KEY_DEL"))AND($prdbdata[$tbl][12]!="fdb")) {
 	if (($virtualid==true)AND($vID2==false)) echo "<font color=red id=errfnt>".cmsg 
 		("WF_DEL_GROUP")." ".$vID." </font><br>";
 		if ($vID==="") { lprint ("WF_FSELID");exit;};
@@ -2588,15 +2611,15 @@ if (($write==cmsg ("KEY_DEL"))AND($prdbdata[$tbl][12]=="mysql")) {
 
 //=========================================
 //модуль обработки
-if (($write==cmsg("KEY_S_DEL"))AND($prdbdata[$tbl][12]=="mysql")) {
-	@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+if (($write==cmsg("KEY_S_DEL"))AND($prdbdata[$tbl][12]!="fdb")) {
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 		if ($data==-1) exit;
 	$cmd="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$vID."'";
 	if (($virtualid>0)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
-	$result = mysql_query ($cmd, $connect);
-    for ($c=0;$myrow = mysql_fetch_row($result);$c++) {
+	$result = dbs_query ($cmd, $connect,$dbtype);
+    for ($c=0;$myrow = dbs_fetch_row ($result,$dbtype);$c++) {
 		if (!$test) $test=$myrow[0];
 		$undodata.=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrow,$mycols)." ";
 	};
@@ -2604,7 +2627,7 @@ if (($write==cmsg("KEY_S_DEL"))AND($prdbdata[$tbl][12]=="mysql")) {
 	$a=$test;
 	$cmd="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE ".$mycol[$md2column]."='".$vID."'";
 	if (($virtualid>0)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
-	mysql_query ($cmd); 
+	dbs_query ($cmd,$connect,$dbtype);
 	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
 	if ($a==true) { echo $vID.cmsg ("WF_DELOK")."!<br>";} else { 
 				$errt=cmsg ("WF_DELFAIL"); $ermsg=cmsg ("WF_NOQUE")."<br>";}
@@ -2615,8 +2638,8 @@ if (($write==cmsg("KEY_S_DEL"))AND($prdbdata[$tbl][12]=="mysql")) {
 };  // 
  	 
  //if ($views) cmsg ("WF_EXQUE")."$cmd<br><br>";
- echo cmsg ("WF_QUECOMP").mysql_affected_rows ().cmsg ("WF_Q1")."<br>";
-$silent=0;$errno=sqlerr ();
+ echo cmsg ("WF_QUECOMP").dbs_affected_rows ().cmsg ("WF_Q1")."<br>";
+$silent=0;$errno=dbserr ();
 //endof executing
 
 submitkey ("write","WF_UNDO_LAST");
@@ -2635,10 +2658,10 @@ submitkey ("write","WF_UNDO_LAST");
 
 //=========================================
 //модуль запуска 
-if (($write==cmsg("KEY_MASEXC"))AND($prdbdata[$tbl][12]=="mysql")) {
+if (($write==cmsg("KEY_MASEXC"))AND($prdbdata[$tbl][12]!="fdb")) {
 		
-  @ $connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+  @ $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 // выбор колонки из текущей базы
 // в качестве разделителя для условия равно можно использовать запятые
 	echo cmsg ("WF_SELFLD").":";// Вставлено для выбора поля
@@ -2684,11 +2707,11 @@ if (($write==cmsg("KEY_MASEXC"))AND($prdbdata[$tbl][12]=="mysql")) {
 
 //=========================================
 //модуль обработки
-if (($write==cmsg("KEY_S_EXCH"))AND($prdbdata[$tbl][12]=="mysql")) {
+if (($write==cmsg("KEY_S_EXCH"))AND($prdbdata[$tbl][12]!="fdb")) {
  	 if (($codekey==4)) needupgrade ();
 	 if (($codekey==9)OR($codekey==7)) demo ();
-	$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	mysql_select_db ($prdbdata[$tbl][9], $connect);
+	$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
  
 	if (($addifcmp1=="bolee")OR($addifcmp1=="menee")) {
     	$sampletotest=explode (",",$addiflist1);
@@ -2752,8 +2775,8 @@ if (($strupdmode=="substrokes")AND(!$emusubstroke))	{
 if ($delete) $cmd="DELETE FROM `".$prdbdata[$tbl][5]."` WHERE `".$mycol[$field]."`LIKE  '%".$sourceid."%'";
 	echo "";
 	if (($addifenable1)OR($addifenable2)) {$upd=$upd.$cmdaddif;		}; // вып доп условия модерниз.
-	$result = mysql_query ($upd, $connect);$cmd="";
-	if ($views) echo cmsg ("WF_EXQUE").$upd."<br><br>".cmsg ("WF_QUECOMP").mysql_affected_rows ().cmsg ("WF_Q1")."<br>";
+	$result = dbs_query ($upd,$connect,$dbtype);;$cmd="";
+	if ($views) echo cmsg ("WF_EXQUE").$upd."<br><br>".cmsg ("WF_QUECOMP").dbs_affected_rows ().cmsg ("WF_Q1")."<br>";
 
 	if ($result) {$findrecords++ ;} else { echo cmsg ("WF_QUEFAIL")."<br>"; };
 		}
@@ -2765,7 +2788,7 @@ if ($delete) $cmd="DELETE FROM `".$prdbdata[$tbl][5]."` WHERE `".$mycol[$field].
 if (($strupdmode=="subindstrokes")AND(!$emusubstroke))	{
 //calc maximum row inside data field
 	$cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE `".$mycol[$field]."`LIKE '%".$sourceid."%'";
-	$result = mysql_query ($cmd, $connect);$myrow = mysql_fetch_row($result);
+	$result = dbs_query ($cmd, $connect,$dbtype);$myrow = dbs_fetch_row ($result,$dbtype);
 	$a=trim ($myrow[$field]); $b=explode ($subsplitter,$a);$endsub=count ($b); //end calc  $endsub
 	if ($test1) {echo "COMMAND: $cmd<bR>:";
 if (!$pr[8]) echo "DEBUG Test first row:".$a."<br><br>";
@@ -2776,7 +2799,7 @@ $substringone=" (SUBSTRING_INDEX(SUBSTRING_INDEX(".$mycol[$field].",'".$subsplit
 //substrone получает значение искомого элемента и может сравниватся как обычная переменная
 /*if ($test1) {
 	$cmd="SELECT $substringone as A FROM `".$prdbdata[$tbl][5]."` WHERE A='".$sourceid."'";
-$result = mysql_query ($cmd, $connect);$myrow = mysql_fetch_row($result);
+$result = dbs_query ($cmd, $connect,$dbtype);$myrow = dbs_fetch_row ($result,$dbtype);
 if (!$pr[8]) echo "COMMAND 2 : $cmd<br><bR><br>Substroke 2 row:".$myrow[0]."<br><br><br><br><br>";
 }  //  шобы не светилось
 */ 
@@ -2786,24 +2809,24 @@ if (!$pr[8]) echo "COMMAND 2 : $cmd<br><bR><br>Substroke 2 row:".$myrow[0]."<br>
  // кстати вроде баг с этой фигней в цсв до сих пор осталсяяLIKE '%".$subsplitter.$sourceid.$subsplitter."%'
 if ($delete) $upd="DELETE FROM `".$prdbdata[$tbl][5]."` WHERE ".$substringone."='".$sourceid."' ";
 	if (($addifenable1)OR($addifenable2)) {$upd=$upd.$cmdaddif;		}; // вып доп условия модерниз.
-	$result = mysql_query ($upd, $connect);$cmd="";$silent=0;sqlerr ();
-	if ($views) echo cmsg ("WF_EXQUE").$upd."<br><br>".cmsg ("WF_QUECOMP").mysql_affected_rows ().cmsg ("WF_Q1")."<br>";
+	$result = dbs_query ($upd,$connect,$dbtype);;$cmd="";$silent=0;dbserr ();
+	if ($views) echo cmsg ("WF_EXQUE").$upd."<br><br>".cmsg ("WF_QUECOMP").dbs_affected_rows ().cmsg ("WF_Q1")."<br>";
 	if ($result) {$findrecords++ ;} else { echo cmsg ("WF_QUEFAIL")."<br>"; };
 	}
 
 //модулb эмуляции субстрок
 // SUBSTRREPLACE замена внутри строки без индекса  эмуляция(!!!)
 if (($strupdmode=="substrokes")AND($emusubstroke)) { $sourcefield="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` WHERE `".$mycol[$field]."`LIKE '%".$sourceid."%'";
-$subselect=mysql_query($sourcefield,$connect); 
-while($row=mysql_fetch_array($subselect,$connect))
+$subselect=dbs_query ($sourcefield,$connect,$dbtype);
+while($row=dbs_fetch_array($subselect,$connect,$dbtype))
 	{ $data=$row[$field];$guided=$row[$md2column];
 	//echo $row[0]." -- ".$row[$field]." -- ".$field." <br>"; 
 $replid=$data; $replid=str_replace ($sourceid, $exchid,$replid);// replid это массив который нужд в изменении
 	$upd="UPDATE `".$prdbdata[$tbl][5]."` SET `".$mycol[$field]."`='".$replid."' WHERE `".$mycol[$field]."`= '".$data."' AND `".$mycol[$md2column]."`= '".$guided."'";
 	if ($delete) $upd="DELETE FROM `".$prdbdata[$tbl][5]."` WHERE `".$mycol[$field]."`= '".$data."' AND `".$mycol[$md2column]."`= '".$guided."'";
 	if (($addifenable1)OR($addifenable2)) {$upd=$upd.$cmdaddif;		}; // вып доп условия модерниз.
-	$result = mysql_query ($upd, $connect);$cmd="";
-	if ($views) echo cmsg ("WF_EXQUE").$upd."<br><br>".cmsg ("WF_QUECOMP").mysql_affected_rows ().cmsg ("WF_Q1")."<br>";
+	$result = dbs_query ($upd,$connect,$dbtype);;$cmd="";
+	if ($views) echo cmsg ("WF_EXQUE").$upd."<br><br>".cmsg ("WF_QUECOMP").dbs_affected_rows ().cmsg ("WF_Q1")."<br>";
 	if ($result) {$findrecords++ ;} else { echo cmsg ("WF_QUEFAIL")."<br>"; };
 
 };
@@ -2814,8 +2837,8 @@ echo "Выполнено ".$findrecords." циклов.<br>";
 // SUBINDSTRREPLACE замена внутри строки с индеком  эмуляция
 if (($strupdmode=="subindstrokes")AND($emusubstroke)) {  
 $sourcefield="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` WHERE `".$mycol[$field]."` LIKE '%".$sourceid."%'";
-$subselect=mysql_query($sourcefield,$connect); 
-while($row=mysql_fetch_array($subselect,$connect))
+$subselect=dbs_query ($sourcefield,$connect,$dbtype);
+while($row=dbs_fetch_array($subselect,$connect,$dbtype))
 	{ $data=$row[$field];$guided=$row[$md2column];
 	//echo $row[0]." -- ".$row[$field]." -- ".$field." <br>"; 
 $dataexp=explode ($subsplitter,$data); // subindex
@@ -2826,18 +2849,18 @@ $replid=implode ($subsplitter,$dataexp); //$replid=str_replace ($sourceid, $exch
 	$upd="UPDATE `".$prdbdata[$tbl][5]."` SET `".$mycol[$field]."`='".$replid."' WHERE `".$mycol[$field]."`= '".$data."' AND `".$mycol[$md2column]."`= '".$guided."'";
 	if ($delete) $upd="DELETE FROM `".$prdbdata[$tbl][5]."` WHERE `".$mycol[$field]."`= '".$data."' AND `".$mycol[$md2column]."`= '".$guided."'";
 	if (($addifenable1)OR($addifenable2)) {$upd=$upd.$cmdaddif;		}; // вып доп условия модернизировано
-	$result = mysql_query ($upd, $connect);$cmd="";
-	if ($views) echo cmsg ("WF_EXQUE").$upd."<br><br>".cmsg ("WF_QUECOMP").mysql_affected_rows ().cmsg ("WF_Q1")."<br>";
+	$result = dbs_query ($upd,$connect,$dbtype);;$cmd="";
+	if ($views) echo cmsg ("WF_EXQUE").$upd."<br><br>".cmsg ("WF_QUECOMP").dbs_affected_rows ().cmsg ("WF_Q1")."<br>";
 	if ($result) {$findrecords++ ;} else { echo cmsg ("WF_QUEFAIL")."<br>"; };
 	}; //endif dataexp
 };//endwhile
 echo cmsg ("WF_CCLOK").$findrecords.".<br>";
 };//endif subindstrokes
 // конец модуля эмуляции субстрок
-	if ($cmd) $result = mysql_query ($cmd, $connect);
+	if ($cmd) $result = dbs_query ($cmd, $connect,$dbtype);
 	$a=$result;// проверка на вшивость :) чтобы сто раз не удаляли
 	if (($views)AND($strupdmode=="allstrokes")) $upd=$cmd;//фикс непоказа запроса в 1реж
-	if ($views) echo cmsg ("WF_EXQUE").$upd."<br><br>".cmsg ("WF_QUECOMP").mysql_affected_rows ().cmsg ("WF_Q1")."<br>";
+	if ($views) echo cmsg ("WF_EXQUE").$upd."<br><br>".cmsg ("WF_QUECOMP").dbs_affected_rows ().cmsg ("WF_Q1")."<br>";
 	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
 	if ($a===true) { echo $vID.cmsg ("WF_UPDOK")."<br>";} else { 
 				$errt=cmsg ("WF_UPDFAIL"); $ermsg=cmsg ("WF_NOQUE")."<br>";}
@@ -2855,9 +2878,9 @@ echo cmsg ("WF_CCLOK").$findrecords.".<br>";
 //модуль запуска
 //===============================  для масс сравнения будет похожая менюшка.
 // для инстанс режима будет сначала выбор инстансов а дальше уже просто данные будут передаваться похожему скрипту.
-if (($write==cmsg("KEY_MASCPY"))AND($prdbdata[$tbl][12]=="mysql")) {
-  @ $connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+if (($write==cmsg("KEY_MASCPY"))AND($prdbdata[$tbl][12]!="fdb")) {
+  @ $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 // выбор колонки из текущей базы
 	lprint ("WF_MASCPYMSG");// Вставлено для выбора поля
 //	$ar=$selectedfield;
@@ -2895,15 +2918,15 @@ echo cmsg ("WF_MASCPYIFHLP")."<br> ";
 }
 
 //модуль обработки
-if (($write==cmsg("KEY_S_COPY"))AND($prdbdata[$tbl][12]=="mysql")) { 
+if (($write==cmsg("KEY_S_COPY"))AND($prdbdata[$tbl][12]!="fdb")) {
  	 if (($codekey==4)) needupgrade ();
 	 if (($codekey==9)OR($codekey==7)) demo ();
 
 	//echo "Процедура работает в тестовом режиме";
-	$connect1 = mysql_connect ($prdbdata[$source][6], $sd[14] , $sd[17]);
-	$connect2 = mysql_connect ($prdbdata[$destination][6], $sd[14] , $sd[17]);
-	mysql_select_db ($prdbdata[$source][9], $connect1);
-	mysql_select_db ($prdbdata[$destination][9], $connect2);
+	$connect1 = dbs_connect ($prdbdata[$source][6], $sd[14] , $sd[17],$prdbdata[$source][12]);
+	$connect2 = dbs_connect ($prdbdata[$destination][6], $sd[14] , $sd[17],$prdbdata[$destination][12]);
+	dbs_selectdb ($prdbdata[$source][9], $connect1,$prdbdata[$source][12]);
+	dbs_selectdb ($prdbdata[$destination][9], $connect2,$prdbdata[$destination][12]);
 
 $desttbl=$prdbdata[$destination][9].".".$prdbdata[$destination][5];
 $sourctbl=$prdbdata[$source][9].".".$prdbdata[$source][5];
@@ -2952,10 +2975,10 @@ $cmd=$query.$cmdaddif.";";
 	if (!$pr[8]) {echo "DEBUG Получен код $result<br>";}
 
 //executing+errlogделаем нормальную обработку ошибок  исп всегда этот модуль
-$result = mysql_query ($cmd, $connect);
+$result = dbs_query ($cmd, $connect,$dbtype);
   if ($views) echo cmsg ("WF_EXQUE")."$cmd<br><br>";
- echo cmsg ("WF_QUECOMP").mysql_affected_rows ().cmsg ("WF_Q1")."<br>";
-$silent=0;$errno=sqlerr ();// пишет ошибку и ее код  и его же возвращает
+ echo cmsg ("WF_QUECOMP").dbs_affected_rows ().cmsg ("WF_Q1")."<br>";
+$silent=0;$errno=dbserr ();// пишет ошибку и ее код  и его же возвращает
 $error= mysql_error ();
 //echo $error;
 if ($errno) {lprint ("WF_POSERR");}
@@ -2977,9 +3000,9 @@ if ($errno) {lprint ("WF_POSERR");}
 //модуль запуска
 //===============================  для масс сравнения будет похожая менюшка.
 // для инстанс режима будет сначала выбор инстансов а дальше уже просто данные будут передаваться похожему скрипту.   вообще то реально сравнение все же нужно сделать без разницы где
-if (($write==cmsg ("KEY_SHOWCODE"))AND($prdbdata[$tbl][12]=="mysql")) {
-  @ $connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	@mysql_select_db ($prdbdata[$tbl][9], $connect);
+if (($write==cmsg ("KEY_SHOWCODE"))AND($prdbdata[$tbl][12]!="fdb")) {
+  @ $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 // выбор колонки из текущей базы
 	//echo cmsg ("WF_MASCPYMSG").cmsg ("WF_MASCMPMSG")."<br>";// Вставлено для выбора поля
 //	$ar=$selectedfield;
@@ -3015,14 +3038,15 @@ printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"source",cmsg ("WF_MAS_SRC"),$
 	printcmp ("addifcmp2");
 ?><textarea name=addiflist2 cols= 25 rows=1 ><?=$addiflist2; ?></textarea><br>
 	<?  submitkey ("write","KEY_S_SHOWCODE");
+          submitkey ("write","WF_SHOW_TAB_CRT");
 	// end compare addif   Вставлено для выбора поля
 }
 
 //модуль обработки
-if (($write==cmsg ("KEY_S_SHOWCODE"))AND($prdbdata[$tbl][12]=="mysql")) { //  execute (!(
+if (($write==cmsg ("KEY_S_SHOWCODE"))AND($prdbdata[$tbl][12]!="fdb")) { //  execute (!(
  	 if (($codekey==4)) needupgrade ();
 	 if (($codekey==9)OR($codekey==7)) demo ();
-	$connect = mysql_connect ($prdbdata[$source][6], $sd[14] , $sd[17]);
+	$connect = dbs_connect ($prdbdata[$source][6], $sd[14] , $sd[17],$prdbdata[$source][12]);
 	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 		if ($data==-1) exit;
 	$mycol=$data[0];
@@ -3098,13 +3122,13 @@ $desttable=$destdb."`".$prdbdata[$dest][5]."`";
 	$cmd=$cmd.$cmdaddif.";";		// вып доп условия модернизировано
 //echo $cmd;
 //$cmd=" SHOW DATABASES;";
-	if ($cmd) $result = mysql_query ($cmd, $connect);
+	if ($cmd) $result = dbs_query ($cmd, $connect,$dbtype);
 	if ($result===true) { echo $vID.cmsg ("WF_CMP")."<br>";} else { 
 				$errt=cmsg ("WF_CMPFAIL"); $ermsg=cmsg ("WF_NOQUE")."<br>";}
 
 
 // печать   формирование текста запроса
-    for ($c=0;$myrow = mysql_fetch_row($result);$c++) {
+    for ($c=0;$myrow = dbs_fetch_row ($result,$dbtype);$c++) {
 		$insertone=gencmdlog ($sourcetable,$myrow,$mycols);
 		echo $insertone."<br>";
 	};
@@ -3113,12 +3137,12 @@ $desttable=$destdb."`".$prdbdata[$dest][5]."`";
 
 
 	if ($views) echo cmsg ("WF_EXQUE").$cmd."<br>";
-		echo "<br>".cmsg ("WF_QUECOMP")." ".mysql_affected_rows ()." ".cmsg ("WF_Q1")."<br>";
+		echo "<br>".cmsg ("WF_QUECOMP")." ".dbs_affected_rows ()." ".cmsg ("WF_Q1")."<br>";
 	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
 	if ($pr[12]) {$act="SHOW_PATCH_SQL  B $tbl($nametbl) Find$vID Cmd $cmd"; logwrite ($act) ;};  // логируемся
 
 	//executing+errlogделаем нормальную обработку ошибок  исп всегда этот модуль
-$silent=0;$errno=sqlerr ();// пишет ошибку и ее код  и его же возвращает
+$silent=0;$errno=dbserr ();// пишет ошибку и ее код  и его же возвращает
 if ($errno) {echo cmsg ("WF_POSERR")."<br>";}
 //endof executing
 
@@ -3166,7 +3190,7 @@ if ($write==cmsg ("WF_CANCTBL")) {
 // KEY_S_MASS_OPER теряется - приходится заюзать KEY_MASS_OPER
 
 // модуль исполнения====================================
-if (($write==cmsg ("KEY_S_MASS_OPER"))AND($prdbdata[$tbl][12]=="mysql")AND($prauth[$ADM][45])AND($massoper)) { 
+if (($write==cmsg ("KEY_S_MASS_OPER"))AND($prdbdata[$tbl][12]!="fdb")AND($prauth[$ADM][45])AND($massoper)) {
 if (!$massoper) echo "Select option first !";
 // 1- change column  , 2 - show generate script (SQL only)  3- remove 4 - to best 5 - noop
 if ($massoper==5) return;
@@ -3254,7 +3278,7 @@ $bestedit=1;};
 
 //=========================================
 //модуль запуска
-if (($write==cmsg ("KEY_MASS_OPER"))AND($prdbdata[$tbl][12]=="mysql")AND($prauth[$ADM][45])) { //  CFG OPT FUTURE
+if (($write==cmsg ("KEY_MASS_OPER"))AND($prdbdata[$tbl][12]!="fdb")AND($prauth[$ADM][45])) { //  CFG OPT FUTURE
 lprint (M_OP_INF);echo "<bR>";
 
 $data=readdescripters ();
@@ -3263,7 +3287,7 @@ radio ("massoper",1,"M_OP_1") ;printfield ($data,"addif1");
 	printcmp ("addifcmp1");
 ?><textarea name=addiflist1 cols= 25 rows=1 wrap=virtual><?=$addiflist1; ?></textarea><br>
 <?	
-if ($prdbdata[$tbl][12]=="mysql") radio ("massoper",2,"M_OP_2") ;echo "<bR>";
+if ($prdbdata[$tbl][12]!="fdb") radio ("massoper",2,"M_OP_2") ;echo "<bR>";
 if (!$prauth[$ADM][5]) echo "<font color=gray id=dfnt>".cmsg ("M_OP_3").cmsg ("BLOCK")."</font>";
 if ($prauth[$ADM][5]) radio ("massoper",3,"M_OP_3") ;echo "<bR>";
 radio ("massoper",4,"TO_BEST") ;checkbox ($rewr,"rewr"); lprint (REW_IF_PRES);echo "<br>";
@@ -3294,7 +3318,7 @@ submitkey ("write","KEY_S_MASS_OPER");
 //..==================================================
 	//=========================================
 //модуль запуска 
-if (($write==cmsg ("KEY_EXECUTE"))AND($prdbdata[$tbl][12]=="mysql")AND($prauth[$ADM][34])) { //  CFG OPT FUTURE
+if (($write==cmsg ("KEY_EXECUTE"))AND($prdbdata[$tbl][12]!="fdb")AND($prauth[$ADM][34])) { //  CFG OPT FUTURE
 if ($codekey==7) die ("Disabled for secutiry reasons.");
 
 if ($codekey==5) needupgrade ();
@@ -3303,12 +3327,12 @@ if ($codekey==5) needupgrade ();
 		//if ($data==-1) exit;
 		if ($directexecute) { checkbox ($forcedb,"forcedb");lprint ("FORCE_DB");echo ":";
 		$cmd="SHOW DATABASES"; //copy from dump execute
-$a=mysql_query ($cmd,$connect);
+$a=dbs_query ($cmd,$connect,$dbtype);;
 if ($a==false) echo "connection die";
 
 //echo "<form action=dblinker.php method=post>";  maybe no need?
 echo "<select name=dbselected>";
-while ($result=mysql_fetch_row ($a)) {
+while ($result=dbs_fetch_row ($a,$dbtype)) {
 	if ($result[0]=="information_schema") continue;
 	if ($result[0]=="mysql") continue;
 	echo "<option>".$result[0]."";
@@ -3336,12 +3360,13 @@ submitkey ("write","KEY_S_EXEC");submitkey ("write","WF_BCK_FILEDUMP_UNARCH");ec
 //модуль обработки
 
 
-if (($write==cmsg ("KEY_S_EXEC"))AND($prdbdata[$tbl][12]=="mysql")) {
+if (($write==cmsg ("KEY_S_EXEC"))AND($prdbdata[$tbl][12]!="fdb")) {
 // if (!$prauth[$ADM][2]) die ("Возможно не хватает прав ;)");
-$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-	if (!$disabledbselect) mysql_select_db ($prdbdata[$tbl][9], $connect);
-	if (($directexecute)AND($forcedb)) {mysql_select_db ($dbselected, $connect);
-		echo "Forced use: $dbselected<br>";	//$cmd="USE $dbselected;";	mysql_query ($cmd,$connect);
+$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+$dbtype=$prdbdata[$tbl][12];
+	if (!$disabledbselect) dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
+	if (($directexecute)AND($forcedb)) {dbs_selectdb ($dbselected, $connect,$dbtype);
+		echo "Forced use: $dbselected<br>";	//$cmd="USE $dbselected;";	dbs_query ($cmd,$connect,$dbtype);;
 	} ;
 	
 	if (!$disabledesc) $data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
@@ -3354,7 +3379,7 @@ if ($printlimit==false) { msgexiterror ("limit","noexit","disable");} else {$lim
 // модуль сортировки
  if ($selectenable) $group=" GROUP BY ".$field."";
 // конец модуля сортировки
-//$qw=mysql_query ($cmd,$connect);echo $qw."--"; sqlerr ();
+//$qw=dbs_query ($cmd,$connect,$dbtype);;echo $qw."--"; dbserr ();
 	//$patterns[0]="//\'/" ;$replacements[0]="'"; //Unknown modifier '\' in 
 	$patterns[0]="/\\\'/" ;$replacements[0]="'";
 	@$cmd=preg_replace ($patterns,$replacements, $cmd);
@@ -3376,7 +3401,7 @@ if ($printlimit==false) { msgexiterror ("limit","noexit","disable");} else {$lim
 		$a=executesql ($multicmd,$connect,0);// было 
 	if ($a==-1) executesql ($multicmd,$connect,2); //old mode for possible bugs issue
 		if ($a==-1) {
-			$silent=0;$error++; $errno=sqlerr ();
+			$silent=0;$error++; $errno=dbserr ();
 			if ($errno>0) echo "Full text query:$multicmd<br><br>";
 			if ($cpymod=="copyabort") { lprint ("CP_AB_");exit;}
 		};

@@ -104,22 +104,25 @@ if ($cmd[0]==="help") { if ($adm==1) {
 		if ($cmd[0]==="status") {
                     echo "Status :: <br>";
                     $srvcount=count($srvdata)-1;
-                    echo "Servers:$srvcount<br>";
+                    echo "Services:$srvcount<br>";
                     for ($a=1;$a<$srvcount;$a++) {
+                        if ($srvdata[$a][7]=="d") continue ;  //disabled
                        //echo "hide passed!"; echo "ipat kolotit Server #".$srvdata[$a][0]."<br>";
-                        if ($srvdata[$a][8]) if (($srvdata[$a][7])<($prauth[$ADM][10]+1)) {
+                       $userplevel=$prauth[$ADM][10]+(1 AND $srvdata[$a][7]!="a"); // check admin only 
+                        if ($srvdata[$a][8]<1) if ((($srvdata[$a][7])<$userplevel)OR(($srvdata[$a][7]=="a")AND($prauth[$ADM][2]=="on"))) {
                                    //     echo "plevel passed!<br>";ccука заклинило его на первой записи,урод.
                                   $fp = @fsockopen ($srvdata[$a][1],$srvdata[$a][4],$error,$errstr,1);
                                   $x="error=$error; rrstr=$errstr<br>";
                                //..   echo "блджад!! $a";
-                                  if ($fp) { $online="Online";} else {$online="Offline";};
+                                  if ($fp) { $online="<font color=green id=okfnt>Online</font>";} else {$online="<font color=red id=errfnt>Offline</font>";};
                                   if ($prauth[$ADM][10]>0) $service=$srvdata[$a][4]; //only for stuff
-                              echo "#".$srvdata[$a][0]." Host: ".$srvdata[$a][1]." Service:".$service." (".$srvdata[$a][5].") State:".$online."<br>";
+                                  if ($srvdata[$a][8]=="0") { $inf="Info: ".$srvdata[$a][9].". Sysname: ".$srvdata[$a][6] ;} else { $inf="";};
+                              echo "#".$srvdata[$a][0]." Host: ".$srvdata[$a][1]." Service:".$service." (".$srvdata[$a][5].") State:".$online." $inf<br>";
 
                             }
-                            //	NOT USED $connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+                            //	NOT USED $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
                         
-                                //$a,"ID¦ServerIP¦Login¦Password¦Port¦DbType¦Info¦Plvl¦Hide".$addOSenter);
+                                //$a,"ID¦ServerIP¦Login¦Password¦Port¦DbType¦Sysname¦Plvl¦Hide¦Info".$addOSenter);
                     }
                     exit;}
 
@@ -129,7 +132,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
                     //echo "Servers:$cmcount<br>";
                     for ($a=1;$a<$cmcount;$a++) {
                        //echo "hide passed!"; echo "ipat kolotit Server #".$srvdata[$a][0]."<br>";
-                        if ($cmdata[$a][8]) if (($cmdata[$a][3])<($prauth[$ADM][10]+1)){
+                        if ($cmdata[$a][8]<1) if (($cmdata[$a][3])<($prauth[$ADM][10]+1)){
                          //echo "bldjad ".$cmdata[$a][1]."===".$cmd[1]."<br>";;
                          if ($cmdata[$a][1]===$cmd[1]) {
                                  $command = "".$cmdata[$a][2]."";
@@ -443,13 +446,14 @@ echo "!";if ($live) echo "<font color=green id=xfnt>live</font>!";
 			$tblmysqlselect=$prdbdata[$tbl][9];
 			$md1column=$prdbdata[$tbl][10]; if ($md1column==="") $md1column=1 ;	//reset to default
 			$md2column=$prdbdata[$tbl][11];	 if ($md2column==="") $md2column=0;	//reset to default
-			$usemysql=$prdbdata[$tbl][12];	$writeright=$prdbdata[$tbl][13];
+			$dbtype=$prdbdata[$tbl][12];	$writeright=$prdbdata[$tbl][13];
 			$needrights=$prdbdata[$tbl][14];	$virtualid=$prdbdata[$tbl][15];
 			$reserved16=$prdbdata[$tbl][16];	$reserved17=$prdbdata[$tbl][17];$res16=$reserved16;
+                        $dbtype=$prdbdata[$tbl][12];
 			// $DB - коды баз из decc  $DBC - содержимое для перебора, не более того
 			$floodlimit=$sd[12];
 // где-то не здесь баг связ с появлением тупого окна при попытке посм конфиг без прав админа.
-if ($tbl) if (($usemysql!=="mysql")AND($usemysql!=="fdb")) msgexiterror ("SCP",$usemysql,"admin.php");
+if ($tbl) if (($dbtype!=="mysql")AND($dbtype!=="fdb")AND($dbtype!=="pg")AND($dbtype!=="ibase")) msgexiterror ("SCP",$dbtype,"admin.php");
 ###########################
 ###########################
 ###########################
@@ -539,22 +543,21 @@ function search ()
 				global	 $site,$sd,$lock,$db,$totalbas,$k	;
 				global	 $filbas,$namebas,$scrdir,$formatscr,$category;
 				global	 $tablemysqlselect, $hostmysqlselect,$categorymode,$scrcolumn	;
-				global	 $tblmysqlselect,$md1column,$md2column,$usemysql,$writeright;
+				global	 $tblmysqlselect,$md1column,$md2column,$dbtype,$writeright;
 				global $DBC,$vIDold,$mvcnt,$b,$dbc,$prdbdata,$scrnum,$mycol,$mycols;
 				global $myrow;//bugs with screen without it
 				global $res16;//maybe bug with res16 передаче
 				global $vID2;
-				global $limitenable,$selectenable,$field,$printlimit,$addsql,$kol;//  глобализация как обычно млин
-
-
+				global $limitenable,$selectenable,$field,$printlimit,$addsql,$kol,$dbtype;//  глобализация как обычно млин
+                                
 				###########################################################
 				//MYSQLMODESEARCHSTART					NON-GLOBAL MODES //
 				###########################################################
 
 				//процедура поиска по имени - mode 1 - SQL
-				if (($mode == 1)AND($prdbdata[$tbl][12]=="mysql")) {
-					@$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-					@mysql_select_db ($prdbdata[$tbl][9], $connect);
+				if (($mode == 1)AND($prdbdata[$tbl][12]!="fdb")) {
+					@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+					@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 					global $query,$connect;
 					global $mzdata,$mycols,$myrow,$findrecords,$scrcolumn;
@@ -565,9 +568,9 @@ function search ()
 					if ($multisearch==0) {exit (1); }
 				}
 				//процедура поиска по коду  - mode 2 - SQL
-				if (($mode == 2)AND($prdbdata[$tbl][12]=="mysql")) {
-					$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-					mysql_select_db ($prdbdata[$tbl][9], $connect);
+				if (($mode == 2)AND($prdbdata[$tbl][12]!="fdb")) {
+					$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+					dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 					global $query,$connect;
 					global $mzdata,$mycols,$myrow,$findrecords,$scrcolumn;
@@ -583,9 +586,9 @@ function search ()
 
 
 				//mode 3 процедура SQL поиска по категории
-				if (($mode == 3)AND($prdbdata[$tbl][12]=="mysql")) {
-					$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-					mysql_select_db ($prdbdata[$tbl][9], $connect);
+				if (($mode == 3)AND($prdbdata[$tbl][12]!="fdb")) {
+					$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+					dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 					if ($categorymode==false) {   msgexiterror ("nocategory",$mode,"disable");  }
 					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 					$myrow=$data[0];
@@ -600,8 +603,8 @@ function search ()
 
 
 				if ($mode == 9) {
-					$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-					mysql_select_db ($prdbdata[$tbl][9], $connect);
+					$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+					dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 					global $fullfield;
 					if ($categorymode==false) {   msgexiterror ("nocategory",$mode,"disable");  }
 					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
@@ -617,8 +620,8 @@ function search ()
 					}
 
 					if (!$pr[8]) echo "DEBUG - $query";
-					$result=mysql_query ($query);
-					while ($myrow = mysql_fetch_row($result))  	{
+					$result=dbs_query ($query,$dbtype);
+					while ($myrow = dbs_fetch_row($result,$dbtype))  	{
 						echo "<a href='r.php?tbl=$tbl&mode=3&vID=".$myrow[0]."'> ".$myrow[0]."</a><br>";
 					}
 					exit;
@@ -628,12 +631,12 @@ function search ()
 
 
 				//mode 8 процедура SQL поиска по любой колонке
-				if (($mode == 8)AND($prdbdata[$tbl][12]=="mysql")) {
+				if (($mode == 8)AND($prdbdata[$tbl][12]!="fdb")) {
 					global $presettedmode;
 					$mode=6; $presettedmode=3;
 				}
 
-				if (($mode == 7)AND($prdbdata[$tbl][12]=="mysql")) {
+				if (($mode == 7)AND($prdbdata[$tbl][12]!="fdb")) {
 					//ubrat vse vybory polej ne svyazannye s tekushim mode==7( po menu)
 					global $presettedmode,$res16,$mznumb,$codekey;
 					echo "kol=$kol";$field=$kol;
@@ -663,8 +666,8 @@ echo " </form> ";
 
 
 				//mode 6 процедура SQL поиска по выбранной колонке
-				if (($mode == 6)AND($prdbdata[$tbl][12]=="mysql")) {
-					$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
+				if (($mode == 6)AND($prdbdata[$tbl][12]!="fdb")) {
+					$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 					global $categorymode,$mode;
 					global $mode6,$m6field,$m6count;
 					global $mycols,$mycol,$del,$res16,$presettedmode,$selectedfield,$fields;
@@ -672,7 +675,7 @@ echo " </form> ";
 					$res16=$prdbdata[$tbl][16];// Лимит колонок
 					if ($mode7==1) { $res16=$selectedfield ;};
 					$a=prefixdecode ($res16); //echo "PREFIX $res16";
-					mysql_select_db ($prdbdata[$tbl][9], $connect);
+					dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 					//$mycol[$md1column]".."
 					$mode6=array ();
@@ -1050,12 +1053,12 @@ hidekey ("kol",$kol);
 
 			//Искать все - режим 4 - global mode   SQL
 
-			if (($mode == 4)AND($prdbdata[$tbl][12]=="mysql")) {
+			if (($mode == 4)AND($prdbdata[$tbl][12]!="fdb")) {
 				global $query,$connect;
 				global $mzdata,$mycols,$myrow;
 				global $findrecords,$scrcolumn;
-				$connect=mysql_connect_wcheck ($prdbdata[$tbl][6],$sd[14],$sd[17]);
-				mysql_select_db ($prdbdata[$tbl][9], $connect);
+				$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+				dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 				$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 				$query = "SELECT * FROM `".$prdbdata[$tbl][5]."`";
 				$query=$query.$addsql;// сортировка, лимит
@@ -1132,7 +1135,7 @@ hidekey ("kol",$kol);
 
 			//global mode 9 - no needs vID   (old 6)
 			// возможно это была бы корзина покупок или по крайней мере личный список типа 5 режима
-			if (($mode == 9)AND($prdbdata[$tbl][12]=="mysql")){ msgexiterror ("errorcfg",$mode,"admin.php");}
+			if (($mode == 9)AND($prdbdata[$tbl][12]!="fdb")){ msgexiterror ("errorcfg",$mode,"admin.php");}
 			if (($mode == 9)AND($prdbdata[$tbl][12]=="fdb")){ msgexiterror ("errorcfg",$mode,"admin.php");}
 
 
