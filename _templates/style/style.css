@@ -7,8 +7,10 @@ body  {
 
 }
 body  {
-	background: #333;
-	font: 100.01% Arial, sans-serif;
+	/*background: #333; переместил в dbscript но можно вернуть если менять стиль
+        font : $systemshrift;
+	font: 100.01% Arial, sans-serif;*/
+
     }
     /*влияет на навигацию */
 a  {
@@ -650,7 +652,7 @@ h2 {
 	}
 	
 input[name=userfile] {
-	margin-left: 500px;
+	xmargin-left: 500px;
 	padding: 0 0 0 0 ;
 	}
 	
@@ -662,9 +664,39 @@ input[name=go],input[name=go]:hover  {
 table td {
     border:1;
 	}
+
+bb {
+  font-weight: bold; 
+        	}
+
+ii {
+     font-weight: italic;
+  	}
+uu {
+  text-decoration: underline;
+	}
+
+tbig {
+     font-size-adjust: 0.6;
+	}
+
+tsmall {
+     font-size-adjust: 0.3;
+	}
+
+
+#myTable {
+   
+    	}
+#Adminpanel
+        {
+
+   /* font-size:12px; uncontrolled;*/
+	}
+
 table tr {
     border:1;
 	padding-left:2px;
-	font-size:14px;
+	/* font-size:12px;*/
 	max-width:400px;
 	}
