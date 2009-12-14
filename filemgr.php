@@ -45,9 +45,22 @@ if ($share=="GEN_PLVL_USR") if (($fildata[$filerealid][3]+1)<$prauth[$ADM][10]) 
 else {msgexiterror ("notrights","F_DWN_PLVL You not in userlist this file! ","filemgr.php");}
 if ($share=="GENLNK_USR")  if (in_array ($username,$userlist)) { $enabledownload=1; }
 else {msgexiterror ("notrights","F_DWN_USR You not in userlist this file! ","filemgr.php");}
+//echo "trying ... FMG_LNK_DL ".$prauth[$ADM][0]." download file $pathwithfile)   <br>";
+if (!$pathwithfile) die ("File not found.");
 if (!$enabledownload) die ("not allowed!!");
 
-if ($enabledownload) { logwrite ("FMG_LNK_DL $prauth[$ADM][0] download file $pathwithfile)" );ob_clean (); sendfile ($pathwithfile);exit;};
+if ($enabledownload) { logwrite ("FMG_LNK_DL ".$prauth[$ADM][0]." download file $pathwithfile)" );ob_clean ();
+    fclose ($filescfg) ;//fclose ($file);
+$filescfg=csvopen ("_conf/files.cfg","w",1);
+$fildata[$filerealid][9]=$fildata[$filerealid][9]+1; // set downloads +1
+$fildata[$filerealid][10]=date("d.m.Y H:i:s"); // set downloads +1
+$x=writefullcsv ($filescfg,$filheader,$filplevels,$fildata); // надо себе напомнить чтоб не забывал переоткрывать файл в w
+   //writing new stroke to _conf\files.cfg
+    //logwrite ("FMG_SHARE $share (usr=$userlist) (plvl=$groupplevels) $pathandfile");
+  
+    sendfile ($pathwithfile);exit;
+ 
+};
 
 } //окончание работы с ссылкой и выдачей файла и возврат к норм работе
 
@@ -184,7 +197,8 @@ if (($share=="FMG_UNSHARE")AND($filefound==0)) { lprint ("UNSH_FAIL");exit;};
    $fildata[$count][2]=$userlist;   $fildata[$count][3]=$groupplevels;
    $fildata[$count][4]=$hash;   $fildata[$count][5]=$pathandfile;
    $fildata[$count][6]=$yes;   $fildata[$count][7]=$commfile;   $fildata[$count][8]=date("d.m.Y H:i:s");
-   $fildata[$count][9]="0";   $fildata[$count][10]="0";   $fildata[$count][11]="0".$addOSenter;
+   $fildata[$count][9]=$downloads;   $fildata[$count][10]=$lastdownload;   $fildata[$count][11]=$dupname;
+   $fildata[$count][12]="0";   $fildata[$count][13]="0";   $fildata[$count][14]="0".$addOSenter;
  echo "Your link to file: <a href='filemgr.php?c=".$fildata[$count][4]."'>link</a><br>";
  //echo "server name=".$_SERVER['SERVER_NAME']."<br>"; echo "php self=".$_SERVER['PHP_SELF']."<br>"; echo "doc root=".$_SERVER['DOCUMENT_ROOT']."<br>";
 $link="<br>http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][4]."<br><br>";
@@ -195,9 +209,7 @@ echo $link;
 fclose ($filescfg) ;//fclose ($file);
 $filescfg=csvopen ("_conf/files.cfg","w",1);
 
-//$testlinuxlinefeed=1;  надо не этот параметр врубать а вручную .add дописывать
-//echo "блять че ему еще не так суке гребаной :($filescfg,$filheader,$filplevels,$fildata). заебал глючить, я просто перенес модуль.<br>";
-//мат не убирать, именно это и помогло программе
+//$testlinuxlinefeed=1;  надо не этот параметр врубать а вручную .add дописывать  все работает, можно копипастить :)))
 $x=writefullcsv ($filescfg,$filheader,$filplevels,$fildata); // надо себе напомнить чтоб не забывал переоткрывать файл в w
 echo $x;
    //writing new stroke to _conf\files.cfg
@@ -258,8 +270,9 @@ if ((($cmd==cmsg("FMG_SHARE"))and($prauth[$ADM][36])) OR ($coreredir=="SH_UPDD_F
     	?><form enctype="multipart/form-data" action="filemgr.php" method="post"><?
     echo "File: $file<br>";
     lprint (GEN_OPT);echo "<br>";
- radio ("share","FMG_UNSHARE","FMG_UNSHARE"); echo "<br>";
- radio ("share","GENLNK_UNREG","GENLNK_UNREG");echo "<br>";
+radio ("share","#GENLNK_UNREG","GENLNK_UNREG");echo "<br>";
+radio ("share","FMG_UNSHARE","FMG_UNSHARE"); echo "<br>";
+
  if (!$pr[70]) { radio ("share","GENLNK_REG","GENLNK_REG");echo "<br>";
  radio ("share","GEN_PLVL_USR","GEN_PLVL_USR");echo "<select name=groupplevels>";
 		for ($a=0;$a<10;$a++){			echo "<option>".$a;			}
