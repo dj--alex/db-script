@@ -25,7 +25,7 @@ if ($tbl==-2) if ($vID=="Relogin") $vID=".relogin";
 
 
 global $verreadfile,$vID,$mzdata,$multisearch,$cmd;
-$verreadfile="Viewer v3.6 (c) dj--alex";
+$verreadfile="Viewer v4.1 (c) dj--alex";
 
 ### readfile  readdescripters return data info
 ##	$data=array ( // не настроено -  выдача данных функцией
@@ -290,11 +290,11 @@ if ($cmd[0]==="help") { if ($adm==1) {
 				$icon="info";
 				$mainheader="Info";
 				$script=array ( 'message'=>$message,'icon'=>$icon,'mainheader'=>$mainheader );
-				$actions="";
-		 		window ($script,$actions);
-		 		if ($languageprofile=="russian") echo "Ваш уровень доступа -- ".$prauth[$ADM][10]."<br>Ваши логины и имена  ".$_SERVER['PHP_AUTH_USER']."(".$prauth[$ADM][0].")(".$prauth[$ADM][15].")<br>IP ".$dbs_ip." Host:".gethostbyaddr ($dbs_ip).", № $tbl<br><br>Об вас :".$USERDAT;
+				$actions="";echo "<br><Br>";
+		 		//window ($script,$actions);
+		 		if ($languageprofile=="russian") echo cmsg ("Y_PLVL")." -- ".$prauth[$ADM][10]."<br>".cmsg ("Y_LG")." ".$_SERVER['PHP_AUTH_USER']."(".$prauth[$ADM][0].")(".$prauth[$ADM][15].")<br>IP ".$dbs_ip." Host:".gethostbyaddr ($dbs_ip).", № $tbl<br><br>".cmsg ("Y_").":".$USERDAT;
 		 		if ($languageprofile!=="russian") echo "Your plevel is -- ".$prauth[$ADM][10]."<br>Your login and names ".$_SERVER['PHP_AUTH_USER']."(".$prauth[$ADM][0].")(".$prauth[$ADM][15].")<br>IP ".$dbs_ip." Host:".gethostbyaddr ($dbs_ip).", Number $tbl<br><br>About you:".$USERDAT;
-		 		closewindow ();
+		 		//closewindow ();
 		 		exit;
 		}
 
@@ -450,6 +450,7 @@ echo "!";if ($live) echo "<font color=green id=xfnt>live</font>!";
 			$needrights=$prdbdata[$tbl][14];	$virtualid=$prdbdata[$tbl][15];
 			$reserved16=$prdbdata[$tbl][16];	$reserved17=$prdbdata[$tbl][17];$res16=$reserved16;
                         $dbtype=$prdbdata[$tbl][12];
+                        $encode=$prdbdata[$tbl][21];
 			// $DB - коды баз из decc  $DBC - содержимое для перебора, не более того
 			$floodlimit=$sd[12];
 // где-то не здесь баг связ с появлением тупого окна при попытке посм конфиг без прав админа.

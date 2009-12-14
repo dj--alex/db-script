@@ -101,6 +101,8 @@ echo "</form>";
     } else if ($pr[11]) { echo "<br>".cmsg("GF_USRDIS_U_WARN"); }
 	fclose ($desc);
 	showshortlog ();
- print "$sd[2]";
+          echo cmsg ("HERE").":".print_massive ($onlineusers);          echo "<Br>";         print "$sd[2]";
+
+
 ?>
 

@@ -2,35 +2,37 @@
 //echo "Session=";print_r ($_SESSION);  	echo "dbsa=$dbsa"; //ept session
 // EXTERNAL JAVASCRIPT  - задание каскадных стилей дл€ программы и кнопок - интерфейс
 // 3.6.06 edition    if (!$trafeconom) $idadd=" id=\"".$name."\" ";
- 	global $verhead;	
+ 	global $verhead,$systemshrift,$buttonshrift,$tableshrift;
 $verhead="Header v3.6.1 (c) dj--alex"; //hide
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=<?=$sd[19];?>">
 <META NAME="KEYWORDS" CONTENT="<?=$sd[24]?>">
 <title><? 
-//<META NAME="KEYWORDS" CONTENT="News, news, New, new, Technology, technology, Headlines, headlines, Nuke, nuke, PHP-Nuke, phpnuke, php-nuke, Geek, geek, Geeks, geeks, Hacker, hacker, Hackers, hackers, Linux, linux, Windows, windows, Software, software, Download, download, Downloads, downloads, Free, FREE, free, Community, community, MP3, mp3, Forum, forum, Forums, forums, Bulletin, bulletin, Board, board, Boards, boards, PHP, php, Survey, survey, Kernel, kernel, Comment, comment, Comments, comments, Portal, portal, ODP, odp, Open, open, Open Source, OpenSource, Opensource, opensource, open source, Free Software, FreeSoftware, Freesoftware, free software, GNU, gnu, GPL, gpl, License, license, Unix, UNIX, *nix, unix, MySQL, mysql, SQL, sql, Database, DataBase, Blogs, blogs, Blog, blog, database, Mandrake, mandrake, Red Hat, RedHat, red hat, Slackware, slackware, SUSE, SuSE, suse, Debian, debian, Gnome, GNOME, gnome, Kde, KDE, kde, Enlightenment, enlightenment, Interactive, interactive, Programming, programming, Extreme, extreme, Game, game, Games, games, Web Site, web site, Weblog, WebLog, weblog, Guru, GURU, guru, Oracle, oracle, db2, DB2, odbc, ODBC, plugin, plugins, Plugin, Plugins">
 if ($p!=0) $pagename=$pgcontent[$p+1][3];
 echo $sd[16]." - ".$pagename." - ".$write; ?></title> <?
 if (($enrestmenu)AND($menuloaded!==1)){?>
 <div id="module" style="position:absolute; z-index:0; left: <?=$pr[44]+2 ; ?>px; top: 0px; background-color:<?=$rgbfon ; ?>; color:#<?=$rgbtext ; ?>;background:#<?=$rgbfon ; ?>; "><?
-}
+} 
 ?>
 <style type="text/css"><?
-if (($pr[54])OR(!$dbstyle3en)) { // рохоже не работает,  фон и текст мен€юс€ на шапке в основном
-	?> body{color:#<?=$rgbtext ; ?>;background:#<?=$rgbfon ; ?>; }<?;
+?> #myTable { font:<?=$tableshrift ; ?> ; }  #Adminpanel { font:<?=$tableshrift ; ?> ; } 
+body { font:<?=$systemshrift ; ?>; <?
+if (($pr[54])OR(!$dbstyle3en)) { // примен€етс€ если стиль DeusModus неактивен
+	?> color:#<?=$rgbtext ; ?>;background:#<?=$rgbfon ; ?>; }<?;
 }?>
 .buttonS
-  { text-align:center; font-family:arial; font-size:<?=(13-$shriftsize); ?>pt; 
-   background-color:<?=$rgbfon ; ?>; color:<?=$rgbtext ?> ; } 
+  { text-align:center; font:<?=$buttonshrift ; ?>; 
+   background-color:<?=$rgbfon ; ?>; color:<?=$rgbtext ?> ; }
 <?
 if ($prauth[$ADM][47]) { 
 	echo ".hoverRow { background-color:#".$prauth[$ADM][47].";}"; } else  
 		{echo ".hoverRow { background-color: yellow;}";}
 ?>
-.clickedRow { background-color: orange; }
+.clickedRow { background-color: green; }
  </style>
-<?  if (!$trafeconom) { ?>
+<?  if (!$trafeconom) { // куй а не размер кнопкам!
+    ?>
 <script>
 function highlightTableRows(tableId, hoverClass, clickClass, multiple)
 {
@@ -175,7 +177,8 @@ return true;
 //unset ($dbstyle3en);// временно меню 3 отключено, т.к. проблем хватает с имеенмыми меню 1 и меню 2
 if (($enrestmenu)AND($menuloaded!==1)) if ((!$pr[54])AND($dbstyle3en)) {
 	require_once("_templates/head.php");
-} else { echo "</head>";	echo "<h".$shriftsize.">"; }
+} else { echo "</head>";	echo ""; }// tut smena shrifta  echo "<style type=text/css> font:$systemshrift ;</style>"; kak obychno ne rabotaet
+
 
 
 //	function helpLayer(layerName)//{//	a="Msg for <?=$prauth[$ADM][0] "//	alert (a)//}
