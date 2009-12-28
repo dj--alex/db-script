@@ -1,4 +1,4 @@
-<?
+<?php
 $stx = $REMOTE_ADDR ;$st = substr ($stx,0,7);
 $exitpoint="exitpoint";
 

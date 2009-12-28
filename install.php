@@ -1,4 +1,4 @@
-<? ob_start ();
+<?php ob_start ();
 if ($_POST[$step]<1) echo "Loading core...";
 $nomnu=1;$coreloadskip=1; $debugmode=false;
 //$writefullcfgdiscrwin=1;
