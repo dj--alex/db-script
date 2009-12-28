@@ -1,4 +1,4 @@
-<?// кнопка поиск и соответствующие ей реакции
+<?php// кнопка поиск и соответствующие ей реакции
  ?> 
  <form action="r.php" method="post">
 <input type=text name="vID" size=80 value="<?=$vID; ?>" ></input>

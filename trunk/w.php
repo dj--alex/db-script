@@ -1,12 +1,12 @@
-<? 
+<?php
 // Данная программа относится к пакету DBSCRIPT v2.1 (с) dj--alex
-
+if ($_FILES) ob_start(); // добавлено т.к. в 2033 строке непонятно прислали файл вообще или нет
 require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
 
 if (!$activation) exit;
 //$error=pg_connect ("!","2","3");echo $error;    postgre-php not installed
 
-$verwritefile="Editor v4.1.08 (c) dj--alex";
+$verwritefile="Editor v4.1.10 (c) dj--alex";
  global $verwritefile,$vID,$vID2;
 
 $enterpoint=$verwritefile;// для показа точки входа
@@ -1979,7 +1979,17 @@ if ($write==cmsg ("KEY_COMM")) {
 $commmsg=$myrow[$scrcolumn];
 	
 $scrdir="_local/scrcomm/".$scrdir;
-$comfile=$scrdir."/".$commmsg.".txt"; // это обход опроса в базе содержимого колонки Колонка картин 
+$comfile=$scrdir."/".$commmsg.".txt"; // это обход опроса в базе содержимого колонки Колонка картин
+
+$imgfile=$scrdir."/".$commmsg."$formatscr"; // такс  из r.php взят код проверки картинки.
+@$wrimg = fopen ($imgfile,"r");
+if (!$wrimg) if (($needscr==true)AND($formatscr)) { echo "Image enabled<br>";};
+if ($wrimg) if (($needscr==true)AND($formatscr)) {
+    //$scr=
+    $scr=$imgfile;//  WARNING   -  можно юзать для записи!
+                 echo "Miniimage<a href=\"$scr\"><img src=\"$scr\" border=0 height=80 width=60></a>";
+}
+
 @$opend=opendir ($scrdir);
 if ($opend==true) { echo "";} else { 
 	$wr=mkdir ($scrdir);	
@@ -1991,17 +2001,17 @@ if ($wr==true) {$vd=fread ($wr,10000);} else { lprint ("FS_NEWFILE"); };
 echo " </form>"; // даже исцеление этого недуга не помогает сохранить файл :(
 
 lprint ("COMMSG");echo " (Obj ".$commmsg." Col $scrcolumn)";
-?> 
-:
-
-	<form enctype="multipart/form-data" action="w.php" method=post>
+//<input type="hidden" name="MAX_FILE_SIZE" value="10000000">
+		//<input type="hidden" name="max_file_size" value="10000000">
+?> :	<form enctype="multipart/form-data" action="w.php" method=post>
 	<textarea name=vd cols=75 rows=10 ><? print $vd; ?></textarea>
-		<input type="hidden" name="MAX_FILE_SIZE" value="10000000">
-		<input type="hidden" name="max_file_size" value="10000000">
-	<input name=userfile type=file class=buttonS>  
+        <input name=userfile type=file class=buttonS>
 <? 	hidekey ("tbl",$tbl);
 	hidekey ("commmsg",$commmsg);
 	hidekey ("vID",$vID);
+        echo "<br>";
+        checkboxcorrect ("delcom",$delcom); lprint ("DELCOM");
+        checkboxcorrect ("delscr",$delscr); lprint ("DELSCR");echo "<br>";
 	submitkey ("write","KEY_S_COMM");
 	echo " </form>";exit;
 }
@@ -2009,12 +2019,12 @@ lprint ("COMMSG");echo " (Obj ".$commmsg." Col $scrcolumn)";
   // запись файла на сервер. бесполезно указывать адресат php ибо данные все равно потеряются
 //модуль  обработки
  if ($write==cmsg("KEY_S_COMM"))  {
- 	echo "!!!!";
+ 	//echo "!!!!";
  	if ($codekey==4) needupgrade ();
 	global $scrdir,$go;
 	$scrdir="_local/scrcomm/".$scrdir;
 	//testzone upload file	// Загрузка файлов на сервер// Если upload файла
-
+        
 	//comment write
  	if (!$vd) echo "Не передан комментарий.Изменения не сделаны.";
 	if ($vd) {$vd=stripslashes($vd); // несколько уменьшено размножение косых
@@ -2026,23 +2036,31 @@ lprint ("COMMSG");echo " (Obj ".$commmsg." Col $scrcolumn)";
         }
         print_r($_FILES);echo "!!!!!";	//wf_uploadingpic ($scrdir."/",$vID.".jpg");
         if (1==1) {
-if (isset($_FILES)) { $file=1; } else {$file=-1 ;};
+                        $uploaddir= "_local/scrcomm/".$prdbdata[$tbl][0]."scr";
+                        $scrfullpathname=$uploaddir."/".$commmsg.$formatscr;
+        if (isset($_FILES)) { $file=1; } else {$file=-1 ;};
 echo "_FILES STATE: $file<br>";
-		$tempsize=getimagesize ($_FILES["userfile"]["tmp_name"]) ;
-		$size=filesize ($_FILES["userfile"]["tmp_name"]);
+		@$tempsize=getimagesize ($_FILES["userfile"]["tmp_name"]) ;
+		@$size=filesize ($_FILES["userfile"]["tmp_name"]);
+                //echo "scrdir: $scrdir<br>";
 		if ($size==0) $file=0;
 		if ($file==1) { //файл есть , предпринимаем меры
-            		$uploaddir= $prdbdata[$tbl][0]."scr";
-                   
+
             		if (!$tempsize) {  echo "Это не картинка ! Файл не был сохранен. <br>";exit ;} // тоже 0 при >64k
         		if ($size>900000) { echo "Превышен hardcoded лимит в 900Кб";exit;}; //CFG OPT FUTURE
-                        echo "Куда:".$uploaddir."/ File:".$vID.".jpg<br>";
-                        ob_clean (); $error=uploadfile ($uploaddir."/",$vID.".jpg");
+                        echo "Куда:".$uploaddir."/ File:".$commmsg.$formatscr."<br>";
+                        echo "fullpathname=$scrfullpathname<br>";
+                        unlink ($scrfullpathname);
+                        $error=uploadfile ($uploaddir."/",$commmsg.$formatscr); //почему !!!?? Залить не удалось
+                        die ("Aaaaaaaaaaa");
                         if ($error) { ob_clean ();lprint ("FS_FWR"); } else { ob_clean ();lprint ("FS_FWRFAIL"); }
+                        echo $uploaddir."/",$commmsg.".jpg";
                         echo "Он был успешным юзернеймом на УПячке!<br>";
             		}
     }
 //end of upload//....        if($error==false) echo "Слив не засчитан";	//end comment write
+if ($delcom){$x=unlink ($scrdir."/".$commmsg.".txt");echo $x;};
+if ($delscr){$x=unlink ($scrfullpathname);echo $x;};
         exit;
  }
 
@@ -2210,12 +2228,16 @@ if (($write==cmsg ("KEY_DATA"))AND($prdbdata[$tbl][12]!="fdb")) {
 	$datacols=explode (",",$prdbdata[$tbl][18]);
 	$datafilehdr=explode (",",$prdbdata[$tbl][19]);
 	$datasplitters=explode (",",$prdbdata[$tbl][20]);
-	echo " DATALIST ".$prdbdata[$tbl][18].";  SEARCH $datafieldcolsel <br>";
+      //..  это меню показ по кнопке DATA
+        if ($datasplitters[$datafieldID]=="SPC") { $datasplitters[$datafieldID]=" "; echo "SPACE applied<br>";};
+	echo " DATALIST ".$prdbdata[$tbl][18].";  SEARCH COLUMN $datafieldcolsel <br>";
 for ($a=0;$a<count ($datacols);$a++) {
 	//echo "a=".$datacols[$a]." dcs=$datafieldcolsel<br>";
 	if ($datacols[$a]==$datafieldcolsel) $datafieldID=$a;
 }  //datafieldID - это номер активной DATA из списка в базах админка , no field number ! 
-
+echo "ebanyj splitter 2= ".$datasplitters[$datafieldID]."<br>";
+ if ($datasplitters[$datafieldID]=="SPC") { $datasplitters[$datafieldID]=" "; echo "SPACE applied<br>";};
+echo "ebanyj splitter 1= ".$datasplitters[$datafieldID]."<br>";
 	echo "type:DATA table:".$prdbdata[$tbl][5]." column:".$mycol[$datafieldcolsel]." (No $datafieldcolsel) datafieldID=$datafieldID separator:".$datasplitters[$datafieldID]." (SPC)<br>";
 	$cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$vID."'";
 		if (($virtualid)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
@@ -2287,7 +2309,7 @@ if (($write==cmsg("KEY_S_DATA"))AND($prdbdata[$tbl][12]!="fdb")) {
 	$datacols=explode (",",$prdbdata[$tbl][18]);
 	$datafilehdr=explode (",",$prdbdata[$tbl][19]);
 	$datasplitters=explode (",",$prdbdata[$tbl][20]);
-	echo "count datacols=".count ($datacols)." original ".$prdbdata[$tbl][18]."<br>";
+        echo "count datacols=".count ($datacols)." original ".$prdbdata[$tbl][18]."<br>";
 /*for ($a=0;$a<count ($datacols);$a++) { // сцуко не находит $datafieldID
 	echo " ($a==$datafieldcolsel) (a=datafieldcolsel)<br>";
 	if ($a==$datafieldcolsel) $datafieldID=$a;
@@ -2295,18 +2317,28 @@ if (($write==cmsg("KEY_S_DATA"))AND($prdbdata[$tbl][12]!="fdb")) {
 */ //datafieldID - это номер активной DATA из списка в базах админка
 IF ($datafieldID===false) echo "datafieldID FALSE!!!! procedure will fail!!<br>";
 IF ($datafieldID==0) $datafieldID=0;
+echo "!@!!!!!!!!!!!123!!!!!!!!!!!!! separator:".$datasplitters[$datafieldID].""; // это меню показывается не по кнопке DATA
+if ($datasplitters[$datafieldID]==="SPC") { $datasplitters[$datafieldID]=" "; echo "SPACE applied<br>";};
+	
 echo "type:DATA table:".$prdbdata[$tbl][5]." column:".$mycol[$datafieldcolsel]." (No $datafieldcolsel) datafieldID=$datafieldID separator:".$datasplitters[$datafieldID]." (SPC)<br>";
 echo "crc code given:$crc<br>";
-// дальше в некоторых местах SQL скрипта надо поменять датаид на имя поля  ($mycol[$datafieldcolsel)
-
+// дальше в некоторых местах SQL скрипта надо поменять датаид на имя поля  ($mycol[$datafieldcolsel) - что бы значил этот коммент (2009.12)
+echo "origid1=$origid1<BR>";//,$myrowdat[$md2column]);
+echo "origid2=$origid2<BR>";//,$myrowdat[$virtualid]);
+echo "datafieldcolsel=$datafieldcolsel<BR>";//,$datafieldcolsel);
+echo "datafieldname=$datafieldname<BR>";//$mycoldat[$datafieldcolsel]);
+echo "datafieldID=$datafieldID<BR>";//$datafieldID);"
+// $myrow[$md2column]."'"; - ПОТЕРЯН !!! ПОЧЕМУ  , КАКОГО !!!!  12.2009 SELECT 'taximask' FROM `characters` WHERE guid= ''  --- MYROW ПОХОДУ ПУСТОЙ ФОРМИРУЕТСЯ
 	// заменен vID -> $myrow[$md2column]   myrowid->$myrow[$virtualid]
 // сборка всех переменных в values и myrow[]
 	for ($a=0;$a<$mycolsdat;$a++)	{
 	$myrowdat[$a]=${"z".$a};
+        echo 'check='.$myrowdat[$a];
 	if ($a===0) { $values=$myrowdat[$a];}
 	if ($a>0) {$values="".$values.$datasplitters[$datafieldID].$myrowdat[$a]; }
 			}
 // сборка всех переменных в values и myrow[]
+        ECHO "values=$values<br>";
 	//проверка старых данных для CRC i UnDO / проверить надо только ДАТА!!
 	$cmd="SELECT '".$mycol[$datafieldcolsel]."' FROM `".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$myrow[$md2column]."'";
 	if ($virtualid==true) { $addcmd=" AND ".$mycoldat[$virtualid]."= '".$myrow[$virtualid]."'"; $cmd.=$addcmd;};
@@ -2402,6 +2434,10 @@ $datasplitters=explode (",",$prdbdata[$tbl][20]);
 		
 		$lensa=strlen ($myrow[$a])+2;// CFG OPT FUTURE 
 		if ($lensa>50) $lensa=50;
+                if ($prdbdata[$tbl][18]) for ($b=0;$b<count ($datacols);$b++) { $fil=$tbl.";".$myrow[$md2column].";;".$datacols[$b]."";
+				if ($a==$datacols[$b]) {echo "<a href='w.php?cmd=dat&fil=$fil'><img src='_ico/linked_table-yn.png' border=0 title='".cmsg ("KEY_HEAD")."'></a>";}
+			} //redaktirowanie data
+
 					if ($a===0) { $values="'".$myrow[$a];} 				// self-control
 					if ($a>0) {$values="".$values."','".$myrow[$a]; }	//self-control
 			?>			</td>
@@ -3104,6 +3140,7 @@ if ($dbaff) {
 $sourcetable=$sourcedb."`".$prdbdata[$source][5]."`";
 $desttable=$destdb."`".$prdbdata[$dest][5]."`";
 //  9 - db   5 - table  `".$prdbdata[$source][9]."`.
+
 	if ($cmpmode=="1only") { unset ($keys);  $cmd="SELECT * FROM `".$prdbdata[$source][9]."`.`".$prdbdata[$source][5]."` WHERE";	} 
 	// чтобы отобразить все надо стереть именно это WHERE !!!!!!!!!!!!!
 	// в общем какого то хрена перестала работатьь и последняя полезная часть запроса теряя передаваемые переменные
@@ -3287,6 +3324,10 @@ for ($a=0;$a<$boxcnt;$a++) {
     echo "exchanging id1=$vID id2=$vID2 <br>";// наши переменные в $vID i $vID2  $a - цикл ими уплравляющий
 }//  drugaya skobka ubrana
 //$strokefixeddata=str_replace ("¦",",",$strokedata);//hide
+ 
+$strokefixeddata1=(substr($strokefixeddata1, -1) == ',') ? substr($strokefixeddata1, 0, -1) : $strokefixeddata1;
+echo "$strokefixeddata1";
+
 hidekey ("addiflist1",$strokefixeddata1);
 //hidekey ("addiflist2",$strokefixeddata2);  if $string=explode ("+",$string)  true значит был послан отсюда запрос.  начну правку с этого
 //hidekey ("field",$addif1); // передается , но не принимается. ну и нафиг его.
@@ -3303,26 +3344,93 @@ submitkey ("write","KEY_MASEXC");
 }
 
 
-if ($massoper==3) { //sql del mass with undo
+if (($massoper==3)AND($prdbdata[$tbl][12]!="fdb")) { //sql del mass with undo
   // SELECT SAVEUNDO  DELETE ALL WHERE IDS=  //
     //модуль обработки  по сути аналог MASS_EXCH  может ему и передаватть все данные с надстройкой список?
     echo "starting mass del sql $boxcnt entries.<br>";
-for ($a=0;$a<$boxcnt;$a++) {
+for ($a=0;$a<$boxcnt;$a++) { //копия DEL_SQL
     $string=${box.$a};    $string=explode ("+",$string);
 				$vID=$string[0];$vID2=$string[1];
     echo "exchanging id1=$vID id2=$vID2 <br>";// наши переменные в $vID i $vID2  $a - цикл ими уплравляющий
+      // процедура удалени $tablemysqlselect'$tblmysqlselect
+
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
+	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
+		if ($data==-1) exit;
+	$cmd="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$vID."'";
+	if (($virtualid>0)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
+	$result = dbs_query ($cmd, $connect,$dbtype);
+    for ($c=0;$myrow = dbs_fetch_row ($result,$dbtype);$c++) {
+		if (!$test) $test=$myrow[0];
+		$undodata.=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrow,$mycols)." ";
+	};
+	// тут надо бы undo
+	$x=$test; //было $a - для чего?
+	$cmd="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE ".$mycol[$md2column]."='".$vID."'";
+	if (($virtualid>0)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
+	dbs_query ($cmd,$connect,$dbtype);
+	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
+	if ($a==true) { echo $vID.cmsg ("WF_DELOK")."!<br>";} else {
+				$errt=cmsg ("WF_DELFAIL"); $ermsg=cmsg ("WF_NOQUE")."<br>";}
+
+   if ($pr[12]) {$act="DEL_SQL  B $tbl($nametbl) Find$vID Cmd $cmd";
+       $baseID=$tbl;$hostIP=$prdbdata[$tbl][6];logwrite ($act) ;
+     undolog ($act,$undodata,$baseID,$hostIP);
+};  //
+
+ //if ($views) cmsg ("WF_EXQUE")."$cmd<br><br>";
+ echo cmsg ("WF_QUECOMP").dbs_affected_rows ().cmsg ("WF_Q1")."<br>";
+$silent=0;$errno=dbserr ();
+//endof executing
+
+submitkey ("write","WF_UNDO_LAST");
+      //окончание процедуры удаления.
+
+
+
 }//  drugaya skobka ubrana
 
 }
  
-if (($massoper==2)AND($prdbdata[$tbl][12]=="sql")){// redirect to showcode
+if (($massoper==2)AND($prdbdata[$tbl][12]!="fdb")){// redirect to showcode
     //модуль обработки  по сути аналог MASS_EXCH  может ему и передаватть все данные с надстройкой список?
     echo "starting mass exchange $boxcnt entries.<br>";
 for ($a=0;$a<$boxcnt;$a++) {
     $string=${box.$a};    $string=explode ("+",$string);
 				$vID=$string[0];$vID2=$string[1];
-    echo "exchanging id1=$vID id2=$vID2 <br>";// наши переменные в $vID i $vID2  $a - цикл ими уплравляющий
+  if ($debugmode)  echo "retrieving id1=$vID id2=$vID2 <br>";// наши переменные в $vID i $vID2  $a - цикл ими уплравляющий
+    // копия SHOWCODE
+    // процедура удалени $tablemysqlselect'$tblmysqlselect
+        $connect = dbs_connect ($prdbdata[$tbl][6], $sd[14] , $sd[17],$prdbdata[$tbl][12]);
+	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
+
+         $cmd="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` WHERE";
+      $cmd.=" ".$mycol[$md2column]."= '".$vID."'";
+	if (($virtualid>0)AND ($vID2!=="")) { $cmd.=" AND ".$mycol[$virtualid]."= '".$vID2."'";};
+        if ($debugmode) echo "Command $cmd;<br><br>";
+        $result=dbs_query ($cmd,$connect,$dbtype);
+        // real start copy
+        //if ($cmd) $result = dbs_query ($cmd, $connect,$dbtype);
+	if ($debugmode) if ($result===true) { echo $vID.cmsg ("WF_CMP")."<br>";} else {
+				//$errt=cmsg ("WF_CMPFAIL"); $ermsg=cmsg ("WF_NOQUE")."<br>";
+                                }
+
+// печать   формирование текста запроса
+    for ($c=0;$myrow = @dbs_fetch_row ($result,$dbtype);$c++) {
+		$insertone=gencmdlog ($sourcetable,$myrow,$mycols);
+		echo $insertone."<br>";
+	};
+
+  if ($debugmode) echo cmsg ("WF_CCLOK")." ".$c."<br>";
+		//echo "<br>".cmsg ("WF_QUECOMP")." ".dbs_affected_rows ()." ".cmsg ("WF_Q1")."<br>";
+	if ($debugmode) if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
+	if ($pr[12]) {$act="SHOW_PATCH_SQL  B $tbl($nametbl) Find$vID Cmd $cmd"; logwrite ($act) ;};  // логируемся
+
+    //conec kopii SHOWCODE
 }//  drugaya skobka ubrana
+
+    
 
 }
 

@@ -25,7 +25,7 @@ if ($tbl==-2) if ($vID=="Relogin") $vID=".relogin";
 
 
 global $verreadfile,$vID,$mzdata,$multisearch,$cmd;
-$verreadfile="Viewer v4.1 (c) dj--alex";
+$verreadfile="Viewer v4.1.112 (c) dj--alex";
 
 ### readfile  readdescripters return data info
 ##	$data=array ( // не настроено -  выдача данных функцией
@@ -199,6 +199,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 		if ($prauth[$ADM][2]) {  //модуль совместимости с conf файлами.
 			unset ($data);
 			if ($cmd[0]=="phpinfo") {phpinfo ();exit;};
+                        if ($cmd[0]=="installnewkey") {installnewkey (1);exit;};
 			if ($cmd[0]=="gmdata") { $tbl=$cmd[0];$namebas=$tbl;};
 			if ($cmd[0]=="dbdata") {$tbl=$cmd[0];$namebas=$tbl;};
 			if ($cmd[0]=="files") {$tbl=$cmd[0];$namebas=$tbl;};
@@ -463,10 +464,15 @@ if ($tbl) if (($dbtype!=="mysql")AND($dbtype!=="fdb")AND($dbtype!=="pg")AND($dbt
 if (($cm==1)AND($mode==0)) {
 print "<html><bb>".cmsg ("COMM").":</bb><br>";
 // вообшще вместо этого безобразия надо бы сделать просто JS ку   //print $d ;//method2
-$comfile="_local/scrcomm/".$scrdir."/".$vID.".txt";
-@ $wr = fopen ($comfile,"r");
-$vd=fread ($wr,10000);
-echo $vd;
+$comfile="_local/scrcomm/".$scrdir."/".$scrc.".txt";
+$imgfile="_local/scrcomm/".$scrdir."/".$scrc."$formatscr";
+@$wr = fopen ($comfile,"r");
+@$wrimg = fopen ($imgfile,"r");
+if (!$wr) echo "No commented ^  $comfile<br>;";
+if ($wr) { @$vd=fread ($wr,10000); echo $vd;echo "<br>";}
+if (($needscr==true)AND($formatscr)) if ($wrimg) echo "<img src=\"$imgfile\">";
+
+
 exit;
 }
 			// Проверка уровня прав на чтение
@@ -550,7 +556,7 @@ function search ()
 				global $res16;//maybe bug with res16 передаче
 				global $vID2;
 				global $limitenable,$selectenable,$field,$printlimit,$addsql,$kol,$dbtype;//  глобализация как обычно млин
-                                
+                                //echo "dbtype=$dbtype;"; тут он есть , где потерялся тогда??
 				###########################################################
 				//MYSQLMODESEARCHSTART					NON-GLOBAL MODES //
 				###########################################################

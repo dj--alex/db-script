@@ -1,7 +1,7 @@
 <?php 
 require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
 if (!$activation) exit;
-$verfilemgr="Filemgr  v 4.0.97 (c) dj--alex ";
+$verfilemgr="Filemgr  v 4.1.10 (c) dj--alex ";
   $enterpoint=$verfilemgr;#end of conf
 // вот наша буферизация - ob_start();ob_end_flush();
 autoexecsql (); 
@@ -197,9 +197,9 @@ if (($share=="FMG_UNSHARE")AND($filefound==0)) { lprint ("UNSH_FAIL");exit;};
    $fildata[$count][2]=$userlist;   $fildata[$count][3]=$groupplevels;
    $fildata[$count][4]=$hash;   $fildata[$count][5]=$pathandfile;
    $fildata[$count][6]=$yes;   $fildata[$count][7]=$commfile;   $fildata[$count][8]=date("d.m.Y H:i:s");
-   $fildata[$count][9]=$downloads;   $fildata[$count][10]=$lastdownload;   $fildata[$count][11]=$dupname;
-   $fildata[$count][12]="0";   $fildata[$count][13]="0";   $fildata[$count][14]="0".$addOSenter;
- echo "Your link to file: <a href='filemgr.php?c=".$fildata[$count][4]."'>link</a><br>";
+   $fildata[$count][9]=$downloads;   $fildata[$count][10]=$lastdownload;   $fildata[$count][11]=$srchen;
+   $fildata[$count][12]=$dupname;   $fildata[$count][13]="0";   $fildata[$count][14]="0".$addOSenter;
+ echo cmsg ("Y_LNK")." <a href='filemgr.php?c=".$fildata[$count][4]."'>link</a> ".cmsg ("Y_LNK_I")."<br>";
  //echo "server name=".$_SERVER['SERVER_NAME']."<br>"; echo "php self=".$_SERVER['PHP_SELF']."<br>"; echo "doc root=".$_SERVER['DOCUMENT_ROOT']."<br>";
 $link="<br>http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][4]."<br><br>";
 
@@ -288,6 +288,7 @@ echo "</select>"; }
 echo "<br>";
 lprint (COMM);inputtext ("commfile",15,$commfile);echo "<br>";
 checkbox (1,"yes"); lprint (GEN_FL_EPX);
+checkbox (1,"srchen"); lprint (GEN_FILENSRCH);
 echo "<br>";
 if ($coreredir=="SH_UPDD_FL") { hidekey ("coreredir","step2");};
     hidekey ("file",$file);
@@ -544,15 +545,46 @@ if (($pid==1)AND($prauth[$ADM][12])) {
 		if (($file[$a][0])==="..") continue;
 		if (($file[$a][0])===false) continue;
 		if ($file[$a][1]) { $dir="==>";}else{ $dir="";};
-		echo "<option value=\"".$file[$a][0]."\">".$dir.$file[$a][0]."</option>";
+                $fsizer="";
+                if ($dir!=="==>") {
+                    $fsize=$file[$a][2];// settype ($fsizer,"string");
+                
+                if ($fsize<1024) $fsizer="[".round ($fsize,1)."b]";
+                if ($fsize<1) $fsizer="";
+                if ($fsize>1024) $fsizer="[".round ($fsize/1024,1)."Kb]";
+                if ($fsize>1024*1024) $fsizer="[".round ($fsize/1024/1024,2)."Mb]";
+                if ($fsize>1024*1024*1024) $fsizer="[".round ($fsize/1024/1024/1024,2)."Gb]";
+                }
+                //$filesizemb=$file[$a][2]/1024;
+		echo "<option value=\"".$file[$a][0]."\">".$dir.$file[$a][0]."".$fsizer."</option>";
 		}// size (".$file[$a][2].")
 	if ($pr[11]==1) {	//protected cmds
 	}
 	echo "</select></form>";
 	}
+echo "<br>";
+
+$dbsdiskfree=round ((int)(@disk_free_space($path)/(1024*1024*1024)),1);
+$dbsdisktotal=(int)(@disk_total_space($path)/(1024*1024*1024));
+
+if ($ADM) echo "Selected : Free ".$dbsdiskfree."Gb ";  // сделать переключатель дисков или что то вроде указателя
+if ($ADM) echo "\\".$dbsdisktotal."Gb<br>";
+
+
+$disks=explode (",",$pr[79]);
+for ($a=0;$a<count ($disks);$a++) {
+ $diskfree[$a]=round ((@disk_free_space($disks[$a])/(1024*1024*1024)),1); //Gb
+ $disktotal[$a]=round ((@disk_total_space($disks[$a])/(1024*1024*1024)),1); //Gb
+ if (!$pr[80]) echo "Disk ".($a).":: ".$diskfree[$a]."Gb \\ ".$disktotal[$a]."Gb.<br>";
+ $avgfree=$avgfree+$diskfree[$a];
+ $avgtotal=$avgtotal+$disktotal[$a];
+}
+$avgfree=$avgfree;
+$avgtotal=$avgtotal;
+
 	
-	echo "Free ".(int)(@disk_free_space($path)/(1024*1024))."Mb ";
-echo " of ".(int)(@disk_total_space($path)/(1024*1024*1024))."Gb";
+echo " Summary :Free ".$avgfree."Gb ";echo "\\".$avgtotal."Gb";echo "<br>";
+
 }
 
 // ADDED FUNCTIONS FROM PHP.NET  WRITTEN NON DJ--ALEX

@@ -1,4 +1,4 @@
-<?	// Данная программа относится к пакету DBSCRIPT v2.1 (с) dj--alex
+<?php	// Данная программа относится к пакету DBSCRIPT v2.1 (с) dj--alex
 //header ("Location: main.php");
 //$nomnu=1;
 @$a=opendir ("_conf"); if ($a==false) Header("Location: install.php");

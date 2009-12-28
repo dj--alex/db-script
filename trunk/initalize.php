@@ -1,4 +1,4 @@
-<?
+<?php
 require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
 $script="login.php";
  if ($pr[36]=="on")  { 
