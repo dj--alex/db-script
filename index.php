@@ -1,5 +1,5 @@
 <?php	// Данная программа относится к пакету DBSCRIPT v2.1 (с) dj--alex
-//header ("Location: main.php");
+//header ("Location: main.php");   ЭТА ХЕРЬ ПОЧЕМУ ТО НЕ ПЕЧАТАЕТСЯ ИЗ ДРУГ  СКР <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html>
 //$nomnu=1;
 @$a=opendir ("_conf"); if ($a==false) Header("Location: install.php");
 	require ('dbscore.lib'); // функция подготовки к работе и авторизации

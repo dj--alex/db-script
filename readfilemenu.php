@@ -33,7 +33,7 @@ if ($pr[19]) $mode15=7;
 // юзать дефолтные вне зависимости    1 переменная
 $sel=array();$sel[$mode]=" selected ";
 if ($mode==9) $sel[3]=" selected "; //затыкаем баг с переключением
-print "Тип поиска <select name = mode size = ".$mode15.">";
+print cmsg (SRCH_TP).":<select name = mode size = ".$mode15.">";
 if ($adm==1) { 
 	};
 if ((($pr[3])and($ADM==0))or($prauth[$ADM][26])) echo "<option value=1".$sel[1].">".$sd[4]."</option>";

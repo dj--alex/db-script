@@ -25,7 +25,7 @@ if ($tbl==-2) if ($vID=="Relogin") $vID=".relogin";
 
 
 global $verreadfile,$vID,$mzdata,$multisearch,$cmd;
-$verreadfile="Viewer v4.1.112 (c) dj--alex";
+$verreadfile="Viewer v4.1.5 (c) dj--alex";
 
 ### readfile  readdescripters return data info
 ##	$data=array ( // не настроено -  выдача данных функцией
@@ -421,8 +421,8 @@ echo "!";if ($live) echo "<font color=green id=xfnt>live</font>!";
 					msgexiterror ("limit","disable","disable");
 				} else {$addlimit=" LIMIT $printlimit";};
 			}
-			if ($selectenable) { $addgroup=" GROUP BY ".$field.""; }
-			$addsql=$addgroup.$addlimit;// CSV с сортировкой отстанет...
+			if ($selectenable) { $addgroup=" GROUP BY ".$field.""; }   // короче видимо все придется проверять перед исполнением
+			$addsql=$addgroup.$addlimit;// CSV с сортировкой отстанет...   // field на соответствие field... маразм а делать надо.
 			//окончание лимита и сортировки
 
 			if ($lock) { if ($adm==0) msgexiterror ("disabled",0,"getfile.php"); }
@@ -716,7 +716,7 @@ echo " </form> ";
 				// процедура поиска по имени  - mode 1 - CSV
 				if (($mode == 1)AND($prdbdata[$tbl][12]=="fdb"))
 				{
-					$findrecords=0;echo "Результаты поиска по базе ".$namebas." - ".$vID.":\n\n";
+					$findrecords=0;echo cmsg ("RF_RESSRCH").$namebas." - ".$vID.":\n\n";
 					$vIDold=$vID; $vID=strtolower ($vID);
 					// @$f=fopen ("_data/".$filbas,"r") or die ("Файл базы не найден");
 					// echo ""; $z=xfgetcsv ($f,512,"¦");
@@ -753,7 +753,7 @@ echo " </form> ";
 						settype ($vID,"integer");
 						if ($vID==0)  msgexiterror ("needcode",$mode,"disable");
 					}
-					$findrecords=0;echo "Результаты поиска по базе ".$namebas." - ".$vID.":\n\n";
+					$findrecords=0;echo cmsg ("RF_RESSRCH").$namebas." - ".$vID.":\n\n";
 					for ($a=0;$dbc=xfgetcsv ($f,512,"¦");$a++) {
 						$k = count($dbc); // dbc-стр табл  к- число кол з-заголовок
 						if ($dbc[$md2column]==$vID) $selected[]=$dbc;  // c проверкой
@@ -961,7 +961,7 @@ hidekey ("kol",$kol);
 				// осталось сделать обработку файла в ноовм формате (_conv326)
 				echo "READFILE:OLD_CORE_MODE.<br>";
 				// общее количество найденных позиций
-				//if ($vID!=="!101") { echo "Результаты поиска по базе ".$namebas." - ".$vID.":\n\n";}
+				//if ($vID!=="!101") { echo cmsg ("RF_RESSRCH)."".$namebas." - ".$vID.":\n\n";}
 				//$category =1; категория содержится в этой переменной - this will reset category  TEST ONLY!
 				if (($category==="")||($category===false)) // отправка назад если вошли без категорий.
 				{

@@ -3,16 +3,22 @@
 // EXTERNAL JAVASCRIPT  - задание каскадных стилей для программы и кнопок - интерфейс
 // 3.6.06 edition    if (!$trafeconom) $idadd=" id=\"".$name."\" ";
  	global $verhead,$systemshrift,$buttonshrift,$tableshrift;
-$verhead="Header v3.6.1 (c) dj--alex"; //hide
+$verhead="Header v4.1.5 (c) dj--alex"; //hide
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=<?=$sd[19];?>">
 <META NAME="KEYWORDS" CONTENT="<?=$sd[24]?>">
 <title><? 
 if ($p!=0) $pagename=$pgcontent[$p+1][3];
-echo $sd[16]." - ".$pagename." - ".$write; ?></title> <?
-if (($enrestmenu)AND($menuloaded!==1)){?>
-<div id="module" style="position:absolute; z-index:0; left: <?=$pr[44]+2 ; ?>px; top: 0px; background-color:<?=$rgbfon ; ?>; color:#<?=$rgbtext ; ?>;background:#<?=$rgbfon ; ?>; "><?
+$element=$vID; settype ($element, integer); if ($element=="0") unset ($element);
+if ($sd[19]=="utf-8") $pagename=iconv("windows-1251","utf-8",$pagename);
+$titleout= $sd[16]." - ".$pagename." - ".$write." $element ";
+echo $titleout ;
+?></title> <?
+
+//этот модуль выводиться только в стиле DM (4)
+if ($dbstyle3en) if (($enrestmenu)AND($menuloaded!==1)){?>
+<div id="module4" style="position:absolute; z-index:0; left: <?=$pr[44]+2 ; ?>px; top: 0px; background-color:<?=$rgbfon ; ?>; color:#<?=$rgbtext ; ?>;background:#<?=$rgbfon ; ?>; "><?
 } 
 ?>
 <style type="text/css"><?

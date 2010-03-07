@@ -51,6 +51,8 @@ for ($a=0;$a<$pgcnt;$a++) {
   $b=$a+1;
      $printmenuoption=$pgcontent[$b][3];
  if ($thislanguagepagescolumn) $printmenuoption=$pgcontent[$b][$thislanguagepagescolumn];
+ if ($sd[19]=="utf-8") $printmenuoption=iconv("windows-1251","utf-8",$printmenuoption);
+ 
      //....if ($pgcontent[$b][8]==1) { echo "<ul>"; }
  if ($pgcontent[$b][9]!=1) echo "<li><a href=\"".$pgcontent[$b][1]."\">".$printmenuoption."</a></li>"; // target=\"_top\"  echo "onClick=\"MM";
 // if ($pgcontent[$b][8]==2) { echo "</ul>"; }

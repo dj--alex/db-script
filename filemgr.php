@@ -23,10 +23,23 @@ if ($c) {  //нам пришла ссылка на файл!  возрадуемся!
     for ($a=0;$a<$filcount;$a++) {    //echo $table[$a][4]."<br>";
     if ($fildata[$a][4]==$c) { $filerealid=$a;$pathwithfile=$fildata[$a][5];$commfile=$fildata[$a][7];};    //if (==$pathandfile) lprint (FSH_EXST_AN_USR); //трёхмерный массив :))
 }
+
+if (file_exists ($pathwithfile)==false) die ("File not found.");
 if ($commfile==false) {$f=$c;} else {
 echo cmsg ("COMMFILE")."$commfile<br>";
  echo "<a href='filemgr.php?f=".$c."'>Download!</a><br>";
-exit;}
+ exit;
+ };
+
+
+$filmsv=explode(".",$pathwithfile);
+ $exts=array('gif','png','jpg'); //Возможные расширения
+ if(count($filmsv)>1) if(!in_array(strtolower($filmsv[count($filmsv)-1]), $exts)) { $z=""; } else {
+   $f="image";
+   
+ if (!$f) exit;
+ 
+ }
 }
 if ($f) {  //нам пришла ссылка на файл!  возрадуемся!
     for ($a=0;$a<$filcount;$a++) {    //echo $table[$a][4]."<br>";
@@ -48,6 +61,7 @@ else {msgexiterror ("notrights","F_DWN_USR You not in userlist this file! ","fil
 //echo "trying ... FMG_LNK_DL ".$prauth[$ADM][0]." download file $pathwithfile)   <br>";
 if (!$pathwithfile) die ("File not found.");
 if (!$enabledownload) die ("not allowed!!");
+if (file_exists ($pathwithfile)==false) die ("File not found.");
 
 if ($enabledownload) { logwrite ("FMG_LNK_DL ".$prauth[$ADM][0]." download file $pathwithfile)" );ob_clean ();
     fclose ($filescfg) ;//fclose ($file);
@@ -57,8 +71,17 @@ $fildata[$filerealid][10]=date("d.m.Y H:i:s"); // set downloads +1
 $x=writefullcsv ($filescfg,$filheader,$filplevels,$fildata); // надо себе напомнить чтоб не забывал переоткрывать файл в w
    //writing new stroke to _conf\files.cfg
     //logwrite ("FMG_SHARE $share (usr=$userlist) (plvl=$groupplevels) $pathandfile");
-  
-    sendfile ($pathwithfile);exit;
+  if ($f=="image") {
+   ob_clean ();// echo "<img src=\'$pathwithfile\'>";
+   $content =  file_get_contents ($pathwithfile);
+   // печатает тем не менее эта строка видимо    // показывает картинки отдельно если залита была картинко
+     header("Content-type: image/jpg");
+     echo $content;// показ php файлов залитых вместо jpg будет неудачен.
+     $img= imagecreatefromstring($content);
+//     print imagejpeg($img);
+  }
+  if ($f!="image") sendfile ($pathwithfile);
+  exit;
  
 };
 
@@ -404,7 +427,7 @@ if (($cmd==cmsg("FMG_EDIT"))and($prauth[$ADM][12])) {
 
 
 if ($pr[12]) {$act="FILEMGR_CMD $cmd $file($path $fileforaction) word=$stroka"; 
-if ($cmd!==cmsg("FMG_ENTER")AND($cmd!==cmsg("FMG_EXIT"))) logwrite ($act) ;
+if ($cmd) if ($cmd!==cmsg("FMG_ENTER")AND($cmd!==cmsg("FMG_EXIT"))) logwrite ($act) ;
 	};  // логируемся
 // } else { echo "<br><font color=red id=errfnt>".cmsg ("LIM")."</font>".cmsg ("FMG_HLP2");}
 

@@ -2,10 +2,18 @@
 // Данная программа относится к пакету DBSCRIPT v2.1 (с) dj--alex
 if ($_FILES) ob_start(); // добавлено т.к. в 2033 строке непонятно прислали файл вообще или нет
 require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
-
 if (!$activation) exit;
 //$error=pg_connect ("!","2","3");echo $error;    postgre-php not installed
-
+// TinyMCE addition 
+  /* ?> <script type="text/javascript" src="tinymce/tiny_mce.js"></script>
+   <script type="text/javascript">
+       tinyMCE.init({
+               mode:"textareas",
+               theme:"advanced",
+               language:"en"
+           });
+    </script><?
+*/
 $verwritefile="Editor v4.1.10 (c) dj--alex";
  global $verwritefile,$vID,$vID2;
 
@@ -177,10 +185,9 @@ if ($cfgmod==2) msgexiterror ("nologsedit",$namebas,"w.php");
 
 ?>
 <form action="w.php" method=post>
-Искать <textarea name=vID cols= 30 rows=1 ><?=$vID; ?></textarea>
-<? if (($virtualid==true)OR($virtualid=="0")) {
-	?>ID2 <textarea name=vID2 cols= 8 rows=1 ><?=$vID2; ?></textarea>
-		<? ;};
+<?
+echo "ID1 ";inputtxt ("vID",30);
+if (($virtualid==true)OR($virtualid=="0")) {echo "ID2 ";inputtxt ("vID2",8); };;
 
 #################################################################
 // Поправки на текущие настройки
@@ -188,8 +195,8 @@ if ($cfgmod==2) msgexiterror ("nologsedit",$namebas,"w.php");
 //вывод текущей ячейки
 
 
-if ($pr[9]==1) checkbox ($commode,"commode"); lprint ("WF_NOSCR");
-if (($cfgmod<1)AND($prauth[$ADM][18]))	 {checkbox ($prauth[$ADM][18],"noaddmode");lprint ("WF_ALLFLD");echo "<br>";}
+//if ($pr[9]==1) checkbox ($commode,"commode"); lprint ("WF_NOSCR");
+//if (($cfgmod<1)AND($prauth[$ADM][18]))	 {checkbox ($prauth[$ADM][18],"noaddmode");lprint ("WF_ALLFLD");echo "<br>";}
 
 if (($cfgmod<1)AND($prauth[$ADM][2])) {
 	echo "<a href='w.php?cmd=ed&fil=dbdata;".$prdbdata[$tbl][0]."'><img src='_ico/linked_table-no.png' border=0 title='".cmsg ("PROP_EDIT")."'></a>";
@@ -3620,10 +3627,10 @@ if ($printlimit==false) { msgexiterror ("limit","noexit","disable");} else {$lim
 // конец модуля сортировки
 //$qw=dbs_query ($cmd,$connect,$dbtype);;echo $qw."--"; dbserr ();
 	//$patterns[0]="//\'/" ;$replacements[0]="'"; //Unknown modifier '\' in 
-	echo "key_s_exec check cmd - $cmd<br>";
+	if ($debug) echo "key_s_exec check cmd - $cmd<br>";
         $patterns[0]="/\\\'/" ;$replacements[0]="'"; //4.1  check
 	@$cmd=preg_replace ($patterns,$replacements, $cmd);//4.1  check
-        echo "key_s_exec check cmd after preg replace - $cmd<br>";
+        if ($debug) echo "key_s_exec check cmd after preg replace - $cmd<br>";
 	if (strpos ($cmd,"SELECT")!==false) $printing=1; // разрешает печать в libmysql
 	if (strpos ($cmd,"SHOW")!==false) $printing=1; // разрешает печать в libmysql
 	if (strpos ($cmd,"CHECK")!==false) $printing=1; // разрешает печать в libmysql
