@@ -59,6 +59,7 @@ $go=getvar ('go');
 if ($goID==("SENDMSG")) {
 @$inet=fopen ("http://dj.chg.su/dbscript/update.txt","r");
 echo "getting data $str... saving...<br>";
+echo "sorry if encoding fail... it will fix later<br>";
 	$w=csvopen ("_logs/reportlog.dat","a+",1);
 	if ($w==false) {mkdir ("_logs");
 	$w=csvopen ("_logs/reportlog.dat","a+",1);}

@@ -676,6 +676,23 @@ uu {
   text-decoration: underline;
 	}
 
+red {
+  color: red;
+	}
+
+grn {
+  color: green;
+	}
+
+yel {
+  color: yellow;
+	}
+
+gray {
+  color: gray;
+	}
+
+
 tbig {
      font-size-adjust: 0.6;
 	}

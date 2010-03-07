@@ -8,17 +8,38 @@
 // или упростить  или сделать чтобы меню не ездило и надписи не прыгали после первой-же операции
 
 // вообще по хорошему str0.php как то синхронизировать с indexmenu.php, head, footer  надо
-$verpages="Pages v3.6.1 (c) dj--alex";
+
+$verpages="Pages v4.2 (c) dj--alex";
 $nomnu=1; //эта переменная должна задаваться если нужна до инициализации
 require_once ('dbscore.lib'); // драйверы работы с файлами
 if ($pr[55]) { print ("Normal exit by config parameters"); exit ;}
-$menuexist=1;
-$pageenter=getvar ('p');$pageenter++; 
-if (is_numeric($pageenter)==false) bluescreen ("PAGES:GIVEN_STRING_BUT_REQUIRES_A_NUMBER");  //popravil ujazvimosts
 
-//for ($a=0;$a<15;$a++) {
-//	if ($pgheader[$a]==$languageprofile) $thislanguagepagescolumn=$a+1;
-//} 
+$goo=getvar ('goo');$str=getvar ('str');
+
+$menuexist=1;
+$str0active=1;
+$pageenter=getvar ('p');$pageenter++;
+
+for ($a=0;$a<15;$a++) {
+	if ($pgheader[$a]==$languageprofile) $thislanguagepagescolumn=$a;  // BUG??  а зачем это +1 тут стоит?
+}
+
+$x="";
+if ($goo) { //$addr="str0.php?p=0".$str;   header ($addr);    будет работать только с $thislanguagepagescolumn !!!!  без нее текст моде фаил
+    for ($a=0;$a<count ($pgcontent);$a++) {
+    $thispagename=$pgcontent[$a][$thislanguagepagescolumn];
+    if ($sd[19]=="utf-8") $thispagename=iconv("windows-1251","utf-8",$thispagename);  // тут могут быть подводные камни связанные с кодировкой - использование menukey перепроверить 
+    //if ($sd[19]=="utf-8") $goo=iconv("windows-1251","utf-8",$goo);
+    if ($thispagename==$goo) { $pageenter=$a; break;};
+     
+$x.="cycle #=$a hdnlangname=".$pgheader[$thislanguagepagescolumn]."(pgc[a]=goo thispagename=".$thispagename."==$goo)<br>";  // млять почему ПУСТО?:??  какого хера   $thispagename ="" ???
+    }
+}
+//echo "goo=$goo";exit;
+
+if (is_numeric($pageenter)==false) bluescreen ("$x PAGES:GIVEN_STRING_BUT_REQUIRES_A_NUMBER");  //popravil ujazvimosts
+
+//echo "111111111111111111111111111111111111thislanguagepagescolumn$thislanguagepagescolumn"; exit;
 
 $startedbypage=$pgcontent[$pageenter][0];   $module1=$pgcontent[$pageenter][1];//  guid,  str1
 $module2=$pgcontent[$pageenter][2];			$pagedisplayname=$pgcontent[$pageenter][3];// str2    rus kom
@@ -62,7 +83,7 @@ if (($test2===false)AND($test===false)) { $resload=true;};
  if (($codekey<0)) { echo "<frameset><frame src=indexmenu.php name=mainFrame scrolling=NO noresize> </frameset>";exit;};
  //blue screen end
  $frameoldcore=0; //CFG OPT FUTURE
- if ($frameoldcore==1) {
+ if ($frameoldcore==1) { // не используется 
  	?>
 <frameset rows="*" COLS="18.5%, 85%" framespacing="0" frameborder="NO" border="0">
   <frame src="indexmenu.php" name="mainFrame" scrolling="NO" noresize>
@@ -71,14 +92,14 @@ if (($test2===false)AND($test===false)) { $resload=true;};
 <noframes><body>Ваш браузер не поддерживает фреймы. Обновите его.</body></noframes>
 <?
  }
-  if ($frameoldcore==0) {
-  	$menuloaded=1;
+  if ($frameoldcore==0) {  // наша ситуация
+  	$menuloaded=1;ob_flush ();
 ?>
-<div id="menu" style="position:absolute; width: <?=$pr[44] ; ?>; z-index:0; left: 0px; top: 0px;">
+<div id="menu2" style="position:absolute; width: <?=$pr[44] ; ?>; z-index:0; left: 0px; top: 0px;">
 <?
 require_once("indexmenu.php");
 ?></div>
-<div id="module" style="position:absolute; z-index:0; left: <?=$pr[44]+2 ; ?>px; top: 0px; background-color:<?=$rgbfon ; ?>; ">
+<div id="module2" style="position:absolute; z-index:0; left: <?=$pr[44]+2 ; ?>px; top: 0px; background-color:<?=$rgbfon ; ?>; ">
 <?
 
 if ($wopros) { //parsing ? data
@@ -104,6 +125,7 @@ if ($redir) $loadpage=$redir;
 	if ($a1) { lprint (OVERLOAD);exit ;}
 }
 */
+
 require_once("$loadpage");
 ?>
 </div>

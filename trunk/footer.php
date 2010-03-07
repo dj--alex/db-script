@@ -10,6 +10,8 @@ if ($enterpoint!=="help") {
 ?><div id="help" style="position:absolute;  opacity:1; width: 90; height:40px; z-index:1; left: 500px; top: 5px;" class=div><h5><?
 
 
+?><a target=help href="http://navstar-gps.ru"><img src="_ico/Navstar-gps" border=1 title="Navstar-gps"></a> <?
+
 
 if (($prauth[$ADM][16]==false)AND($write==true) ) { //<?=cmsg ("F1_") ;
 ?><a target=help href="main.php?hlp=<?=$write;?>"><img src=_ico/wopros.png border=1 title="<?=cmsg (F1);?>"></a><?
