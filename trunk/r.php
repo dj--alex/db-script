@@ -430,7 +430,7 @@ echo "!";if ($live) echo "<font color=green id=xfnt>live</font>!";
 			if (($mode<>2)AND($mode<>4)AND(strlen($vID)<$sd[13]))
 			{
 				print "<bb>Ошибка ввода</bb><br>";
-				echo "Недостаточно информации для поиска. Необходимо написать как минимум $sd[13] букв.";echo "<form  action=disable method=post>"; hidekey ("go","Назад");echo "</form> ";
+				echo cmsg ("MORE_LET")."$sd[13]".cmsg("LET");echo "<form  action=disable method=post>"; hidekey ("go","Назад");echo "</form> ";
 				exit (1);
 			}
 
@@ -853,6 +853,7 @@ hidekey ("kol",$kol);
 					$findrecords=0;
 					//echo "Результаты поиска в ".$namebas." - по колонке ".$mzdata[$fndcolumn]."($fndcolumn) -- ".$vID.":\n\n";
 					$vIDold=$vID; $vID=strtolower ($vID);
+                                        if ($vID=="!0") {$vID=="";$notnull=1;};
 					$f=$data[4];
 					$data=readdescripters ();	$f=$data[4];
 					for ($a=0;$dbc=xfgetcsv ($f,512,"¦");$a++) {
@@ -860,6 +861,7 @@ hidekey ("kol",$kol);
 						// for ($b=0;$b<$k;$b++) {  Бла бла бла;Фэнтэзи;Комедия;Боевик  ищет фигово переключает на 1,4 films al где то производися сброс значения и оно уже не восстанавливается
 						// $mode7=1 если вход был оттуда.копать здесь надо.
 						$findid=strpos(strtolower($dbc[$fndcolumn]),$vID);
+                                                if (($notnull)AND($dbc[$fndcolumn]!=="")) $findid=1;
 						if (($findid!==false)&&($dbc[$fndcolumn]!=="")) {
 							$selected[]=$dbc;   //added
 						}
