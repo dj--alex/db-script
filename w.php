@@ -14,7 +14,7 @@ if (!$activation) exit;
            });
     </script><?
 */
-$verwritefile="Editor v4.1.10 (c) dj--alex";
+$verwritefile="Editor v4.1.54 beta (c) dj--alex";
  global $verwritefile,$vID,$vID2;
 
 $enterpoint=$verwritefile;// для показа точки входа
@@ -548,14 +548,17 @@ if (($write==cmsg ("KEY_ADD"))AND($prdbdata[$tbl][12]=="fdb")) {
 	if ($cfgmod==1) @$f=csvopen ("_conf/".$filbas,"r","0");echo "<br>";
 	$data=readdescripters ();  if ($data==-1) exit; 
 		//подсчета пустой ячейки
+
 		while ($myrow=xfgetcsv ($f,1024,"¦")) {	$countquery=$myrow[$md2column];
 					settype ($countquery, integer);
 						if ($countquery>$maximalcntmd2) $maximalcntmd2=$countquery;
 									$maxquery++;}
-		echo cmsg ("WF_1NOTUSED").":".($maximalcntmd2+1)."<br>";
+		echo cmsg ("WF_1NOTUSED").":".($maximalcntmd2+1)."<br>";  // это в автомат добавлять.    CFG OPT откл.
 		rewind ($f);		//	erase&rewind :) перемотать $F!!!
 		//конец завершения подсчета пустой ячейки
-	$mycol=xfgetcsv ($f,1024,"¦");$cnt=count ($mycol);
+	$mycol=xfgetcsv ($f,1024,"¦");
+        	if ($cfgmod==1) $mycol=$data[0];// чтение заголовков правильно !!! в нужной кодировке!!! 
+                $cnt=count ($mycol);
 		if ($vID2==="") { while ($myrow[$md2column]!==$vID) {
 									$myrow=xfgetcsv ($f,1024,"¦");
 											if ($myrow===false) { break;};						
@@ -581,7 +584,7 @@ if ($oldcoreedit)
 	for ($a=0;$a<$cnt;$a++)
 			{
 			echo "$mycol[$a]";
-			if ($mycol[$md2column]===$mycol[$a]) echo "<ii>(ID1)</ii>";
+			if ($mycol[$md2column]===$mycol[$a]) {echo "<ii>(ID1)</ii>"; $myrow[$a]=($maximalcntmd2+1);};
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii>(ID2)</ii>";
 			?>
 			<textarea name=z<?=$a; ?> cols=30 rows=1><?=$myrow[$a]?></textarea><br><? ;
@@ -590,10 +593,10 @@ if ($oldcoreedit)
 			for ($a=0;$a<count ($mycol);$a++)
 			{ //hdr text	//	
 				if ($prauth[$ADM][41])echo "<tr>";//optional   Box,not linear edit.
-			echo "<td>$mycol[$a] ";
-			if ($mycol[$md2column]===$mycol[$a]) echo "<ii><bb>(ID1)</ii></bb>";
+			echo "<td>$mycol[$a] ";// перевести
+			if ($mycol[$md2column]===$mycol[$a])  {echo "<ii>(ID1)</ii>"; $myrow[$a]=($maximalcntmd2+1);};
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii><bb>(ID2)</ii></bb>";
-		$lensa=strlen ($myrow[$a])+2;// CFG OPT FUTURE 
+		$lensa=strlen ($myrow[$a])+2;// CFG OPT FUTURE
 		if ($lensa>50) $lensa=50;
 			?>
 			</td>
@@ -1100,7 +1103,7 @@ submitkey ("start","SQL_REM_START");
 //CREATING DUMP AT DBSCRIPT SIDE AS ONE SQL FILE
 if (($start==cmsg ("SQL_REM_START"))AND($dumpdbname)AND ($prdbdata[$tbl][12]!="fdb")AND(!$pr[20])) {
 	@$connect2 = dbs_connect ($mysqlserver2,$sd[14],$sd[17],$dbtype);
-         
+         //echo "bldjad";die ();
 	echo cmsg (W_CRT_DMP)." $backupdbname...<br>";
 	echo "Режим: Dbscript side, data";
 	if ($structure) echo "+structure";
@@ -1120,6 +1123,7 @@ while ($result=dbs_fetch_row ($a,$dbtype)) {
 	@$a=opendir ("_local/dump"); if ($a==false) mkdir ("_local/dump");@closedir ($a);
 	$dumpfile=fopen ("_local/dump/".$dumpdbname,"w"); if ($dumpfile==false) die ("cannot open file $dumpdbname");
 	$x="#::Dbscript $verchar ::  Mysql dump \n\r";
+        // тут мы где то потеряли encodng
 	fwrite ($dumpfile,$x);
 for ($a=0;$a<count ($tablelist);$a++) {
 	
@@ -1140,6 +1144,8 @@ for ($a=0;$a<count ($tablelist);$a++) {
     	//if ($views) echo $insertone;
  		if ($OSTYPE=="LINUX") $insertone.="\n";
 		if ($OSTYPE=="WINDOWS") $insertone.="\n\r";
+                                        $x=detectencoding($insertone);   if ($views)   echo "Encoded str: ".$x."<br>?";  //dobawil utf-8  какая то левая процедура. die () не работает
+                              if (($x!=="utf-8")AND($sd[19]=="utf-8")) $insertone=iconv("windows-1251","utf-8",$insertone);
 		fwrite ($dumpfile,$insertone);
 		$strclines++;		//echo $insertone."<br>";
 	};	
@@ -1155,6 +1161,8 @@ for ($a=0;$a<count ($tablelist);$a++) {
 		$insertone=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`",$myrow,$mycols);
  		if ($OSTYPE=="LINUX") $insertone.="\n";
 		if ($OSTYPE=="WINDOWS") $insertone.="\n\r";
+                        $x=detectencoding($insertone);    if ($views) echo "Encoded ln : ".$x."<br>?";  //dobawil utf-8  какая то левая процедура. die () не работает
+                              if (($x!=="utf-8")AND($sd[19]=="utf-8")) $insertone=iconv("windows-1251","utf-8",$insertone);
 		fwrite ($dumpfile,$insertone);
 		$lines++;
 		//echo $insertone."<br>";
@@ -1312,7 +1320,10 @@ for ($a=0;$a<count ($tablelist);$a++) {
     	//if ($views) echo $insertone;
  		if ($OSTYPE=="LINUX") $insertone.="\n";
 		if ($OSTYPE=="WINDOWS") $insertone.="\n\r";
-		fwrite ($dumpfile,$insertone);
+		                $x=detectencoding($insertone);   if ($views)   echo "Encoded ln : ".$x."<br>?";  //dobawil utf-8  какая то левая процедура. die () не работает
+                              if (($x!=="utf-8")AND($sd[19]=="utf-8")) $insertone=iconv("windows-1251","utf-8",$insertone);
+
+                fwrite ($dumpfile,$insertone);
 		$strclines++;		//echo $insertone."<br>";
 	};	
 				
@@ -1329,6 +1340,9 @@ for ($a=0;$a<count ($tablelist);$a++) {
  		if ($OSTYPE=="LINUX") $insertone.="\n";
 		if ($OSTYPE=="WINDOWS") $insertone.="\n\r";
                 if ($views) echo $insertone."<br>";
+                                $x=detectencoding($insertone);    if ($views)  echo "Encoded ln : ".$x."<br>?";  //dobawil utf-8  какая то левая процедура. die () не работает
+                              if (($x!=="utf-8")AND($sd[19]=="utf-8")) $insertone=iconv("windows-1251","utf-8",$insertone);
+
 		fwrite ($dumpfile,$insertone);
 		$lines++;
 		//echo $insertone."<br>";
@@ -2406,11 +2420,35 @@ $datasplitters=explode (",",$prdbdata[$tbl][20]);
 ///echo "datacol ".$datacols[0]."filehdr ".$datafilehdr[0]."  datasplit ".$datasplitters[0]."<br>";
 
 }
-
+if ($prdbdata[$tbl][22]) $directedit=1;
+ if (!$directedit) {
 	$cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$vID."'";
 		if (($virtualid)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
 	$result = dbs_query ($cmd, $connect,$dbtype);
 	$myrow = dbs_fetch_row ($result,$dbtype);
+            //exec reselect  в случае неправильно установленного id2 надо его сбросить, в случае наличия правильных обоих попытаться отредактировать данные другим методом
+            //потом доделать update - replace   это можно в принципе и для csv сделать 
+            if (dbs_num_rows($result)>1) {echo "Multi select detected.Trying autoset new ID.";   // обнаружили что скрипт что то многовато нашёл , не должно быть более 1 строки !
+                $virtualid=$md2column+1;
+                $cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$vID."'";
+		if (($virtualid)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
+                $result = dbs_query ($cmd, $connect,$dbtype);
+                $myrow = dbs_fetch_row ($result,$dbtype);
+                if (dbs_num_rows($result)==1) { echo "<br>Success!<br>";$virtualidfixed=1;};
+                if (dbs_num_rows($result)>1) {$directedit=1;echo "<br>".cmsg ("DE_REQ")."<br>";};   // обнаружили что скрипт что то многовато нашёл , не должно быть более 1 строки !
+            }
+            //exec reselect
+         }
+ if ($directedit) {
+             if ($directedit==2) $vID=base64_decode ($vID);
+             $decodeddata=explode ("-",$vID);
+            //echo "bldjad  DIRECT EDIT BLYA!!";
+                   $directeditwhere=gensqldirecteditwhere ($mycol,$decodeddata,$mycols);
+                    $cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE $directeditwhere ";
+		     $result = dbs_query ($cmd, $connect,$dbtype);
+                    $myrow = dbs_fetch_row ($result,$dbtype);
+               //     echo $cmd;
+ }
 	//проверка не занят ли ID
 	if ($myrow===false) { echo cmsg ("QUE_EMP")."<br>";		exit;	}
 	@$crc=crc32(trim(implode (";",$myrow)));
@@ -2519,45 +2557,137 @@ if ($unfreez) {
 				// может эту процедуру тоже как то стандартизировать?
 }
 //конец разморозки если вкл
+//
+if ($prdbdata[$tbl][22]) $directedit=1;
+ if (!$directedit) {
 	//проверка старых данных для CRC i UnDO
 	$cmd="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$myrow[$md2column]."'";
 	if ($virtualid==true) { $addcmd=" AND ".$mycol[$virtualid]."= '".$myrow[$virtualid]."'"; $cmd.=$addcmd;};
 	$result = dbs_query ($cmd, $connect,$dbtype);
 	$myrowold = dbs_fetch_row ($result,$dbtype);
-	if ($myrowold==false) {lprint ("WF_EDITNOTADD");echo "<br>"; 
+                    //exec reselect  в случае неправильно установленного id2 надо его сбросить, в случае наличия правильных обоих попытаться отредактировать данные другим методом
+            if (dbs_num_rows($result)>1) {echo "Multi select detected.Trying autoset new ID.";   // обнаружили что скрипт что то многовато нашёл , не должно быть более 1 строки !
+                $virtualid=$md2column+1;
+                $cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$myrow[$md2column]."'";
+		if (($virtualid)AND ($vID2!=="")) {  $addcmd=" AND ".$mycol[$virtualid]."= '".$myrow[$virtualid]."'";$cmd.=$addcmd;};
+                $result = dbs_query ($cmd, $connect,$dbtype);
+                $myrowold = dbs_fetch_row ($result,$dbtype);
+                if (dbs_num_rows($result)==1) { echo "<br>Success!<br>";$virtualidfixed=1;};
+                if (dbs_num_rows($result)>1) { $directedit=1;echo "<br>".cmsg ("DE_REQ")."<br>";};   // обнаружили что скрипт что то многовато нашёл , не должно быть более 1 строки !
+            }
+            //exec reselect
+ }
+  if ($directedit) {
+             if ($directedit==2) $vID=base64_decode ($vID);
+             $decodeddata=explode ("-",$vID);
+             
+ }
+        if ($myrowold==false) {
 	//процедура undo старого ID
-		$cmd="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE  ".$mycol[$md2column]."='".$origid1."'";
+      $directeditwhere=gensqldirecteditwhere ($mycol,$decodeddata,$mycols);
+	if (!$directedit) {$cmd="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE  ".$mycol[$md2column]."='".$origid1."'";
 		if ($virtualid==true) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$origid2."'";};
+                }
+	if ($directedit) {$cmd="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE  $directeditwhere ";};
+                }
 		$result=dbs_query ($cmd,$connect,$dbtype);;
 		$myrowold=dbs_fetch_row ($result,$dbtype); // тут false если то значит ппц :)
-	}
+	
 	@$olddata=implode (";",$myrowold); // вот это и надо сохранять и откатывать
-	$undodata=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrowold,$mycols);
+        //echo "checking myrowold= $myrowold ".count ($myrowold)." = $olddata<br>";
+        if ($myrowold) {$update=1; }else { lprint ("WF_EDITNOTADD");echo "<br>";} // !$directedit
+	if (!$update){// $undodata=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrowold,$mycols); // zdes VALUES ('','','','','');
+            	   $udirecteditwhere=gensqldirecteditwhere ($mycol,$myrow,$mycols);
+      if (!$directedit)     {$undodata="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE ".$mycol[$md2column]."='".$vID."'";
+	if (($virtualid>0)AND ($vID2!=="")) { $undodata=$undodata." AND ".$mycol[$virtualid]."= '".$vID2."'";}; }
+    if ($directedit)     {$undodata="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE $udirecteditwhere "; }
+        }
+        if ($update) {$counterediteddata=0;
+            $undodata=gensqlupdate ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$mycol,$myrow,$myrowold);
+        }
+       
+
 	if (!$crcignore) {
 				@$crcnew=crc32(trim($olddata));
+                                //echo " $crcnew=$crc <br>";  //F1_KEY_S_EDIT
 				if ($myrowold!==false) if ($crcnew!=$crc) {lprint ("WF_CRCFAIL"); exit;} ;}; //crc32testfunction
 
 	// старое условие до 3.2.6 ++ $mycol[$md2column]."='".$vID."'";
+        //generic update script if myrowold (old data) is present
+ //  для прямой передачи ссылки в будущем можно сделать пометку в virtualid=direct  a v vID - энкодированный массив
+      
+       //if (!$directeditwhere) $directeditwhere="";  по моему не имеет смысла. 120043578+0+255+100147689+1374  id передается директедитом
+ $directeditwhere=gensqldirecteditwhere ($mycol,$myrowold,$mycols);
+        if ($update) {
+
+            $counterediteddata=0;
+         $updatecmd=gensqlupdate ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$mycol,$myrowold,$myrow);
+         /*
+            $updatecmd="UPDATE `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` SET ";
+            for ($a=0;$a<$mycols;$a++) {
+               
+                   gan
+        }*/
+        if ($counterediteddata<1) { echo "You nothing change.";exit;}
+        if (!$directedit){
+        $updatecmd.="WHERE  ".$mycol[$md2column]."='".$myrow[$md2column]."'";
+	if ($virtualid==true) { $updatecmd.=" AND ".$mycol[$virtualid]."= '".$myrow[$virtualid]."'";};
+        }
+        if ($directedit){
+        $updatecmd.="WHERE  ".$directeditwhere;
+        }
+
+        if (!$directedit){
+        $undodata.="WHERE  ".$mycol[$md2column]."='".$myrow[$md2column]."'";
+	if ($virtualid==true) { $undodata.=" AND ".$mycol[$virtualid]."= '".$myrow[$virtualid]."'";};
+        }
+        if ($directedit){  $directeditwhere=gensqldirecteditwhere ($mycol,$myrow,$mycols);
+        $undodata.="WHERE  ".$directeditwhere;
+        }
+
+        $cmd=$updatecmd;
+        //echo "cmd2=$cmd";
+        //echo "cmd=$cmd  ";exit;
+        $a=dbs_query ($cmd,$connect,$dbtype);//сделать любое кол-во
+        if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
+       dbserr ();// $silent=0;
+        }
+         // update where old data only new data in cycle  //потом доделать update - replace   это можно в принципе и для csv сделать
+        //end generic update script
+        //
+
+//echo $cmd;exit;
+if (!$update) {
+
+
+        if (!$directedit) {
 	// опять возможная ошибка  - необязательно 0 является ключом
 	$cmd="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE  ".$mycol[$md2column]."='".$myrow[$md2column]."'";
 	if ($virtualid==true) {  $cmd.=$addcmd;};
 
 		$cmd2="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE  ".$mycol[$md2column]."='".$origid1."'";
-	if ($virtualid==true) { $cmd2=$cmd2." AND ".$mycol[$virtualid]."= '".$origid2."'";};
+	if ($virtualid==true) { $cmd2=$cmd2." AND ".$mycol[$virtualid]."= '".$origid2."'";}; // по идее этот не нужнее? но никто не жаловался.
 	// это удаление старого ID если был
-
-
+        
+           
 	$a=dbs_query ($cmd,$connect,$dbtype);  // условие обновлено
 	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
 	if ($a==true) { echo $myrow[0].cmsg ("WF_DELOK")."!<br>";} else { echo cmsg ("WF_DELFAIL")."$myrow[0]<br>";}
+        
 	$a=dbs_query ($cmd2,$connect,$dbtype);  // условие обновлено
 	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
 	if ($a==true) { echo $myrow[0].cmsg ("WF_DELOK")."!<br>";} else { echo cmsg ("WF_DELFAIL")."$myrow[0]<br>";}
-
-
-	$cmd="INSERT INTO `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` VALUES ($values)";
+        }
+ //exit;
+	$cmd="INSERT INTO `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` VALUES ($values)";// исполняется на самом деле эта
+        
+       
 	$a=dbs_query ($cmd,$connect,$dbtype);//сделать любое кол-во
-	$cmd="REPLACE INTO `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` VALUES ($values)";
+       $cmd="REPLACE INTO `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` VALUES ($values)"; //для лога эта команда и для фриза, но не для исполнения.
+}
+ //echo $cmd;
+            
+
 	if ($enfreez) {
 		if (($codekey==9)or($codekey==7)) demo ();
 				$afile="_conf/autoexec.sql";		 $autoexeccmd=$cmd."; #".$prauth[$ADM][0]."\r\n";
@@ -2570,13 +2700,13 @@ if ($unfreez) {
 	if ($a==true) { echo $myrow[0].cmsg ("WF_ADDED").".<br>";if ($views) echo cmsg ("WF_EXQUE")."$cmd<br>"; } else { echo cmsg ("WF_ADDFAIL")."$myrow[0]<br>";}
 	if ($a==true) { echo $myrow[0].cmsg ("WF_UPDOK")."!<br>";} else { 
 		$errt=cmsg ("WF_UPDFAIL"); $ermsg="$myrow[0]<br>";}
-	if ($pr[12]) {$act="EDIT_SQL  B $tbl($nametbl) Find$vID Cmd $cmd";
+	if (!$errt) if ($pr[12]) {$act="EDIT_SQL  B $tbl($nametbl) Find $vID $vID2 Cmd $cmd";
             $baseID=$tbl;$hostIP=$prdbdata[$tbl][6];
-            logwrite ($act) ;undolog ($act,$undodata,$baseID,$hostIP); };
+           logwrite ($act) ;undolog ($act,$undodata,$baseID,$hostIP); };
 	//if ($views) echo cmsg ("WF_EXQUE")."$cmd<br><br>";
  echo cmsg ("WF_QUECOMP").dbs_affected_rows ().cmsg ("WF_Q1")."<br>";
 $silent=0;$errno=dbserr ();// пишет ошибку и ее код  и его же возвращает
-submitkey ("write","WF_UNDO_LAST");
+if (!$errt) submitkey ("write","WF_UNDO_LAST");
 //endof executing
 }
 
@@ -2594,10 +2724,36 @@ if (($write==cmsg ("KEY_ADD"))AND($prdbdata[$tbl][12]!="fdb")) {
 	$maxquery="SELECT MAX(`".$mycol[$md2column]."`)FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`";
 	$result = dbs_query ($maxquery,$connect,$dbtype);;	$maxtbl = dbs_fetch_row ($result,$dbtype);
 	echo cmsg ("WF_1NOTUSED").": ".($maxtbl[0]+1)."<bR>";
+        $maximalcntmd2=$maxtbl[0];
+ if ($prdbdata[$tbl][22]) $directedit=1;
+ if (!$directedit) {
 	$cmd="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$vID."'";
 	if (($virtualid>0)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
 	$result = dbs_query ($cmd, $connect,$dbtype);
 	$myrow = dbs_fetch_row ($result,$dbtype);
+                    //exec reselect  в случае неправильно установленного id2 надо его сбросить, в случае наличия правильных обоих попытаться отредактировать данные другим методом
+            // работает отлично даже если неправильно указан ID2 ))))
+            if (dbs_num_rows($result)>1) {echo "Multi select detected.Trying autoset new ID.";   // обнаружили что скрипт что то многовато нашёл , не должно быть более 1 строки !
+                $virtualid=$md2column+1;
+                $cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$vID."'";
+		if (($virtualid)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
+                $result = dbs_query ($cmd, $connect,$dbtype);
+                $myrow = dbs_fetch_row ($result,$dbtype);
+                if (dbs_num_rows($result)==1) { echo "<br>Success!<br>".$virtualidfixed=1;};
+                if (dbs_num_rows($result)>1) {$directedit=1;echo "<br>".cmsg ("DE_REQ")."<br>";};   // обнаружили что скрипт что то многовато нашёл , не должно быть более 1 строки !
+            }
+           //exec reselect
+         }
+ if ($directedit) {
+             if ($directedit==2) $vID=base64_decode ($vID);
+             $decodeddata=explode ("-",$vID);
+              $directeditwhere=gensqldirecteditwhere ($mycol,$decodeddata,$mycols);
+   
+                     $cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE $directeditwhere ";
+		     $result = dbs_query ($cmd, $connect,$dbtype);
+                    $myrow = dbs_fetch_row ($result,$dbtype);
+                 //   echo $cmd;
+ }
 //проверка не занят ли ID
 	if ($myrow===false) { 
 		echo cmsg ("QUE_EMP")."<br>";
@@ -2610,7 +2766,7 @@ if (($write==cmsg ("KEY_ADD"))AND($prdbdata[$tbl][12]!="fdb")) {
 	for ($a=0;$a<$mycols;$a++)
 			{
 			echo "$mycol[$a] ";
-			if ($mycol[$md2column]===$mycol[$a]) echo "<ii>(ID1)</ii>";
+			if ($mycol[$md2column]===$mycol[$a])  {echo "<ii>(ID1)</ii>"; $myrow[$a]=($maximalcntmd2+1);};
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii>(ID2)</ii>";
 			?>
 			<textarea name=z<?=$a; ?> cols=30 rows=1><?=$myrow[$a]?></textarea><br><? ;
@@ -2620,7 +2776,7 @@ if (($write==cmsg ("KEY_ADD"))AND($prdbdata[$tbl][12]!="fdb")) {
 			{ //hdr text
 	if ($prauth[$ADM][41]) echo "<tr>";//optional   Box,not linear edit.
 			echo "<td>$mycol[$a] ";
-			if ($mycol[$md2column]===$mycol[$a]) echo "<ii><bb>(ID1)</ii></bb>";
+			if ($mycol[$md2column]===$mycol[$a])  {echo "<ii>(ID1)</ii>"; $myrow[$a]=($maximalcntmd2+1);};
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii><bb>(ID2)</ii></bb>";
 		
 		$lensa=strlen ($myrow[$a])+2;// CFG OPT FUTURE 
@@ -2648,7 +2804,7 @@ if (($write==cmsg ("KEY_S_ADD"))AND($prdbdata[$tbl][12]!="fdb")) {
 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();
-
+ $directedit=$prdbdata[$tbl][22];
 // сборка всех переменных в values и myrow[]
 			for ($a=0;$a<$mycols;$a++)
 			{
@@ -2661,20 +2817,22 @@ if (($write==cmsg ("KEY_S_ADD"))AND($prdbdata[$tbl][12]!="fdb")) {
 //тут надо бы undo
 	$cmd="INSERT INTO `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` VALUES ($values)";
 	$a=dbs_query ($cmd,$connect,$dbtype);//сделать любое кол-во
-	$cmd="REPLACE INTO `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` VALUES ($values)";
+	$cmd="INSERT INTO `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` VALUES ($values)";
 	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
 	if ($a==true) { echo $myrow[0].cmsg ("WF_ADDED").".<br>";	if ($views) echo cmsg ("WF_EXQUE")."$cmd<br>"; } else 	{
 		$errt=cmsg ("WF_ADDFAIL"); $ermsg="$myrow[0]".cmsg ("WF_ADDPRS")."<br>";}
-	$undodata="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE ".$mycol[$md2column]."='".$vID."'";
-	if (($virtualid>0)AND ($vID2!=="")) { $undodata=$undodata." AND ".$mycol[$virtualid]."= '".$vID2."'";};
-	if ($pr[12]) {$act="ADD_SQL  B $tbl($nametbl) Find$vID Cmd $cmd";
+	   $directeditwhere=gensqldirecteditwhere ($mycol,$myrow,$mycols);
+      if (!$directedit)     {$undodata="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE ".$mycol[$md2column]."='".$vID."'";
+	if (($virtualid>0)AND ($vID2!=="")) { $undodata=$undodata." AND ".$mycol[$virtualid]."= '".$vID2."'";}; }
+    if ($directedit)     {$undodata="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE $directeditwhere "; }
+	if (!$errt) if ($pr[12]) {$act="ADD_SQL  B $tbl($nametbl) Find $vID $vID2 Cmd $cmd";
             $baseID=$tbl;$hostIP=$prdbdata[$tbl][6];
             logwrite ($act) ; undolog ($act,$undodata,$baseID,$hostIP);}; // логируемся
 	 //executing+errlogделаем нормальную обработку ошибок  исп всегда этот модуль
 	 	     //if ($views) echo cmsg ("WF_EXQUE")."$cmd<br><br>";
  echo cmsg ("WF_QUECOMP").dbs_affected_rows ().cmsg ("WF_Q1")."<br>";
 $silent=0;$errno=dbserr ();// пишет ошибку и ее код  и его же возвращает
-submitkey ("write","WF_UNDO_LAST");
+if (!$errt) submitkey ("write","WF_UNDO_LAST");
 //endof executing
 }
 
@@ -2682,9 +2840,13 @@ submitkey ("write","WF_UNDO_LAST");
 //=========================================
 //модуль запуска 
 if (($write==cmsg ("KEY_DEL"))AND($prdbdata[$tbl][12]!="fdb")) {
-	if (($virtualid==true)AND($vID2==false)) echo "<font color=red id=errfnt>".cmsg 
+    if ($prdbdata[$tbl][22]) $directedit=$prdbdata[$tbl][22];
+    if (!$directedit) if (($virtualid==true)AND($vID2==false)) echo "<font color=red id=errfnt>".cmsg
 		("WF_DEL_GROUP")." ".$vID." </font><br>";
-		if ($vID==="") { lprint ("WF_FSELID");exit;};
+		 
+                   if ($vID==="") { lprint ("WF_FSELID");exit;}
+                   //загрузок проверок не производится для ускорения работы, да и просто так обычно удалить не нажимают
+                   //ну и хоть одна функция будет вмещатся в 10 строк :)))
 		submitkey ("write","KEY_S_DEL");
 }
 
@@ -2697,23 +2859,51 @@ if (($write==cmsg("KEY_S_DEL"))AND($prdbdata[$tbl][12]!="fdb")) {
 	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 		if ($data==-1) exit;
+
+ if ($prdbdata[$tbl][22]) $directedit=1;
+ if (!$directedit) {
 	$cmd="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$vID."'";
 	if (($virtualid>0)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
 	$result = dbs_query ($cmd, $connect,$dbtype);
-    for ($c=0;$myrow = dbs_fetch_row ($result,$dbtype);$c++) {
+        for ($c=0;$myrow = dbs_fetch_row ($result,$dbtype);$c++) {
 		if (!$test) $test=$myrow[0];
 		$undodata.=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrow,$mycols)." ";
 	};
-	// тут надо бы undo
+	// тут надо бы undo     //exec reselect  в случае неправильно установленного id2 надо его сбросить, в случае наличия правильных обоих попытаться отредактировать данные другим методом
+            // работает отлично даже если неправильно указан ID2 ))))
+            if (dbs_num_rows($result)>1) {echo "Multi select detected.Trying autoset new ID.";   // обнаружили что скрипт что то многовато нашёл , не должно быть более 1 строки !
+                $virtualid=$md2column+1;
+                $cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$vID."'";
+		if (($virtualid)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
+                $result = dbs_query ($cmd, $connect,$dbtype);
+                $myrow = dbs_fetch_row ($result,$dbtype);
+                if (dbs_num_rows($result)==1) { echo "<br>Success!<br>";$virtualidfixed=1;};
+                if (dbs_num_rows($result)>1) {$directedit=1;echo "<br>".cmsg ("DE_REQ")."<br>";};   // обнаружили что скрипт что то многовато нашёл , не должно быть более 1 строки !
+            }
+ //exec reselect
+         }
+ if ($directedit) {
+             if ($directedit==2) $vID=base64_decode ($vID);
+             $myrow=explode ("-",$vID);
+              $directeditwhere=gensqldirecteditwhere ($mycol,$myrow,$mycols);
+                     $cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE $directeditwhere ";
+		     $result = dbs_query ($cmd, $connect,$dbtype);
+                    $myrow = dbs_fetch_row ($result,$dbtype);
+                    if (!$test) $test=$myrow[0];// если есть что удалять тест включен
+                    $undodata.=gencmdlogi ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrow,$mycols)." ";
+                //    echo $cmd; записываем отсутствующий undolog
+ }
+    // udal vse bez undo
 	$a=$test;
 	$cmd="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE ".$mycol[$md2column]."='".$vID."'";
 	if (($virtualid>0)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
+         if ($directedit) $cmd="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE $directeditwhere";
 	dbs_query ($cmd,$connect,$dbtype);
 	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
-	if ($a==true) { echo $vID.cmsg ("WF_DELOK")."!<br>";} else { 
+	if ($test==true) { echo $vID.cmsg ("WF_DELOK")."!<br>";} else {
 				$errt=cmsg ("WF_DELFAIL"); $ermsg=cmsg ("WF_NOQUE")."<br>";}
         
-   if ($pr[12]) {$act="DEL_SQL  B $tbl($nametbl) Find$vID Cmd $cmd";
+  if (!$errt) if ($pr[12]) {$act="DEL_SQL  B $tbl($nametbl) Find $vID $vID2 Cmd $cmd";
        $baseID=$tbl;$hostIP=$prdbdata[$tbl][6];logwrite ($act) ;
      undolog ($act,$undodata,$baseID,$hostIP);
 };  // 
@@ -2723,7 +2913,7 @@ if (($write==cmsg("KEY_S_DEL"))AND($prdbdata[$tbl][12]!="fdb")) {
 $silent=0;$errno=dbserr ();
 //endof executing
 
-submitkey ("write","WF_UNDO_LAST");
+if (!$errt) submitkey ("write","WF_UNDO_LAST");
 
 }
 

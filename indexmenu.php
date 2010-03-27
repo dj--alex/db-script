@@ -33,7 +33,9 @@ if (!$pr[45]) { echo "<img src=\"_style/".$grafictemp."$b.png\" "; } // вывод гр
  }
  $printmenuoption=$pgcontent[$b][3];
  if ($thislanguagepagescolumn) $printmenuoption=$pgcontent[$b][$thislanguagepagescolumn];
- if ($sd[19]=="utf-8") $printmenuoption=iconv("windows-1251","utf-8",$printmenuoption);
+                             $x=detectencoding ($printmenuoption);//      echo "Encoded : ".$x."<br>?";
+                            if (($x!=="utf-8")AND($sd[19]=="utf-8")) $printmenuoption=iconv("windows-1251","utf-8",$printmenuoption);
+ //if ($sd[19]=="utf-8") $printmenuoption=iconv("windows-1251","utf-8",$printmenuoption);
  if ($pr[45]) echo ">$printmenuoption</a></p></td></tr>";  // отключение графики теперь корректно работает во всех браузерах
  if (!$pr[45]) echo "alt=\"".$printmenuoption."\" name=\"".$name."\" border=\"0\"></a></p></td></tr>";
    } 
@@ -48,7 +50,9 @@ if ($pr[81]) { // ничего не меняется? 2010-02  фрагмент не используется и не выв
  // hidekey ("str",$pgcontent[$a+1][0]);
  ?> <form action="str0.php?p=<?=$pgcontent[$a+1][0];?>"><?
  $name=$pgcontent[$a+1][3];
- if ($sd[19]=="utf-8") $name=iconv("windows-1251","utf-8",$name);
+                             $x=detectencoding ($name);//      echo "Encoded : ".$x."<br>?";
+                            if (($x!=="utf-8")AND($sd[19]=="utf-8")) $name=iconv("windows-1251","utf-8",$name);
+ //if ($sd[19]=="utf-8") $name=iconv("windows-1251","utf-8",$name);
   	menukey ("goo",$name);
   echo "</form>";
   }

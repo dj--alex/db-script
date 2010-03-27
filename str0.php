@@ -28,7 +28,11 @@ $x="";
 if ($goo) { //$addr="str0.php?p=0".$str;   header ($addr);    будет работать только с $thislanguagepagescolumn !!!!  без нее текст моде фаил
     for ($a=0;$a<count ($pgcontent);$a++) {
     $thispagename=$pgcontent[$a][$thislanguagepagescolumn];
-    if ($sd[19]=="utf-8") $thispagename=iconv("windows-1251","utf-8",$thispagename);  // тут могут быть подводные камни связанные с кодировкой - использование menukey перепроверить 
+                       $x=detectencoding ($thispagename);//      echo "Encoded : ".$x."<br>?";
+                            if (($x!=="utf-8")AND($sd[19]=="utf-8")) $thispagename=iconv("windows-1251","utf-8",$thispagename);
+                                                   $x=detectencoding ($goo);//      echo "Encoded : ".$x."<br>?";
+                            if (($x!=="utf-8")AND($sd[19]=="utf-8")) $goo=iconv("windows-1251","utf-8",$goo);
+    //if ($sd[19]=="utf-8") $thispagename=iconv("windows-1251","utf-8",$thispagename);  // тут могут быть подводные камни связанные с кодировкой - использование menukey перепроверить
     //if ($sd[19]=="utf-8") $goo=iconv("windows-1251","utf-8",$goo);
     if ($thispagename==$goo) { $pageenter=$a; break;};
      
