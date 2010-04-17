@@ -14,7 +14,14 @@ $element=$vID; settype ($element, integer); if ($element=="0") unset ($element);
 if ($sd[19]=="utf-8") $pagename=iconv("windows-1251","utf-8",$pagename);
 $titleout= $sd[16]." - ".$pagename." - ".$write." $element ";
 echo $titleout ;
-?></title> <?
+?></title>
+
+<?
+if ($pr[83]) { echo "";;
+     ?><!--head-->
+<script type="text/javascript" src="http://vkontakte.ru/js/api/share.js?3"></script><?
+// мля где переменная с координатами меню когда она здесь так нужна???
+}
 
 //этот модуль выводиться только в стиле DM (4)
 if ($dbstyle3en) if (($enrestmenu)AND($menuloaded!==1)){?>

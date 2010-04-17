@@ -67,6 +67,12 @@ if (($readfile)AND($prauth[$ADM][19])) {
 
 }
 
+if (($field!="")AND($selectenable)) if (array_search ($field,$data[0])==false) {echo "READ:Sort link wrong<br>";$field="";}
+
+//print_r($data[0]);
+//echo "efrgergerger ".$field."===".$data[0]."br<";
+//проверить fieldlist
+
 //hidekey ("kol",$kol);  no effect
 // выбор колонки для поиска
 if (($readfile)AND($prauth[$ADM][25])) {
@@ -78,7 +84,9 @@ if (($readfile)AND($prauth[$ADM][25])) {
     printfield ($data,"_kol"); 
 }
 
-
+//echo "kol=$kol  data0=";print_r ($data[0]);
+if (($kol!="")AND($mode==7)) if (settype ($kol, integer)==false) {echo "READ:Select column with name wrong, need number<br>";$kol="";}
+///if (($kol!="")AND($mode==7)) if (array_search ($kol,$data[0])==false) {echo "READ:Select link wrong<br>";$kol="";}  // for name reserved
 
 	echo "<br>";hidekey ("commode",0); 
 	hidekey ("review",0); 

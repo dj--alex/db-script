@@ -6,11 +6,29 @@ if (($enrestmenu)AND($menuloaded!==1)) if ((!$pr[54])AND($dbstyle3en)) {
 } 
 
 if ($enterpoint!=="help") {
+
+
+if ($pr[83]) {?><!--share button will be -->
+<div id="module5vk" style="position:absolute;  left: <?=330 ; ?>px; top: 5px;">
+<script type="text/javascript"><!--
+document.write(VK.Share.button(<?
+if (!$sd[31]) echo "false";
+if ($sd[31]) echo "{url: \"".$sd[31]."\"}";
+?> ,{type: "round", text: "<?=cmsg("SAVE");?>"}));
+--></script></div><?
+
+}
 	//DIVX - уплотняем DIVы. выглядит как панель баффов :) 
 ?><div id="help" style="position:absolute;  opacity:1; width: 90; height:40px; z-index:1; left: 500px; top: 5px;" class=div><h5><?
 
+if (!$pr[84]) {
+?> <a target=help href="http://navstar-gps.ru"><img src="_ico/navstar.ico" border=1 title="Navstar-gps"></a> <?
+;}
 
-?><a target=help href="http://navstar-gps.ru"><img src="_ico/Navstar-gps" border=1 title="Navstar-gps"></a> <?
+
+
+// реклама - выше
+
 
 
 if (($prauth[$ADM][16]==false)AND($write==true) ) { //<?=cmsg ("F1_") ;

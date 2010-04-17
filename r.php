@@ -25,7 +25,7 @@ if ($tbl==-2) if ($vID=="Relogin") $vID=".relogin";
 
 
 global $verreadfile,$vID,$mzdata,$multisearch,$cmd;
-$verreadfile="Viewer v4.1.5 (c) dj--alex";
+$verreadfile="Viewer v4.1.69 (c) dj--alex";
 
 ### readfile  readdescripters return data info
 ##	$data=array ( // не настроено -  выдача данных функцией
@@ -299,7 +299,6 @@ if ($cmd[0]==="help") { if ($adm==1) {
 		 		exit;
 		}
 
-
 		//показ версии dbscript   тепер будет смотреть все модули (ищет сам)
 		//методика  во всех php показать строки из кавычек где содержится $ver* и = после $ver*
 		if ($vID===".ver") {
@@ -383,6 +382,9 @@ echo "!";if ($live) echo "<font color=green id=xfnt>live</font>!";
 	hidekey ("live",$live);
 	hidekey ("groupdb",$groupdb);
         hidekey ("ipfilter",$ipfilter);
+
+
+
 	if (!$pr[7])  print lprint ("CONNLINK:")."<font color=green id=xfnt>".$prdbdata[$tbl][1]."</font>"; // perekl zapr
 
 	if ((($adm==1)OR($deftbl==false))AND($pr[7])) { //перекл разр
@@ -488,7 +490,8 @@ exit;
 
 	
 		if (($mode>7)and($mode<8)) {
-			$kol=($mode-7)*10; $mode= 7;echo "Reselect column for mode 7 : $kol";
+                    $x=explode (".",$mode);
+			$kol=$x[1]; $mode= 7;echo "Reselect column for mode 7 : $kol";
 		}
 
 
@@ -527,7 +530,7 @@ if ($vID=="") if (($go=="Обзор")OR($mode==5)OR($mode==9)OR($mode==4)) { echo "";
 			// FIXED MESSAGE 
 			//if ($vID[0]===".") { exit;echo "__READ_UNKNOWN_COMMAND";$act="READ Unknown command $vID"; logwrite ($act) ; exit;};  // логируемся
 			$nametbl=$prdbdata[$tbl][1];
-			if ($pr[12]) {$act="READ_M $mode B $tbl($nametbl) Find $vID"; logwrite ($act) ;};  // логируемся 
+			if ($pr[12]) {$act="READ_M $mode B $tbl($nametbl) Find $vID"; logwrite ($act) ;};  // логируемся // где тут выдает херню что типа SQL не подключен , хотя он ещё накер не нужен.
 
 			//multisearch=1 zone   non-global start
 
@@ -543,6 +546,7 @@ if ($vID=="") if (($go=="Обзор")OR($mode==5)OR($mode==9)OR($mode==4)) { echo "";
 			
 			if ($mode<4) { exit; }
 			// глобализация всех переменных касающихся движка  стр5
+                        
 function search ()
 			{	global $go,$olddvID,$selectedfield,$field,$fields;
 				global	 $commode,$multisearch,$vID,$adm	;
@@ -861,7 +865,8 @@ hidekey ("kol",$kol);
 						// for ($b=0;$b<$k;$b++) {  Бла бла бла;Фэнтэзи;Комедия;Боевик  ищет фигово переключает на 1,4 films al где то производися сброс значения и оно уже не восстанавливается
 						// $mode7=1 если вход был оттуда.копать здесь надо.
 						$findid=strpos(strtolower($dbc[$fndcolumn]),$vID);
-                                                if (($notnull)AND($dbc[$fndcolumn]!=="")) $findid=1;
+                                                if (($notnull)AND($dbc[$fndcolumn]!="")) $findid=1;
+                                                if (($notnull)AND($dbc[$fndcolumn]=="0")) $findid=false;
 						if (($findid!==false)&&($dbc[$fndcolumn]!=="")) {
 							$selected[]=$dbc;   //added
 						}
