@@ -1,10 +1,10 @@
 <?php 
 require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
 if (!$activation) exit;
-$verfilemgr="Filemgr  v 4.1.10 (c) dj--alex ";
+$verfilemgr="Filemgr  v 4.1.69 (c) dj--alex ";
   $enterpoint=$verfilemgr;#end of conf
 // вот наша буферизация - ob_start();ob_end_flush();
-autoexecsql (); 
+autoexecsql ();// ob_flush ();exit; zdes menueshe est.
 @ import_request_variables ("PG","");
 
  if ($coreredir=="SH_UPDD_FL")  { //not forced, not automatically  // подстройка для автопредложения share
@@ -59,19 +59,24 @@ else {msgexiterror ("notrights","F_DWN_PLVL You not in userlist this file! ","fi
 if ($share=="GENLNK_USR")  if (in_array ($username,$userlist)) { $enabledownload=1; }
 else {msgexiterror ("notrights","F_DWN_USR You not in userlist this file! ","filemgr.php");}
 //echo "trying ... FMG_LNK_DL ".$prauth[$ADM][0]." download file $pathwithfile)   <br>";
+
+if (is_dir ($pathwithfile)==true) { $sharedir=1; echo "FMG_TEST: Directory mod<Br>";  };
+
 if (!$pathwithfile) die ("File not found.");
 if (!$enabledownload) die ("not allowed!!");
 if (file_exists ($pathwithfile)==false) die ("File not found.");
 
-if ($enabledownload) { logwrite ("FMG_LNK_DL ".$prauth[$ADM][0]." download file $pathwithfile)" );ob_clean ();
+if ($enabledownload) { logwrite ("FMG_LNK_DL ".$prauth[$ADM][0]." download file $pathwithfile)" ); if (!$sharedir)ob_clean ();
     fclose ($filescfg) ;//fclose ($file);
 $filescfg=csvopen ("_conf/files.cfg","w",1);
 $fildata[$filerealid][9]=$fildata[$filerealid][9]+1; // set downloads +1
 $fildata[$filerealid][10]=date("d.m.Y H:i:s"); // set downloads +1
 $x=writefullcsv ($filescfg,$filheader,$filplevels,$fildata); // надо себе напомнить чтоб не забывал переоткрывать файл в w
-   //writing new stroke to _conf\files.cfg
+   //writing         new stroke to _conf\files.cfg
     //logwrite ("FMG_SHARE $share (usr=$userlist) (plvl=$groupplevels) $pathandfile");
-  if ($f=="image") {
+
+
+if ($f=="image") {
    ob_clean ();// echo "<img src=\'$pathwithfile\'>";
    $content =  file_get_contents ($pathwithfile);
    // печатает тем не менее эта строка видимо    // показывает картинки отдельно если залита была картинко
@@ -80,8 +85,9 @@ $x=writefullcsv ($filescfg,$filheader,$filplevels,$fildata); // надо себе напомн
      $img= imagecreatefromstring($content);
 //     print imagejpeg($img);
   }
-  if ($f!="image") sendfile ($pathwithfile);
-  exit;
+  if (($f!="image")AND(!$sharedir)) sendfile ($pathwithfile);
+  if ($sharedir) {$pathshare=$pathwithfile;}; // куда пропадает меню ?
+  if (!$sharedir)exit;
  
 };
 
@@ -243,13 +249,17 @@ exit;
 }
 //moved TO Up -- SHARE APPLYING STEP 2 -- ENDING
 
+//added to sharing dir
+if ($sharedir) { $path=$pathshare ;$cmd=cmsg ("FMG_ENTER");}; //working but странно.
+
 if ($sd[27]) echo $sd[27]."<br>";
 	//echo "<br>zad per<br>$cmd={$cmdname};$stroka={$strokaname};$path={$pathname};$fileforaction={$fileforactionname};$mask={$maskname};<br>";
 	//echo "<br>cmd=$cmd,cmd1=$cmd1,str=$stroka,p=$path,f=$fileforaction,m=$mask,PID=$a,an PID=$pid<br>";
 if ($prauth[$ADM][40]) { $cmd=$cmdtmp; lprint ("DEBUGMSG");echo ":".	cmsg ("GMP_40")."<br>";	}
 //if ($noscreenmode==true) { $cmd=$cmd1;$write=$cmd;}  //NOWORK
-	filemgr ($cmd,$stroka,$path,$fileforaction,$mask,$a);
-
+	if ($debugmode) echo "filemgr (cmd=$cmd,stroka=$stroka,path=$path,file=$fileforaction,mask=$mask,pid=$a);";
+        filemgr ($cmd,$stroka,$path,$fileforaction,$mask,$a);
+        
 	if ($a<$maxmgrs) echo "<hr>";
 	}
 
