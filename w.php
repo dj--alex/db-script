@@ -424,7 +424,7 @@ if ($write==cmsg ("KEY_S_UNDO")) {
 	executesql ($query,$connect,1);
 	$a=dbserr ();
 	if ($a) { lprint (NO_DB_QUE) ;}
-	$action="KEY_S_UNDO db:".$prdbdata[$tbl][9]." tab".$prdbdata[$tbl][6]." cannot request data ";logwrite ($action);
+	$action="KEY_S_UNDO db:".$prdbdata[$tbl][9]." table=".$prdbdata[$tbl][6]." cannot request data ";logwrite ($action);
 }
 
 
@@ -538,7 +538,7 @@ if ($OSTYPE=="LINUX") if ($values[strlen ($values)-1]!=="\n") $values=$values."\
 // а теперь поправили мегазатычку более корректно  md2- oridid1  virid - orig2
 csvmod ($f,"edit",$values,$origid1,$origid2);
 lprint ("WF_QUECOMP");
-if ($pr[12]) {$act="EDIT_DAT  B $tbl($nametbl) Find$vID Cmd $cmd"; logwrite ($act) ;};  // логируемся
+if ($pr[12]) {$act="EDIT_DAT  B $tbl($nametbl) id1=$vID id2=$vID2 Cmd= $cmd"; logwrite ($act) ;};  // логируемся
 submitkey ("write","WF_UNDO_LAST");
 }
 
@@ -642,7 +642,7 @@ if ($OSTYPE=="LINUX") if ($values[strlen ($values)-1]!=="\n") $values=$values."\
 
 	csvmod ($f,"add",$values,$myrow[$md2column],$myrow[$virtualid]);
 	lprint ("WF_QUECOMP");
-	if ($pr[12]) {$act="ADD_DAT  B $tbl($nametbl) Find$vID Cmd $cmd"; logwrite ($act) ;};  // логируемся
+	if ($pr[12]) {$act="ADD_DAT  B $tbl($nametbl) id1=$vID id2=$vID2 Cmd= $cmd"; logwrite ($act) ;};  // логируемся
         submitkey ("write","WF_UNDO_LAST");
 }
 
@@ -672,7 +672,7 @@ if (($write==cmsg ("KEY_S_DEL"))AND($prdbdata[$tbl][12]=="fdb")) {
 csvmod ($f,"del",$values,$vID,$vID2);
 lprint ("WF_QUECOMP");
 undolog ($act,$undodata,$tbl,"");
-if ($pr[12]) {$act="DEL_DAT  B $tbl($nametbl) Find$vID Cmd $cmd"; logwrite ($act) ;	};  // логируемся
+if ($pr[12]) {$act="DEL_DAT  B $tbl($nametbl) id1=$vID id2=$vID2 Cmd= $cmd"; logwrite ($act) ;	};  // логируемся
 submitkey ("write","WF_UNDO_LAST");
 }
 
@@ -867,7 +867,7 @@ fclose ($dest);
 		if ($del==true) break;
 		
 	
-	if ($pr[12]) {$act="MASS_EXCH_DAT  B $tbl($nametbl) Find$vID Cmd $cmd"; logwrite ($act) ;};  // логируемся
+	if ($pr[12]) {$act="MASS_EXCH_DAT  B $tbl($nametbl) id1=$vID id2=$vID2 Cmd= $cmd"; logwrite ($act) ;};  // логируемся
 }
 
 
@@ -915,7 +915,7 @@ if (($write==cmsg("KEY_SHOWCODE"))AND($prdbdata[$tbl][12]=="fdb")) {
 	 if (($codekey==9)OR($codekey==7)) demo ();
 	 if ($cfgmod==1) { lprint ("CFG_LIM");exit;};
 	 needupdate ();
-	//if ($pr[12]) {$act="COMPARE_DAT  B $tbl($nametbl) Find$vID Cmd $cmd"; logwrite ($act) ;};  // логируе
+	//if ($pr[12]) {$act="COMPARE_DAT  B $tbl($nametbl) id1=$vID id2=$vID2 Cmd= $cmd"; logwrite ($act) ;};  // логируе
 		echo cmsg ("WF_MASCPYMSG").cmsg ("WF_MASCMPMSG")."<br>";// Вставлено для выбора поля
 	global $presettedmode,$res16,$mznumb;//	$mode=6; $mode7=1;//$presettedmode=1.1; bylo 1.1
 	$data=readdescripters ();$a=prefixdecode ($res16);
@@ -1905,7 +1905,7 @@ if (($write==cmsg ("WF_HDR_REWR"))AND ($prdbdata[$tbl][12]=="fdb")) {
 		$p[$a]=${"p".$a};//принимаем данные юзера
 		}
 	$values=implode ($z,"¦");if ($OSTYPE=="WINDOWS") $values.="\n";//LINUX FIX  а в винде оно не работает зачем вообще \n?
-	$plevels=implode ($p,"¦");if ($OSTYPE=="WINDOWS") $plevels.="\n"; //LINUX FIX
+	$plevels=implode ($p,"¦");if ($OSTYPE=="WINDOWS") $plevels.="\n"; if ($OSTYPE=="LINUX") $plevels.="\r\n";//LINUX FIX  - че правда работает?? херня - поправляем для работы с конфигурацией
 	$a="";
 	while (!feof($f))
 	{ @$a.=fread ($f,10000); //echo $a;
@@ -2395,7 +2395,7 @@ echo "datafieldID=$datafieldID<BR>";//$datafieldID);"
 	if ($views) {echo cmsg ("WF_EXQUE")."$cmd<br>"; } else { echo cmsg ("WF_ADDFAIL")."$myrow[0]<br>";}
 	if ($a==true) { echo $myrow[0].cmsg ("WF_UPDOK")."!<br>";} else { 
 		$errt=cmsg ("WF_UPDFAIL"); $ermsg="$myrow[0]<br>";}
-	if ($pr[12]) {$act="EDIT_SQL_TYPE_DATA  B $tbl($nametbl) Find$vID Cmd $cmd"; logwrite ($act) ;undolog ($act,$undodata); };  
+	if ($pr[12]) {$act="EDIT_SQL_TYPE_DATA  B $tbl($nametbl) id1=$vID id2=$vID2 Cmd= $cmd"; logwrite ($act) ;undolog ($act,$undodata); };
 	//CFG OPT FUTURE - some action like backup not logging!!!!
 	//if ($views) echo cmsg ("WF_EXQUE")."$cmd<br><br>";
  echo cmsg ("WF_QUECOMP").dbs_affected_rows ().cmsg ("WF_Q1")."<br>";
@@ -3279,7 +3279,7 @@ if ($errno) {lprint ("WF_POSERR");}
 //endof executing
 
 
-	if ($pr[12]) {$act="MASS_COPY_SQL  B $tbl($nametbl) Find$vID Cmd $cmd"; logwrite ($act) ;	};  // логируемся
+	if ($pr[12]) {$act="MASS_COPY_SQL  B $tbl($nametbl) id1=$vID id2=$vID2 Cmd= $cmd"; logwrite ($act) ;	};  // логируемся
 }
 
 //=========================================
@@ -3374,6 +3374,8 @@ $desttable=$destdb."`".$prdbdata[$dest][5]."`";
 
 
 	if ($keys) // вывести чего не хватает первой до второй  с ключами
+
+        //код нужный, но это не годится никуда -  проверка чего не хватает первой базе до второй - должна делаться для обоих таблиц, но  используя Update!!! CFG OPT FUTURE
 	{		if ($cmpmode!=="1only") {echo "В первой базе ($sourcetable) эти записи отличаются от второй ($desttable), для исправления применить:<br>";
 	if ($virtualid) {$vidcmdadd=" AND $sourcetable.`".$id2."`=$desttable.`".$id2."` ";
 	  $vidcmdadd2="	$desttable.`".$id2."` IN (SELECT $desttable.`".$id2."` FROM $sourcetable,$desttable WHERE $sourcetable.`".$id1."`=$desttable.`".$id1."` ".$vidcmdadd." ) AND";
@@ -3434,7 +3436,7 @@ $desttable=$destdb."`".$prdbdata[$dest][5]."`";
 	if ($views) echo cmsg ("WF_EXQUE").$cmd."<br>";
 		echo "<br>".cmsg ("WF_QUECOMP")." ".dbs_affected_rows ()." ".cmsg ("WF_Q1")."<br>";
 	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
-	if ($pr[12]) {$act="SHOW_PATCH_SQL  B $tbl($nametbl) Find$vID Cmd $cmd"; logwrite ($act) ;};  // логируемся
+	if ($pr[12]) {$act="SHOW_PATCH_SQL  B $tbl($nametbl) id1=$vID id2=$vID2 Cmd= $cmd"; logwrite ($act) ;};  // логируемся
 
 	//executing+errlogделаем нормальную обработку ошибок  исп всегда этот модуль
 $silent=0;$errno=dbserr ();// пишет ошибку и ее код  и его же возвращает
@@ -3513,6 +3515,7 @@ for ($a=0;$a<$boxcnt;$a++) {
     $string=explode ("+",$string);
 				$vID=$string[0];$vID2=$string[1];
     echo "deleting id1=$vID id2=$vID2 <br>";
+    if ($virtualid=="") $vID2="";// если нет вид2 тогда его значение просто ненужно.   возможно это где то ещё надо добавить.
 //процедура скопирована из простого удаления и НЕОПТИМИЗИРОВАНА 
 		if ($codekey==7) demo ();
 		if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
@@ -3527,7 +3530,7 @@ for ($a=0;$a<$boxcnt;$a++) {
 csvmod ($f,"del",$values,$vID,$vID2); // при ошибках вызывает белый экран  не давать NULL
 lprint ("WF_QUECOMP");
 undolog ($act,$undodata,$tbl,"");
-if ($pr[12]) {$act="DEL_DAT_SEL  B $tbl($nametbl) Find$vID Cmd $cmd"; logwrite ($act) ;	};  // логируемся
+if ($pr[12]) {$act="DEL_DAT_SEL  B $tbl($nametbl) id1=$vID id2=$vID2 Cmd= $cmd"; logwrite ($act) ;	};  // логируемся
 submitkey ("write","WF_UNDO_LAST");
 }//endcycle
 
@@ -3541,6 +3544,7 @@ for ($a=0;$a<$boxcnt;$a++) {
 				$vID=$string[0];$vID2=$string[1];
     echo "exchanging id1=$vID id2=$vID2 <br>";// наши переменные в $vID i $vID2  $a - цикл ими уплравляющий
 }//  drugaya skobka ubrana
+if ($virtualid=="") $vID2="";// если нет вид2 тогда его значение просто ненужно.   возможно это где то ещё надо добавить.
 //$strokefixeddata=str_replace ("¦",",",$strokedata);//hide
  
 $strokefixeddata1=(substr($strokefixeddata1, -1) == ',') ? substr($strokefixeddata1, 0, -1) : $strokefixeddata1;
@@ -3570,6 +3574,7 @@ for ($xa=0;$xa<$boxcnt;$xa++) { //копия DEL_SQL  renewed!~
     $string=${box.$xa};    $string=explode ("+",$string);
 				$vID=$string[0];$vID2=$string[1];
     echo "exchanging id1=$vID id2=$vID2 <br>";// наши переменные в $vID i $vID2  $a - цикл ими уплравляющий
+    if ($virtualid=="") $vID2="";// если нет вид2 тогда его значение просто ненужно.   возможно это где то ещё надо добавить.
       // процедура удалени $tablemysqlselect'$tblmysqlselect
 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
@@ -3650,6 +3655,7 @@ for ($a=0;$a<$boxcnt;$a++) {
     $string=${box.$a};    $string=explode ("+",$string);
 				$vID=$string[0];$vID2=$string[1];
   if ($debugmode)  echo "retrieving id1=$vID id2=$vID2 <br>";// наши переменные в $vID i $vID2  $a - цикл ими уплравляющий
+  if ($virtualid=="") $vID2="";// если нет вид2 тогда его значение просто ненужно.   возможно это где то ещё надо добавить.
     // копия SHOWCODE
     // процедура удалени $tablemysqlselect'$tblmysqlselect
         $connect = dbs_connect ($prdbdata[$tbl][6], $sd[14] , $sd[17],$prdbdata[$tbl][12]);
@@ -3684,7 +3690,7 @@ for ($a=0;$a<$boxcnt;$a++) {
   if ($debugmode) echo cmsg ("WF_CCLOK")." ".$c."<br>";
 		//echo "<br>".cmsg ("WF_QUECOMP")." ".dbs_affected_rows ()." ".cmsg ("WF_Q1")."<br>";
 	if ($debugmode) if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
-	if ($pr[12]) {$act="SHOW_PATCH_SQL  B $tbl($nametbl) Find$vID Cmd $cmd"; logwrite ($act) ;};  // логируемся
+	if ($pr[12]) {$act="SHOW_PATCH_SQL  B $tbl($nametbl) id1=$vID id2=$vID2 Cmd= $cmd"; logwrite ($act) ;};  // логируемся
 
     //conec kopii SHOWCODE
 }//  drugaya skobka ubrana
@@ -3892,7 +3898,7 @@ if ($printlimit==false) { msgexiterror ("limit","noexit","disable");} else {$lim
 	if (strpos ($cmd,"BACKUP")!==false) $printing=1; // разрешает печать в libmysql
 	if (strpos ($cmd,"RESTORE")!==false) $printing=1; // разрешает печать в libmysql
 	$cmd=$cmd.$group.$limit; // именно в этом порядке
-	$queries=explode (";",$cmd);	$countqueries=count ($queries);
+	$queries=explode (";",$cmd);	$countqueries=count ($queries);  //тут вот ошибка с выполнением. ;  нельзя так делать  !!! исправить!!!
    // а теперь выполнение большого количества запросов
 	for ($cntque=0;$cntque<$countqueries;$cntque++) {
 		unset ($errt);unset ($ermsg);
