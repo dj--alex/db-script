@@ -16,7 +16,7 @@ if (!$step) echo "This version is supported by this installer<br>";
 //теперь вся конфигурация загружается через initalizeSE //$fldup = get from init// выч как лучше отрезать папку 
 //$languageprofile="russian";
 $locale="";
-if (!$lang) {$languageprofile="english";
+if (!$lang) {$languageprofile="english"; 
 
 $filbas="_conf/sitedata.cfg";
 @$site=csvopen ($filbas,"r","0");$data=readfullcsv ($site,"new");

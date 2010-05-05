@@ -723,14 +723,14 @@ echo " </form> ";
 					$findrecords=0;echo cmsg ("RF_RESSRCH").$namebas." - ".$vID.":\n\n";
 					$vIDold=$vID; $vID=strtolower ($vID);
 					// @$f=fopen ("_data/".$filbas,"r") or die ("Файл базы не найден");
-					// echo ""; $z=xfgetcsv ($f,512,"¦");
+					// echo ""; $z=xfgetcsv ($f,$xfgetlimit,"¦");
 					// $mycol=$z;$myrow=array ();$selected=array ();//added
 					//$md1column=1;$md2column=0;
 					//echo "$cfgmod=cfg;$filbas=fil;$namebas=na,;$md1column=md1;$md2column=md2;<br>";
 					$data=readdescripters ();$f=$data[4];
 					//echo "$cfgmod=cfg;$filbas=fil;$namebas=na,;$md1column=md1;$md2column=md2;<br>";rd вообще не возвр данные.
 					rfsysdatareq (); // возвращаем потерянные хер знает где переменные
-					for ($a=0;$dbc=xfgetcsv ($f,512,"¦");$a++) {
+					for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
 						$k = count($dbc);//echo "md1=$md1column";// dbc-стр табл  к- число кол з-заголовок
 						$findid=strpos(strtolower($dbc[$md1column]),strtolower($vID));
 						if (($findid!==false)&&($dbc[$md1column]!=="")) { //  проверка условия, не может быть удалена
@@ -758,7 +758,7 @@ echo " </form> ";
 						if ($vID==0)  msgexiterror ("needcode",$mode,"disable");
 					}
 					$findrecords=0;echo cmsg ("RF_RESSRCH").$namebas." - ".$vID.":\n\n";
-					for ($a=0;$dbc=xfgetcsv ($f,512,"¦");$a++) {
+					for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
 						$k = count($dbc); // dbc-стр табл  к- число кол з-заголовок
 						if ($dbc[$md2column]==$vID) $selected[]=$dbc;  // c проверкой
 					}
@@ -860,7 +860,7 @@ hidekey ("kol",$kol);
                                         if ($vID=="!0") {$vID=="";$notnull=1;};
 					$f=$data[4];
 					$data=readdescripters ();	$f=$data[4];
-					for ($a=0;$dbc=xfgetcsv ($f,512,"¦");$a++) {
+					for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
 						$k = count($dbc);$myrow=$dbc;
 						// for ($b=0;$b<$k;$b++) {  Бла бла бла;Фэнтэзи;Комедия;Боевик  ищет фигово переключает на 1,4 films al где то производися сброс значения и оно уже не восстанавливается
 						// $mode7=1 если вход был оттуда.копать здесь надо.
@@ -903,8 +903,8 @@ hidekey ("kol",$kol);
 					if ($vID!=="!101") { echo "По вашему запросу ".$vID." было найдено:\n\n"; }
 					$vIDorig=$vID; $vID=strtolower ($vID); $found=0;
 					@$f=fopen ("_data/".$filbas,"r") or die ("Не удалось выполнить подключение к базе, попробуйте позже.");
-					echo ""; $z=xfgetcsv ($f,512,"¦"); // заголовок
-					for ($a=0;$dbc=xfgetcsv ($f,512,"¦");$a++) {
+					echo ""; $z=xfgetcsv ($f,$xfgetlimit,"¦"); // заголовок
+					for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
 						if (($limitenable)AND($findrecords>$printlimit)) {
 							echo "Всего значений : $findrecords<br><br> ";exit;};
 							$k = count($dbc)-$tablemysqlselect;  // удаление колонки, определено в prop
@@ -981,8 +981,8 @@ hidekey ("kol",$kol);
 				//echo $findrecords;//if ($vID!=="!101") { echo "По вашему запросу ".$vID." было найдено:\n\n"; }
 				$vIDorig=$vID; $vID=strtolower ($vID); $found=0;
 				@$f=fopen ("_data/".$filbas,"r") or die ("Не удалось выполнить подключение к базе, попробуйте позже.");
-				echo ""; $z=xfgetcsv ($f,512,"¦"); // заголовок
-				for ($a=0;$dbc=xfgetcsv ($f,512,"¦");$a++) {
+				echo ""; $z=xfgetcsv ($f,$xfgetlimit,"¦"); // заголовок
+				for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
 					if (($limitenable)AND($findrecords>$printlimit)) {
 						echo "Всего значений : $findrecords<br><br> ";exit;};
 						$k = count($dbc)-$tablemysqlselect;  // удаление колонки, определено в prop
@@ -1086,7 +1086,7 @@ hidekey ("kol",$kol);
 			{ echo "<uu>Режим отображения всех данных.</uu>";	$multisearch=0;
 			$data=readdescripters ();$f=$data[4];
 			//$f=$data[4];  ++$enabledataconnreturn=1; ошибка init 495
-			for ($a=0;$dbc=xfgetcsv ($f,512,"¦");$a++) {
+			for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
 				$k = count($dbc);   $selected[]=$dbc;    }
 				$oldvID=-1;
 				selectedprintcsv ($data,$mycol,$selected);

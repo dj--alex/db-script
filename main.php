@@ -12,7 +12,7 @@ if ($hlp!==false) {
 	$msghelpid="F1_".$messageid;//	echo "msg for key $msghelpid is ".cmsg ($msghelpid)."<br>";
 	lprint ($msghelpid);
 exit (1);
-}
+} 
 
 // опх меяннрберярбхх LANGDB яепбеп лнфер ме опхмърэ дюммше"!!
 
