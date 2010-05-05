@@ -15,7 +15,7 @@ if ($sd[19]=="utf-8") $pagename=iconv("windows-1251","utf-8",$pagename);
 $titleout= $sd[16]." - ".$pagename." - ".$write." $element ";
 echo $titleout ;
 ?></title>
-
+ 
 <?
 if ($pr[83]) { echo "";;
      ?><!--head-->

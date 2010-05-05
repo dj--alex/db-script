@@ -5,7 +5,7 @@ $a1=strpos ($stroka,"</nobr>")+7;  $a2=strpos($stroka,"</br>") ;
 $res=substr ($stroka,$a1,$a2);
 echo $res;
 exit;
-*/
+*/ 
 
 //SITE UNKNOWN  PROGRAMM CREATED BY DJ--ALEX
  	global $vergetfile;	

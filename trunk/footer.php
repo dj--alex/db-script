@@ -14,7 +14,7 @@ if ($pr[83]) {?><!--share button will be -->
 document.write(VK.Share.button(<?
 if (!$sd[31]) echo "false";
 if ($sd[31]) echo "{url: \"".$sd[31]."\"}";
-?> ,{type: "round", text: "<?=cmsg("SAVE");?>"}));
+?> ,{type: "round", text: "<?=cmsg("SAVE");?>"})); 
 --></script></div><?
 
 }

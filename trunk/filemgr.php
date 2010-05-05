@@ -13,13 +13,15 @@ autoexecsql ();// ob_flush ();exit; zdes menueshe est.
      if ($searchfilenew) echo cmsg ("SRCH_FND")."<table border=3 width=100% bordercolor=#302621 >";
      for ($a=0;$a<$filcount;$a++) {
          $filename=basename($fildata[$a][5]);
-        if ($fildata[$a][11]) if (strpos (" ".$filename,$searchfilenew)==true) {
+        if ($pr[90]) if ($fildata[$a][11]) { if (($fildata[$a][9])>$maxdown) {//echo "9=".$fildata[$a][9].")>max=$maxdown filewithmaxdown=$a<br>";
+                                                                               $oldmaxdown=$maxdown; $filewithmaxdown=$a;$maxdown=$fildata[$a][9] ;}}
+        if (($fildata[$a][11])or($prauth[$ADM][2])) if (strpos (" ".$filename,$searchfilenew)==true) {
                         $ex=@file_exists ($fildata[$a][5]);
                         $dir=is_dir ($fildata[$a][5]);  // папок от файлов нихера не отличает !! че за
                         if (($ex)AND(!$dir)) {
                             $fsizer="[".round (@filesize ($fildata[$a][5])/1024/1024,2)."Mb]";
-                         $count++;
-                         echo"<tr><td>".$filename."</td><td>".$fsizer."</td>";//bgcolor=white
+                         $countf++;
+                         echo"<tr><td>".$filename."(".$fildata[$a][9].")</td><td>".$fsizer."</td>";//bgcolor=white
                          $commstr="_ico/saveme.png";//.$dbc[$md1column]// возможная ошибка - не $dbc[0] а md2column  poprawil
                          echo "<td><a target=b3 href='filemgr.php?c=".$fildata[$a][4]."'><img src=$commstr border=0 title='".cmsg ("FMG_DOWNLOAD")."'></a>";
                        if (($prauth[$ADM][2])OR($prauth[$ADM][2])) {
@@ -29,15 +31,24 @@ autoexecsql ();// ob_flush ();exit; zdes menueshe est.
                        }
                     echo "</td></tr>";
                          }
-                              echo "</table>";
+                           if ($searchfilenew) echo "</table>";
      echo "<br><form action=filemgr.php method=post>";lprint ("SRCH_FILE");inputtxt ("searchfilenew",30);submitkey ("start","DALEE");echo "<br></form>";
 
      exit;
         }
 
+
      }
-
-
+if ((!$countf)AND($searchfilenew)) { echo "</table>No one files found. Or it not allowed by hosted user.<br>";
+    echo "<br><form action=filemgr.php method=post>";lprint ("SRCH_FILE");inputtxt ("searchfilenew",30);submitkey ("start","DALEE");echo "<br></form>";
+ if ($pr[90]) {echo cmsg ("POP_FIL")."<table border=3 width=100% bordercolor=#302621 >";
+ $fsizer="[".round (@filesize ($fildata[$filewithmaxdown][5])/1024/1024,2)."Mb]";
+  echo"<tr><td>".basename($fildata[$filewithmaxdown][5])."(".$fildata[$filewithmaxdown][9].")</td><td>".$fsizer."</td>";//bgcolor=white
+                         $commstr="_ico/saveme.png";//.$dbc[$md1column]// возможная ошибка - не $dbc[0] а md2column  poprawil
+                         echo "<td><a target=b3 href='filemgr.php?c=".$fildata[$filewithmaxdown][4]."'><img src=$commstr border=0 title='".cmsg ("FMG_DOWNLOAD")."'></a>";
+                         echo "</td></tr></table>";
+            }
+     exit;}
  }
 
 
@@ -81,6 +92,7 @@ if ($f) {  //нам пришла ссылка на файл!  возрадуемся!
     for ($a=0;$a<$filcount;$a++) {    //echo $table[$a][4]."<br>";
     if ($fildata[$a][4]==$f) { $filerealid=$a;$pathwithfile=$fildata[$a][5];$hashdel=$fildata[$a][12];};    //if (==$pathandfile) lprint (FSH_EXST_AN_USR); //трёхмерный массив :))
 }
+
 
 // RIGHTS пока не проверяются..чисто проврка.
 //echo "будет скачан $pathwithfile <br>";
@@ -159,6 +171,7 @@ if ($prauth[$ADM][40]) $noscreenmode=1;
  if ($codekey!==5) if (isset ($FMG_UPLOAD_x)) $cmd{$pid}=cmsg ("FMG_UPLOAD");
  if ($codekey!==5) if (isset ($FMG_SHARE_x)) $cmd{$pid}=cmsg ("FMG_SHARE");
  if ($codekey!==5) if (isset ($FMG_UNZIP_x)) $cmd{$pid}=cmsg ("FMG_UNZIP");
+ if ($OSTYPE=="LINUX") if ($codekey!==5) if (isset ($FMG_UNRAR_x)) $cmd{$pid}=cmsg ("FMG_UNRAR");
  if (isset ($FMG_REF_x)) $cmd{$pid}=cmsg ("FMG_REF");
  if (isset ($FMG_RESET_x)) $cmd{$pid}=cmsg ("FMG_RESET");
  if ($codekey!==5) if (isset ($FMG_CPY_F_x)) $cmd{$pid}=cmsg ("FMG_CPY_F");
@@ -169,6 +182,7 @@ if ($codekey!==5) if (isset ($FMG_MOV_FLD_x)) { $cmd{$pid}=cmsg ("FMG_MOV_FLD");
 
  }
 }
+
 if ($prauth[$ADM][40]) $cmdtmp=$cmd;
 	for ($a=0;$a<100;$a++) { // save pid data
 	$cmdname="cmd".$a;//$cmd1=$cmd{1};  $cmd2=$cmd{2};
@@ -236,6 +250,7 @@ if ($prauth[$ADM][37]) $maxmgrs=$prauth[$ADM][37]; else $maxmgrs=2;
 
 //moved TO Up -- SHARE APPLYING STEP 2 --
 //global $username,$share,$write,$file;
+
 if ($go==cmsg (FMG_SHARE))
 {
 
@@ -283,9 +298,9 @@ $link="<br>http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[
 
 echo $link;
 
- echo cmsg ("D_LNK")." <a href='filemgr.php?c=".$fildata[$count][4]."&".$fildata[$count][12]."'>remove link</a> ".cmsg ("Y_LNK_I")."<br>";
+ echo cmsg ("D_LNK")." <a href='filemgr.php?c=".$fildata[$count][4]."&d=".$fildata[$count][12]."'>remove link</a> ".cmsg ("Y_LNK_I")."<br>";
  //echo "server name=".$_SERVER['SERVER_NAME']."<br>"; echo "php self=".$_SERVER['PHP_SELF']."<br>"; echo "doc root=".$_SERVER['DOCUMENT_ROOT']."<br>";
-$link="<br>http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][4]."&".$fildata[$count][12]."<br><br>";
+$link="<br>http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][4]."&d=".$fildata[$count][12]."<br><br>";
 
 echo $link;
 //echo "hash from filesdata-2 massive: ".$table[$count][4]."<br>";
@@ -450,7 +465,7 @@ if (($cmd==cmsg("FMG_MKDIR"))and($prauth[$ADM][12])) {
 }
 //if ($cmd==cmsg("FMG_DELALL")) $err=rmdir ($path.$fileforaction);
 if (($cmd==cmsg("FMG_JOINFIL"))and($prauth[$ADM][12])) {
-	if ($codekey==7) demo ();
+	if ($codekey==7) demo (); 
 	$err=joinfiles ($path,$mask,$protect,$stroka);
 }
 if (($cmd==cmsg("FMG_DELALL"))and($prauth[$ADM][13])) { // rmdir теперь  полное удаление (!)
@@ -465,6 +480,20 @@ if (($cmd==cmsg("FMG_EXECUTE"))and($prauth[$ADM][8])) {
 	require ($filemgrmod);
 	echo cmsg ("FMG_MOD_OUT")."<br>";
 }
+
+
+ if ($OSTYPE=="LINUX") if (($cmd==cmsg("FMG_UNRAR"))and($prauth[$ADM][12])) {
+    $file=$path.$fileforaction;//rar_open rar_list PHP by standart is unsupported!!!
+    $unrared=substr($fileforaction,0, strrpos($fileforaction,'.') );; // elf  elfkz  удаляем расширение рар
+    mkdir ($path.$unrared);
+    echo "Creating folder $unrared<br>";
+    $extractionpoint=$path.$unrared;
+    echo "Extracting to ".$extractionpoint.";<br>";
+$zip = system("unrar x \"$file\" \"$extractionpoint\"");
+echo "<br>Result=$zip  "; //echo '"unrar e \"'.$file.'\" \"'.$extractionpoint.'\""'; echo " <br>";
+ }
+
+
 
 if (($cmd==cmsg("FMG_UNZIP"))and($prauth[$ADM][12])) {
     $file=$path.$fileforaction;//rar_open rar_list PHP by standart is unsupported!!!
@@ -528,12 +557,21 @@ if ($err) echo "$err <br>";
 // маска для файла может быть поиск по части имени и поиск по формату
 //выделить обращение к директории и режим парсинга (маска)
 //насчет маски - возможно стоит ее добавить в поисковик МЕ
+     if ($pid==1) {if ($pr[86]) if (($pr[87])OR($prauth[$ADM][7])){  //либо право на чтение у юзера, либо разрешение искать всем.
+       echo "<br><form action=filemgr.php method=post>";lprint ("SRCH_FILE");inputtxt ("searchfilenew",30);submitkey ("start","DALEE"); echo "</form>";
+       if ($searchfilenew) { echo $searchfilenew;};
+       }
+     
+     
 
+
+     }
+       
 echo "<form action=filemgr.php method=post>";
 hidekey ("write",$cmd);
 //выделить отдельно модуль создания меню выбора файла.
 $file=getdirdata ($path,$mask,$protect);//print_r ($file);
-asort ($file);
+if ($file) asort ($file);
 $dircnt= count ($file);
 	if (($ADM>0)) echo "<font color=blue>$path</font><br>";
 	hidekey ("pid",$pid);
@@ -547,7 +585,7 @@ $dircnt= count ($file);
 
 	$$pathname=str_replace ("\\\\","\\",$$pathname);	$$pathname=str_replace ("\\\\","\\",$$pathname);
 	if ($OSTYPE=="WINDOWS") $path=str_replace ("\\\\","\\",$path);  // проверка на вшивость -
- 	if ($OSTYPE=="LINUX") $path=str_replace ("\\\\","\\",$path);  // проверка на вшивость -
+ 	if ($OSTYPE=="LINUX") $path=str_replace ("\\\\","\\",$path);  // проверка на вшивость -xc
 	hidekey ("stroka".$a,$$strokaname);		hidekey ("mask".$a,$$maskname);
 	hidekey ("path".$a,$$pathname);			hidekey ("fileforaction".$a,$$fileforactionname);
 
@@ -573,6 +611,7 @@ $dircnt= count ($file);
 	 submitkey ("cmd","FMG_MKDIR");
 	 submitkey ("cmd","FMG_JOINFIL");
          submitkey ("cmd","FMG_UNZIP");
+          	if ($OSTYPE=="LINUX")submitkey ("cmd","FMG_UNRAR");
 	 submitkey ("cmd","FMG_REN");
 	 submitkey ("cmd","FMG_EDIT");
 	 submitkey ("cmd","FMG_NEW"); 			}
@@ -613,6 +652,7 @@ if ($prauth[$ADM][7]) {
  submitimg ("cmd".$pid,"FMG_NEW","_ico/newfile.png");
  submitimg ("cmd".$pid,"FMG_JOINFIL","_ico/joinfiles.png");
  submitimg ("cmd".$pid,"FMG_UNZIP","_ico/backup.png");
+if ($OSTYPE==="LINUX")  submitimg ("cmd".$pid,"FMG_UNRAR","_ico/backup.png");
  }
  if ($prauth[$ADM][13]) {
  if ($prauth[$ADM][5]==true) submitimg ("cmd".$pid,"FMG_DELALL","_ico/removefolder.png");
@@ -680,11 +720,7 @@ if (($pid==1)AND($prauth[$ADM][12])) { // только 1 раз исполняется этот блок .  
 	}
 	echo "</select></form>";
 
-          if ($pid==1)if ($pr[86]) if (($pr[87])OR($prauth[$ADM][7])){  //либо право на чтение у юзера, либо разрешение искать всем.
-       echo "<br><form action=filemgr.php method=post>";lprint ("SRCH_FILE");inputtxt ("searchfilenew",30);submitkey ("start","DALEE"); echo "</form>";
-       if ($searchfilenew) { echo $searchfilenew;};
-
-       }
+     
 
 	}
 echo "<br>";

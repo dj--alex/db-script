@@ -14,7 +14,7 @@ if (!$activation) exit;
            });
     </script><?
 */
-$verwritefile="Editor v4.1.69 beta (c) dj--alex";
+$verwritefile="Editor v4.1.8 beta (c) dj--alex";
  global $verwritefile,$vID,$vID2;
 
 $enterpoint=$verwritefile;// для показа точки входа
@@ -254,7 +254,7 @@ $mode=2;//$scrcolumn=0;$tablemysqlselect=0;$md2column=0;
 if ($cfgmod==1) { // просто копия режима 4 из readfile
 echo "<uu>"; lprint ("RF_M4MSG"); echo "</uu>";	$multisearch=0;
 	 			$data=readdescripters ();$f=$data[4];
-				 for ($a=0;$dbc=xfgetcsv ($f,512,"¦");$a++) {
+				 for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
 					  $k = count($dbc);   $selected[]=$dbc;    } 
   	$oldvID=-1;
   	if (($codekey==9)or($codekey==7))  { lprint ("DEMO_1");$printlimit=3;$limitenable=1;};
@@ -270,7 +270,7 @@ $data=readdescripters ();$f=$data[4]; if ($f==-1) die ("aaaargh! 163!");
 $mycol=$z;$myrow=array ();$selected=array ();//added
 $findrecords=0;lprint ("RF_RESSRCH");echo " ".$namebas." - ".$vID.":";
 //echo "f--$f";
-for ($a=0;$dbc=xfgetcsv ($f,1024,"¦");$a++) {
+for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
 $k = count($dbc);   //echo $dbc[0];
 //modify
 	if (($dbc[$md2column]==$vID)AND($vID2=="")) {   //modified if  and duplicated query
@@ -285,7 +285,7 @@ $k = count($dbc);   //echo $dbc[0];
 lprint ("WF_RF2");echo ":<br>";
 $data=readdescripters ();$f=$data[4];
 $findrecords=0;lprint ("RF_RESSRCH");echo " ".$namebas." - ".$vID.":";
-for ($a=0;$dbc=xfgetcsv ($f,1024,"¦");$a++) {
+for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
 $k = count($dbc); echo "";
 echo "<table border=3 width=100% bgcolor=white>"; echo "<tr>";
 if ($vID!=="") $findid=strpos ($dbc[$md2column],$vID);
@@ -339,7 +339,7 @@ for ($aaa=0;$aaa<count ($mode6);$aaa++)	{ $fndcolumn=$mznumb[$aaa];
  $findrecords=0;$prntbuf=cmsg ("RF_RESSRCH")." ".$namebas." - ".cmsg ("BYCOL").$mzdata[$fndcolumn]." -- ".$vID.":\n\n";
   $vIDold=$vID; $vID=strtolower ($vID); 
 	$data=readdescripters ();	$f=$data[4];
- for ($a=0;$dbc=xfgetcsv ($f,1024,"¦");$a++) {
+ for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
   $k = count($dbc)-$tablemysqlselect;
    $findid=strpos(strtolower($dbc[$fndcolumn]),$vID);
    $findidorig=strpos(strtolower($dbc[$md2column]),$vID);
@@ -360,7 +360,7 @@ if (($write==cmsg("KEY_AN"))AND($prdbdata[$tbl][12]=="fdb")) {
 	if ($cfgmod==1) @$f=csvopen ("_conf/".$filbas,"r","0");echo "<br>";
 // $z to mycol  other $z is dupl and changed to myrow  
 			$data=readdescripters ();  if ($data==-1) exit; 
-	while ($myrow=xfgetcsv ($f,1024,"¦")) {	$countquery=$myrow[$md2column];
+	while ($myrow=xfgetcsv ($f,$xfgetlimit,"¦")) {	$countquery=$myrow[$md2column];
 					settype ($countquery, integer);
 						if ($countquery>$maximalcntmd2) $maximalcntmd2=$countquery;
 									$maxquery++;}
@@ -390,7 +390,7 @@ if ($write==cmsg ("KEY_AN")) {
 if ($write==cmsg ("WF_UNDO")) {
 	$ulog=csvopen ("_logs/undolog.dat","r",1);
 	//echo $u0.$u1.$u3;
-	while ($dbc=xfgetcsv ($ulog,16384,"¦")){
+	while ($dbc=xfgetcsv ($ulog,$xfgetlimit,"¦")){
 		@$chto=strpos ($dbc[4],$u3);//AND($chto==true) - ne pashet
 		if (($dbc[0]==$u0)AND($dbc[1]==$u1)){  //
 			//echo "dbc3=chto=$chto--cmd=".$dbc[3]."---undocmd=".$dbc[4]."<br>";;
@@ -408,7 +408,7 @@ if ($write==cmsg ("WF_UNDO")) {
 if ($write==cmsg ("KEY_S_UNDO")) {
 			$ulog=csvopen ("_logs/undolog.dat","r",1);
 	//echo $u0.$u1.$u3;
-	while ($dbc=xfgetcsv ($ulog,16384,"¦")){
+	while ($dbc=xfgetcsv ($ulog,$xfgetlimit,"¦")){
 		@$chto=strpos ($dbc[4],$u3);//AND($chto==true) - ne pashet
 		if (($dbc[0]==$u0)AND($dbc[1]==$u1)){  //
 			//echo "dbc3=chto=$chto--cmd=".$dbc[3]."---undocmd=".$dbc[4]."<br>";;
@@ -442,21 +442,22 @@ if (($write==cmsg ("KEY_EDIT"))AND($prdbdata[$tbl][12]=="fdb")) {
 	if ($cfgmod==1) @$f=csvopen ("_conf/".$filbas,"r","0");
 //	echo "dEBUG vID2=$vID2 virtualid=$virtualid<br>";
 	echo "<br>";
-			$data=readdescripters ();  if ($data==-1) exit; 
+			$data=readdescripters ();  if ($data==-1) exit;
+                        $mycolvirtualname=$data[3]; if (strlen ($mycolvirtualname[0])<1) $mycolvirtualname=$mycol;// CFG OPT FUTURE
         if ($virtualid=="") $vID2=""; // затычка , т.к. нам присылают второй ид а он нам не нужен вроде бы
-	$mycol=xfgetcsv ($f,1024,"¦");// $z to mycol  other $z is dupl and changed to myrow   
+	$mycol=xfgetcsv ($f,$xfgetlimit,"¦");// $z to mycol  other $z is dupl and changed to myrow
 	if ($cfgmod==1) $mycol=$data[0];
 		if ($vID2==="") { while ($myrow[$md2column]!==$vID) {
-									$myrow=xfgetcsv ($f,1024,"¦");
+									$myrow=xfgetcsv ($f,$xfgetlimit,"¦");
 										if ($myrow===false) { break;};	
 										};
 									};
 		if ($vID2!=="") { 
-			for ($a=0;$myrow=xfgetcsv ($f,1024,"¦");$a++) { 
+			for ($a=0;$myrow=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
 				if ($vID!=="") $findid=strpos ($myrow[$md2column],$vID);
 					if ($vID2!=="") $findid2=strpos ($myrow[$virtualid],$vID2);//mod-add for corr if
 							if (($myrow[$md2column]===$vID)AND($myrow[$virtualid]===$vID2)) break;
-									//$myrow=xfgetcsv ($f,1024,";");
+									//$myrow=xfgetcsv ($f,$xfgetlimit,";");
 							};
 									};
 		@$crc=implode ("¦",$myrow);//added crc32 count
@@ -471,7 +472,7 @@ $oldcoreedit=$prauth[$ADM][39];
 if ($oldcoreedit)
 		for ($a=0;$a<count ($mycol);$a++)
 			{
-			echo "$mycol[$a] ";
+			echo "$mycolvirtualname[$a] ";
 			if ($mycol[$md2column]===$mycol[$a]) echo "<ii>(ID1)</ii>";
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii>(ID2)</ii>";
 			?>
@@ -482,7 +483,7 @@ if ($oldcoreedit)
 			{ //hdr text	//
 
 				if ($prauth[$ADM][41])echo "<tr>";//optional   Box,not linear edit.
-			echo "<td>$mycol[$a] ";
+			echo "<td>$mycolvirtualname[$a] ";
 			if ($mycol[$md2column]===$mycol[$a]) echo "<ii><bb>(ID1)</ii></bb>";
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii><bb>(ID2)</ii></bb>";
 		$lensa=strlen ($myrow[$a])+2;// CFG OPT FUTURE 
@@ -497,7 +498,7 @@ if ($prauth[$ADM][41]) echo "</tr><tr>"; //optional Box,not linear edit.
 			
 			} //field text
 			
-			echo "</table>";
+			echo "</table>"; 
 	}
 	//!!!!!!!!!
 checkbox ($crcignore,"crcignore"); echo cmsg ("WF_NOCRC")."<br>";
@@ -516,7 +517,7 @@ if (($write==cmsg("KEY_S_EDIT"))AND($prdbdata[$tbl][12]=="fdb")) {
 	echo "<br>";
 	// origid1 i origid2  можно использовать для гаранта удаления измененной записи.
 	$data=readdescripters();
-	$mycol=xfgetcsv ($f,1024,"¦");
+	$mycol=xfgetcsv ($f,$xfgetlimit,"¦");
 	$a=0;$cnt=count ($mycol);
 			for ($a=0;$a<$cnt;$a++)
 			{
@@ -549,25 +550,26 @@ if (($write==cmsg ("KEY_ADD"))AND($prdbdata[$tbl][12]=="fdb")) {
 	if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
 	if ($cfgmod==1) @$f=csvopen ("_conf/".$filbas,"r","0");echo "<br>";
 	$data=readdescripters ();  if ($data==-1) exit; 
-		//подсчета пустой ячейки
+		$mycolvirtualname=$data[3]; if (strlen ($mycolvirtualname[0])<1) $mycolvirtualname=$mycol;
+                ////подсчета пустой ячейки
 
-		while ($myrow=xfgetcsv ($f,1024,"¦")) {	$countquery=$myrow[$md2column];
+		while ($myrow=xfgetcsv ($f,$xfgetlimit,"¦")) {	$countquery=$myrow[$md2column];
 					settype ($countquery, integer);
 						if ($countquery>$maximalcntmd2) $maximalcntmd2=$countquery;
 									$maxquery++;}
 		echo cmsg ("WF_1NOTUSED").":".($maximalcntmd2+1)."<br>";  // это в автомат добавлять.    CFG OPT откл.
 		rewind ($f);		//	erase&rewind :) перемотать $F!!!
 		//конец завершения подсчета пустой ячейки
-	$mycol=xfgetcsv ($f,1024,"¦");
+	$mycol=xfgetcsv ($f,$xfgetlimit,"¦");
         	if ($cfgmod==1) $mycol=$data[0];// чтение заголовков правильно !!! в нужной кодировке!!! 
                 $cnt=count ($mycol);
 		if ($vID2==="") { while ($myrow[$md2column]!==$vID) {
-									$myrow=xfgetcsv ($f,1024,"¦");
+									$myrow=xfgetcsv ($f,$xfgetlimit,"¦");
 											if ($myrow===false) { break;};						
 									};
 									};
 		if ($vID2!=="") { 
-			for ($a=0;$myrow=xfgetcsv ($f,1024,"¦");$a++) {
+			for ($a=0;$myrow=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
 				if ($vID!=="") $findid=strpos ($myrow[$md2column],$vID);
 					if ($vID2!=="") $findid2=strpos ($myrow[$virtualid],$vID2);//mod - add for corr 
 					if (($myrow[$md2column]===$vID)AND($myrow[$virtualid]===$vID2)) break;
@@ -585,7 +587,7 @@ $oldcoreedit=$prauth[$ADM][39];
 if ($oldcoreedit)
 	for ($a=0;$a<$cnt;$a++)
 			{
-			echo "$mycol[$a]";
+			echo "$mycolvirtualname[$a]";
 			if ($mycol[$md2column]===$mycol[$a]) {echo "<ii>(ID1)</ii>"; $myrow[$a]=($maximalcntmd2+1);};
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii>(ID2)</ii>";
 			?>
@@ -595,7 +597,7 @@ if ($oldcoreedit)
 			for ($a=0;$a<count ($mycol);$a++)
 			{ //hdr text	//	
 				if ($prauth[$ADM][41])echo "<tr>";//optional   Box,not linear edit.
-			echo "<td>$mycol[$a] ";// перевести
+			echo "<td>$mycolvirtualname[$a] ";// перевести
 			if ($mycol[$md2column]===$mycol[$a])  {echo "<ii>(ID1)</ii>"; $myrow[$a]=($maximalcntmd2+1);};
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii><bb>(ID2)</ii></bb>";
 		$lensa=strlen ($myrow[$a])+2;// CFG OPT FUTURE
@@ -628,7 +630,7 @@ if (($write==cmsg ("KEY_S_ADD"))AND($prdbdata[$tbl][12]=="fdb")) {
 			print cmsg ("WF_NONEWDB")."<br>";exit;};
 			};
 	$data=readdescripters();
-	$mycol=xfgetcsv ($f,1024,"¦");
+	$mycol=xfgetcsv ($f,$xfgetlimit,"¦");
 	$a=0;$cnt=count ($mycol);
 			for ($a=0;$a<$cnt;$a++)
 			{
@@ -747,9 +749,9 @@ if ($cfgmod==2) $filename="_logs/".$filbas;
 	//окончание обработки ошибок    	//	начало csv части обновителя  ===!!!!======
 	@$f=csvopen ($filename,"r","0");//открываем базу
 	echo "<br>";
-	$hdr=xfgetcsv ($f,1024,"¦"); // пропускаем заголовки,т.к. их перемотала программа чтения
+	$hdr=xfgetcsv ($f,$xfgetlimit,"¦"); // пропускаем заголовки,т.к. их перемотала программа чтения
 	$mycol=$hdr;
-	$plvl=xfgetcsv ($f,1024,"¦");
+	$plvl=xfgetcsv ($f,$xfgetlimit,"¦");
 	$tbld=array (); 
 	$cnt=0; //$b[0]=0;
 	$sampletotest1=explode (",",$addiflist1);
@@ -838,7 +840,9 @@ echo "<br>Заменено всего значений : $findrecords<br><br>";
 // готовимся к записи//_WRITE213.85.55.251
 	
 	fclose ($f);
-	$dest=csvopen ($filename.".exch","w",1);
+        	
+	//..$dest=csvopen ($filename.".exch","w",1);4/1/77
+        $dest=csvopen ($filename,"w",1);
 	//character linux delete fail
   if ($OSTYPE=="WINDOWS") $hdr=implode ($hdr,"¦")."\r\n"; //win32 enter not unix
 if ($OSTYPE=="WINDOWS") $plvl=implode ($plvl,"¦")."\r\n";
@@ -854,17 +858,26 @@ if ($OSTYPE=="LINUX") $plvl=implode ($plvl,"¦");
 fclose ($dest);
 //exit;//LINUX FAILURE WRITING BUG  
 		//$f=csvopen ($filename,"backup",0);			
-		for ($a=0;$a<5;$a++)	{ echo "";			}//без разницы  даже если тыщу раз повторит все равно ни.... не удаляет.
+	/*	for ($a=0;$a<5;$a++)	{ echo "";			}//без разницы  даже если тыщу раз повторит все равно ни.... не удаляет.
 		
 		//@$del=unlink ($filename);  //как меня затрахало это permission denied ERROR!BUG!  ВАШУ МАТЬ БЛИН!
 		$realp=realpath ($filename);
 		//$del=unlink ($realp);  //как меня затрахало это permission denied ERROR!BUG! ПОТРАЧЕНО НА ЭТО НЕСКОЛЬКО НЕДЕЛЬ !!!
 		//echo "try realpath $filename is =$realp; ";
-		csvopen ($filename,"delete",0);		 // ШОБ ТВОЮ МАТЬ INITSE блокировал!!!!
-		csvopen ($filename.".exch","rename",$filename);	
+                //fclose ($f) ;
+                echo "Real path for file:$realp<br>"; // нельзя просто так удалять файл - именно это вызывает его создание при вкл глобальности (пр34)
+		//$e=csvopen ($filename,"delete",0);		 // ШОБ ТВОЮ МАТЬ INITSE блокировал!!!!
+
+                //echo"[debug]deleting $filename code return=$e<br>";
+                //$e=unlink ($filename) ;
+                //echo"[debug]deleting2 $filename  code return=$e<br>";
+		$e=csvopen ($filename.".exch","rename",$realp); // ешь
+                echo"[debug]ren $filename.exch code return=$e<br>";
 		//echo "csvopen ($filename.exch,rename,$filename);	";
 		//$f=csvopen ("_conf/dbdata.cfg.exch","rename","_conf/dbdata.cfg");	
 		if ($del==true) break;
+         *
+         */
 		
 	
 	if ($pr[12]) {$act="MASS_EXCH_DAT  B $tbl($nametbl) id1=$vID id2=$vID2 Cmd= $cmd"; logwrite ($act) ;};  // логируемся
@@ -1390,10 +1403,11 @@ while ($result=dbs_fetch_row ($a,$dbtype)) {
 	echo "<option>".$result[0]."";
 }
 echo "</select><br>";
-	
-	$path=getcwd ()."/_local/dump/";
+
+	$path=getcwd ()."/_local/dump/";   //надо сделать возможность выбора папки прямо отсюда, хоть тупо вверх вниз или назначать её через filemgr
+        if (($pr[39])AND(is_dir($pr[39]))) $path=$pr[39];
 	echo cmsg (PATH_DUMP_DBS)."$path<br>";
-	echo cmsg (SEL_FILE)."<br>";
+	echo cmsg (SEL_FILE)."<br>";  //oldcore copy filemgr mod  ..
 	//echo "Path=$path<br>";
 		$path2=$fldup."/_local/dump";
 			$mask="*.*";//wse ok
@@ -1436,7 +1450,8 @@ if (($dblk)AND(!$forcedb)) {$forcedb=1;$dbselected=$dblk;	}
 	$query="";
 	while ($a=fgets ($f)) {// пока читается
 	if ($a[0]==="#") continue;	if ($a[1]==="#") continue;// skip comment lines
-	$najti=strpos ($a,";");
+	$najti=strpos ($a,";\r");
+        //        $queries=preg_split("#(ENGINE=[^\;]+)\;\r?\n#i",$cmd,-1,PREG_SPLIT_DELIM_CAPTURE);
 	$najti2=strpos ($a,"SELECT DATABASE");
 	$najti3=strpos ($a,"create database if not exists");
 	if ($najti2!==false) {
@@ -1691,7 +1706,7 @@ if (($write==cmsg ("WF_HDRSQL_VIRT"))AND ($prdbdata[$tbl][12]!="fdb")) { //++
 	$data=readdescripters (); if ($data==-1) exit; 
 	$mycol=$data[0];
 	@$f=csvopen ("_data/".$filbas,"r","0");$new=0;
-		if ($f==true) { $z=xfgetcsv ($f,2024,"¦");$plevel=xfgetcsv ($f,2024,"¦"); };
+		if ($f==true) { $z=xfgetcsv ($f,$xfgetlimit,"¦");$plevel=xfgetcsv ($f,$xfgetlimit,"¦"); };
 		$a=0;$cnt=count ($mycol);
 	for ($a=0;$a<$cnt;$a++)
 			{
@@ -1847,7 +1862,7 @@ if (($write==cmsg("KEY_HEAD"))AND ($prdbdata[$tbl][12]=="fdb")) {
 	}
 	echo "<br>";
 	 if ($f==-1) exit; 
-		$z=xfgetcsv ($f,2024,"¦");$plevel=xfgetcsv ($f,2024,"¦"); 
+		$z=xfgetcsv ($f,$xfgetlimit,"¦");$plevel=xfgetcsv ($f,$xfgetlimit,"¦");
 		if ($cfgmod==1) {$headervirtual=$data[3];} else {$headervirtual=$z;};//always virtual//always virtual
 		if (count ($z)==1) {  lprint ("WF_OUTDATDB");echo "<br>";}
 	for ($a=0;$a<count ($z);$a++)
@@ -1875,7 +1890,7 @@ if (($write==cmsg ("WF_HDR_REWR"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();	
 	@$f=csvopen ("_data/".$filbas,"r","1");$new=0;
-		$z=xfgetcsv ($f,2024,"¦"); $p=xfgetcsv ($f,2024,"¦");
+		$z=xfgetcsv ($f,$xfgetlimit,"¦"); $p=xfgetcsv ($f,$xfgetlimit,"¦");
 		for ($a=0;$a<count ($z);$a++)	{
 	if (!$sqltocsv) $z[$a]=${"z".$a};//принимаем данные юзера
 	$p[$a]=${"p".$a};//принимаем данные юзера
@@ -1898,14 +1913,14 @@ if (($write==cmsg ("WF_HDR_REWR"))AND ($prdbdata[$tbl][12]=="fdb")) {
 	if ($cfgmod==1) @$f=csvopen ("_conf/".$filbas,"r","0");echo "<br>";
 		$new=0;
 	$data=readdescripters ();
-	$z=xfgetcsv ($f,2024,"¦"); $plevels=xfgetcsv ($f,2024,"¦");// надо терять их!!
+	$z=xfgetcsv ($f,$xfgetlimit,"¦"); $plevels=xfgetcsv ($f,$xfgetlimit,"¦");// надо терять их!!
 	$z=$data[0];$plevels=$data[1]; 
 	for ($a=0;$a<count ($z);$a++) {
 		$z[$a]=${"z".$a};//принимаем данные юзера
 		$p[$a]=${"p".$a};//принимаем данные юзера
 		}
-	$values=implode ($z,"¦");if ($OSTYPE=="WINDOWS") $values.="\n";//LINUX FIX  а в винде оно не работает зачем вообще \n?
-	$plevels=implode ($p,"¦");if ($OSTYPE=="WINDOWS") $plevels.="\n"; if ($OSTYPE=="LINUX") $plevels.="\r\n";//LINUX FIX  - че правда работает?? херня - поправляем для работы с конфигурацией
+	$values=implode ($z,"¦");if ($OSTYPE=="WINDOWS") $values.="\n"; //if ($OSTYPE=="LINUX") $values.="\r\n";//LINUX FIX  а в винде оно не работает зачем вообще \n?
+	$plevels=implode ($p,"¦");if ($OSTYPE=="WINDOWS") $plevels.="\n"; //if ($OSTYPE=="LINUX") $plevels.="\r\n";//LINUX FIX  - че правда работает??files.cfg не принимает..видимо не совпадает то то. херня - поправляем для работы с конфигурацией
 	$a="";
 	while (!feof($f))
 	{ @$a.=fread ($f,10000); //echo $a;
@@ -1964,18 +1979,18 @@ if ($write==cmsg ("KEY_COMM")) {
 			//	echo "dEBUG vID2=$vID2 virtualid=$virtualid<br>";
 			echo "<br>";
 			$data=readdescripters ();  if ($data==-1) exit; 
-			$mycol=xfgetcsv ($f,1024,"¦");// $z to mycol  other $z is dupl and changed to myrow   
+			$mycol=xfgetcsv ($f,$xfgetlimit,"¦");// $z to mycol  other $z is dupl and changed to myrow
 			if ($vID2==="") { while ($myrow[$md2column]!==$vID) {
-									$myrow=xfgetcsv ($f,1024,"¦");
+									$myrow=xfgetcsv ($f,$xfgetlimit,"¦");
 										if ($myrow===false) { break;};	
 										};
 									};
 				if ($vID2!=="") { 
-					for ($a=0;$myrow=xfgetcsv ($f,1024,"¦");$a++) { 
+					for ($a=0;$myrow=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
 						if ($vID!=="") $findid=strpos ($myrow[$md2column],$vID);
 							if ($vID2!=="") $findid2=strpos ($myrow[$virtualid],$vID2);//mod-add for corr if
 									if (($myrow[$md2column]===$vID)AND($myrow[$virtualid]===$vID2)) break;
-											//$myrow=xfgetcsv ($f,1024,";");
+											//$myrow=xfgetcsv ($f,$xfgetlimit,";");
 									};
 											};
 				@$crc=implode ("¦",$myrow);//added crc32 count
@@ -2416,6 +2431,7 @@ if (($write==cmsg ("KEY_EDIT"))AND($prdbdata[$tbl][12]!="fdb")) {
 	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 		if ($data==-1) exit;
+                $mycolvirtualname=$data[3]; if (strlen ($mycolvirtualname[0])<1) $mycolvirtualname=$mycol;
 if ($prdbdata[$tbl][18]) {//dly redaktirowainya data
 	echo "pdb18 ".$prdbdata[$tbl][18];
 	$datacols=explode (",",$prdbdata[$tbl][18]);
@@ -2460,7 +2476,7 @@ if ($prdbdata[$tbl][22]) $directedit=1;
 	if ($oldcoreedit)
 		for ($a=0;$a<$mycols;$a++)
 			{
-			echo "$mycol[$a] ";
+			echo "$mycolvirtualname[$a] ";
 			if ($mycol[$md2column]===$mycol[$a]) echo "<ii>(ID1)</ii>";
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii>(ID2)</ii>";
 			if ($prdbdata[$tbl][18]) for ($b=0;$b<count ($datacols);$b++) { $fil=$tbl.";".$myrow[$md2column].";;".$datacols[$b]."";
@@ -2477,7 +2493,7 @@ if ($prdbdata[$tbl][22]) $directedit=1;
 		for ($a=0;$a<$mycols;$a++)
 			{ //hdr text
 	if ($prauth[$ADM][41]) echo "<tr>";//optional   Box,not linear edit.   GMP_41;Редактор, вертикаль интерфейс  из lang/russian.cfg
-			echo "<td>$mycol[$a] ";
+			echo "<td>$mycolvirtualname[$a] ";
 			if ($mycol[$md2column]===$mycol[$a]) echo "<ii><bb>(ID1)</ii></bb>";
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii><bb>(ID2)</ii></bb>";
 		
@@ -2736,8 +2752,8 @@ if (($write==cmsg ("KEY_ADD"))AND($prdbdata[$tbl][12]!="fdb")) {
 
 	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 		if ($data==-1) exit;
-	if ($data==-1) exit;
-	$maxquery="SELECT MAX(`".$mycol[$md2column]."`)FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`";
+	$mycolvirtualname=$data[3]; if (strlen ($mycolvirtualname[0])<1) $mycolvirtualname=$mycol;
+        	$maxquery="SELECT MAX(`".$mycol[$md2column]."`)FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`";
 	$result = dbs_query ($maxquery,$connect,$dbtype);;	$maxtbl = dbs_fetch_row ($result,$dbtype);
 	echo cmsg ("WF_1NOTUSED").": ".($maxtbl[0]+1)."<bR>";
         $maximalcntmd2=$maxtbl[0];
@@ -2781,7 +2797,7 @@ if (($write==cmsg ("KEY_ADD"))AND($prdbdata[$tbl][12]!="fdb")) {
 	if ($oldcoreedit)
 	for ($a=0;$a<$mycols;$a++)
 			{
-			echo "$mycol[$a] ";
+			echo "$mycolvirtualname[$a] ";
 			if ($mycol[$md2column]===$mycol[$a])  {echo "<ii>(ID1)</ii>"; $myrow[$a]=($maximalcntmd2+1);};
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii>(ID2)</ii>";
 			?>
@@ -2791,7 +2807,7 @@ if (($write==cmsg ("KEY_ADD"))AND($prdbdata[$tbl][12]!="fdb")) {
 		for ($a=0;$a<$mycols;$a++)
 			{ //hdr text
 	if ($prauth[$ADM][41]) echo "<tr>";//optional   Box,not linear edit.
-			echo "<td>$mycol[$a] ";
+			echo "<td>$mycolvirtualname[$a] ";
 			if ($mycol[$md2column]===$mycol[$a])  {echo "<ii>(ID1)</ii>"; $myrow[$a]=($maximalcntmd2+1);};
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii><bb>(ID2)</ii></bb>";
 		
@@ -3898,7 +3914,13 @@ if ($printlimit==false) { msgexiterror ("limit","noexit","disable");} else {$lim
 	if (strpos ($cmd,"BACKUP")!==false) $printing=1; // разрешает печать в libmysql
 	if (strpos ($cmd,"RESTORE")!==false) $printing=1; // разрешает печать в libmysql
 	$cmd=$cmd.$group.$limit; // именно в этом порядке
-	$queries=explode (";",$cmd);	$countqueries=count ($queries);  //тут вот ошибка с выполнением. ;  нельзя так делать  !!! исправить!!!
+        $queries=explode (";\r",$cmd);
+        //..$queries=preg_split ('\\' ,$cmd);
+        //if (!$pregsplitdisabled) $queries=preg_split("#(ENGINE=[^\;]+)\;\r?\n#i",$cmd,-1,PREG_SPLIT_DELIM_CAPTURE);
+        //print_r ($queries); echo "executing aborted --------- test ";
+        //exit;
+        ////
+        $countqueries=count ($queries);  //тут вот ошибка с выполнением. ;  нельзя так делать  !!! исправить!!!
    // а теперь выполнение большого количества запросов
 	for ($cntque=0;$cntque<$countqueries;$cntque++) {
 		unset ($errt);unset ($ermsg);
