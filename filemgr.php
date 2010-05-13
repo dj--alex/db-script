@@ -1,7 +1,7 @@
 <?php
 require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
 if (!$activation) exit;
-$verfilemgr="Filemgr  v 4.1.71 (c) dj--alex ";
+$verfilemgr="Filemgr  v 4.1.81 (c) dj--alex ";
   $enterpoint=$verfilemgr;#end of conf
 // вот наша буферизация - ob_start();ob_end_flush();
 autoexecsql ();// ob_flush ();exit; zdes menueshe est.
@@ -11,6 +11,7 @@ autoexecsql ();// ob_flush ();exit; zdes menueshe est.
  if ($pr[86]) if (($pr[87])OR($prauth[$ADM][7])){  //либо право на чтение у юзера, либо разрешение искать всем.
      //if ($searchfilenew) { echo $searchfilenew;}
      if ($searchfilenew) echo cmsg ("SRCH_FND")."<table border=3 width=100% bordercolor=#302621 >";
+    // echo "filcount = $filcount <br>";
      for ($a=0;$a<$filcount;$a++) {
          $filename=basename($fildata[$a][5]);
         if ($pr[90]) if ($fildata[$a][11]) { if (($fildata[$a][9])>$maxdown) {//echo "9=".$fildata[$a][9].")>max=$maxdown filewithmaxdown=$a<br>";
@@ -21,24 +22,26 @@ autoexecsql ();// ob_flush ();exit; zdes menueshe est.
                         if (($ex)AND(!$dir)) {
                             $fsizer="[".round (@filesize ($fildata[$a][5])/1024/1024,2)."Mb]";
                          $countf++;
+                     //    echo "countf=$countf<br>";
                          echo"<tr><td>".$filename."(".$fildata[$a][9].")</td><td>".$fsizer."</td>";//bgcolor=white
                          $commstr="_ico/saveme.png";//.$dbc[$md1column]// возможная ошибка - не $dbc[0] а md2column  poprawil
                          echo "<td><a target=b3 href='filemgr.php?c=".$fildata[$a][4]."'><img src=$commstr border=0 title='".cmsg ("FMG_DOWNLOAD")."'></a>";
                        if (($prauth[$ADM][2])OR($prauth[$ADM][2])) {
-                                                //может добавить отдельное право для редактирования ссылок и удаления слинкованных файлов? ??
+                      //может добавить отдельное право для редактирования ссылок и удаления слинкованных файлов? ??
                             $commstr="_ico/errorcritical.png";
                            echo "<a target=b3 href='filemgr.php?c=".$fildata[$a][4]."&d=".$fildata[$a][12]."'><img src=$commstr border=0 title='".cmsg ("PHYS_DEL")."'></a>";
                        }
                     echo "</td></tr>";
                          }
-                           if ($searchfilenew) echo "</table>";
-     echo "<br><form action=filemgr.php method=post>";lprint ("SRCH_FILE");inputtxt ("searchfilenew",30);submitkey ("start","DALEE");echo "<br></form>";
-
-     exit;
+      
+//     exit;
         }
 
 
      }
+                 if ($searchfilenew) echo "</table>";
+//echo "<br><form action=filemgr.php method=post>";lprint ("SRCH_FILE");inputtxt ("searchfilenew",30);submitkey ("start","DALEE");echo "<br></form>";
+
 if ((!$countf)AND($searchfilenew)) { echo "</table>No one files found. Or it not allowed by hosted user.<br>";
     echo "<br><form action=filemgr.php method=post>";lprint ("SRCH_FILE");inputtxt ("searchfilenew",30);submitkey ("start","DALEE");echo "<br></form>";
  if ($pr[90]) {echo cmsg ("POP_FIL")."<table border=3 width=100% bordercolor=#302621 >";
@@ -49,6 +52,7 @@ if ((!$countf)AND($searchfilenew)) { echo "</table>No one files found. Or it not
                          echo "</td></tr></table>";
             }
      exit;}
+      
  }
 
 

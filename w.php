@@ -14,7 +14,7 @@ if (!$activation) exit;
            });
     </script><?
 */
-$verwritefile="Editor v4.1.8 beta (c) dj--alex";
+$verwritefile="Editor v4.1.82 beta (c) dj--alex";
  global $verwritefile,$vID,$vID2;
 
 $enterpoint=$verwritefile;// для показа точки входа
@@ -1426,8 +1426,10 @@ echo "<select name=\"dump[]\" multiple size=10>";
 				echo "<option>".$files[$a][0]."";
 			}
 			unset ($files);
-echo "</select>";
+echo "</select><br>";
 checkbox ($views,"views") ; echo cmsg (WF_LOG).cmsg (NORECOMM)."<br>";
+checkbox ($dumpmode1,"dumpmode1") ; echo cmsg (OLDCOREDUMPEX)."<br>";
+checkbox ($dumpmode2,"dumpmode2") ; echo cmsg (OLDCOREDUMPEX2)."<br>";
 // hidekey ("dbtype",$dbtype);нихера не передается.
 //checkbox ($disviews,"disviews") ; echo cmsg (WF_LOG).cmsg (NORECOMM)."<br>"; 
  submitkey ("start","DALEE");
@@ -1440,7 +1442,7 @@ if (($dblk)AND(!$forcedb)) {$forcedb=1;$dbselected=$dblk;	}
 	$path=getcwd ()."/_local/dump/";
         $dbtype="mysql"; // default dbtype in CFG OPT FUTURE! 
       	@$connect=dbs_connect ($pr[43],$sd[14],$sd[17],$dbtype); //prdata tbl 6 changing to $pr[43]  EVERYWHERE!!!
-
+        @ini_set('max_execution_time', 0);set_time_limit(0);
         echo "$connect=dbs_connect (".$pr[43].",".$sd[14].",".$sd[17].",$dbtype)";
           sqlerr ($connect);
                	$dumpfile=$dump[0];
@@ -1448,9 +1450,21 @@ if (($dblk)AND(!$forcedb)) {$forcedb=1;$dbselected=$dblk;	}
 	if ($views) print_r ($dump);
 	echo "file=$path $dumpfile"; 
 	$query="";
-	while ($a=fgets ($f)) {// пока читается
+        if ($dumpmode2) {
+            echo "Trying to execute full dump without any checks or descriptors...<br>";
+            fclose ($f); 
+            needupdate ();  
+            $query=file_get_contents ($path.$dumpfile);
+             //..$db->getConnection()->exec($query); ///-  было бы круче но у меня нет такой функции
+            	//..$result=dbs_query ($query,$connect,$dbtype);
+                sqlerr ();
+                ob_flush (); 
+        }
+	if (!$dumpmode2) while ($a=fgets ($f)) {// пока читается
 	if ($a[0]==="#") continue;	if ($a[1]==="#") continue;// skip comment lines
-	$najti=strpos ($a,";\r");
+	if ((!$dumpmode1)AND(!$dumpmode2)) $najti=strpos ($a,";\r");
+        if (($dumpmode1)) $najti=strpos ($a,";");
+
         //        $queries=preg_split("#(ENGINE=[^\;]+)\;\r?\n#i",$cmd,-1,PREG_SPLIT_DELIM_CAPTURE);
 	$najti2=strpos ($a,"SELECT DATABASE");
 	$najti3=strpos ($a,"create database if not exists");
@@ -1468,11 +1482,13 @@ if (($dblk)AND(!$forcedb)) {$forcedb=1;$dbselected=$dblk;	}
 	if ($forcedb) {
 			$cmd="USE $dbselected;";
 			$res=dbs_query ($cmd,$connect,$dbtype);;
-                        sqlerr ($res); // а если базу нигде не задали , что с ней делать?  пришить первую попавшуюся.
+                        sqlerr ($res); // а если базу нигде не задали , что с ней делать?  пришить подключенную
+                        // нет анализа скрипта на принадлежность базы
 			//if ($a) echo "forced select $cmd<br>"; оно вызывало баг 1111111
 				}
 	if ($najti===false)	{$query.=$a;continue;}
 	if ($najti!==false)	{$query.=$a;}
+             
 	if ($views) echo "<br>EXECUTING:".$query."<br>";
         
 	$result=dbs_query ($query,$connect,$dbtype);
