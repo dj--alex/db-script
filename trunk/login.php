@@ -203,13 +203,13 @@ echo "<td>";pictogramm("config.png","admin.php",cmsg ("MNU_0"));
 echo "<td>";pictogramm("userprofile.png","admin.php?cmd=myprof",cmsg ("MNU_1"));
 echo "<td>";pictogramm("search.png","getfile.php",cmsg ("MNU_3"));
 echo "<td>";pictogramm("editor.png","w.php",cmsg ("MNU_2"));
-echo "<td>";pictogramm("admin.png","dblinker.php",cmsg ("MNU_8"));
-echo "<td>";pictogramm("key1.png","filemgr.php",cmsg ("MNU_7"));echo "</tr><tr>";
-echo "<td>";pictogramm("temp.png","r.php?viewid=.ver&base=0",cmsg ("MNU_4"));
-echo "<td>";pictogramm("temp.png","admin.php?cmd=note",cmsg ("MNU_5"));
+echo "<td>";pictogramm("dblinker.png","dblinker.php",cmsg ("MNU_8"));
+echo "<td>";pictogramm("filemgr.png","filemgr.php",cmsg ("MNU_7"));echo "</tr><tr>";
+echo "<td>";pictogramm("version.png","r.php?viewid=.ver&base=0",cmsg ("MNU_4"));
+echo "<td>";pictogramm("save_f.png","admin.php?cmd=note",cmsg ("MNU_5"));
 echo "<td>";pictogramm("userinfo.png","r.php?viewid=.info&base=0",cmsg ("MNU_9"));
-echo "<td>";pictogramm("admin.png","admin.php?cmd=test",cmsg ("MNU_6"));
-echo "<td>";pictogramm("logoff.png","r.php?vID=.author&base=0",cmsg ("MNU_10"));
+echo "<td>";pictogramm("test.png","admin.php?cmd=test",cmsg ("MNU_6"));
+echo "<td>";pictogramm("author.png","r.php?vID=.author&base=0",cmsg ("MNU_10"));
 echo "</tr></table>";
 
 

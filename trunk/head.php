@@ -6,9 +6,9 @@
 $verhead="Header v4.1.5 (c) dj--alex"; //hide
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html>
-<head><meta http-equiv="Content-Type" content="text/html; charset=<?=$sd[19];?>">
-<META NAME="KEYWORDS" CONTENT="<?=$sd[24]?>">
-<title><? 
+<head><meta http-equiv="Content-Type" content="text/html; charset=<?php echo$sd[19];?>">
+<META NAME="KEYWORDS" CONTENT="<?php echo$sd[24]?>">
+<title><?php
 if ($p!=0) $pagename=$pgcontent[$p+1][3];
 $element=$vID; settype ($element, integer); if ($element=="0") unset ($element);
 if ($sd[19]=="utf-8") $pagename=iconv("windows-1251","utf-8",$pagename);
@@ -16,35 +16,35 @@ $titleout= $sd[16]." - ".$pagename." - ".$write." $element ";
 echo $titleout ;
 ?></title>
  
-<?
+<?php
 if ($pr[83]) { echo "";;
      ?><!--head-->
-<script type="text/javascript" src="http://vkontakte.ru/js/api/share.js?3"></script><?
+<script type="text/javascript" src="http://vkontakte.ru/js/api/share.js?3"></script><?php
 // мля где переменная с координатами меню когда она здесь так нужна???
 }
 
 //этот модуль выводиться только в стиле DM (4)
 if ($dbstyle3en) if (($enrestmenu)AND($menuloaded!==1)){?>
-<div id="module4" style="position:absolute; z-index:0; left: <?=$pr[44]+2 ; ?>px; top: 0px; background-color:<?=$rgbfon ; ?>; color:#<?=$rgbtext ; ?>;background:#<?=$rgbfon ; ?>; "><?
+<div id="module4" style="position:absolute; z-index:0; left: <?php echo$pr[44]+2 ; ?>px; top: 0px; background-color:<?php echo$rgbfon ; ?>; color:#<?php echo$rgbtext ; ?>;background:#<?php echo$rgbfon ; ?>; "><?php
 } 
 ?>
-<style type="text/css"><?
-?> #myTable { font:<?=$tableshrift ; ?> ; }  #Adminpanel { font:<?=$tableshrift ; ?> ; } 
-body { font:<?=$systemshrift ; ?>; <?
+<style type="text/css"><?php
+?> #myTable { font:<?php echo$tableshrift ; ?> ; }  #Adminpanel { font:<?php echo$tableshrift ; ?> ; }
+body { font:<?php echo$systemshrift ; ?>; <?php
 if (($pr[54])OR(!$dbstyle3en)) { // применяется если стиль DeusModus неактивен
-	?> color:#<?=$rgbtext ; ?>;background:#<?=$rgbfon ; ?>; }<?;
+	?> color:#<?php echo$rgbtext ; ?>;background:#<?php echo$rgbfon ; ?>; }<?php;
 }?>
 .buttonS
-  { text-align:center; font:<?=$buttonshrift ; ?>; 
-   background-color:<?=$rgbfon ; ?>; color:<?=$rgbtext ?> ; }
-<?
+  { text-align:center; font:<?php echo$buttonshrift ; ?>;
+   background-color:<?php echo$rgbfon ; ?>; color:<?php echo$rgbtext ?> ; }
+<?php
 if ($prauth[$ADM][47]) { 
 	echo ".hoverRow { background-color:#".$prauth[$ADM][47].";}"; } else  
 		{echo ".hoverRow { background-color: yellow;}";}
 ?>
 .clickedRow { background-color: green; }
  </style>
-<?  if (!$trafeconom) { // куй а не размер кнопкам!
+<?php  if (!$trafeconom) { // куй а не размер кнопкам!
     ?>
 <script>
 function highlightTableRows(tableId, hoverClass, clickClass, multiple)
@@ -71,7 +71,7 @@ function highlightTableRows(tableId, hoverClass, clickClass, multiple)
 	}
 
 }</script>
-<? //
+<?php //
 /*  wwww.tigir.com - 14.06.2006 - используется частично ибо больше нафиг надо - thx авторам.
 // не используется ни подсветка выделенного . вообще можно ее удалить наверное, галочки и так есть у меня.
 Библиотека hltable.js из статьи "Подсвечивание строк таблицы" - http://www.tigir.com/highlight_table_rows.htm*/
@@ -135,39 +135,39 @@ function highlightTableRows(tableId, hoverClass, clickClass, multiple)
 }
 
 //в режиме экономии не используется внешний файл стилей  em {
-//background-color:<?=$rgbtext ; ; color:<?=$rgbfon ; ;} 
+//background-color:<?php echo$rgbtext ; ; color:<?php echo$rgbfon ; ;}
 //<link href="dbscriptstyles.css" rel="stylesheet" type="text/css"> em-invert
  if (!$trafeconom) { //require ("js.inc") ;
 ?> <script language="javascript" type="text/javascript">
 function OM(button)
-{button.style.color="<?=$rgbfon?>";
-button.style.backgroundColor="<?=$rgbtext?>";
+{button.style.color="<?php echo$rgbfon?>";
+button.style.backgroundColor="<?php echo$rgbtext?>";
 }
 function OMOut(button)
-{button.style.color="<?=$rgbtext?>";
-button.style.backgroundColor="<?=$rgbfon?>";
+{button.style.color="<?php echo$rgbtext?>";
+button.style.backgroundColor="<?php echo$rgbfon?>";
 }
 function AL(button)
 {button.style.color="00FF00";
 }
 
 </script>
-<?
+<?php
  };
 	
 	function initwindowactions ($enablepositioning) {  ?><SCRIPT LANGUAGE="javascript">
 function win(id,trigger,lax,lay) {
 if (trigger=="1"){
 	if (document.layers) document.layers[''+id+''].visibility = "show"
-	else if (document.all) document.all[''+id+''].style.visibility = "visible"
+	else if (document.all) {document.all[''+id+''].style.visibility = "visible"}
 	else if (document.getElementById) document.getElementById(''+id+'').style.visibility = "visible"				
 	}
 else if (trigger=="0"){
 	if (document.layers) document.layers[''+id+''].visibility = "hide"
-	else if (document.all) document.all[''+id+''].style.visibility = "hidden"
+	else if (document.all) {document.all[''+id+''].style.visibility = "hidden"}
 	else if (document.getElementById) document.getElementById(''+id+'').style.visibility = "hidden"				
 	}
-<? if ($enablepositioning) { // list of blocked functions  этой переменной нет поэтому разрешить перемещение пока нельзя
+<?php if ($enablepositioning) { // list of blocked functions  этой переменной нет поэтому разрешить перемещение пока нельзя
 ?>// Set horizontal position	
 if (lax){
 	if (document.layers){document.layers[''+id+''].left = lax}
@@ -180,9 +180,9 @@ if (lay){
 	else if (document.all){document.all[''+id+''].style.top=lay}
 	else if (document.getElementById){document.getElementById(''+id+'').style.top=lay+"px"}
 	}
-	<? } ;?>
+	<?php } ;?>
 }
-</SCRIPT><?
+</SCRIPT><?php
 return true;
 }
 
@@ -194,5 +194,5 @@ if (($enrestmenu)AND($menuloaded!==1)) if ((!$pr[54])AND($dbstyle3en)) {
 
 
 
-//	function helpLayer(layerName)//{//	a="Msg for <?=$prauth[$ADM][0] "//	alert (a)//}
+//	function helpLayer(layerName)//{//	a="Msg for <?php echo$prauth[$ADM][0] "//	alert (a)//}
  //hidekey ("SID",$_SESSION["SID"]);//echo $SID."=SID=".$_SESSION["SID"];

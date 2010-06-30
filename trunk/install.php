@@ -1,17 +1,35 @@
 <?php ob_start ();
-if ($_POST[$step]<1) echo "Loading core...";
-$nomnu=1;$coreloadskip=1; $debugmode=false;
 //$writefullcfgdiscrwin=1;
 // СКАЖЕМ НЕТ ШАБЛОНАМ, мы за оригинальное программирование!
 // только ломая шаблоны и стереотипы можно добится чего то нового.
 //if (!$languageprofile) $languageprofile="english";
-@mkdir ("_conf");// langset  styles  required
+$verinst="Install v4.1.83 (c) dj--alex";// service hide
+echo "Starting install process dbscript.  Module: $verinst<br>";
+if ($_POST[$step]<1) {echo "Checking ini<br>";
+    //переписать msgexiterror  c учётом функции window и вообще сделать там наконец возможность менять размер окна и возможно перемещать его.
+    $phpmem=ini_get ("memory_limit");if ($phpmem<100) echo "settings php.ini memory_limit=$phpmem , recommend inscrease value at least 100M (for big files and dumps - higher)<br>";
+    $phppost=ini_get ("post_max_size");if ($phppost<10) echo "settings : php.ini : post_max_size=$phppost , recommend inscrease value at least 10mb (for big files and dumps - higher)<br>";
+$phptag=ini_get ("short_open_tag"); if (!$phptag) die ("Fatal error: settings : php.ini : dbscript requires short_open_tag=on ! This version unsupport work without it. Installation failed. ");
+$phpsafe=ini_get ("safe_mode"); if ($phpsafe) echo "settings : php.ini : safe_mode is on. recommend off , it not allows use some inbuild settings and some operations you can get errors without it.<br>";
+$phpglob=ini_get ("register_glogals"); if ($phpglob) echo"notify: register globals is on. recommended off for security reasons.<br>";
+$phpzend1=ini_get ("zend_optimizer.optimization_level"); if ($phpzend1) echo "settings : php.ini :".$phpzend1."<br>";
+$phpzend1=ini_get ("zend_loader"); if ($phpzend1) echo "settings : php.ini :".$phpzend1."<br>";
+$phpfunc=ini_get ("disable_function");if ($phpfunc) echo "notify: disabled functions $phpfunc<br>";
+if ($phpsafe){ $phpmaxtime= ini_get ("max_execution_time"); if ($phpmaxtime<60) echo "safe_mode : settings : php.ini : max_execution time <60. Safe mode not allows me set time automatically. Change one of settiongs pleaxe.<br>";
+}
+//echo "<br>";
+}
+if ($_POST[$step]<1) echo "Loading core...";
+if ($_GET[$step]>0) {echo "Invalid initializing..."; exit;}
+$nomnu=1;$coreloadskip=1; $debugmode=false;
+
 require ('dbscore.lib'); // i/o file  INCLUDED!
-$verinst="Install v4.0.91 (c) dj--alex";// service hide
+@mkdir ("_conf");// langset  styles  required
+
 $debugmode=false;$pr[8]=1; //debug off
- echo " ".$verprogram."<br>$verinst<br>";
+ echo "".$verprogram."<br>";
 if (!isset ($verprogram)) die ("Core loading failed!");
-if (($vernumb<3.7)or($vernumb>4.2)) die ("Unsupported version core!");
+if (($vernumb<3.7)or($vernumb>4.4)) die ("Unsupported version core!");
 if (!$step) echo "This version is supported by this installer<br>";
 //теперь вся конфигурация загружается через initalizeSE //$fldup = get from init// выч как лучше отрезать папку 
 //$languageprofile="russian";
@@ -20,29 +38,33 @@ if (!$lang) {$languageprofile="english";
 
 $filbas="_conf/sitedata.cfg";
 @$site=csvopen ($filbas,"r","0");$data=readfullcsv ($site,"new");
-if ((!$step)AND($data!==-1)) { window ("","") ;lprint (INST_CONF_PRES);closewindow();exit;}
+if ((!$step)AND($data!==-1)) { echo "Dbscript already installed. You must remove install.php<br>";window ("","") ;echo " <img src=\""."_ico/info.png"."\" border=0><br>   ";
+  lprint (INST_CONF_PRES);closewindow();exit;}
 
 
 
 ?>
 <link href="style.css" rel="stylesheet" type="text/css">
-<div id="Layer1" style="position:absolute; width:440px; height:115px; z-index:1; left: 171px; top: 68px;" class="author_text">
+<div id="Layer1" style="position:absolute; width:460px; height:115px; z-index:1; left: 201px; top: 108px;" class="author_text">
 <FIELDSET>
 <LEGEND><img src=_ico/wopros.png></img></LEGEND>
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=2>
 <TR>
-<form action="install.php" method="post">
-<TD WIDTH=41%>Select your language . (after install you can select any language from _langdb) <br> Выберите предпочитаемый язык . (позже вы сможете выбрать любой из языков в _langdb) <br>
-</TD>
-<TD WIDTH=59%>
-<?echo "<select name=lang>";
+<form action="install.php" method="post"><img src=_ico/install.png></img>
+<TD WIDTH=75%>Select your language . (after install you can select any language) <br> Выберите предпочитаемый язык . (позже вы сможете выбрать любой) <br>
+    </TD>
+<TD WIDTH=30%>
+<?php echo "<select name=lang>";
 echo "<option value=english>english</option>";
 echo "<option value=russian>русский</option>";
+echo "<option value=deutsch>deutsch</option>";
+echo "<option value=rustranslit>rustranslit</option>";
 echo "</select>";
 ?>
 </TD></TR></TABLE><CENTER>
-<?
-hidekey ("step",1); 
+<?php
+hidekey ("step",1);
+hidekey ("write","Installing Dbscript - 1");
 submitkey ("loginstate","NEXT");
 echo "</CENTER></form></FIELDSET></div>";
 exit;}
@@ -53,8 +75,10 @@ exit;}
 if ($lang) $languageprofile=$lang;
 
 if ($step) {
-	window (array (),"");
+	window (array ( 'message'=>"",'color'=> "",width=>'540',top=>'',left=>'' , height=>'', 'icon'=>"",'mainheader'=>"$step::".cmsg ("I_$step") ),"");
 	echo "<form action=install.php method=post>";
+        $st=$step+1;
+        hidekey ("write",cmsg ("INST_DBS")." - $st");
 	if ($step>0)hidekey ("lang",$lang);
 	}
 //============================================//
@@ -62,9 +86,9 @@ if ($step==1)
 { 	
 	echo "".cmsg ("INST_SQL")."<br>";
 	lprint ("A_LOG_DB");  inputtext ("LOGINSQL",15,"root");echo "<br>";
-	lprint ("A_PS_DB"); inputtext ("PASSSQL",15,"");echo "<br>";
-	echo "<br>".cmsg ("INST_SQL2"); inputtext ("IPDEFSERVSQL",15,"127.0.0.1"); echo "<br>";
-	echo "<br>".cmsg ("INST_SQL3"); echo "<br>";
+	lprint ("A_PS_DB"); inputtext ("PASSSQL",15,"");//echo "<br>";
+	echo "<br>".cmsg ("INST_SQL2"); inputtext ("IPDEFSERVSQL",15,"127.0.0.1"); 
+	echo "<br>".cmsg ("INST_SQL3"); echo "<br>";echo "<br>";
 	submitkey ("loginstate","DALEE");
 	hidekey ("step",2); 
 	
