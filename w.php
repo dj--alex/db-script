@@ -14,7 +14,7 @@ if (!$activation) exit;
            });
     </script><?
 */
-$verwritefile="Editor v4.1.82 beta (c) dj--alex";
+$verwritefile="Editor v4.1.89 beta (c) dj--alex";
  global $verwritefile,$vID,$vID2;
 
 $enterpoint=$verwritefile;// для показа точки входа
@@ -38,6 +38,7 @@ if ($frameoldcore==0) $fil=getvar ('fil'); //было установлено неверное 1
 				 };
  // настройка префиксов для работы с любым языкомым cmd
 if ($cmd=="ed") { $write=cmsg ("KEY_EDIT"); }
+if ($cmd=="add") { $write=cmsg ("KEY_ADD"); }
 if ($cmd=="del") { $write=cmsg ("KEY_DEL"); }
 if ($cmd=="hdr") { $write=cmsg ("KEY_HEAD"); }
 if ($cmd=="dat") { $write=cmsg ("KEY_DATA"); }
@@ -2871,8 +2872,11 @@ if (($write==cmsg ("KEY_S_ADD"))AND($prdbdata[$tbl][12]!="fdb")) {
 	if ($a==true) { echo $myrow[0].cmsg ("WF_ADDED").".<br>";	if ($views) echo cmsg ("WF_EXQUE")."$cmd<br>"; } else 	{
 		$errt=cmsg ("WF_ADDFAIL"); $ermsg="$myrow[0]".cmsg ("WF_ADDPRS")."<br>";}
 	   $directeditwhere=gensqldirecteditwhere ($mycol,$myrow,$mycols);
-      if (!$directedit)     {$undodata="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE ".$mycol[$md2column]."='".$vID."'";
-	if (($virtualid>0)AND ($vID2!=="")) { $undodata=$undodata." AND ".$mycol[$virtualid]."= '".$vID2."'";}; }
+           
+      if (!$directedit)     {$undodata="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE ".$mycol[$md2column]."='".$myrow[$md2column]."'";
+	if (($virtualid>0)AND ($vID2!=="")) { $undodata=$undodata." AND ".$mycol[$virtualid]."= '".$myrow[$virtualid]."'";}; }
+    // в варианте - if (!$directedit)  - ошибка если добавлялось только одно значение из ид 1
+    // vID1 vID2 - не используются, нужно использовать соответвующие поля данных вместо них
     if ($directedit)     {$undodata="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE $directeditwhere "; }
 	if (!$errt) if ($pr[12]) {$act="ADD_SQL  B $tbl($nametbl) Find $vID $vID2 Cmd $cmd";
             $baseID=$tbl;$hostIP=$prdbdata[$tbl][6];
@@ -3493,9 +3497,33 @@ if ($write==cmsg ("WF_UNDO_LAST")) {
     //print_r ($a);
     //($file,$filetoaction,$stroka)   
     ////date("d.m.Y")  $prauth[$ADM][15]."(".$prauth[$ADM][0].")
-    
+    submitkey ("write","WF_UNDO_LAST_EXEC");
 	//Header("Location: r.php?tbl=log&mode=7&kol=1&vID=".$prauth[$ADM][15]."(".$prauth[$ADM][0].")");  показ постранично не умеет и last не пон
 }
+
+
+if ($write==cmsg ("WF_UNDO_LAST_EXEC")) {
+    @$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+    dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
+    $file="_logs/undolog.dat";
+    $undolist=searchplus ($file,"NOPRINT",date("d.m.Y")."&".$prauth[$ADM][15]."(".$prauth[$ADM][0].")");
+    $last=count ($undolist);
+    echo "Undolist last hour counts :$last<br>";
+    $massive=explode ("¦",$undolist[$last-1]);
+    echo "Your command at ".$massive[0].":<br>".$massive[3]."<br><br>";
+    echo "Executing undo command: <br>".$massive[4]."<br>";
+    $cmd=$massive[4];
+    $result = dbs_query ($cmd, $connect,$dbtype);
+    $silent=0;$errno=dbserr ();// пишет ошибку и ее код  и его же возвращает
+    if ($errno) {echo cmsg ("WF_POSERR")."<br>";}
+    //print_r ($a);
+    //($file,$filetoaction,$stroka)
+    ////date("d.m.Y")  $prauth[$ADM][15]."(".$prauth[$ADM][0].")
+
+	//Header("Location: r.php?tbl=log&mode=7&kol=1&vID=".$prauth[$ADM][15]."(".$prauth[$ADM][0].")");  показ постранично не умеет и last не пон
+}
+
+
 
 if ($write==cmsg ("WF_MYCANCLIST")) {
 	Header("Location: r.php?tbl=log&mode=7&kol=1&vID=".$prauth[$ADM][15]."(".$prauth[$ADM][0].")");
@@ -3880,8 +3908,9 @@ echo "</select><br>";
    	checkbox ($selectenable,"selectenable");	echo cmsg (SORT_BY).":";printfield ($data,"field");
 	checkbox ($limitenable,"limitenable") ; lprint ("WF_EX_LIM"); 
 	inputtxt ("printlimit",3);echo "<Br>";
-  checkbox ($disabledbselect,"disabledbselect") ;  lprint ("WF_EX_AUDB"); 
+        checkbox ($disabledbselect,"disabledbselect") ;  lprint ("WF_EX_AUDB");
 	checkbox ($disabledesc,"disabledesc") ; lprint ("WF_EX_NODS");
+        checkbox ($disableprint,"disableprint");lprint ("WF_NO_RES_SQL");
 	
    }
 	checkbox ($bugkosye,"bugkosye"); lprint ("WF_EX_TRYSKIPBUG"); ?>
@@ -3961,7 +3990,7 @@ if ($printlimit==false) { msgexiterror ("limit","noexit","disable");} else {$lim
 	}
 	
 	};  // логируемся
-	if (($countqueries-1)>1) {echo "<br>Sended commands (executed/total)  ".($cntque-1-$error)."/".($countqueries-1)."<br>";
+	if (($countqueries-1)>1) {echo "<br>".cmsg (WF_SEND_SQL_E_T)." ".($cntque-1-$error)."/".($countqueries-1)."<br>";
 	if ($skipped) echo cmsg ("BCK_SKIP").$skipped."<br>";
 	if ($error) echo cmsg ("BCK_ERR").$error."<br>";
 	}	

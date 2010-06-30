@@ -491,7 +491,7 @@ exit;
 	
 		if (($mode>7)and($mode<8)) {
                     $x=explode (".",$mode);
-			$kol=$x[1]; $mode= 7;echo "Reselect column for mode 7 : $kol";
+			$kol=$x[1]; $oldmode=$mode;$mode= 7;if ($debug)echo "Reselect column for mode 7 : $kol";
 		}
 
 
@@ -500,7 +500,8 @@ exit;
 //global $tbl;
 function multistart ()
 			{
-				global $vID,$olddvID,$pr,$multilimit;//,$tbl;
+				global $vID,$olddvID,$pr,$multilimit,$xfgetlimit,$oldmode;//,$tbl;
+    
 				$olddvID=$vID;
 				//	echo "Multithread module on<br>";
 				//	echo "Loaded vID :$vID<br>";
@@ -559,7 +560,12 @@ function search ()
 				global $myrow;//bugs with screen without it
 				global $res16;//maybe bug with res16 передаче
 				global $vID2;
-				global $limitenable,$selectenable,$field,$printlimit,$addsql,$kol,$dbtype;//  глобализация как обычно млин
+				global $limitenable,$selectenable,$field,$printlimit,$addsql,$kol,$dbtype,$xfgetlimit;//  глобализация как обычно млин
+                                global $oldmode;
+                                                            if (($oldmode>7)and($oldmode<8)) {// затычка для случая с сбросом искомой колонки
+                                $x=explode (".",$oldmode);
+                                $kol=$x[1]; $mode= 7;if ($debug)echo "Reselect column for mode 7 : $kol";
+                                }
                                 //echo "dbtype=$dbtype;"; тут он есть , где потерялся тогда??
 				###########################################################
 				//MYSQLMODESEARCHSTART					NON-GLOBAL MODES //
@@ -775,10 +781,10 @@ echo " </form> ";
 
 				if (($mode == 7)AND($prdbdata[$tbl][12]=="fdb")) {
 			//ubrat vse vybory polej ne svyazannye s tekushim mode==7( po menu)
-					echo "m7 Текущий vID $vID res16 $res16 STR595<br>";
+					if ($debug)echo "m7 Текущий vID $vID res16 $res16 STR595<br>";
 					global $prauth,$ADM,$codekey;// добавлено для переключения продвинутого поиска
 					global $presettedmode,$mzdata,$mzcnt,$res16,$mznumb,$mycol;
-					echo "kol=$kol";$field=$kol;
+					if ($debug)echo "kol=$kol";$field=$kol;
 					///	echo "encodevID  $eid;  encodevID(old) $eolddid ";
 					$mode=6; $mode7=1;//$presettedmode=-1; bylo 1.1
 					//..	if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
@@ -786,15 +792,15 @@ echo " </form> ";
 					$eid=encodevID ($vID);  $eolddid=encodevID ($olddvID);  //setup id
 					if (($field===false)OR($go=="Выбрать_колонку")) {
 						echo "Выберите поле для поиска:<br>";// Вставлено для выбора поля
-						echo "result res16=$res16 selfield $selectedfield STR603 a=$a m6=$m6field[0] , $m6field[1] , $m6field[2] <br>";
-						echo " do (574) readdesc mznumb1=".$mznumb[1]." mycols".$mycols." mzdata1=".$mzdata[1]." plevel=".$plevel[1]." mycol1=".$mycol[1]."<br>";
+						if ($debug)echo "result res16=$res16 selfield $selectedfield STR603 a=$a m6=$m6field[0] , $m6field[1] , $m6field[2] <br>";
+						if ($debug)echo " do (574) readdesc mznumb1=".$mznumb[1]." mycols".$mycols." mzdata1=".$mzdata[1]." plevel=".$plevel[1]." mycol1=".$mycol[1]."<br>";
 
 						$data=readdescripters ();
-						echo " do (576) readdesc mznumb1=".$mznumb[1]." mycols".$mycols." mzdata1=".$mzdata[1]." plevel=".$plevel[1]." mycol1=".$mycol[1]."<br>";
+						if ($debug)echo " do (576) readdesc mznumb1=".$mznumb[1]." mycols".$mycols." mzdata1=".$mzdata[1]." plevel=".$plevel[1]." mycol1=".$mycol[1]."<br>";
 						$mznumb=$data[2]; $mycols=$data[6];$mzdata=$data[0];$plevels=$data[1];$mycol=$mzdata;
 						$a=prefixdecode ($res16);
 						decodecols ($res16);
-						echo "result res16=$res16 selfield $selectedfield STR607 a=$a m6=$m6field[0] , $m6field[1] , $m6field[2] <br>";
+						if ($debug)echo "result res16=$res16 selfield $selectedfield STR607 a=$a m6=$m6field[0] , $m6field[1] , $m6field[2] <br>";
 						// echo "Всего колонок $mycols - ищем значения из списка $mznumb[0];$mznumb[1];$mznumb[2];$mznumb[3]<br>";
 ?>	<form action="r.php" method=post>
 <? 	if ($multisearch==1) {
@@ -838,21 +844,21 @@ hidekey ("kol",$kol);
 				// процедура поиска по имени  - mode 1 - CSV
 				if (($mode == 6)AND($prdbdata[$tbl][12]=="fdb"))
 				{
-					echo "m6 Текущий vID $vID<br>";
-					echo "result res16=$res16   STR656";
+					if ($debug) echo "m6 Текущий vID $vID<br>";
+					//echo "result res16=$res16   STR656";
 					global $categorymode,$mode; // добавлено для совместимости с  decodecols ()
 					global $mode6,$m6field,$m6count,$mycols,$mycol,$del;
-					global $partquery,$vID,$mzcnt,$mznumb,$presettedmode;
+					global $partquery,$vID,$mzcnt,$mznumb,$presettedmode,$xfgetlimit;
 					$mznumb=array ();
 					// TEST ZONE
 					$res16=$prdbdata[$tbl][16];// Лимит колонок
 					if ($mode7==1) { $res16=$selectedfield ;};
-					echo "$res16 - ";
-					$a=prefixdecode ($res16);echo "decoded $a=$res16 $categorymode STR 668";	//декодирование строки
+					if ($debug)echo "$res16 - ";
+					$a=prefixdecode ($res16);//echo "decoded $a=$res16 $categorymode STR 668";	//декодирование строки
 					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 					global $mzdata; $mzcnt=count ($mzdata);//$mycol[$md1column]".."
-					$mycol=$mzdata;echo "result res16=$res16 ?STR671";
-					$mode6=array ();decodecols ();echo "result res16=$res16 STR 672";
+					$mycol=$mzdata;//echo "result res16=$res16 ?STR671";
+					$mode6=array ();decodecols ();//echo "result res16=$res16 STR 672";
 					for ($aaa=0;$aaa<count ($mode6);$aaa++)	{ $fndcolumn=$mznumb[$aaa];
 					$findrecords=0;
 					//echo "Результаты поиска в ".$namebas." - по колонке ".$mzdata[$fndcolumn]."($fndcolumn) -- ".$vID.":\n\n";
@@ -860,8 +866,13 @@ hidekey ("kol",$kol);
                                         if ($vID=="!0") {$vID=="";$notnull=1;};
 					$f=$data[4];
 					$data=readdescripters ();	$f=$data[4];
+                                        //mode 6- список всех используемых в этой сессии колонок  если есть ошибки в мультипоиске можно передавать его после первой итерации
+                                        //echo "1count mode6 ".count ($mode6) ."count=$a of $k -- fndcol=$fndcolumn; vid=$vID ; ".$dbc[$fndcolumn]."<br>";
+                                        //$dbc=xfgetcsv ($f,$xfgetlimit,"¦");
+                                        //echo $dbc;echo " ($f,$xfgetlimit,¦); ";
 					for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
-						$k = count($dbc);$myrow=$dbc;
+                                            	$k = count($dbc);$myrow=$dbc;
+                                              //  echo "count=$a of $k -- fndcol=$fndcolumn; vid=$vID ; ".$dbc[$fndcolumn]."<br>";
 						// for ($b=0;$b<$k;$b++) {  Бла бла бла;Фэнтэзи;Комедия;Боевик  ищет фигово переключает на 1,4 films al где то производися сброс значения и оно уже не восстанавливается
 						// $mode7=1 если вход был оттуда.копать здесь надо.
 						$findid=strpos(strtolower($dbc[$fndcolumn]),$vID);
@@ -872,7 +883,7 @@ hidekey ("kol",$kol);
 						}
 					}
 					}
-					selectedprintcsv ($data,$mycol,$selected);echo "result res16=$res16 STR695 END CYCLE<br>";
+					selectedprintcsv ($data,$mycol,$selected);//echo "result res16=$res16 STR695 END CYCLE<br>";
 					if (!$pr[8]) { echo "AFTER DECODE categorymode=$categorymode,mode=$mode,m6count=$m6count,	 mode6=$mode6,m6field=$m6field,mycols=$mycols,mycol=$mycol,del=$del,partquery=$partquery,vID=$vID<br>";}
 					//	 fclose ($f);
 					if ($multisearch==0) {exit (1); }

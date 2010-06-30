@@ -1,4 +1,5 @@
 <?php
+$dbdataskip=1;
 require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
 if (!$activation) exit;
 $verfilemgr="Filemgr  v 4.1.81 (c) dj--alex ";
@@ -652,7 +653,7 @@ if ($prauth[$ADM][7]) {
  if ($prauth[$ADM][12]) {
  submitimg ("cmd".$pid,"FMG_MKDIR","_ico/newfolder.png");
  submitimg ("cmd".$pid,"FMG_REN","_ico/rename.png");
- submitimg ("cmd".$pid,"FMG_EDIT","_ico/edit.png");
+ submitimg ("cmd".$pid,"FMG_EDIT","_ico/editfmg.png");
  submitimg ("cmd".$pid,"FMG_NEW","_ico/newfile.png");
  submitimg ("cmd".$pid,"FMG_JOINFIL","_ico/joinfiles.png");
  submitimg ("cmd".$pid,"FMG_UNZIP","_ico/backup.png");
