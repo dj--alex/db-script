@@ -1,6 +1,6 @@
 <?php
 require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
-$script="login.php";
+//$script="login.php";
  if ($pr[36]=="on")  { 
  	$script="disable";
 if (!isset($_SERVER['PHP_AUTH_USER']) ||
@@ -8,9 +8,9 @@ if (!isset($_SERVER['PHP_AUTH_USER']) ||
    authenticate();}  
  };
  
- if ($pr[36]!=="on") if (!isset ($_SERVER['PHP_AUTH_USER']))  msgexiterror ("anonymous",0,"disable");
+if ($pr[36]!=="on") if (!isset ($_SERVER['PHP_AUTH_USER']))  msgexiterror ("anonymous",0,"disable");
  
-if (($_SERVER['PHP_AUTH_USER']=="UNKNOWN")OR($_SERVER['PHP_AUTH_USER']=="anonymous")OR($_SERVER['PHP_AUTH_USER']==false))  msgexiterror ("notuser",0,$script);
+if (($_SERVER['PHP_AUTH_USER']=="UNKNOWN")OR($_SERVER['PHP_AUTH_USER']=="anonymous")OR($_SERVER['PHP_AUTH_USER']==false)) msgexiterror ("notuser",0,$script);
 
  
 ?>

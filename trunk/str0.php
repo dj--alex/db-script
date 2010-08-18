@@ -29,11 +29,11 @@ if ($goo) { //$addr="str0.php?p=0".$str;   header ($addr);    будет работать тол
     for ($a=0;$a<count ($pgcontent);$a++) {
     $thispagename=$pgcontent[$a][$thislanguagepagescolumn];
                        $x=detectencoding ($thispagename);//      echo "Encoded : ".$x."<br>?";
-                            if (($x!=="utf-8")AND($sd[19]=="utf-8")) $thispagename=iconv("windows-1251","utf-8",$thispagename);
+                            if (($x!=="utf-8")AND($sd[19]=="utf-8")) $thispagename=iconvx("windows-1251","utf-8",$thispagename);
                                                    $x=detectencoding ($goo);//      echo "Encoded : ".$x."<br>?";
-                            if (($x!=="utf-8")AND($sd[19]=="utf-8")) $goo=iconv("windows-1251","utf-8",$goo);
-    //if ($sd[19]=="utf-8") $thispagename=iconv("windows-1251","utf-8",$thispagename);  // тут могут быть подводные камни связанные с кодировкой - использование menukey перепроверить
-    //if ($sd[19]=="utf-8") $goo=iconv("windows-1251","utf-8",$goo);
+                            if (($x!=="utf-8")AND($sd[19]=="utf-8")) $goo=iconvx("windows-1251","utf-8",$goo);
+    //if ($sd[19]=="utf-8") $thispagename=iconvx("windows-1251","utf-8",$thispagename);  // тут могут быть подводные камни связанные с кодировкой - использование menukey перепроверить
+    //if ($sd[19]=="utf-8") $goo=iconvx("windows-1251","utf-8",$goo);
     if ($thispagename==$goo) { $pageenter=$a; break;};
      
 $x.="cycle #=$a hdnlangname=".$pgheader[$thislanguagepagescolumn]."(pgc[a]=goo thispagename=".$thispagename."==$goo)<br>";  // млять почему ПУСТО?:??  какого хера   $thispagename ="" ???
