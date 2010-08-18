@@ -3,37 +3,64 @@
 // ÑÊÀÆÅÌ ÍÅÒ ØÀÁËÎÍÀÌ, ìû çà îğèãèíàëüíîå ïğîãğàììèğîâàíèå!
 // òîëüêî ëîìàÿ øàáëîíû è ñòåğåîòèïû ìîæíî äîáèòñÿ ÷åãî òî íîâîãî.
 //if (!$languageprofile) $languageprofile="english";
-$verinst="Install v4.1.83 (c) dj--alex";// service hide
-echo "Starting install process dbscript.  Module: $verinst<br>";
-if ($_POST[$step]<1) {echo "Checking ini<br>";
+$verinst="Install v4.2.5 (c) dj--alex";// service hide
+//error_reporting (E_ALL);
+//ini_set('error_reporting',E_ALL^E_NOTICE);
+$ei="<img src=\"_ico/error.gif\">";
+echo "Starting install process dbscript. <br> Module: $verinst<br>";
+if ($_POST["step"]<1) {echo "Checking ini<br><div style=\"position:absolute; z-index:4;  top:0; right:0; color: #FFFFFF ; background: #0000aF \"><img src=\"_style/dbsDeusModuslogo.jpg\"></div>";
     //ïåğåïèñàòü msgexiterror  c ó÷¸òîì ôóíêöèè window è âîîáùå ñäåëàòü òàì íàêîíåö âîçìîæíîñòü ìåíÿòü ğàçìåğ îêíà è âîçìîæíî ïåğåìåùàòü åãî.
-    $phpmem=ini_get ("memory_limit");if ($phpmem<100) echo "settings php.ini memory_limit=$phpmem , recommend inscrease value at least 100M (for big files and dumps - higher)<br>";
-    $phppost=ini_get ("post_max_size");if ($phppost<10) echo "settings : php.ini : post_max_size=$phppost , recommend inscrease value at least 10mb (for big files and dumps - higher)<br>";
-$phptag=ini_get ("short_open_tag"); if (!$phptag) die ("Fatal error: settings : php.ini : dbscript requires short_open_tag=on ! This version unsupport work without it. Installation failed. ");
+    $phpmem=ini_get ("memory_limit");if ($phpmem<100) echo "$ei settings php.ini memory_limit=$phpmem , recommend inscrease value at least 100M (for big files and dumps - higher)<br>";
+    $phppost=ini_get ("post_max_size");if ($phppost<10) echo "$ei settings : php.ini : post_max_size=$phppost , recommend inscrease value at least 10mb (for big files and dumps - higher)<br>";
+$phptag=ini_get ("short_open_tag"); if (!$phptag) die ("$ei <font color=red>Fatal error</font>: settings : php.ini : dbscript requires short_open_tag=on ! This version unsupport work without it. Installation failed. ");
 $phpsafe=ini_get ("safe_mode"); if ($phpsafe) echo "settings : php.ini : safe_mode is on. recommend off , it not allows use some inbuild settings and some operations you can get errors without it.<br>";
-$phpglob=ini_get ("register_glogals"); if ($phpglob) echo"notify: register globals is on. recommended off for security reasons.<br>";
-$phpzend1=ini_get ("zend_optimizer.optimization_level"); if ($phpzend1) echo "settings : php.ini :".$phpzend1."<br>";
-$phpzend1=ini_get ("zend_loader"); if ($phpzend1) echo "settings : php.ini :".$phpzend1."<br>";
-$phpfunc=ini_get ("disable_function");if ($phpfunc) echo "notify: disabled functions $phpfunc<br>";
+$phpglob=ini_get ("register_glogals"); if ($phpglob) echo"$ei notify: register globals is on. recommended off for security reasons.<br>";
+$phpfunc=ini_get ("disable_function");if ($phpfunc) echo "$ei notify: disabled functions $phpfunc<br>";
+if (!extension_loaded('iconv')) echo " $ei Warning : php extension iconv non-exist !  <br>";
+if (!extension_loaded('mb_string')) echo "$ei Warning : php extension mb_string non-exist !  <br>";
+if ( (!extension_loaded('mb_string')) AND (!extension_loaded('iconv'))) echo "$ei  Error: Dbscript need an php encoder - iconv or mb_string. Without it you cant use encoding functions and/or get bugs .<br>";
+if (!extension_loaded('Zend Optimizer')) {echo "$ei <font color=red>Fatal error</font>: extension Zend optimizer not installed.<br> It requires to load core for Dbscript 4.x versions, and not for Dbscript 3.6<br>";
+ echo "Note: Zend optimizer for php 5.3 is not exist<br>";
+ echo "Try visit official Zend site or download from mirror your version<br>";
+ echo "<a href=\"http://wow.chg.su/inside/filemgr.php?c=7ed44827378124d7394f207ba7eff8f3\" >Zend optimizer 3.3.9 32bit Linux</a> *";
+ echo "<a href=\"http://wow.chg.su/dbs/filemgr.php?c=a263ea383a7feaaa052fbb91bb261db0\" >Zend optimizer 3.3.9 64bit Linux</a><br>";
+ echo " If you need version without Zend optimizer - get open source version here ( <a href=\"http://wow.chg.su/dbs/filemgr.php?c=9b848fa952e76e70ce7ddf9a1c9e7593\">3.6.12</a>)<br>";
+ if ($_GET["nozend"]!=1) exit;
+// echo "<a href=\"http://wow.chg.su/inside/filemgr.php?c=7ed44827378124d7394f207ba7eff8f3\" >Zend optimizer 3.3.9 win32</a>";
+
+};
+//$silent=1;
 if ($phpsafe){ $phpmaxtime= ini_get ("max_execution_time"); if ($phpmaxtime<60) echo "safe_mode : settings : php.ini : max_execution time <60. Safe mode not allows me set time automatically. Change one of settiongs pleaxe.<br>";
 }
 //echo "<br>";
 }
-if ($_POST[$step]<1) echo "Loading core...";
-if ($_GET[$step]>0) {echo "Invalid initializing..."; exit;}
+if ($_POST["step"]<1) {;};
+echo "Loading core...";
+//echo "step $step G ".$_GET["step"]." P".$_POST["step"]."<br>";;
+if ($_GET["step"]>0) {echo "Invalid initializing..."; exit;}
 $nomnu=1;$coreloadskip=1; $debugmode=false;
+$installermode=1;// locks default language to english
+$nolayer=1;// óáèğàåì âíåøíèå îêîøêèì
 
 require ('dbscore.lib'); // i/o file  INCLUDED!
-@mkdir ("_conf");// langset  styles  required
+
+@$onloadlocal=opendir ("_conf");
+@$errcrtdir=mkdir ("_conf");// langset  styles  required
+
+//echo "Language profile=$lang";
 
 $debugmode=false;$pr[8]=1; //debug off
- echo "".$verprogram."<br>";
+echo "".$verprogram."<br>";
+if (($onloadlocal==false)AND($errcrtdir==false)) { echo "<font color=red>Fatal error</font>: Cannot write to program folder.<br>You must enable writing to user web-server or programm  ( Set rwxr--r-- for script.)";exit; };
+
 if (!isset ($verprogram)) die ("Core loading failed!");
-if (($vernumb<3.7)or($vernumb>4.4)) die ("Unsupported version core!");
+if (($vernumb<4.1)or($vernumb>4.5)) die ("Unsupported version core!");
 if (!$step) echo "This version is supported by this installer<br>";
+
 //òåïåğü âñÿ êîíôèãóğàöèÿ çàãğóæàåòñÿ ÷åğåç initalizeSE //$fldup = get from init// âû÷ êàê ëó÷øå îòğåçàòü ïàïêó 
 //$languageprofile="russian";
 $locale="";
+
 if (!$lang) {$languageprofile="english"; 
 
 $filbas="_conf/sitedata.cfg";
@@ -45,7 +72,7 @@ if ((!$step)AND($data!==-1)) { echo "Dbscript already installed. You must remove
 
 ?>
 <link href="style.css" rel="stylesheet" type="text/css">
-<div id="Layer1" style="position:absolute; width:460px; height:115px; z-index:1; left: 201px; top: 108px;" class="author_text">
+<div id="Layer1" style="position:relative;width:460px; height:115px; z-index:1; left:30%; top: 30%; margin:40 0 0;" class="author_text">
 <FIELDSET>
 <LEGEND><img src=_ico/wopros.png></img></LEGEND>
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=2>
@@ -70,10 +97,11 @@ echo "</CENTER></form></FIELDSET></div>";
 exit;}
 
 
-
+//echo "languageprofile=$languageprofile lang=$lang<br>";
 //  DIALOGUS System imago
-if ($lang) $languageprofile=$lang;
+if ($lang) { $languageprofile=$lang; }
 
+//echo "languageprofile=$languageprofile lang=$lang<br>";
 if ($step) {
 	window (array ( 'message'=>"",'color'=> "",width=>'540',top=>'',left=>'' , height=>'', 'icon'=>"",'mainheader'=>"$step::".cmsg ("I_$step") ),"");
 	echo "<form action=install.php method=post>";
@@ -87,8 +115,9 @@ if ($step==1)
 	echo "".cmsg ("INST_SQL")."<br>";
 	lprint ("A_LOG_DB");  inputtext ("LOGINSQL",15,"root");echo "<br>";
 	lprint ("A_PS_DB"); inputtext ("PASSSQL",15,"");//echo "<br>";
-	echo "<br>".cmsg ("INST_SQL2"); inputtext ("IPDEFSERVSQL",15,"127.0.0.1"); 
-	echo "<br>".cmsg ("INST_SQL3"); echo "<br>";echo "<br>";
+	echo "<br>".cmsg ("INST_SQL2"); inputtext ("IPDEFSERVSQL",15,"localhost");
+	echo "<br>".cmsg ("INST_SQL3");// echo "<br>";echo "<br>";
+        echo "<br>";checkbox ("","NOMYSQL"); echo cmsg ("NOMYSQL")."<br>";
 	submitkey ("loginstate","DALEE");
 	hidekey ("step",2); 
 	
@@ -96,14 +125,16 @@ if ($step==1)
 if ($step>1) {
 	hidekey ("LOGINSQL",$LOGINSQL); 
 	hidekey ("PASSSQL",$PASSSQL); 
-	hidekey ("IPDEFSERVSQL",$IPDEFSERVSQL); 
+	hidekey ("IPDEFSERVSQL",$IPDEFSERVSQL);
+        hidekey ("NOMYSQL",$NOMYSQL);
 	}
 
 //============================================//
 if ($step==2)
 {  //$mainhostmysql
-	@$connect=mysql_connect ($IPDEFSERVSQL, $LOGINSQL , $PASSSQL);
+	if (!$NOMYSQL) {@$connect=mysql_connect ($IPDEFSERVSQL, $LOGINSQL , $PASSSQL);
 	if ($connect===false) {sqlerr ();} else {echo "";}//lprint (SQLDOWN);
+        }
 	echo "".cmsg (INST_SU)."<br>"; 
 	
 	lprint ("LOGIN_SUSER");inputtext ("LOGINUSER",15,"TEST");echo "<br>";
@@ -139,6 +170,12 @@ if ($step>3) {
 if ($step==4)
 {
 	echo "<br>".cmsg ("INST_CNF_CRT")."<br>";
+        $encodingforce="utf-8";
+        if ( (!extension_loaded('mb_string')) AND (!extension_loaded('iconv'))) {
+            $encodingforce="windows-1251";
+echo "You dont have iconv and mb string extensions , encoding forced to cp1251<br>";
+            }
+
 	submitkey ("loginstate","DALEE");
 	hidekey ("step",5);
 //$lscontent=splitcfgline ($lscontent);
@@ -288,23 +325,29 @@ $filbas="_conf/gmdata.cfg";
 if ($data==-1) {
 //reading gmdata
 $gmheader="LOGIN¦PASSWORD¦Àäìèíèñòğèğîâàíèå¦ğåäàêòèğîâàíèå¦ïğîäâèíóòûé ïîèñê¦ìàññ. óäàëåíèÿ¦Îïåğàöèè ñ çàãîëîâêàìè¦perm_4¦perm_5¦perm_6¦Óğîâåíü ïğàâ¦Èñòå÷åíèå ïğàâ* (-1,íåò)¦perm_9¦perm_10¦perm_11¦Çàğåãèñòğèğîâàííîå èìÿ¦Íå ïîêàçûâàòü èíñòğóêöèè¦Ğåäàêòîğ - íåòî÷íûå ñîâïàäåíèÿ¦Ğåäàêòîğ - ïîèñê ïî ëşáîìó ïîëş¦Âûâîäèòü ñîğòèğîâêó*¦Âûâîäèòü ïîñòğàíè÷íî*¦Ñòèëü¦ßçûê¦á22¦á23¦b25¦b26¦b27¦b28¦b29¦b30¦b31¦b32¦b33¦b34¦b35¦b36¦b37¦b38¦b39¦b40¦b41¦b42¦b43¦b44¦b45¦b46¦b47¦b48¦b49¦b50¦b51¦b52¦b53¦b54¦b55¦b56¦b57¦b58¦b59¦b60¦b61¦b62¦b63¦b64¦b65¦b66¦b67¦b68¦b69¦b70¦b71¦b72¦b73¦b74¦b75¦b76¦b77¦b78¦b79¦b80¦b81¦b82¦b83¦b84¦b85¦b86¦b87¦b88¦b89¦b90¦b91¦b92¦b93¦b94¦b95¦b96¦b97¦b98¦b99 ¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦";
-$gmplevel="a¦d¦a¦a¦d¦d¦d¦d¦d¦d¦a¦d¦d¦d¦d¦a¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d ¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦";
+$gmplevel="a¦d¦a¦a¦d¦d¦d¦d¦d¦d¦a¦d¦d¦d¦d¦a¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦";
 
 $ADMM=0;
 for ($a=0;$a<200;$a++) {
-	$prauth[$ADMM][$a]="0";
+        $prauth[$ADMM][$a]="0";//debug
 	if (($a>24)AND($a<37)) $prauth[$ADMM][$a]="1";
 }
 $prauth[$ADMM][0]=stripslashes ($LOGINUSER); 			$prauth[$ADMM][1]=hashgen ($PASSWORDUSER);$prauth[$ADMM][42]=1;
 $prauth[$ADMM][15]=$prauth[$ADMM][0];$prauth[$ADMM][22]=$lang;
 $prauth[$ADMM][21]="Default";$prauth[$ADMM][10]=10;
 
-$prauth[1]=$prauth[0];
+ //áëÿäü äà ÷òîæ òàêîå  ñóêà òóïîğûëûå ïåğåìåííûå íèõåğà íå æåëàşò íè÷åãî çàïîìèíàòü!!!!!!!!!!!
+ if ($OSTYPE=="LINUX") $prauth[$ADMM][199].="sayfuck\n";
+ //$prauth[$ADMM][198]=$prauth[$ADMM][198]."sayfuck2\n"; $prauth[$ADMM][199]="199sayfuck2\n"; $prauth[$ADMM][200]="200fuck\n";
+$prauth[1]=$prauth[0];// eto i est sohranenie!!!!!!!!!!!!!!!!!!!!1111
 //..$prauth="";// òóò äîáàâëÿåì íàøåãî şçåğà
+ //$prauthimploded=implode ($prauth[$ADMM],"¦");
+//if ($OSTYPE=="LINUX") $prauthimploded.="sayfuck\n";/
+//$prauthimploded.="sayfuck2\n";
 	 @$tempdescr=csvopen ("_conf/gmdata.cfg","w",1);
 	 $gmheader=splitcfgline ($gmheader);
  $gmplevel=splitcfgline ($gmplevel);
-//$pgcontent=splitcfgline ($pgcontent);
+//$prauth=splitcfgline ($prauthimploded);
    $err.=writefullcsv ($tempdescr,$gmheader,$gmplevel,$prauth);$edit=0;
 //writing gmdata
 }
@@ -328,7 +371,7 @@ $filbas="_conf/dbdata.cfg";
 if ($data==-1) {
 //reading dbdata
 $dbheader="File base¦Base visual name¦Ïîääåğæêà êàğòèíîê¦Tèï scr¦Ğåæèì 3 (Êàòåãîğèÿ)¦Òàáëèöà Mysql¦Õîñò Mysql ¦Òèï êàòåãîğèè¦Êîëîíêà êàğòèí¦Âûáèğàòü áàçó¦Ğåæèì 1 (Èìÿ)¦Ğåæèì 2 (Êîä)¦Use Mysql¦Ïğàâà íà çàïèñü¦Ïğàâà òğåáóåìûå áàçîé¦Òğåá. âèğòóàëüíûé ID¦Îòáîğ êîëîíîê¦reserved17¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd";
-$dbplevel="d¦5¦d¦d¦d¦d¦d¦d¦d¦d¦a¦d¦a¦d¦5¦5¦d¦d¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr¦dr";
+$dbplevel="d¦5¦d¦d¦d¦d¦d¦d¦d¦d¦a¦d¦a¦d¦5¦5¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦dr";
 $prdbdata="";//
 	 @$tempdescr=csvopen ("_conf/dbdata.cfg","w",1);
 $dbheader=splitcfgline ($dbheader);
@@ -337,8 +380,8 @@ $dbheader=splitcfgline ($dbheader);
 $err.=writefullcsv ($tempdescr,$dbheader,$dbplevel,$prdbdata);$edit=0;
 //writing dbdata
 }
-if ($languageprofile!=="russian") $sitedata="dbslogo.gif¦Welcome string.¦1¦80% Nimbus Roman No9 L¦by name¦by code¦by code2¦showall¦¦¦¦0¦999¦¦root¦localhost¦Dbscript¦¦512¦utf-8¦main fields¦select field¦all fields¦by comm¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
-if ($languageprofile=="russian") $sitedata="dbslogo.gif¦Äîáğî ïîæàëîâàòü â íàø ñåğâèñ. Âûáåğèòå áàçó è ñïîñîá ïîèñêà è ââåäèòå íàçâàíèå îáúåêòà ïîèñêà.¦1¦80% Nimbus Roman No9 L¦ïî íàçâàíèş¦ïî êîäó ¦ïî íàçâàíèş2¦îòîáğàçèòü âñ¸¦mp3pereim.php¦127.0.0.1¦D:/system/www/dj/filemgr/¦0¦999¦¦root¦localhost¦Dbscript¦¦2048¦windows-1251¦ïî âàæíûì ïîëÿì¦âûáğàòü ïîëå¦ïî âñåì ïîëÿì¦ïî êîììåíòàğèÿì¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
+if ($languageprofile!=="russian") $sitedata="dbslogo.gif¦Welcome string.¦1¦80% Nimbus Roman No9 L¦by name¦by code¦by code2¦showall¦¦¦¦0¦999¦¦root¦localhost¦Dbscript¦¦512¦".$encodingforce."¦main fields¦select field¦all fields¦by comm¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
+if ($languageprofile=="russian") $sitedata="dbslogo.gif¦Äîáğî ïîæàëîâàòü â íàø ñåğâèñ. Âûáåğèòå áàçó è ñïîñîá ïîèñêà è ââåäèòå íàçâàíèå îáúåêòà ïîèñêà.¦1¦80% Nimbus Roman No9 L¦ïî íàçâàíèş¦ïî êîäó ¦ïî íàçâàíèş2¦îòîáğàçèòü âñ¸¦mp3pereim.php¦127.0.0.1¦D:/system/www/dj/filemgr/¦0¦999¦¦root¦localhost¦Dbscript¦¦2048¦".$encodingforce."¦ïî âàæíûì ïîëÿì¦âûáğàòü ïîëå¦ïî âñåì ïîëÿì¦ïî êîììåíòàğèÿì¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
 $property="4.0¦4.0¦1¦1¦1¦1¦¦1¦1¦¦¦¦1¦¦¦0¦¦¦¦¦¦¦1¦1¦1¦¦1¦50¦default¦1¦1¦1¦1¦1¦¦1¦¦1¦1¦/media/D/¦1000¦¦html,gif,bmp,png¦127.0.0.1¦20¦1¦1¦on¦¦on¦¦¦on¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
 $sd=explode ("¦",$sitedata);
 $pr=explode ("¦",$property);
@@ -463,6 +506,23 @@ ob_flush ();
 exit;
 
 ///Ïîíÿòíî,÷òî ïğåäêè ïğèíîñèëè â æåğòâó äåâñòâåííèö Îíè áûëè íå äóğàêè, ÷òîáû æåğòâîâàòü òåìè êòî äà¸ò
+/*
+ * Im wrote editor , first target is compactibility with mangos
+why my old theme is removed?
 
+Dbscript - program for managing DB remote, and allow GM make changes to DB (based on plevel rights)
+
+Last version:4.2.4
+http://dj.chg.su/dbscript - download from site
+http://wow.chg.su/dbs/filemgr.php?c=36b6194baf9c65b20e861a01f60f28d8
+
+Video with install and crosslink tables
+http://wow.chg.su/inside/filemgr.php?c=0350abed7c878917360194ad627a9150
+
+sorry i not create forum to techsupport project (i can if require)
+,but i read this topic, and i think it enough.
+
+
+ */
 
 ?>

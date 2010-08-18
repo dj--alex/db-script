@@ -9,7 +9,7 @@ exit;
 
 //SITE UNKNOWN  PROGRAMM CREATED BY DJ--ALEX
  	global $vergetfile;	
-$vergetfile="Search v4.0.97 (c) dj--alex";
+$vergetfile="Search v4.2.3 (c) dj--alex";
 	require_once ('dbscore.lib');
 	if ($auth==cmsg("AUTHEN")) {
 	 {
@@ -101,6 +101,7 @@ echo "</form>";
 	showshortlog ();
           echo cmsg ("HERE").":".print_massive ($onlineusers);          echo "<Br>";         print "$sd[2]";
 
+if (strpos ($USERDAT,"MSIE")==true) { window (); echo cmsg ("MSIE_DETECT");closewindow () ; }
 
 ?>
 

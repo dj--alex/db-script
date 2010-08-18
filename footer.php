@@ -1,11 +1,13 @@
 <!--startscript--><?php //help system link
 // 3.6.06 edition     if (!$trafeconom) $idadd=" id=\"".$name."\" ";
-global $pr,$dbstyle3en,$pgcnt,$pgcontent,$pgheader,$pgplevel,$languageprofile,$enrestmenu,$menuloaded;
+global $pr,$dbstyle3en,$pgcnt,$pgcontent,$pgheader,$pgplevel,$languageprofile,$enrestmenu,$menuloaded,$coreloadskip,$installermode;
 if (($enrestmenu)AND($menuloaded!==1)) if ((!$pr[54])AND($dbstyle3en)) {
 	require_once("_templates/bottom.php");
 } 
 
-if ($enterpoint!=="help") {
+
+if ($coreloadskip!=1) {
+    if ($enterpoint!=="help") {
 
 
 if ($pr[83]) {?><!--share button will be -->
@@ -72,6 +74,6 @@ if (($codekey==7)OR($codekey==9)) {
 if (($codekey==8)OR($codekey==10))  {
 ?><div id="menu" style="position:absolute; z-index:2; left: 10px; top: 16px;" ><h2><font color=red><bb>TEST</bb></a></font></h2></div><?php
 }
-
+}
 //memory_get_peak_usage
 

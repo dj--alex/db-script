@@ -3,7 +3,7 @@
 // EXTERNAL JAVASCRIPT  - задание каскадных стилей для программы и кнопок - интерфейс
 // 3.6.06 edition    if (!$trafeconom) $idadd=" id=\"".$name."\" ";
  	global $verhead,$systemshrift,$buttonshrift,$tableshrift;
-$verhead="Header v4.1.5 (c) dj--alex"; //hide
+$verhead="Header v4.2.4 (c) dj--alex"; //hide
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=<?php echo$sd[19];?>">
@@ -11,7 +11,7 @@ $verhead="Header v4.1.5 (c) dj--alex"; //hide
 <title><?php
 if ($p!=0) $pagename=$pgcontent[$p+1][3];
 $element=$vID; settype ($element, integer); if ($element=="0") unset ($element);
-if ($sd[19]=="utf-8") $pagename=iconv("windows-1251","utf-8",$pagename);
+if ($sd[19]=="utf-8") $pagename=iconvx("windows-1251","utf-8",$pagename);
 $titleout= $sd[16]." - ".$pagename." - ".$write." $element ";
 echo $titleout ;
 ?></title>

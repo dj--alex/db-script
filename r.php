@@ -25,7 +25,7 @@ if ($tbl==-2) if ($vID=="Relogin") $vID=".relogin";
 
 
 global $verreadfile,$vID,$mzdata,$multisearch,$cmd;
-$verreadfile="Viewer v4.1.69 (c) dj--alex";
+$verreadfile="Viewer v4.2.4 (c) dj--alex";
 
 ### readfile  readdescripters return data info
 ##	$data=array ( // не настроено -  выдача данных функцией
@@ -278,7 +278,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 						//$tbl=getidbyid ($prdbdata,1,"srchrealid",$tbl);
 						
 		if ($prauth[$ADM][1]) {
-			if ($cmd[0]=="errorlog") {$tbl=$cmd[0];$namebas=$tbl;};
+		if ($cmd[0]=="errorlog") {$tbl=$cmd[0];$namebas=$tbl;};
     		if ($cmd[0]=="log") {$tbl=$cmd[0];$namebas=$tbl;};
     		if ($cmd[0]=="reportlog") {$tbl=$cmd[0];$namebas=$tbl;};
     		if ($cmd[0]=="undolog") {$tbl=$cmd[0];$namebas=$tbl;};
@@ -286,17 +286,10 @@ if ($cmd[0]==="help") { if ($adm==1) {
 		}
 
 		if ($vID===".info") {
-
-				$message=" ";
-				$icon="info";
-				$mainheader="Info";
-				$script=array ( 'message'=>$message,'icon'=>$icon,'mainheader'=>$mainheader );
-				$actions="";echo "<br><Br>";
-		 		//window ($script,$actions);
-		 		if ($languageprofile=="russian") echo cmsg ("Y_PLVL")." -- ".$prauth[$ADM][10]."<br>".cmsg ("Y_LG")." ".$_SERVER['PHP_AUTH_USER']."(".$prauth[$ADM][0].")(".$prauth[$ADM][15].")<br>IP ".$dbs_ip." Host:".gethostbyaddr ($dbs_ip).", № $tbl<br><br>".cmsg ("Y_").":".$USERDAT;
-		 		if ($languageprofile!=="russian") echo "Your plevel is -- ".$prauth[$ADM][10]."<br>Your login and names ".$_SERVER['PHP_AUTH_USER']."(".$prauth[$ADM][0].")(".$prauth[$ADM][15].")<br>IP ".$dbs_ip." Host:".gethostbyaddr ($dbs_ip).", Number $tbl<br><br>About you:".$USERDAT;
-		 		//closewindow ();
-		 		exit;
+		if ($languageprofile=="russian") echo cmsg ("Y_PLVL")." -- ".$prauth[$ADM][10]."<br>".cmsg ("Y_LG")." ".$_SERVER['PHP_AUTH_USER']."(".$prauth[$ADM][0].")(".$prauth[$ADM][15].")<br>IP ".$dbs_ip." Host:".gethostbyaddr ($dbs_ip).", № $tbl<br><br>".cmsg ("Y_").":".$USERDAT;
+		if ($languageprofile!=="russian") echo "Your plevel is -- ".$prauth[$ADM][10]."<br>Your login and names ".$_SERVER['PHP_AUTH_USER']."(".$prauth[$ADM][0].")(".$prauth[$ADM][15].")<br>IP ".$dbs_ip." Host:".gethostbyaddr ($dbs_ip).", Number $tbl<br><br>About you:".$USERDAT;
+		
+                exit;
 		}
 
 		//показ версии dbscript   тепер будет смотреть все модули (ищет сам)

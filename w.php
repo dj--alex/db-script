@@ -2,7 +2,7 @@
 // Данная программа относится к пакету DBSCRIPT v2.1 (с) dj--alex
 if ($_FILES) ob_start(); // добавлено т.к. в 2033 строке непонятно прислали файл вообще или нет
 require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
-if (!$activation) exit;
+if (!$activation) Header("Location: login.php");;  //http://127.0.0.1/dj/site/login.php  старая авторизация  в dbscript zone всплыла - когда убирать то?
 //$error=pg_connect ("!","2","3");echo $error;    postgre-php not installed
 // TinyMCE addition 
   /* ?> <script type="text/javascript" src="tinymce/tiny_mce.js"></script>
@@ -14,7 +14,7 @@ if (!$activation) exit;
            });
     </script><?
 */
-$verwritefile="Editor v4.1.89 beta (c) dj--alex";
+$verwritefile="Editor v4.2.42 beta (c) dj--alex";
  global $verwritefile,$vID,$vID2;
 
 $enterpoint=$verwritefile;// для показа точки входа
@@ -43,6 +43,7 @@ if ($cmd=="del") { $write=cmsg ("KEY_DEL"); }
 if ($cmd=="hdr") { $write=cmsg ("KEY_HEAD"); }
 if ($cmd=="dat") { $write=cmsg ("KEY_DATA"); }
 if ($cmd=="sql") { $write=cmsg ("KEY_EXECUTE"); }
+if ($cmd=="sqle") { $write=cmsg ("KEY_S_EXEC"); }
 if ($cmd=="join") { $write=cmsg ("KEY_LINKING"); }
 if (($masstbl)AND($write==cmsg ("KEY_MASS_OPER"))) { $tbl=$masstbl;  }
 	 
@@ -53,7 +54,7 @@ if (($masstbl)AND($write==cmsg ("KEY_MASS_OPER"))) { $tbl=$masstbl;  }
 //if (!$pr[8]) { echo "write=$write  vd=$vd  go=$go <br>";}
 
 //RIGHTSLIMITATION
- if ($ADM==0) { msgexiterror ("notright","","disable");exit ;}
+if ($ADM==0) { msgexiterror ("notright","","disable");Header("Location: login.php");}
 If ($prauth[$ADM][3]==false) { msgexiterror ("notright","","disable");exit;}
 //END OF RIGHTS LIMITATION
 lprint ("WF_WELCOM");
@@ -78,7 +79,8 @@ if ($pr[37]) {// analog in getfile
         	//	hidekey ("groupdb",$groupdb);print_r ($list);	//	print_r ($a);
         $grouplist=groupdbfielddetect ($prdbdata,17);// set group as field
         $groupdbthisname="groupdb";
-	groupdbprint ($grouplist,"Group",$prdbdata,$tbl,$groupdb);
+	if (!$hidemenu) {
+            groupdbprint ($grouplist,"Group",$prdbdata,$tbl,$groupdb);
 
         $grouplist2=groupdbfielddetect ($prdbdata,6);// set IP as field
         $groupdbthisname="ipfilter";// in future - add this variable to f
@@ -86,6 +88,7 @@ if ($pr[37]) {// analog in getfile
 	submitkey ("write","SELECT");
 	if ($prauth[$ADM][2]) submitkey ("live","LIVEMOD");echo "*";
  	if ($live) echo "in future release!";  // 		hidekey ("live",$live);  STATEMENT LOST
+        }
  		echo"</form>";
 }
 
@@ -109,6 +112,7 @@ if ($write==cmsg ("KEY_CFG")) {
 // $k= count($db) - вычисление кол-ва столбцов// c7 0 - select  c7 1 - start
 $deftbl=$pr[16];
 
+//if (!$hidemenu)
 if (($prauth[$ADM][24]==false)OR(!$tbl)) { printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"tbl",lprint ("SELLINK"),$groupdb,$ipfilter,6);
 submitkey ("write","A_USRGO" ); //найден код требуемой базы
 }
@@ -118,7 +122,16 @@ submitkey ("write","A_USRGO" ); //найден код требуемой базы
 
 <?
 
+if (($dblk)AND($cmd=="sqle")) {
+    $tbl=1;
+		$prdbdata[$tbl][12]="mysql";
+		$prdbdata[$tbl][5]=$tab;		$prdbdata[$tbl][0]=$tab;
+		$prdbdata[$tbl][1]=$tab;		$prdbdata[$tbl][6]=$mainhostmysql; //6
+		$prdbdata[$tbl][9]=$dblk;$errorredirectdb=1;
 
+
+}
+                               
 if (($cmd=="sql")AND($tbl=="")) {;// dblinker 
 	//	echo "tab=$tab<Br>";
 $modeselectsimilartable=$pr[53];		
@@ -187,9 +200,11 @@ if ($cfgmod==2) msgexiterror ("nologsedit",$namebas,"w.php");
 ?>
 <form action="w.php" method=post>
 <?
-echo "ID1 ";inputtxt ("vID",30);
+if (!$hidemenu) { echo "ID1 ";inputtxt ("vID",30); }
 if ($prdbdata[$tbl][22]) $directedit=1;
-if (!$directedit) if (($virtualid==true)OR($virtualid=="0")) {echo "ID2 ";inputtxt ("vID2",8); };
+if (!$directedit) if (($virtualid==true)OR($virtualid=="0")) {
+   if (!$hidemenu) {  echo "ID2 ";inputtxt ("vID2",8); }
+};
 if ($directedit) { echo " Directedit mode.";} // hidekey ("vID2",$vID2); $vID2=""; не помогло от  Это значение незанято.
 
 #################################################################
@@ -206,8 +221,14 @@ if (($cfgmod<1)AND($prauth[$ADM][2])) {
 }
 
 
-
-if ($namebas==false) {echo "<br><font color=red id=errfnt>";lprint ("WF_NOLNK");echo "</font><br>";$menudisable=1;} else {echo "<br>";lprint ("CONNLINK:");echo "<font color=green id=xfnt> $namebas ($tbl) [$tablemysqlselect'$tblmysqlselect ".$prdbdata[$tbl][12]." server $hostmysqlselect]<br></font>";}
+   if ($hidemenu) $menudisable=1;
+if ($namebas==false) {echo "<br><font color=red id=errfnt>";
+    lprint ("WF_NOLNK");
+    echo "</font><br>";
+    $menudisable=1;} else {
+    echo "<br>";
+    lprint ("CONNLINK:");
+    echo "<font color=green id=xfnt> $namebas ($tbl) [$tablemysqlselect'$tblmysqlselect ".$prdbdata[$tbl][12]." server $hostmysqlselect]<br></font>";}
 print "<input type=hidden name=tbl value=$tbl>";
 	hidekey ("live",$live); 
 if ($menudisable==0) {
@@ -470,8 +491,10 @@ if (($write==cmsg ("KEY_EDIT"))AND($prdbdata[$tbl][12]=="fdb")) {
 //end проверка не занят ли ID
 //!!!!!
 $oldcoreedit=$prauth[$ADM][39];
+$countdatafieldstowrite= count ($mycol);
+if ($countdatafieldstowrite>60) $countdatafieldstowrite=60;
 if ($oldcoreedit)
-		for ($a=0;$a<count ($mycol);$a++)
+		for ($a=0;$a<$countdatafieldstowrite;$a++)
 			{
 			echo "$mycolvirtualname[$a] ";
 			if ($mycol[$md2column]===$mycol[$a]) echo "<ii>(ID1)</ii>";
@@ -480,7 +503,7 @@ if ($oldcoreedit)
 			<textarea name=z<?=$a; ?> cols=40 rows=1><?=$myrow[$a]?></textarea><br><? ;
 			}
 	if (!$oldcoreedit) { echo "<table id=dbmgr_edit border=3 width=100% bordercolor=#602621>";
-		for ($a=0;$a<count ($mycol);$a++)
+		for ($a=0;$a<$countdatafieldstowrite;$a++)
 			{ //hdr text	//
 
 				if ($prauth[$ADM][41])echo "<tr>";//optional   Box,not linear edit.
@@ -511,7 +534,7 @@ submitkey ("write","KEY_S_EDIT");echo "<br>";
 
 //модуль обработки
 if (($write==cmsg("KEY_S_EDIT"))AND($prdbdata[$tbl][12]=="fdb")) {
-		if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
+if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
 	if ($cfgmod==1) { @$f=csvopen ("_conf/".$filbas,"r","0");
 	if ($codekey==7) demo ();
 	}
@@ -528,6 +551,7 @@ if (($write==cmsg("KEY_S_EDIT"))AND($prdbdata[$tbl][12]=="fdb")) {
  //echo "realid=$x prauth x 0 ".$prauth[$x][0]." prauth adm 0 ".$prauth[$ADM][0]."<br>";exit;
 //  echo "x2= $x2  x42=$x42";exit;
   if (!$prauth[$ADM][42])  if (($cfgmod==1)and($filbas=="gmdata.cfg")) { $myrow[2]=$prauth[$x][2];$myrow[42]=$prauth[$x][42] ;};
+ //защита настроек прав если нет права суперпользователя - целью является принудить использовать настройку профилей.
 	if ($a===0) { $values="".$myrow[$a];}
 	if ($a>0) {$values="".$values."¦".$myrow[$a]; }
 if (!$pr[8]) {  echo "DEBUG Decoding incoming data z$a -- $myrow[$a]<br>";}
@@ -538,6 +562,7 @@ if ($OSTYPE=="LINUX") if ($values[strlen ($values)-1]!=="\n") $values=$values."\
 		if ($OSTYPE=="WINDOWS")	$values=$values."\n";  // csv linux   bug  pustye stroki FI
 // заменен vID -> $myrow[$md2column]   myrowid->$myrow[$virtualid] просто мегазатычка :)
 // а теперь поправили мегазатычку более корректно  md2- oridid1  virid - orig2
+//echo "Starting executing query <br>";// эта строка вообще не видна при gmdata ili dbdata   vidimo 200 polej - mnogo
 csvmod ($f,"edit",$values,$origid1,$origid2);
 lprint ("WF_QUECOMP");
 if ($pr[12]) {$act="EDIT_DAT  B $tbl($nametbl) id1=$vID id2=$vID2 Cmd= $cmd"; logwrite ($act) ;};  // логируемся
@@ -1162,7 +1187,7 @@ for ($a=0;$a<count ($tablelist);$a++) {
  		if ($OSTYPE=="LINUX") $insertone.="\n";
 		if ($OSTYPE=="WINDOWS") $insertone.="\n\r";
                                         $x=detectencoding($insertone);   if ($views)   echo "Encoded str: ".$x."<br>?";  //dobawil utf-8  какая то левая процедура. die () не работает
-                              if (($x!=="utf-8")AND($sd[19]=="utf-8")) $insertone=iconv("windows-1251","utf-8",$insertone);
+                              if (($x!=="utf-8")AND($sd[19]=="utf-8")) $insertone=iconvx("windows-1251","utf-8",$insertone);
 		fwrite ($dumpfile,$insertone);
 		$strclines++;		//echo $insertone."<br>";
 	};	
@@ -1179,7 +1204,7 @@ for ($a=0;$a<count ($tablelist);$a++) {
  		if ($OSTYPE=="LINUX") $insertone.="\n";
 		if ($OSTYPE=="WINDOWS") $insertone.="\n\r";
                         $x=detectencoding($insertone);    if ($views) echo "Encoded ln : ".$x."<br>?";  //dobawil utf-8  какая то левая процедура. die () не работает
-                              if (($x!=="utf-8")AND($sd[19]=="utf-8")) $insertone=iconv("windows-1251","utf-8",$insertone);
+                              if (($x!=="utf-8")AND($sd[19]=="utf-8")) $insertone=iconvx("windows-1251","utf-8",$insertone);
 		fwrite ($dumpfile,$insertone);
 		$lines++;
 		//echo $insertone."<br>";
@@ -1338,7 +1363,7 @@ for ($a=0;$a<count ($tablelist);$a++) {
  		if ($OSTYPE=="LINUX") $insertone.="\n";
 		if ($OSTYPE=="WINDOWS") $insertone.="\n\r";
 		                $x=detectencoding($insertone);   if ($views)   echo "Encoded ln : ".$x."<br>?";  //dobawil utf-8  какая то левая процедура. die () не работает
-                              if (($x!=="utf-8")AND($sd[19]=="utf-8")) $insertone=iconv("windows-1251","utf-8",$insertone);
+                              if (($x!=="utf-8")AND($sd[19]=="utf-8")) $insertone=iconvx("windows-1251","utf-8",$insertone);
 
                 fwrite ($dumpfile,$insertone);
 		$strclines++;		//echo $insertone."<br>";
@@ -1358,7 +1383,7 @@ for ($a=0;$a<count ($tablelist);$a++) {
 		if ($OSTYPE=="WINDOWS") $insertone.="\n\r";
                 if ($views) echo $insertone."<br>";
                                 $x=detectencoding($insertone);    if ($views)  echo "Encoded ln : ".$x."<br>?";  //dobawil utf-8  какая то левая процедура. die () не работает
-                              if (($x!=="utf-8")AND($sd[19]=="utf-8")) $insertone=iconv("windows-1251","utf-8",$insertone);
+                              if (($x!=="utf-8")AND($sd[19]=="utf-8")) $insertone=iconvx("windows-1251","utf-8",$insertone);
 
 		fwrite ($dumpfile,$insertone);
 		$lines++;
@@ -1389,19 +1414,23 @@ $action="SELF_BCK_DBS_SIDE $dumpdbname-->$backupdbname -l $lines -t tables -e $e
 if (($write==cmsg("WF_BCK_FILEDUMP_UNARCH"))AND ($prdbdata[$tbl][12]!="fdb")) {
 @$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 if ($connect==false) {sqlerr($connect);exit;}
-if ($dblk) hidekey ("dblk",$dblk);
+if ($dblk) { hidekey ("dblk",$dblk);$forcedb=1;};// ajфорсировать выбор если прислали название базы данных
 	checkbox ($forcedb,"forcedb");lprint ("FORCE_DB");echo ":";
 $cmd="SHOW DATABASES";
 $a=dbs_query ($cmd,$connect,$dbtype);;
 if ($a==false) {sqlerr($a);exit;}
- 
+ //echo" dblk=<br>";
 //.. здесь где то проверку пути надо улучшить если коннект не дали - дать другой
 // echo "<form action=dblinker.php method=post>"; needed for?   unknown
+//show already connected list of databases     requires name for menu and displayed title  (may cmsg-ed)
+//name - название меню,  title - заголовок этой выборки
+//function directselectsqldb ($connect,$name,$title) { //name==dest always!,
 echo "<select name=dbselected>";
 while ($result=dbs_fetch_row ($a,$dbtype)) {
 	if ($result[0]=="information_schema") continue;
 	if ($result[0]=="mysql") continue;
-	echo "<option>".$result[0]."";
+        if ($result[0]==$dblk) {$s="selected"; } else {$s="";};
+	echo "<option value=".$result[0]." ".$s.">".$result[0]."";
 }
 echo "</select><br>";
 
@@ -1432,7 +1461,11 @@ checkbox ($views,"views") ; echo cmsg (WF_LOG).cmsg (NORECOMM)."<br>";
 checkbox ($dumpmode1,"dumpmode1") ; echo cmsg (OLDCOREDUMPEX)."<br>";
 checkbox ($dumpmode2,"dumpmode2") ; echo cmsg (OLDCOREDUMPEX2)."<br>";
 // hidekey ("dbtype",$dbtype);нихера не передается.
-//checkbox ($disviews,"disviews") ; echo cmsg (WF_LOG).cmsg (NORECOMM)."<br>"; 
+//checkbox ($disviews,"disviews") ; echo cmsg (WF_LOG).cmsg (NORECOMM)."<br>";
+        echo "Encoding can be set in table (alias) properties.<br>";
+        echo "manual set encoding:";inputtxt ("encodeset",15);echo " (utf-8 , not utf8)<br>";
+
+
  submitkey ("start","DALEE");
 echo "</form>";
 }
@@ -1444,13 +1477,18 @@ if (($dblk)AND(!$forcedb)) {$forcedb=1;$dbselected=$dblk;	}
         $dbtype="mysql"; // default dbtype in CFG OPT FUTURE! 
       	@$connect=dbs_connect ($pr[43],$sd[14],$sd[17],$dbtype); //prdata tbl 6 changing to $pr[43]  EVERYWHERE!!!
         @ini_set('max_execution_time', 0);set_time_limit(0);
-        echo "$connect=dbs_connect (".$pr[43].",".$sd[14].",".$sd[17].",$dbtype)";
+        //..echo "$connect=dbs_connect (".$pr[43].",".$sd[14].",".$sd[17].",$dbtype)";
           sqlerr ($connect);
                	$dumpfile=$dump[0];
 	$f=fopen ($path.$dumpfile,"rb");
 	if ($views) print_r ($dump);
 	echo "file=$path $dumpfile"; 
 	$query="";
+        if ($encodeset) { // global настройка для mysql  pr[76]  почему то не работает .. действует только локальная.
+            echo "setting NAMES and CHARACTER SET one more time to $encodeset... <br>";
+        dbs_query("SET NAMES $encodeset", $connect,$dbtype);
+        dbs_query("SET CHARACTER SET $encodeset", $connect,$dbtype);
+        }
         if ($dumpmode2) {
             echo "Trying to execute full dump without any checks or descriptors...<br>";
             fclose ($f); 
@@ -1735,13 +1773,14 @@ if (($write==cmsg ("WF_HDRSQL_VIRT"))AND ($prdbdata[$tbl][12]!="fdb")) { //++
 				$fil=$tbl.";".$z[$a].";".$a.";".$b."";//tabbydb,columnname,columnnomer,0
 				$pl=$plevel[$a];$pl=str_replace ("#",";",$pl);
 		 echo "CONNECT<a href='w.php?cmd=join&fil=$fil&pl=".$pl."'><img src='_ico/linked_table-no.png' border=0 title='".cmsg ("KEY_LINKING")."'></a></color>";
-				echo "<br>";
+				echo "<br>";  //step 1 linkning table master
 			}
 			lprint ("WF_VIDTORID");
      echo ":"; checkbox ($sqltocsv,"sqltocsv");
 	 echo "<br>";lprint ("WF_RIDTOVID"); 
 	 echo ":"; checkbox ($csvtosql,"csvtosql"); 
 	 echo "<br>";
+
   submitkey ("write","WF_HDR_REWR");
 }
 
@@ -1755,6 +1794,14 @@ if (($write==cmsg("KEY_LINKING"))) {
 	$data=readdescripters (); if ($data==-1) exit; 
 	$mycol=$data[0];
 //join cmd   fil=$fil  plevel=$plevel
+echo "Set Plevel:";
+echo "<select name=plevel>";
+		for ($a=0;$a<10;$a++){
+			echo "<option>".$a;
+			}
+echo "</select><br>";
+
+
 	$datafil=explode (";",$fil); $dataplevel= explode (";",$pl);$plevel=$pl;
 	if ($debug) echo "getting data  $fil  plevel=$pl<br>";$pl=$dataplevel;
 	 	$columnname=$datafil[1];$columnnomer=$datafil[2];
@@ -1771,29 +1818,26 @@ if ($pl[1]) echo "<BR><BR>tbl connected as link=".$pl[1]." (reg conf realid #$id
 if ($pl[5]) echo "tbl connected as help=".$pl[5]." (reg conf realid #$id5) [".$prdbdata[$pl[5]][9].".".$prdbdata[$pl[5]][5]."] with method ".$pl[6]." (No ".$pl[7].") displays as  ".$pl[8]."<br>";  //tabbydb,columnname,columnnomer,0"////tabbydb,columnname,columnnomer,0
 if (!$pl[1]) echo cmsg (TLNK_NOT)."<br>";
 if (!$pl[5]) echo cmsg (HLNK_NOT)."<br>";
+//если данные уже будут присутствовать - их нужно будет брать отсюда. ^_^ в идеале может приниматься не только 2 пунта :)
 //.getidbyid($db,$idsrchcolumn,$idrescolumn,$stringкот ищут) 	 выбор таблицы, для 2 пунктов, потом выбор метода и колонки и имени соединения.
 	//exit;
 	//resending
-	hidekey ("activetableid",$tbl);
-	hidekey ("plevel",$plevel);
-	hidekey ("columnname",$columnname);
-	hidekey ("columnnomer",$columnnomer);
-	hidekey ("id1",$id1);
-	hidekey ("id5",$id5);
-	if ($pr[37]) submitkey ("write","TARGET");
-	if (!$pr[37]) submitkey ("write","TARGET2");
+
+        $activetableid=$tbl;
+	$master="key_linking";
+        $step=1;
+        if ($pr[37]) submitkey ("write","TARGET"); // group
+	if (!$pr[37]) submitkey ("write","TARGET2"); // no group
 }
-	
-// модуль перехода linkning
+
+
+////// модуль перехода linkning
 
 if (($write==cmsg("TARGET"))) {
+ $groupdbthisname="groupdb";
 		groupdbprint ($list,"Group",$prdbdata,$tbl,$groupdb);; //код TBL передается самостоятельно, если группы не используются - этот блок пропускать
-	hidekey ("activetableid",$activetableid);
-	hidekey ("plevel",$plevel);
-	hidekey ("columnname",$columnname);
-	hidekey ("columnnomer",$columnnomer);
-	hidekey ("id1",$id1);
-	hidekey ("id5",$id5);
+	$master="key_linking";
+        $step=2;
 	submitkey ("write","TARGET2");
 }
 
@@ -1803,16 +1847,20 @@ if (($write==cmsg("TARGET"))) {
 // модуль перехода linkning
 
 if (($write==cmsg("TARGET2"))) {
-	echo "!!!!!!!!!!!!!";
-	printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"tbllink",cmsg("SELLINK"),$groupdb,$ipfilter,6);echo "<br>";
-	printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"tblhelp",cmsg("SELLINK"),$groupdb,$ipfilter,6);
-	hidekey ("groupdb",$groupdb);
-	hidekey ("activetableid",$activetableid);
-	hidekey ("plevel",$plevel);
-	hidekey ("columnname",$columnname);
-	hidekey ("columnnomer",$columnnomer);
-	hidekey ("id1",$id1);
-	hidekey ("id5",$id5);
+//	echo "!!!!!!!!!!!!!";
+        $tlb=$activetableid;
+     //   echo "PRINTLINK 1809 $prauth,$prdbdata,$ADM,$tbl,$grouplist,tbllink,cmsg(ELLINK),$groupdb,$ipfilter,6)<br>;";
+     //   echo "id1=$id1  id5=$id5  columnname=$columnname columnnomer=$columnnomer <br>";
+     //  print_r ($grouplist) ;echo "<br>";
+       $tablelist=array (1=>"tbllink", 2=>"tblhelp");
+        for ($cycle=1;$cycle<count ($tablelist)+1 ;$cycle++) {
+            if ($cycle>1) $cycleno=$cycle;
+	printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,$tablelist[$cycle],cmsg("SELLINK"),$groupdb,$ipfilter,"");echo "<br>";
+ }       //
+	//printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"tblhelp",cmsg("SELLINK"),$groupdb,$ipfilter,"");
+	$master="key_linking";
+        //hidekey ("step",3);
+$step=3;
 	submitkey ("write","SAV_LNK");
 }
 
@@ -1820,53 +1868,158 @@ if (($write==cmsg("TARGET2"))) {
 // модуль сохранения linkning
 
 if (($write==cmsg("SAV_LNK"))) {
-	echo 'res  NOT CHECKED <br>';
-	print "Тип поиска <select name = mode size = ".$mode15.">";
-if ($adm==1) { 
-	};
+//	echo "res  NOT CHECKED  $tbllink <br>";
+        //  tbllink - podkl tut
+        $tablelist=array (1=>$tbllink, 2=>$tblhelp);
+        //$tbl=$tbllink;
+        for ($cycle=1;$cycle<count ($tablelist)+1 ;$cycle++) {
+            if ($cycle>1) $cycleno=$cycle;
+            $tbl=$tablelist[$cycle];
+            @$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);// 6 - server - 9 - db  5- table
+            @dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
+echo " connecting ... ".$prdbdata[$tablelist[$cycle]][9]."<br>";
+	$data=readdescripters (); if ($data==-1) exit;
+	$mycol=$data[0];
+        ; // в дблинкере генерировать имена для полей 0 и 1 с точками !!1  это сильно упростит жизнь!!
+	print $prdbdata[$tablelist[$cycle]][0]." :: ";
+echo "<select name = mode".$cycleno." size = ".$mode15.">";
 if ((($pr[3])and($ADM==0))or($prauth[$ADM][26])) echo "<option value=1".$sel[1].">".$sd[4]."</option>";
 if ((($pr[4])and($ADM==0))or($prauth[$ADM][27])) echo "<option value=2".$sel[2].">".$sd[5]."</option>";
 if ((($pr[5])and($ADM==0))or($prauth[$ADM][28])) echo "<option value=3".$sel[3].">".$sd[6]."</option>";
-if ((($pr[6])and($ADM==0))or($prauth[$ADM][29])) echo "<option value=4".$sel[4].">".$sd[7]."</option>";
+if ((($pr[6])and($ADM==0))or($prauth[$ADM][29])) echo "<option value=4 disabled".$sel[4].">".$sd[7]."</option>";
 if ((($pr[29])and($ADM==0))or($prauth[$ADM][30])) echo "<option value=6".$sel[6].">".$sd[20]."</option>";
-if ((($pr[30])and($ADM==0))or($prauth[$ADM][25])) echo "<option value=7".$sel[7].">".$sd[21]."</option>";
+if ((($pr[30])and($ADM==0))or($prauth[$ADM][25])) echo "<option value=7 selected".$sel[7].">".$sd[21]."</option>";
 if ((($pr[31])and($ADM==0))or($prauth[$ADM][31])) echo "<option value=8".$sel[8].">".$sd[22]."</option>";
 if ((($pr[32])and($ADM==0))or($prauth[$ADM][32])) echo "<option value=10".$sel[10].">".$sd[23]."</option>";
-//if ($limitenable) $lchk=" checked ";
-//if ($selectenable) $schk=" checked ";
-print "	</select>";
-// выбор колонки для поиска
-
-	//checkbox ($selectenable,"selectenable");  //schk для чего?
-		$data=readdescripters ();
+print "	</select>
+";
+		//$data=readdescripters (); В ПЕРВОй итерации переменные имеют нормальные имена (cycleno=="")_ пото начинается с2
 		$a=prefixdecode ($res16);
    decodecols ($res16);	lprint ("FOR_SEL"); 
    $field=$kol;//echo "(field=$kol ";
-    printfield ($data,"_kol"); echo "(only if mode-7 selected)";
-    echo "<br>Help table automatically selects mode 4<br>";
+    printfield ($data,"_kol".$cycleno); 
+    echo "(only field mode) ";
+   ;echo cmsg ("COLCOMM") ;echo "$cycleno :";
+   inputtxt ("colcomm".$cycleno,10); echo "<br>";
+    }
+    echo "<br>Note:Help table automatically selects mode 4 -No connect large tables !<br>";
 
 
-	hidekey ("tbllink",$tbllink);
-	hidekey ("tblhelp",$tblhelp);
-	hidekey ("groupdb",$groupdb);
-        hidekey ("ipfilter",$ipfilter);
-	hidekey ("activetableid",$activetableid);
-	hidekey ("plevel",$plevel);
-	hidekey ("columnname",$columnname);
-	hidekey ("columnnomer",$columnnomer);
-	hidekey ("id1",$id1);
-	hidekey ("id5",$id5);
+     $master="key_linking";
+        //hidekey ("step",4);
+        //USEHLPTAB2 Использовать вспомогательную таблицу (внимание - полный показ! )
+        //COLCOMM Комментарий отображаемый по колонке:
+        checkbox ($usehlptab2,"usehlptab2"); echo cmsg ("USEHLPTAB2")."<br>";
+        
+$step=4;
 	submitkey ("write","SAV_LNK2");
 }
 
 if (($write==cmsg("SAV_LNK2"))) {
-	echo "!!!!!!!!!!!!!end";
-	// edit csv
+	//echo "!!!!!!!!!!!!!end";
+	// edit csv   1=Plevel#2=BaseVisualNameorrealID#3=Modesrch#4=Column#5=ConnectName#6=Help-BaseVisualName#7=Modesrch#8=Column#NA
+        $master="key_linking";
+        $tablelist=array (1=>$tbllink, 2=>$tblhelp);// dв будущем достаточно увеличить переменную
+        //$tbl=$tbllink;
+        if (strlen ($plevel)>1) $plevel=$plevel[0]; //не совсем правильно , но в падлу выяснять сколько там цифр в первом поле. и не будет ;;;1;1;1;1;;
+$genericnewplevelforactivetableid=$plevel."#";
+        for ($cycle=1;$cycle<count ($tablelist)+1 ;$cycle++) {
+            if ($cycle>1) $cycleno=$cycle;
+$dbandtablename=$prdbdata[$tablelist[$cycle]][0];  // use not visual (1)  normal (0) system name .
+
+$mode=${"mode".$cycleno};
+$kol=${"kol".$cycleno};
+$colcomm=${"colcomm".$cycleno};
+if (!$usehlptab2) if ($cycleno==2) { $dbandtablename=""; $mode="d";$kol="";$colcomm="";};
+$genericnewplevelforactivetableid.=$dbandtablename."#".$mode."#".$kol."#".$colcomm."#";
+
+        }
+//if ($pl[5]) echo "tbl connected as help=".$pl[5]." (reg conf realid #$id5) [".$prdbdata[$pl[5]][9].".".$prdbdata[$pl[5]][5]."] with method ".$pl[6]." (No ".$pl[7].") displays as  ".$pl[8]."<br>";  //tabbydb,columnname,columnnomer,0"////tabbydb,columnname,columnnomer,0
+//$dbandtablename=$prdbdata[$tbllink][0];//used name from 1  (not visual name (0))
+//if ($usehlptab2) $dbandtablename2=$prdbdata[$tblhelp][0];
+//$modesearch=$mode;if ($mode==7) $mode=$mode.".".$kol; //  это правда нужно?*
+//$modesearch2=$mode2;if ($mode2==7) $mode2=$mode2.".".$kol2;
+//$genericnewplevelforactivetableidx=$plevel."#".$dbandtablename."#".$mode."#".$kol."#".$colcomm."#".$dbandtablename2."#$mode2#".$kol2."#".$name2;
+//'эти данные только для конкретоного поля, и им не требуется содержать  его ИД
+echo "writing ".$genericnewplevelforactivetableid."<br>";
+       // hidekey ("step",5); 0#tcharscharacters_inventory#2
+$step=5;
+
+$silent=1;
+		$ff=csvopen ("_data/".$filbas,"r",1);
+		$data=readfullcsv ($ff,"new"); if ($data==-1) { echo "E_DB:failed read status<br>";exit;}
+               $csvheader=$data[0];$csvplevel=$data[1];$csvdata=$data[2];$csvcnt=$data[3];
+
+                $csvplevel[$columnnomer]=$genericnewplevelforactivetableid;
+                fclose ($ff);
+		$ff=csvopen ("_data/".$filbas,"w",1);
+                 writefullcsv ($ff,$csvheader,$csvplevel,$csvdata);
+                echo "writed";exit;
+			/*for ($b=0;$b<count ($csvheader);$b++) {
+				if ($mycol[$a]==$csvheader[$b]) $newplevel[$a]=$csvplevel[$b];
+				if ($newplevel[$a]==="") $newplevel[$a]="0";
+			}*/
+                //        }
+
 	//submitkey ("write","SAV_LNK");
 }
 
+    
+//stepping
+if ($master=="key_linking") {
+if ($step>0) {
+    echo "<br>";
+        hidekey ("activetableid",$activetableid);// это ИД таблицы к которой будем подсоединять
+	hidekey ("plevel",$plevel); // уровень доступа для этой таблицы
+	hidekey ("columnname",$columnname); //имя колонки к которой будет производится подключение (включая уровень доступа)
+	hidekey ("columnnomer",$columnnomer);// её номер
+	hidekey ("id1",$id1);
+	hidekey ("id5",$id5);
+        hidekey ("step",$step);//..шаг  выполнения операции
+        hidekey ("hidemenu",1);//убирать меню
+hidekey ("menudisable",on);
+    echo "Your table=$tbl [".$prdbdata[$tbl][9].".".$prdbdata[$tbl][5]."] column $columnname (No $columnnomer)   join to <br>";
+    echo "Step $step/5<br>";
+    }
+ if ($step>2) { if ($groupdb) hidekey ("groupdb",$groupdb);
+	 echo "Adding from group:$groupdb<br>";
+ }
+if ($step>3) {
+    	hidekey ("tbllink",$tbllink);
+	hidekey ("tblhelp",$tblhelp);
+        hidekey ("ipfilter",$ipfilter);
+echo "Table 1 - $tbllink ; Table 2 (help) - $tblhelp  <br> IP filtering - $ipfilter<br>";
+
+        $tablelist=array (1=>$tbllink, 2=>$tblhelp);
+        //$tbl=$tbllink;
+        for ($cycle=1;$cycle<count ($tablelist)+1 ;$cycle++) {
+            if ($cycle>1) $cycleno=$cycle;
+  echo "Table $cycle (id=".$tablelist[$cycle]." (".$prdbdata[$tablelist[$cycle]][0].")  used pl=$plevel mode = ".${"mode".$cycleno};
+  echo " kol=".${"kol".$cycleno}." (_".${"_kol".$cycleno}.")  colcomm=".${"colcomm".$cycleno}."";
+
+}
+//." :: Plevel:";
 
 
+}
+if ($step>4) {
+    hidekey  ("usehlptab2",$usehlptab2);
+    hidekey ("colcomm",$colcomm);
+        hidekey ("colcomm2",$colcomm2);
+        hidekey ("mode",$mode);
+        hidekey ("kol",$kol);
+        hidekey ("mode2",$mode2);
+        hidekey ("kol2",$kol2);
+  //  echo "Table 1 ($tbllink) used mode = $mode  kol=$kol ($_kol)  colcomm=$colcomm";
+    echo "debug Table 2 ($tblhelp) used mode= $mode2 kol=$kol2 ($_kol2)  usehlptab2=$usehlptab2 ";
+}
+
+}
+//end stepping \
+//
+//
+//
+//
 //модуль запуска      модуль обработки предыдущего и этого режима ниже
 //CSV HEADER
 if (($write==cmsg("KEY_HEAD"))AND ($prdbdata[$tbl][12]=="fdb")) {
@@ -3889,6 +4042,12 @@ if ($codekey==5) needupgrade ();
 // if (!$prauth[$ADM][2]) die ("Возможно не хватает прав ;)");
 	$data=readdescripters ();$a=prefixdecode ($res16);
 		//if ($data==-1) exit;
+                if ($dblk) { $forcedb=1 ;
+                    //echo "forced data dblk=$dblk , dbsel, tab=$tab";
+                                hidekey ("dblk",$dblk); hidekey ("dbselected",$dblk);
+                                hidekey ("hidemenu",1); hidekey ("cmd","sqle");
+                                hidekey ("tab",$tab);
+                                }
 		if ($directexecute) { checkbox ($forcedb,"forcedb");lprint ("FORCE_DB");echo ":";
 		$cmd="SHOW DATABASES"; //copy from dump execute
 $a=dbs_query ($cmd,$connect,$dbtype);;
@@ -3899,7 +4058,8 @@ echo "<select name=dbselected>";
 while ($result=dbs_fetch_row ($a,$dbtype)) {
 	if ($result[0]=="information_schema") continue;
 	if ($result[0]=="mysql") continue;
-	echo "<option>".$result[0]."";
+	if ($result[0]==$dblk) {$s="selected"; } else {$s="";};
+	echo "<option value=".$result[0]." ".$s.">".$result[0]."";
 }
 echo "</select><br>";
 }
@@ -3913,7 +4073,9 @@ echo "</select><br>";
         checkbox ($disableprint,"disableprint");lprint ("WF_NO_RES_SQL");
 	
    }
-	checkbox ($bugkosye,"bugkosye"); lprint ("WF_EX_TRYSKIPBUG"); ?>
+	checkbox ($bugkosye,"bugkosye"); lprint ("WF_EX_TRYSKIPBUG");
+        checkbox ($utf8,"utf8"); lprint ("UTF8");
+        ?>
 		<br>
   <input type="radio" name="cpymod" value="copyabort"> <? lprint ("ABORT") ; ?> 
     <input type="radio" name="cpymod" value="copyignore" checked> <? lprint ("IGNORE") ; ?><br>
@@ -3929,11 +4091,12 @@ if (($write==cmsg ("KEY_S_EXEC"))AND($prdbdata[$tbl][12]!="fdb")) {
 // if (!$prauth[$ADM][2]) die ("Возможно не хватает прав ;)");
 $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 $dbtype=$prdbdata[$tbl][12];
-	if (!$disabledbselect) dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
-	if (($directexecute)AND($forcedb)) {dbs_selectdb ($dbselected, $connect,$dbtype);
+	if (!$disabledbselect) { $c=dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype); echo "Using: ".$prdbdata[$tbl][9]."<br>";}
+	if (($directexecute)AND($forcedb)) {$c=dbs_selectdb ($dbselected, $connect,$dbtype);
 		echo "Forced use: $dbselected<br>";	//$cmd="USE $dbselected;";	dbs_query ($cmd,$connect,$dbtype);;
 	} ;
-	
+        if ($utf8) { dbs_query ("SET NAMES `utf8`;",$connect,$dbtype); };
+	if (!$c) echo "connection failed<br>";
 	if (!$disabledesc) $data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
     $cmd=$vd;global $printlimit;
 	// модуль лимитирования вывода SQL
@@ -3964,9 +4127,13 @@ if ($printlimit==false) { msgexiterror ("limit","noexit","disable");} else {$lim
         //if (!$pregsplitdisabled) $queries=preg_split("#(ENGINE=[^\;]+)\;\r?\n#i",$cmd,-1,PREG_SPLIT_DELIM_CAPTURE);
         //print_r ($queries); echo "executing aborted --------- test ";
         //exit;
-        ////
+        ////  echo "forced data dblk=$dblk , dbsel, tab=$tab";
+
+
+
         $countqueries=count ($queries);  //тут вот ошибка с выполнением. ;  нельзя так делать  !!! исправить!!!
    // а теперь выполнение большого количества запросов
+   //echo "q=".$countqueries."<br>";
 	for ($cntque=0;$cntque<$countqueries;$cntque++) {
 		unset ($errt);unset ($ermsg);
 		$multicmd=$queries[$cntque];
@@ -4396,6 +4563,18 @@ hidekey ("tbl2",$tbl2);
 
 
 endtm ();
-end
+end;
+
+/*/  for dumb hosting
+ * Берём файл /includes/database.php
+и перед строчкой $this->_table_prefix = $table_prefix;
+вставляем код
+
+$this->_cursor = mysql_query( "set session character_set_server=cp1251;", $this->_resource );
+$this->_cursor = mysql_query( "set session character_set_database=cp1251;", $this->_resource );
+$this->_cursor = mysql_query( "set session character_set_connection=cp1251;", $this->_resource );
+$this->_cursor = mysql_query( "set session character_set_results=cp1251;", $this->_resource );
+$this->_cursor = mysql_query( "set session character_set_client=cp1251;", $this->_resource );
+ */
 
 ?> 

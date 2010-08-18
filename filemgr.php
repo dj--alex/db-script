@@ -11,6 +11,7 @@ autoexecsql ();// ob_flush ();exit; zdes menueshe est.
 //  search theme ----
  if ($pr[86]) if (($pr[87])OR($prauth[$ADM][7])){  //либо право на чтение у юзера, либо разрешение искать всем.
      //if ($searchfilenew) { echo $searchfilenew;}
+     //добавить ссылочку 1 <br>http://wow.chg.su/dbs/filemgr.php?start=DALEE&searchfilenew=dbscript<br>
      if ($searchfilenew) echo cmsg ("SRCH_FND")."<table border=3 width=100% bordercolor=#302621 >";
     // echo "filcount = $filcount <br>";
      for ($a=0;$a<$filcount;$a++) {
