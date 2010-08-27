@@ -355,7 +355,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 				// MASTER MODE
 				if ($pr[7]) { print "<form action=r.php method=post>";} else {  print "<form action=disable method=post>";} ;
 //<input type=hidden name=colfind value=<?=$colfind; 
-?> <form action="r.php" method=post>
+?> <form action="r.php" method="post" id="read">
 	<? 
 echo "!";if ($live) echo "<font color=green id=xfnt>live</font>!";
 		hidekey ("intf","master-mode");

@@ -14,7 +14,7 @@ if (!$activation) Header("Location: login.php");;  //http://127.0.0.1/dj/site/lo
            });
     </script><?
 */
-$verwritefile="Editor v4.2.42 beta (c) dj--alex";
+$verwritefile="Editor v4.2.6 beta (c) dj--alex";
  global $verwritefile,$vID,$vID2;
 
 $enterpoint=$verwritefile;// для показа точки входа
@@ -63,7 +63,7 @@ lprint ("WF_WELCOM");
  if ($daysleft<1) expire (); 
 //PART OF ID tbl
 if ($pr[37]) {// analog in getfile
-?><br><form action="w.php" method="post">
+?><br><form action="w.php" method="post" id="edit">
 <input type=hidden name=vID value=<?=$vID; ?>></input>
 	<input type=hidden name=vID2 value=<?=$vID2; ?>></input>
 	<input type=hidden name=colfind value=<?=$colfind; ?>></input>
@@ -251,6 +251,7 @@ if (($prauth[$ADM][43])and($prdbdata[$tbl][12]!="fdb")) { submitkey ("write","BA
 }
 echo "<br>";
   if (($write===cmsg("A_IMPEXP"))AND ($prauth[$ADM][10]>0)) { importexporttbl () ; exit;}
+  if (($ietbl==1)AND ($prauth[$ADM][10]>0)) { importexporttbl () ; exit;}
    if ($write===cmsg("A_IE_DEST")) { importexporttbl () ; exit;} // недоперенесено куда надо.
    if ($write===cmsg("A_IE_SRC")) { importexporttbl () ; exit;}
    if ($write===cmsg("A_IE_START")) {
@@ -4175,7 +4176,7 @@ function importexporttbl ()
 	 global $prdbdata; global $prauth; global $ADM;
 	 global $pr; global $sd;global $tbl; global $write;
 	 global $sd17; global $addmode; global $send; global $views;
-	 global $tbl1;global $tbl2;global $totalbas; global $filbas,$codekey;
+	 global $tbl1;global $tbl2;global $totalbas; global $filbas,$codekey,$usecomma2x;
 		 if ($codekey==7) demo ();
 	if ($prauth[$ADM][10]<2) { lprint ("ACCDEN"); exit;};
 	if ($prauth[$ADM][2]==false) { lprint ("ACCDEN"); exit;};
@@ -4184,12 +4185,12 @@ function importexporttbl ()
 	 echo cmsg (CONV_NOTE)."<br>";
 	 }
 
-	?> <form action=w.php method=post>
-<?
+	?> <form action=w.php method=post><?
 hidekey ("vID",$vID);
 hidekey ("colfind",$colfind);
 hidekey ("tbl1",$tbl1);
 hidekey ("tbl2",$tbl2);
+hidekey ("ietbl",1);
 // colfind - пока не подключен будет развертыватся
 for ($a=0;$prdbdata[$a]==true;$a++) {
 $k = count($prdbdata);$l= $k+1;
@@ -4232,6 +4233,7 @@ hidekey ("vID",$vID);
 hidekey ("colfind",$colfind);
 hidekey ("tbl1",$tbl1);
 hidekey ("tbl2",$tbl2);
+hidekey ("ietbl",1);
 // colfind - пока не подключен будет развертыватся
 for ($a=0;$prdbdata[$a]==true;$a++) {
 $k = count($prdbdata);$l= $k+1;
@@ -4264,8 +4266,8 @@ $reserved162=$prdbdata[$tbl2][16];	$reserved172=$prdbdata[$tbl2][17];
  //найден код требуемой базы
 // procs from standart csv<-->sql converter
 $separator = stripslashes($separator); $separator = stripcslashes($separator);
-if (!$separator)   $separator = "¦";  // separator s changed - not testd
-
+if (!$separator)   $separator = "¦";  // separator s changed - work
+if ($usecomma2x) { $separator=";"; echo "Forced using ; as separator , plevel writing declined.<br>";  }
 $version = "dbs ed"; $path_to_temp = "";
 
 function char2array($string) {
@@ -4316,10 +4318,7 @@ function field_fix($line) {
 	if ($dbtype==$dbtype2) { echo "<font color=red>".cmsg ("A_ONESTRUCT")."</font><br>";};
 	if (($dbtype=="fdb") AND ($dbtype2=="mysql")) { echo " CSV->->SQL.<br>";};
 	if (($dbtype=="mysql") AND ($dbtype2=="fdb")) { echo " SQL->->CSV.<br>";};
-	if (($dbtype==2) AND ($dbtype2=="mysql")) { exit;echo " SCP->->SQL.<br>";};
-	if (($dbtype=="fdb") AND ($dbtype2==2)) { exit;echo " CSV->->SCP.<br>";};
-	if (($dbtype==2) AND ($dbtype2=="fdb")) { echo " SCP->->CSV.<br>";};
-
+	
 if ($write===cmsg ("A_CONV_START")) {
 	if ($prauth[$ADM][10]<2) { lprint ("ACCDEN"); exit;};
 	set_time_limit(0);
@@ -4340,13 +4339,15 @@ if ($write===cmsg ("A_CONV_START")) {
 	$csv_file=$filbas;  //reconfig
 	if (!$filbas) { echo "Filebas = $filbas !!!!!!"; exit; };
 	$db_host=$hostmysqlselect2;
-	$user_nm=$sd[14];
+	$user_nm=$sd[14]; //хм а почему Access denied for user '1'@'localhost' (using password: YES) in /media/D/Work/KERNEL/dj/site/dbscore.lib on line 1172
 	$password=$sd[17];
 	$DATABASE=$tblmysqlselect2;echo "DEBUG DATABASE dest=$DATABASE";
 	$table=$tablemysqlselect2;echo "DEBUG Table dest=$table";
+//        echo "filbas=$filbas ; db_host=$db_host ; user_nm=$user_nm ; passwor=$password db=$DATABASE tab=$table";данные идут верные
 
 //echo "!DATABASE ".$DATABASE."!table".$table."!pas".$password;
    $separator = '¦';  //changed
+   if ($usecomma2x) { $separator=";"; echo "Forced using ; as separator , plevel writing declined.<br>";  }
   $splitseparator = $separator;
 
    $table_nm = split ("\.", $csv_file_name);
@@ -4382,13 +4383,16 @@ if ($write===cmsg ("A_CONV_START")) {
 	  $table_create = "";
 	//added drop db
 	//  $table_create .= "DROP DATABASE IF EXISTS `".$DATABASE."` ;\n";
-	$connect = mysql_connect ($prdbdata[$tbl2][6], $prdbdata[$tbl2][13] , $sd[17]);
+	//$connect = dbs_connect ($prdbdata[$tbl2][6], $prdbdata[$tbl2][13] , $sd[17],$dbtype2); // fail? $sd[14]
+        if (!$dbtype2) $dbtype2="mysql";
+        echo "Connected: ".$prdbdata[$tbl2][6]." by user $sd[14] <br>";
+        $connect = dbs_connect ($prdbdata[$tbl2][6], $sd[14] , $sd[17],$dbtype2); // fail? $sd[14]
 	$query="";
 	  if ($addmode) {
 	 $query= "CREATE DATABASE `".$DATABASE."` ;\n";
-	dbs_query ($query,$connect,$dbtype);
+	dbs_query ($query,$connect,$dbtype2);
 	  $query= "DROP TABLE IF EXISTS `$table_name` ;\n";
-  	dbs_query ($query,$connect,$dbtype);
+  	dbs_query ($query,$connect,$dbtype2);
 	 $query="";
 		}
       $table_create .= "CREATE TABLE `$table_name` (\n";
@@ -4422,7 +4426,8 @@ if ($write===cmsg ("A_CONV_START")) {
 	//if ($views) { echo $partquery;}
 // 	simple execute
 
-	mysql_select_db ($prdbdata[$tbl2][9], $connect);
+	//mysql_select_db ($prdbdata[$tbl2][9], $connect);
+        dbs_selectdb ($prdbdata[$tbl2][9],$connect,$dbtype2);
 //	executesql ($query,$connect,"",1);  bad use only this command
 $find;
 $ax=array(); // почему то вариант с разделением на строки куда лучше работает
@@ -4455,6 +4460,7 @@ exit;
 	if (($dbtype=="mysql") AND ($dbtype2=="fdb")) {
 	//	echo "Преобразование SQL в CSV.";
 	$separator="¦";
+        if ($usecomma2x) { $separator=";"; echo "Forced using ; as separator , plevel writing declined.<br>";  }
 	$csv_file_name=$namebas2;  //reconfig
 	$db_host=$hostmysqlselect;
 	$user_nm=$sd[14];
@@ -4463,8 +4469,9 @@ exit;
 	$table=$tablemysqlselect;
 
 //процедура очень давно не проверялась,  ее надо вынести в w.php  и как следует проштудировать
-   $connect=dbs_connect($db_host, $user_nm, $password,"mysql") or die( "Unable to connect to SQL server");
-   @dbs_selectdb($DATABASE,$connect) or die( "Unable to select DATABASE");
+
+   $connect=dbs_connect($db_host, $user_nm, $password,$dbtype) or die( "Unable to connect to SQL server");
+   @dbs_selectdb($DATABASE,$connect,$dbtype) or die( "Unable to select DATABASE");
    $sqlcont = "select * from $table";
    $result = dbs_query($sqlcont,$connect,$dbtype);
    echo dbserr();
@@ -4486,13 +4493,18 @@ exit;
       $fname  = mysql_fieldname($result, $col);
       if ($col < mysql_numfields($result)-1)$comma = $separator;
       else $comma = "";
-      if (($col == 0) && ($first_field))
+      if (($col == 0) && ($first_field)) {
          $names .= $first_field.$comma;
+         $plevels .= "0".$comma; }
       else
-         $names .= make_csv_happy(strtoupper($fname),$separator).$comma;
+         { $names .= make_csv_happy(strtoupper($fname),$separator).$comma;
+         $plevels .= "0".$comma; }
       $col++;
    }
    $final = $names."\n";
+   if ($separator=="¦") {echo "Generating dbs 4.x compactible header...<br>";
+   $final .= $plevels."\n";//plevel generic  сделать выбор разделителя для сохранения - dbs 4.x 2.x (;)
+   }
    while($row < mysql_numrows($result)) {
       $col=0;
       $line = "";
@@ -4550,11 +4562,12 @@ hidekey ("DATABASE",0);
 hidekey ("table",0);
 hidekey ("tbl1",$tbl1);
 hidekey ("tbl2",$tbl2);
-
+hidekey ("ietbl",1);
 	?>
 
 <? checkbox ($views,"views") ; echo cmsg ("WF_LOG")."<br>";
    checkbox ($unique,"unique") ; echo cmsg ("A_CONV_SETUID")."<br>";
+   checkbox ($usecomma2x,"usecomma2x") ; echo cmsg ("USECOMMA2X")."<br>";
    checkbox ($addmode,"addmode"); echo cmsg ("A_CONV_SETREWR")."<br>"; ?>
 <?   hidekey ("separator",";");
  	submitkey ("write","A_CONV_START");
@@ -4575,6 +4588,24 @@ $this->_cursor = mysql_query( "set session character_set_database=cp1251;", $thi
 $this->_cursor = mysql_query( "set session character_set_connection=cp1251;", $this->_resource );
 $this->_cursor = mysql_query( "set session character_set_results=cp1251;", $this->_resource );
 $this->_cursor = mysql_query( "set session character_set_client=cp1251;", $this->_resource );
+ * восстановите  раздачу пожалуйста
+Unreal III большой набор паков, карт и патчей.
+Раздача была не в той теме
+263
+ * требуют 1 аргумент FMG_ENTER FMG_DOWNLOAD
+ * не требуют аргументов FMG_EXIT FMG_DRV FMG_UPLOAD
+а этот форум так лагает и тормозит по дикому что её фиг найлешь (точнее нужный раздел )
+
+http://rutracker.org/forum/viewtopic.php?t=3109769
+
+извините не нашёл другого способа оставить сообщение.
+
+я не помню где писал тему и прошу того модератора который переместил раздачу в мусорку переместить её в эту ветку
+а эту тему удалить
+
+иначе мне придется остановить раздачу и более не буду её тут делать.
+
+
  */
 
 ?> 

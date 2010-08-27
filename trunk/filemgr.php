@@ -2,11 +2,15 @@
 $dbdataskip=1;
 require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
 if (!$activation) exit;
-$verfilemgr="Filemgr  v 4.1.81 (c) dj--alex ";
+$verfilemgr="Filemgr  v 4.2.62 (c) dj--alex ";
   $enterpoint=$verfilemgr;#end of conf
 // вот наша буферизация - ob_start();ob_end_flush();
 autoexecsql ();// ob_flush ();exit; zdes menueshe est.
 @ import_request_variables ("PG","");
+
+// redir - w dbscore
+///echo "<form settimeout=\"forma\" onMouseover=\"forma\" href=\"javascript:document.getElementByID(\"forma\").submit(go)\"  action=filemgr.php>";
+//ne rabotaet eta hernya
 
 //  search theme ----
  if ($pr[86]) if (($pr[87])OR($prauth[$ADM][7])){  //либо право на чтение у юзера, либо разрешение искать всем.
@@ -240,7 +244,7 @@ $filemgrmod=$sd[8];
 #call filemanager
 //echo "cmd1=$cmd1;<br>";
 if ($prauth[$ADM][37]) $maxmgrs=$prauth[$ADM][37]; else $maxmgrs=2;
-	for ($a=1;$a<$maxmgrs+1;$a++) { // save pid data
+	for ($a=1;$a<$maxmgrs+1;$a++) { // generate filemgr windows save pid data КОНЕЦ ЭТОЙ процедуры почти в упор к функции наъодится
 		//$fileforaction1="ept";		$cmd1="ept";
 	$cmdname="cmd".$a;
 	//echo "cmd{1}=".$cmd{1}.";<br>";
@@ -250,9 +254,36 @@ if ($prauth[$ADM][37]) $maxmgrs=$prauth[$ADM][37]; else $maxmgrs=2;
     // вот здесь будет внедрение multiple files CFG OPT FUTURE
 	$maskname="mask".$a;//$$maskname=$mask{$a};
 	$cmd=${$cmdname};$stroka=${$strokaname};$path=${$pathname};$fileforaction=${$fileforactionname};$mask=${$maskname};
-	//echo "cmd1=$cmd1;<br>";
+        ////echo "cmd1=$cmd1;<br>";
 	if ($nokeys==1) nokeys (1);
   if ($daysleft<1) expire ();
+	if ($debugmode) { echo "DEBUG do = ";print_r ($fileforaction);};
+        if ($debugmode) echo " count ".count ($fileforaction)."<br>";
+        // тут список команд не требующих атрибута fileforaction а значит им ненужен цикл
+
+ 
+ // FMG_ENTER - обязательно 1 аргумент
+ // FMG_REN - при наличии аргумента можно переименовать много файлов, будет очень полезно. ( по номерам #)
+ // FMG_NEW FMG_MKDIR - при наличии аргументов можно создать много папок  (список через ; или по номерам #
+ // FMG_SHARE - раздачу принимать с одинаковыми условиями.
+// Для переименования можно использовать группу файлов , если файл не один , то он будет получать префикс. Для создания большого количества пустых файлов или папок надо пометить нужное количество объектов
+
+ $noactionlist=explode (",",cmsg ("FMG_EXIT").",".cmsg ("FMG_DRV").",".cmsg ("FMG_UPLOAD").",".cmsg ("FMG_RESET").",".cmsg ("FMG_JOINFIL"));
+ //* не требуют аргументов
+ $oneactionlist=explode (",",cmsg ("FMG_ENTER").",".cmsg ("FMG_DOWNLOAD").",".cmsg ("FMG_DELALL").",".cmsg ("FMG_EXECUTE").",".cmsg ("FMG_EDIT"));
+        //..FMG_NEW,FMG_REN,FMG_MKDIR
+ //* требуют 1 аргумент
+  //echo "in_array ($cmd,$noactionlist)<br>";
+        if (count ($fileforaction)>1) { 
+                    $multiaction=1;$fileforactionfromarray=$fileforaction[$filearrcount];
+                if (in_array ($cmd,$noactionlist)) { $fileforactionfromarray=""; $multiaction=0;$fileforaction="";};
+                if (in_array ($cmd,$oneactionlist)) {$multiaction=-1;  };
+            };
+        if ((count ($fileforaction)<2)or($multiaction==-1)) { $multiaction=0; $fileforaction=$fileforaction[0]; } ;
+        if ($debugmode) echo "<br>DEBUG multiaction=$multiaction filefa=$fileforaction filefa(array)=$fileforactionfromarray filefa0=$fileforaction[0] filefa1=$fileforaction[1] filearrcount=$filearrcount <br> ";// проверка на вшивость
+        if ($debugmode) { echo "DEBUG posle: "; print_r ($fileforaction); };
+        
+        // тцт надо получ перв элемент массива... для много кратного - надо каждый раз выдавать лишь одно имя из него
 
 //moved TO Up -- SHARE APPLYING STEP 2 --
 //global $username,$share,$write,$file;
@@ -261,7 +292,7 @@ if ($go==cmsg (FMG_SHARE))
 {
 
         if ((!$prauth[$ADM][54])AND($coreredir!="step2")) { lprint ("DIS") ; exit;};
-
+  //if ($multiaction==1) { echo "ffa==".$fileforaction; };
     if ($username) @$userlist=implode ($username,",");
     if ($share!=="GENLNK_USR") $userlist="";
     if ($file===false) exit;
@@ -328,17 +359,31 @@ exit;
 //added to sharing dir
 if ($sharedir) { $path=$pathshare ;$cmd=cmsg ("FMG_ENTER");}; //working but странно.
 
-if (!$prauth[$ADM][16]) if ($sd[27]) echo $sd[27]."<br>";
+if (!$helloprinted) if (!$prauth[$ADM][16]) if ($sd[27]) { echo $sd[27]."<br>"; $helloprinted=1;}// FMG_HELLO Printing
 	//echo "<br>zad per<br>$cmd={$cmdname};$stroka={$strokaname};$path={$pathname};$fileforaction={$fileforactionname};$mask={$maskname};<br>";
 	//echo "<br>cmd=$cmd,cmd1=$cmd1,str=$stroka,p=$path,f=$fileforaction,m=$mask,PID=$a,an PID=$pid<br>";
 if ($prauth[$ADM][40]) { $cmd=$cmdtmp; lprint ("DEBUGMSG");echo ":".	cmsg ("GMP_40")."<br>";	}
 
 
-
+//ending generate filemgr windows
 //if ($noscreenmode==true) { $cmd=$cmd1;$write=$cmd;}  //NOWORK
-	if ($debugmode) echo "filemgr (cmd=$cmd,stroka=$stroka,path=$path,file=$fileforaction,mask=$mask,pid=$a);";
-        filemgr ($cmd,$stroka,$path,$fileforaction,$mask,$a);
+	//if (!$debugmode) echo "filemgr (cmd=$cmd,stroka=$stroka,path=$path,file=$fileforaction,mask=$mask,pid=$a);";
 
+
+        if ($multiaction==1) {
+             for ($filearrcount=0;$filearrcount<count ($fileforaction);$filearrcount++) {
+            $fileforactionfromarray=$fileforaction[$filearrcount];
+            if ($debugmode) echo "<br>filemgr (cmd=$cmd,stroka=$stroka,path=$path,file=$fileforactionfromarray,mask=$mask,pid=$a);<br>";
+            filemgr ($cmd,$stroka,$path,$fileforactionfromarray,$mask,$a); // глючит не подетски
+             }
+             $multiaction=0;$fileforaction="";
+        }
+        //if (is_array ($fileforactionfromarray)) { echo "Filemgr cannot be runned for Array of files <br>"; };
+        if ($debugmode) echo "<br>filemgr (cmd=$cmd,stroka=$stroka,path=$path,file=$fileforaction,mask=$mask,pid=$a);<br>";
+        if ($multiaction==0) {
+            filemgr ($cmd,$stroka,$path,$fileforaction,$mask,$a);
+        }
+        
 	if ($a<$maxmgrs) echo "<hr>";
 	}
 
@@ -363,10 +408,13 @@ context: http, server, location, if в location
 
  */
 
+
+
 function filemgr ($cmd,$stroka,$path,$fileforaction,$mask,$pid){  // is a part filemgr- fileio
 	//hidekey ("pidептвоюмать",$pid);
 	global $defaultpath,$protect,$prauth,$ADM,$pr,$sd;//..,$file
 	global $filemgrmod,$daysleft,$codekey,$noscreenmode,$maxmgrs,$OSTYPE,$coreredir;
+        global $multiaction;
 		if ($codekey==4) needupgrade ();
 
 //echo "ACTION:cmd=$cmd,str ok,path ok,file=$fileforaction,pid=$pid>";// -+++-
@@ -395,6 +443,7 @@ exit;//moved from non-function zone
 //if (($cmd==cmsg("FMG_UNSHARE"))and($prauth[$ADM][36])) {    echo "not implemented";}
 if ((($cmd==cmsg("FMG_SHARE"))and($prauth[$ADM][36])) OR ($coreredir=="SH_UPDD_FL")) {
 	$path=del_endslash ($path); // -- SHARE STEP 1 --
+        // multiaction==1  CFG OPT FUTURE  должен добавлять много файлов по идее, однако пока отрабатывается по файлу за раз.
     $file=$path."/".$fileforaction;
     if ($coreredir=="SH_UPDD_FL") { global $destinationfilename,$filesizeinmb;
             $file=$destinationfilename;
@@ -419,7 +468,7 @@ radio ("share","GENLNK_USR","GENLNK_USR");echo "<br>";
 echo "</select>"; }
 echo "<br>";
 lprint (COMM);inputtext ("commfile",15,$commfile);echo "<br>";
-checkbox (1,"yes"); lprint (GEN_FL_EPX);
+if ($prauth[$ADM][2]) {checkbox (1,"yes"); lprint (GEN_FL_EPX);} else { hidekey ("yes",1);};
 checkbox (1,"srchen"); lprint (GEN_FILENSRCH);
 echo "<br>";
 if ($coreredir=="SH_UPDD_FL") { hidekey ("coreredir","step2");};
@@ -428,7 +477,8 @@ if ($coreredir=="SH_UPDD_FL") { hidekey ("coreredir","step2");};
 	hidekey ("pid",$pid);?></form>
 <?=" ";
 hidekey ("write",$cmd);
-exit;//moved from non-function zone -- SHARE STEP 1 -- ENDING
+if ($multiaction!==1) exit;
+////moved from non-function zone -- SHARE STEP 1 -- ENDING
 }
 //
 //	echo "Мы получили из пред сессии  $cmd $fileforaction!<br> <BR>";   ikonki mlya !
@@ -467,6 +517,7 @@ echo " <form action=filemgr.php method=post>";
 	// blocked commands
 if (($cmd==cmsg("FMG_MKDIR"))and($prauth[$ADM][12])) {
 	//if ($codekey==7) demo ();
+        if ($multiaction==1) {global $filearrcount;$stroka.=$filearrcount;};
 	$err=mkdir ($path.$stroka);
 }
 //if ($cmd==cmsg("FMG_DELALL")) $err=rmdir ($path.$fileforaction);
@@ -536,10 +587,13 @@ if (($cmd==cmsg("FMG_DEL"))and($prauth[$ADM][13])) {
 	}
 if (($cmd==cmsg("FMG_NEW"))and($prauth[$ADM][12])) {
 	//if ($codekey==7) demo ();
+        //echo "ibane ug if ($multiaction==1) {global $filearrcount;$stroka.=$filearrcount;};<br>";
+        if ($multiaction==1) {global $filearrcount;$stroka.=$filearrcount;};
 	@$err=fopen($path.$stroka,"r"); if ($err==false) $err=fopen ($path.$stroka,"a");}
 
 if (($cmd==cmsg("FMG_REN"))and($prauth[$ADM][12])) {
 	if ($codekey==7) demo ();
+        if ($multiaction==1) {global $filearrcount;$stroka.=$filearrcount;};
 	$err=rename ($path.$fileforaction, $path.$stroka);
 }
 
@@ -559,7 +613,8 @@ if ((!$path)OR($cmd==cmsg("FMG_RESET"))) { $path=$defaultpath;$mask="*.*";$file=
 //$path=str_replace ("//","/",$path);проверка на вшивость -
 
 if ($err) echo "$err <br>";
-
+ //global disables visual menu for executing action
+if (!$multiaction ) {// start menu show
 // маска для файла может быть поиск по части имени и поиск по формату
 //выделить обращение к директории и режим парсинга (маска)
 //насчет маски - возможно стоит ее добавить в поисковик МЕ
@@ -700,7 +755,7 @@ if (($pid==1)AND($prauth[$ADM][12])) { // только 1 раз исполняется этот блок .  
 	?> <input type = hidden name = path<?=$pid ;?> value ="<?=$path ?>" >
 <?
    if ($hidefolder) unset ($file); //no filelist
-	IF ($file) { echo "<BR>".cmsg ("FMG_FILDB").":<select name =fileforaction".$pid." multiple size = ".$prauth[$ADM][49].">";
+	IF ($file) { echo "<BR>".cmsg ("FMG_FILDB").":<select name =fileforaction".$pid."[] multiple size = ".$prauth[$ADM][49].">";
 
         sort ($file); //нет реакции... print_r ($file); echo "Rewefkowe";
 
@@ -734,7 +789,7 @@ echo "<br>";
 $dbsdiskfree=round ((int)(@disk_free_space($path)/(1024*1024*1024)),1);
 $dbsdisktotal=(int)(@disk_total_space($path)/(1024*1024*1024));
 
-if ($ADM) echo "Selected : Free ".$dbsdiskfree."Gb ";  // сделать переключатель дисков или что то вроде указателя
+if ($pid==1) {if ($ADM) echo "Selected : Free ".$dbsdiskfree."Gb ";  // сделать переключатель дисков или что то вроде указателя
 if ($ADM) echo "\\".$dbsdisktotal."Gb<br>";
 
 
@@ -751,7 +806,9 @@ $avgtotal=$avgtotal;
 
 
 echo " Summary :Free ".$avgfree."Gb ";echo "\\".$avgtotal."Gb";echo "<br>";
+} //only pid 1 shows
 
+}   // start menu show
 }
 
 // ADDED FUNCTIONS FROM PHP.NET  WRITTEN NON DJ--ALEX
