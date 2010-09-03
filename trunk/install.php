@@ -26,6 +26,7 @@ if (!extension_loaded('Zend Optimizer')) {echo "$ei <font color=red>Fatal error<
  echo "<a href=\"http://wow.chg.su/dbs/filemgr.php?c=a263ea383a7feaaa052fbb91bb261db0\" >Zend optimizer 3.3.9 64bit Linux</a><br>";
  echo " If you need version without Zend optimizer - get open source version here ( <a href=\"http://wow.chg.su/dbs/filemgr.php?c=9b848fa952e76e70ce7ddf9a1c9e7593\">3.6.12</a>)<br>";
  if ($_GET["nozend"]!=1) exit;
+ if ($_GET["lightcore"]==1) lightcore ();
 // echo "<a href=\"http://wow.chg.su/inside/filemgr.php?c=7ed44827378124d7394f207ba7eff8f3\" >Zend optimizer 3.3.9 win32</a>";
 
 };
@@ -506,23 +507,41 @@ ob_flush ();
 exit;
 
 ///ѕон€тно,что предки приносили в жертву девственниц ќни были не дураки, чтобы жертвовать теми кто даЄт
-/*
- * Im wrote editor , first target is compactibility with mangos
-why my old theme is removed?
 
-Dbscript - program for managing DB remote, and allow GM make changes to DB (based on plevel rights)
+function lightcore () { // непроверено!!!  не добавл€ть в €дро!!
+ if (!file_exists("adminc.php")) {copy ("admin.php","adminc.php");
+ cleancodex ("admin.php","//SYSTEM KEY_START","//SYSTEM KEY_END");};
+ if (!file_exists("dbscorec.lib")) { copy ("dbscore.lib","dbscorec.lib");
+ cleancodex ("dbscore.lib","//SYSTEM KEY_START","//SYSTEM KEY_END");} ;
 
-Last version:4.2.4
-http://dj.chg.su/dbscript - download from site
-http://wow.chg.su/dbs/filemgr.php?c=36b6194baf9c65b20e861a01f60f28d8
+}
+// ћалиган. пожалуйста сделай возм хот€ бы главную и регу чтобы можно было смотреть на английском €зыке (кнопки с флажками и попытка обнаружить принадлежность IP к стране)
+function cleancodex ($file,$from,$to) {
+    // удал€ет все упоминани€ о активации и системе защиты. дл€ создани€ открытой версии.
+$index = strip_tags (file_get_contents($file));
 
-Video with install and crosslink tables
-http://wow.chg.su/inside/filemgr.php?c=0350abed7c878917360194ad627a9150
+$cdestfile="";$d="";
+$array=file($file) ;
+$k = count($array) ; $a=0;
+while ($a<$k) {
+	//echo " ";
+//	echo $a."--".$array[$a]; ;// выдача "в чистом виде" дл€ тестов
+	$a++;// а не пропускает ли он чего?
+	$b=$array[$a-1];$strleng=strlen ($b);
 
-sorry i not create forum to techsupport project (i can if require)
-,but i read this topic, and i think it enough.
+    if (strpos ($b,$from)!==false) { $startskipmode=1;	}
+	if (strpos ($b,$to)!==false) {$startskipmode=0;continue;		}
+                if ($startskipmode==0) $cdestfile=$cdestfile.$b ; continue;
+
+	}
+        //$cdestfile=."//cleaned by cleancode";
+$datafile = fopen ($file,"w") or die ("Ќе удалось записать, извините.");
+@fwrite ($datafile ,$cdestfile);
+@fflush ($datafile);
+@fclose ($datafile);
+//echo ("<a href=\"adminf.php\">¬аш файл тут.</a> Ќе забудьте нажать F5 дл€ обновлени€.");
+}
 
 
- */
 
 ?>
