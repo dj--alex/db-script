@@ -14,7 +14,7 @@ if (!$activation) Header("Location: login.php");;  //http://127.0.0.1/dj/site/lo
            });
     </script><?
 */
-$verwritefile="Editor v4.2.6 beta (c) dj--alex";
+$verwritefile="Editor v4.3.01 beta (c) dj--alex";
  global $verwritefile,$vID,$vID2;
 
 $enterpoint=$verwritefile;// дл€ показа точки входа
@@ -2632,7 +2632,7 @@ if ($prdbdata[$tbl][22]) $directedit=1;
          }
  if ($directedit) {
              if ($directedit==2) $vID=base64_decode ($vID);
-             $decodeddata=explode ("-",$vID);
+             $decodeddata=explode ("^^",$vID);
             //echo "bldjad  DIRECT EDIT BLYA!!";
                    $directeditwhere=gensqldirecteditwhere ($mycol,$decodeddata,$mycols);
                     $cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE $directeditwhere ";
@@ -2780,7 +2780,7 @@ if ($prdbdata[$tbl][22]) $directedit=1;
  }
   if ($directedit) {
              if ($directedit==2) $vID=base64_decode ($vID);
-             $decodeddata=explode ("-",$vID);
+             $decodeddata=explode ("^^",$vID);
              
  }
         if ($myrowold==false) {
@@ -2949,7 +2949,7 @@ if (($write==cmsg ("KEY_ADD"))AND($prdbdata[$tbl][12]!="fdb")) {
          }
  if ($directedit) {
              if ($directedit==2) $vID=base64_decode ($vID);
-             $decodeddata=explode ("-",$vID);
+             $decodeddata=explode ("^^",$vID);
               $directeditwhere=gensqldirecteditwhere ($mycol,$decodeddata,$mycols);
    
                      $cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE $directeditwhere ";
@@ -3093,7 +3093,7 @@ if (($write==cmsg("KEY_S_DEL"))AND($prdbdata[$tbl][12]!="fdb")) {
          }
  if ($directedit) {
              if ($directedit==2) $vID=base64_decode ($vID);
-             $myrow=explode ("-",$vID);
+             $myrow=explode ("^^",$vID);
               $directeditwhere=gensqldirecteditwhere ($mycol,$myrow,$mycols);
                      $cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE $directeditwhere ";
 		     $result = dbs_query ($cmd, $connect,$dbtype);
@@ -3821,7 +3821,7 @@ for ($xa=0;$xa<$boxcnt;$xa++) { //копи€ DEL_SQL  renewed!~
          }
  if ($directedit) {
              if ($directedit==2) $vID=base64_decode ($vID);
-             $myrow=explode ("-",$vID);
+             $myrow=explode ("^^",$vID);
               $directeditwhere=gensqldirecteditwhere ($mycol,$myrow,$mycols);
                      $cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE $directeditwhere ";
 		     $result = dbs_query ($cmd, $connect,$dbtype);
@@ -3881,7 +3881,7 @@ for ($a=0;$a<$boxcnt;$a++) {
         //added DIRECTEDIT for SHOWCODE (alternate realm)
  if ($directedit) {
              if ($directedit==2) $vID=base64_decode ($vID);
-             $decodeddata=explode ("-",$vID);
+             $decodeddata=explode ("^^",$vID);
             //echo "bldjad  DIRECT EDIT BLYA!!";
                    $directeditwhere=gensqldirecteditwhere ($mycol,$decodeddata,$mycols);
                     $cmd="SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE $directeditwhere ";
@@ -4578,34 +4578,7 @@ hidekey ("ietbl",1);
 endtm ();
 end;
 
-/*/  for dumb hosting
- * ЅерЄм файл /includes/database.php
-и перед строчкой $this->_table_prefix = $table_prefix;
-вставл€ем код
-
-$this->_cursor = mysql_query( "set session character_set_server=cp1251;", $this->_resource );
-$this->_cursor = mysql_query( "set session character_set_database=cp1251;", $this->_resource );
-$this->_cursor = mysql_query( "set session character_set_connection=cp1251;", $this->_resource );
-$this->_cursor = mysql_query( "set session character_set_results=cp1251;", $this->_resource );
-$this->_cursor = mysql_query( "set session character_set_client=cp1251;", $this->_resource );
- * восстановите  раздачу пожалуйста
-Unreal III большой набор паков, карт и патчей.
-–аздача была не в той теме
-263
- * требуют 1 аргумент FMG_ENTER FMG_DOWNLOAD
- * не требуют аргументов FMG_EXIT FMG_DRV FMG_UPLOAD
-а этот форум так лагает и тормозит по дикому что еЄ фиг найлешь (точнее нужный раздел )
-
-http://rutracker.org/forum/viewtopic.php?t=3109769
-
-извините не нашЄл другого способа оставить сообщение.
-
-€ не помню где писал тему и прошу того модератора который переместил раздачу в мусорку переместить еЄ в эту ветку
-а эту тему удалить
-
-иначе мне придетс€ остановить раздачу и более не буду еЄ тут делать.
-
-
+/* 
  */
 
 ?> 

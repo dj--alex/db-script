@@ -3,7 +3,7 @@
 // СКАЖЕМ НЕТ ШАБЛОНАМ, мы за оригинальное программирование!
 // только ломая шаблоны и стереотипы можно добится чего то нового.
 //if (!$languageprofile) $languageprofile="english";
-$verinst="Install v4.2.5 (c) dj--alex";// service hide
+$verinst="Install v4.3.01 (c) dj--alex";// service hide
 //error_reporting (E_ALL);
 //ini_set('error_reporting',E_ALL^E_NOTICE);
 $ei="<img src=\"_ico/error.gif\">";
@@ -26,10 +26,13 @@ if (!extension_loaded('Zend Optimizer')) {echo "$ei <font color=red>Fatal error<
  echo "<a href=\"http://wow.chg.su/dbs/filemgr.php?c=a263ea383a7feaaa052fbb91bb261db0\" >Zend optimizer 3.3.9 64bit Linux</a><br>";
  echo " If you need version without Zend optimizer - get open source version here ( <a href=\"http://wow.chg.su/dbs/filemgr.php?c=9b848fa952e76e70ce7ddf9a1c9e7593\">3.6.12</a>)<br>";
  if ($_GET["nozend"]!=1) exit;
- if ($_GET["lightcore"]==1) lightcore ();
 // echo "<a href=\"http://wow.chg.su/inside/filemgr.php?c=7ed44827378124d7394f207ba7eff8f3\" >Zend optimizer 3.3.9 win32</a>";
 
 };
+
+//echo "fcuk";echo $_GET["lightcore"]; echo "<br>";
+ if ($_GET["lightcore"]=="1") lightcore ();
+
 //$silent=1;
 if ($phpsafe){ $phpmaxtime= ini_get ("max_execution_time"); if ($phpmaxtime<60) echo "safe_mode : settings : php.ini : max_execution time <60. Safe mode not allows me set time automatically. Change one of settiongs pleaxe.<br>";
 }
@@ -509,6 +512,7 @@ exit;
 ///Понятно,что предки приносили в жертву девственниц Они были не дураки, чтобы жертвовать теми кто даёт
 
 function lightcore () { // непроверено!!!  не добавлять в ядро!!
+ //echo "Lightcore clean start <br>";
  if (!file_exists("adminc.php")) {copy ("admin.php","adminc.php");
  cleancodex ("admin.php","//SYSTEM KEY_START","//SYSTEM KEY_END");};
  if (!file_exists("dbscorec.lib")) { copy ("dbscore.lib","dbscorec.lib");
@@ -517,7 +521,7 @@ function lightcore () { // непроверено!!!  не добавлять в ядро!!
 }
 // Малиган. пожалуйста сделай возм хотя бы главную и регу чтобы можно было смотреть на английском языке (кнопки с флажками и попытка обнаружить принадлежность IP к стране)
 function cleancodex ($file,$from,$to) {
-    // удаляет все упоминания о активации и системе защиты. для создания открытой версии.
+ echo "<font color=red>cleancodex clean start $file<br></font>";   // удаляет все упоминания о активации и системе защиты. для создания открытой версии.
 $index = strip_tags (file_get_contents($file));
 
 $cdestfile="";$d="";
