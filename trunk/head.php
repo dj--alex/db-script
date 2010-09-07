@@ -2,6 +2,9 @@
 //echo "Session=";print_r ($_SESSION);  	echo "dbsa=$dbsa"; //ept session
 // EXTERNAL JAVASCRIPT  - задание каскадных стилей для программы и кнопок - интерфейс
 // 3.6.06 edition    if (!$trafeconom) $idadd=" id=\"".$name."\" ";
+//<script src="http://code.jquery.com/jquery-latest.js"></script> полная
+//или <script src="jquery142.js"></script>
+// воздушная
  	global $verhead,$systemshrift,$buttonshrift,$tableshrift;
 $verhead="Header v4.2.4 (c) dj--alex"; //hide
 ?>
@@ -15,8 +18,8 @@ if ($sd[19]=="utf-8") $pagename=iconvx("windows-1251","utf-8",$pagename);
 $titleout= $sd[16]." - ".$pagename." - ".$write." $element ";
 echo $titleout ;
 ?></title>
- 
-<?php
+ <? if ((!$pr[97])and (!$pr[98])) { echo "<script src=\"jquery142.js\"></script>" ; };
+  if (($pr[98])AND(!$pr[97])) { echo "<script src=\"http://yandex.st/jquery/1.4.2/jquery.min.js\"></script>" ; };
 if ($pr[83]) { echo "";;
      ?><!--head-->
 <script type="text/javascript" src="http://vkontakte.ru/js/api/share.js?3"></script><?php

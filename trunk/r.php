@@ -648,7 +648,7 @@ function search ()
 
 				if (($mode == 7)AND($prdbdata[$tbl][12]!="fdb")) {
 					//ubrat vse vybory polej ne svyazannye s tekushim mode==7( po menu)
-					global $presettedmode,$res16,$mznumb,$codekey;
+					global $presettedmode,$res16,$mznumb,$codekey,$fullfield;
 					echo "kol=$kol";$field=$kol;
 					global $prauth,$ADM;// добавлено для переключения продвинутого поиска
 					//	echo "Field activated first $field<br>"; //TO DELETE AFTE
@@ -664,6 +664,7 @@ hidekey ("adm",$adm);
 hidekey ("commode",$commode);
 hidekey ("tbl",$tbl);
 hidekey ("multisearch",$multisearch);
+hidekey ("fullfield",$fullfield);
 hidekey ("selectedfield",$selectedfield);
 hidekey ("review",$review);
 hidekey ("vID2",$vID2);
@@ -678,7 +679,7 @@ echo " </form> ";
 				//mode 6 процедура SQL поиска по выбранной колонке
 				if (($mode == 6)AND($prdbdata[$tbl][12]!="fdb")) {
 					$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
-					global $categorymode,$mode;
+					global $categorymode,$mode,$fullfield;
 					global $mode6,$m6field,$m6count;
 					global $mycols,$mycol,$del,$res16,$presettedmode,$selectedfield,$fields;
 					global $partquery,$vID,$mznumb;
@@ -696,7 +697,7 @@ echo " </form> ";
 					$query = "SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE ".$partquery ;
 					if (($prdbdata[$tbl][15]>0)AND ($vID2!=="")) { $query = $query." AND ".$mycol[$prdbdata[$tbl][15]]."= '".$vID2."'";};
 					//if (!$pr[8]) { echo "AFTER DECODE categorymode=$categorymode,mode=$mode,m6count=$m6count,	 mode6=$mode6,m6field=$m6field,mycols=$mycols,mycol=$mycol,del=$del,partquery=$partquery,vID=$vID<br>";}
-					$query=$query.$addsql;// сортировка, лимит
+                                        $query=$query.$addsql;// сортировка, лимит
 					selectedprintsql ($data);
 					if ($multisearch==0) {exit (1); }
 				}
@@ -776,7 +777,7 @@ echo " </form> ";
 			//ubrat vse vybory polej ne svyazannye s tekushim mode==7( po menu)
 					if ($debug)echo "m7 Текущий vID $vID res16 $res16 STR595<br>";
 					global $prauth,$ADM,$codekey;// добавлено для переключения продвинутого поиска
-					global $presettedmode,$mzdata,$mzcnt,$res16,$mznumb,$mycol;
+					global $presettedmode,$mzdata,$mzcnt,$res16,$mznumb,$mycol,$fullfield;
 					if ($debug)echo "kol=$kol";$field=$kol;
 					///	echo "encodevID  $eid;  encodevID(old) $eolddid ";
 					$mode=6; $mode7=1;//$presettedmode=-1; bylo 1.1
@@ -803,6 +804,7 @@ hidekey ("adm",$adm);
 hidekey ("commode",$commode);
 hidekey ("tbl",$tbl);
 hidekey ("multisearch",$multisearch);
+hidekey ("fullfield",$fullfield);//$fullfield
 hidekey ("selectedfield",$selectedfield);
 hidekey ("kol",$kol);
 
@@ -825,6 +827,7 @@ hidekey ("mode",7);
 hidekey ("adm",$adm);
 hidekey ("commode",$commode);
 hidekey ("tbl",$tbl);
+hidekey ("fullfield",$fullfield);//$fullfield
 hidekey ("multisearch",$multisearch);
 hidekey ("selectedfield",$selectedfield);
 hidekey ("kol",$kol);
@@ -841,7 +844,7 @@ hidekey ("kol",$kol);
 					//echo "result res16=$res16   STR656";
 					global $categorymode,$mode; // добавлено для совместимости с  decodecols ()
 					global $mode6,$m6field,$m6count,$mycols,$mycol,$del;
-					global $partquery,$vID,$mzcnt,$mznumb,$presettedmode,$xfgetlimit;
+					global $partquery,$vID,$mzcnt,$mznumb,$presettedmode,$xfgetlimit,$fullfield;
 					$mznumb=array ();
 					// TEST ZONE
 					$res16=$prdbdata[$tbl][16];// Лимит колонок
@@ -868,11 +871,14 @@ hidekey ("kol",$kol);
                                               //  echo "count=$a of $k -- fndcol=$fndcolumn; vid=$vID ; ".$dbc[$fndcolumn]."<br>";
 						// for ($b=0;$b<$k;$b++) {  Бла бла бла;Фэнтэзи;Комедия;Боевик  ищет фигово переключает на 1,4 films al где то производися сброс значения и оно уже не восстанавливается
 						// $mode7=1 если вход был оттуда.копать здесь надо.
-						$findid=strpos(strtolower($dbc[$fndcolumn]),$vID);
+						if (!$fullfield) $findid=strpos(strtolower($dbc[$fndcolumn]),$vID);
+                                                if ($fullfield) if (($dbc[$fndcolumn]==$vID)) {$selected[]=$dbc;};
+                                                if ($fullfield) if (($dbc[$fndcolumn]==false)AND(false==$vID)) {$selected[]=$dbc;};
+                                                //echo "$fullfield ffM<br> $findid  id";
                                                 if (($notnull)AND($dbc[$fndcolumn]!="")) $findid=1;
                                                 if (($notnull)AND($dbc[$fndcolumn]=="0")) $findid=false;
 						if (($findid!==false)&&($dbc[$fndcolumn]!=="")) {
-							$selected[]=$dbc;   //added
+							if (!$fullfield) $selected[]=$dbc;  //added  $findid=false;
 						}
 					}
 					}

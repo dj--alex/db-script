@@ -222,13 +222,13 @@ if (($cfgmod<1)AND($prauth[$ADM][2])) {
 
 
    if ($hidemenu) $menudisable=1;
-if ($namebas==false) {echo "<br><font color=red id=errfnt>";
+if ($namebas==false) {echo "<br><red>";
     lprint ("WF_NOLNK");
-    echo "</font><br>";
+    echo "</red><br>";
     $menudisable=1;} else {
     echo "<br>";
     lprint ("CONNLINK:");
-    echo "<font color=green id=xfnt> $namebas ($tbl) [$tablemysqlselect'$tblmysqlselect ".$prdbdata[$tbl][12]." server $hostmysqlselect]<br></font>";}
+    echo "<grn> $namebas ($tbl) [$tablemysqlselect'$tblmysqlselect ".$prdbdata[$tbl][12]." server $hostmysqlselect]<br></grn>";}
 print "<input type=hidden name=tbl value=$tbl>";
 	hidekey ("live",$live); 
 if ($menudisable==0) {
@@ -264,7 +264,7 @@ if ($menudisable==1) { if ($prdbdata[$tbl][0]=="") exit; };
 
 
 if (($errorredirectdb)) { //dblinker enter
-	echo "<br><font color=red id=errfnt>".cmsg (REQ_LINK)." $tab ".cmsg (AND_DB)." $dblk".cmsg (M_SEL_DB)." $dblk<br></font>";
+	echo "<br><red>".cmsg (REQ_LINK)." $tab ".cmsg (AND_DB)." $dblk".cmsg (M_SEL_DB)." $dblk<br></red>";
 	if ($modeselectsimilartable) echo cmsg (WORK_MODE).":".cmsg (MOD_SEL_TAB)."<br>";
     if (!$modeselectsimilartable) echo cmsg (WORK_MODE).":".cmsg (MOD_SIM_TAB)."<br>";
  //echo "write=$write;";
@@ -679,8 +679,8 @@ if ($OSTYPE=="LINUX") if ($values[strlen ($values)-1]!=="\n") $values=$values."\
 
 //модуль запуска 
 if (($write==cmsg ("KEY_DEL"))AND($prdbdata[$tbl][12]=="fdb")) {
-		if (($virtualid==true)AND($vID2==false)) echo "<font color=red id=errfnt>".cmsg 
-		("WF_DEL_GROUP")." ".$vID." </font><br>";
+		if (($virtualid==true)AND($vID2==false)) echo "<red>".cmsg
+		("WF_DEL_GROUP")." ".$vID." </red><br>";
 		if ($vID==="") { echo cmsg ("WF_FSELID")."<br>"; exit;};
 
  submitkey ("write","KEY_S_DEL");
@@ -723,7 +723,7 @@ if (($write==cmsg ("KEY_MASEXC"))AND($prdbdata[$tbl][12]=="fdb")) {
 	<?// checkbox ($views,"views") ; echo cmsg ("WF_LOG")."<br>"; 
    checkbox ($nolimit,"nolimit") ; echo cmsg ("WF_NOLMTIM")."<br>";
    checkbox ($wfemptyenab,"wfemptyenab") ;echo cmsg ("WF_EMP_EN")."<br>";
- if ($prauth[$ADM][5]==1) { checkbox ($delete,"delete");echo "<font color=red id=errfnt>".cmsg ("WF_UPDTODEL")."</font><br>"; }; 
+ if ($prauth[$ADM][5]==1) { checkbox ($delete,"delete");echo "<red>".cmsg ("WF_UPDTODEL")."</red><br>"; };
 radio ("strupdmode","allstrokes","WF_EXCALL"); echo "<br>";
  radio ("strupdmode","#substrokes","WF_EXCSUB"); echo "<br>"; // select ignored ???? WTF?
   radio ("strupdmode","subindstrokes","WF_EXCSUBIND") ; //echo "<br>";
@@ -765,14 +765,14 @@ if ($cfgmod==2) $filename="_logs/".$filbas;
 	 if (($codekey==4)) needupgrade ();	 if (($codekey==9)OR($codekey==7)) demo ();
 	if ($nolimit) {set_time_limit(0);} else {set_time_limit(120) ;};
 	if (($prauth[$ADM][5]==false)AND($delete)) { unset ($delete); echo "r";};// сброс от нелегальных delete
-	if (!$strupdmode) { echo "<font color=red id=errfnt><bb>".cmsg ("INP_ERR")."</bb><br></font>Не указан режим работы!";exit;};
-	if (strlen ($exchid)==0) { echo "<font color=red id=errfnt><bb>".cmsg ("INP_ERR")."</bb><br></font>Не указана цель замены!";exit;};
-	if (!$wfemptyenab) if (($strupdmode=="substrokes") AND (strlen ($sourceid)==0)) { echo "<font color=red id=errfnt><bb>Ограничение</bb><br></font>".cmsg ("WF_ER_NOSUB"); exit;} ;
+	if (!$strupdmode) { echo "<red><bb>".cmsg ("INP_ERR")."</bb><br></red>Не указан режим работы!";exit;};
+	if (strlen ($exchid)==0) { echo "<red><bb>".cmsg ("INP_ERR")."</bb><br></red>Не указана цель замены!";exit;};
+	if (!$wfemptyenab) if (($strupdmode=="substrokes") AND (strlen ($sourceid)==0)) { echo "<red><bb>Ограничение</bb><br></red>".cmsg ("WF_ER_NOSUB"); exit;} ;
 	if ($strupdmode==="subindstrokes") { 
-		if (!$subindex) { echo "<font color=red id=errfnt><bb>Ошибка</bb><br></font>".cmsg ("WF_ER_NOIND").".<br>" ;exit ; };
-		if (!$subsplitter) { echo "<font color=red id=errfnt><bb>Ошибка</bb><br></font>".cmsg ("WF_ER_SPLIT").".<br>" ; 
+		if (!$subindex) { echo "<red><bb>Ошибка</bb><br></red>".cmsg ("WF_ER_NOIND").".<br>" ;exit ; };
+		if (!$subsplitter) { echo "<red><bb>Ошибка</bb><br></red>".cmsg ("WF_ER_SPLIT").".<br>" ;
 		} ; exit; };
-	if (($prauth[$ADM][4]===false)AND($strupdmode!=="substrokes") AND (strlen ($sourceid)==0)) { echo "<font color=red id=errfnt><bb>Ограничение</bb><br></font>Нельзя заменять любое значение на нужное вам из принципов безопасности." ; exit;} ;// all_> sub
+	if (($prauth[$ADM][4]===false)AND($strupdmode!=="substrokes") AND (strlen ($sourceid)==0)) { echo "<red><bb>Ограничение</bb><br></red>Нельзя заменять любое значение на нужное вам из принципов безопасности." ; exit;} ;// all_> sub
 	//окончание обработки ошибок    	//	начало csv части обновителя  ===!!!!======
 	@$f=csvopen ($filename,"r","0");//открываем базу
 	echo "<br>";
@@ -971,7 +971,7 @@ echo "<br>";
   <input type="radio" name="cmpmode"  value="2to1"> <? lprint ("WF_CMP_21") ; ?><br>
   <input type="radio" name="cmpmode"  value="1only" checked><? lprint ("WF_CMP_QRY") ; ?><br>
   <? 	// start compare addif
-checkbox ($cmpifchg,"cmpifchg") ; echo "<font color=gray id=dfnt>".cmsg ("WF_CMPIFCGH")."<br></font>"; 
+checkbox ($cmpifchg,"cmpifchg") ; echo "<gray>".cmsg ("WF_CMPIFCGH")."<br></gray>";
    echo cmsg ("WF_IF1")."1:";  printfield ($data,"addif1"); 
 	printcmp ("addifcmp1");
 ?><textarea name=addiflist1 cols= 25 rows=1 wrap=virtual><?=$addiflist1; ?></textarea><br>
@@ -1766,7 +1766,7 @@ if (($write==cmsg ("WF_HDRSQL_VIRT"))AND ($prdbdata[$tbl][12]!="fdb")) { //++
 		$a=0;$cnt=count ($mycol);
 	for ($a=0;$a<$cnt;$a++)
 			{
-			echo "$a $z[$a] (<font color=blue id=bfnt>$mycol[$a]</font>) ";
+			echo "$a $z[$a] (<blu>$mycol[$a]</blu>) ";
 			?><textarea name=z<?=$a; ?> cols=30 rows=1><?=$z[$a]?></textarea>
 				<textarea name=p<?=$a; ?> cols=12 rows=1><?=$plevel[$a]?></textarea>
 	<!--			<input type=submit name=executeaddfield value=<?=$a?>>+-->
@@ -2038,7 +2038,7 @@ if (($write==cmsg("KEY_HEAD"))AND ($prdbdata[$tbl][12]=="fdb")) {
 		if (count ($z)==1) {  lprint ("WF_OUTDATDB");echo "<br>";}
 	for ($a=0;$a<count ($z);$a++)
 			{
-			echo "$a $headervirtual[$a] (<font color=blue id=bfnt>$mycol[$a]</font>) ";
+			echo "$a $headervirtual[$a] (<blu>$mycol[$a]</blu>) ";
 			?><textarea name=z<?=$a; ?> cols=30 rows=1><?=$z[$a]?></textarea>
 				<textarea name=p<?=$a; ?> cols=12 rows=1><?=$plevel[$a]?></textarea>
 				<br><? 
@@ -2707,8 +2707,8 @@ hidekey ("origid1",$myrow[$md2column]);
 hidekey ("origid2",$myrow[$virtualid]);
 checkbox ($views,"views") ; echo cmsg ("WF_LOG")."<br>"; 
 
-if ($prauth[$ADM][33]) if (!$frozen) { checkbox ($enfreez,"enfreez");echo "<font color=red id=errfnt>".cmsg ("KEY_S_FREEZE");echo "</font><br>";};
-if ($frozen) {hidekey ("frozen",$frozen); echo "<font color=blue id=bfnt>".cmsg ("KEY_FRZD")."</font><br>";
+if ($prauth[$ADM][33]) if (!$frozen) { checkbox ($enfreez,"enfreez");echo "<red>".cmsg ("KEY_S_FREEZE");echo "</red><br>";};
+if ($frozen) {hidekey ("frozen",$frozen); echo "<blu>".cmsg ("KEY_FRZD")."</blu><br>";
 if ($prauth[$ADM][33]) {checkbox ($unfreez,"unfreez");echo cmsg ("KEY_S_UNFREEZE");echo "<br>";}
 };
 submitkey ("write","KEY_S_EDIT");echo "<br>";
@@ -2746,7 +2746,7 @@ if ($unfreez) {
 				}
 				fclose ($f);fclose ($fw);
 				if ($unfrozen) { unlink ($afile);rename ($afilenew,$afile);};
-				if (!$unfrozen)echo "<font color=red id=errfnt>".lprint ("FROZ_OTH_USR")."</font><br>";
+				if (!$unfrozen)echo "<red>".lprint ("FROZ_OTH_USR")."</red><br>";
 				// может эту процедуру тоже как то стандартизировать?
 }
 //конец разморозки если вкл
@@ -2894,7 +2894,7 @@ if (!$update) {
 				$afile="_conf/autoexec.sql";		 $autoexeccmd=$cmd."; #".$prauth[$ADM][0]."\r\n";
 				$f=fopen ($afile,"a+");
 				$a=fwrite ($f,$autoexeccmd);
-				if ($a) { echo "<font color=blue id=bfnt>".cmsg ("KEY_FRZD")."</font><br>";};
+				if ($a) { echo "<blu>".cmsg ("KEY_FRZD")."</blu><br>";};
 				fclose ($f);
 				}
 	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
@@ -3048,8 +3048,8 @@ if (!$errt) submitkey ("write","WF_UNDO_LAST");
 //модуль запуска 
 if (($write==cmsg ("KEY_DEL"))AND($prdbdata[$tbl][12]!="fdb")) {
     if ($prdbdata[$tbl][22]) $directedit=$prdbdata[$tbl][22];
-    if (!$directedit) if (($virtualid==true)AND($vID2==false)) echo "<font color=red id=errfnt>".cmsg
-		("WF_DEL_GROUP")." ".$vID." </font><br>";
+    if (!$directedit) if (($virtualid==true)AND($vID2==false)) echo "<red>".cmsg
+		("WF_DEL_GROUP")." ".$vID." </red><br>";
 		 if ($prdbdata[$tbl][9]=="dbscriptbk") msgexiterror ("nologsedit"," (DB.TBL ".$prdbdata[$tbl][9].".".$prdbdata[$tbl][5]."","main.php");
  
                    if ($vID==="") { lprint ("WF_FSELID");exit;}
@@ -3158,7 +3158,7 @@ if (($write==cmsg("KEY_MASEXC"))AND($prdbdata[$tbl][12]!="fdb")) {
 <? checkbox ($views,"views") ; echo cmsg ("WF_LOG")."<br>"; 
  checkbox ($wfemptyenab,"wfemptyenab") ;echo cmsg ("WF_EMP_EN")."<br>";
    checkbox ($nolimit,"nolimit") ; echo cmsg ("WF_NOLMTIM")."<br>";
- if ($prauth[$ADM][5]==1) { checkbox ($delete,"delete");echo "<font color=red id=errfnt>".cmsg ("WF_UPDTODEL")."</font><br>"; }; 
+ if ($prauth[$ADM][5]==1) { checkbox ($delete,"delete");echo "<red>".cmsg ("WF_UPDTODEL")."</red><br>"; };
   radio ("strupdmode","allstrokes","WF_EXCALL"); echo "<br>";
  radio ("strupdmode","#substrokes","WF_EXCSUB"); echo "<br>"; // select ignored ???? WTF?
   radio ("strupdmode","subindstrokes","WF_EXCSUBIND") ; //echo "<br>";
@@ -3181,7 +3181,7 @@ checkboxcorrect ("addifenable2",$addifenable2) ;
 	if (strlen ($vID2)!==0) echo cmsg ("WF_ID2HLP")."<br>"; 
 
  ?> 
-	<font color=gray id=dfnt> <? lprint ("WF_EMUSUB") ; ?> : </font><input type="checkbox" name="emusubstroke"><br>
+	<gray> <? lprint ("WF_EMUSUB") ; ?> : </gray><input type="checkbox" name="emusubstroke"><br>
  <? submitkey ("write","KEY_S_EXCH");
 }
 
@@ -3224,15 +3224,15 @@ if (($write==cmsg("KEY_S_EXCH"))AND($prdbdata[$tbl][12]!="fdb")) {
 	if ($nolimit) {set_time_limit(0);} else {set_time_limit(60) ;};
 	if (($prauth[$ADM][5]==false)AND($delete)) { unset ($delete); echo "r";};// сброс от нелегальных delete
 	readdescripters ();// получение данных заголовка м  ассив mycol кол-во mycols
-    if (!$strupdmode) { echo "<font color=red id=errfnt><bb>".cmsg ("INP_ERR")."</bb><br></font>".cmsg ("WF_ER_NOMODE");exit;};
-	if (strlen ($exchid)==0) { echo "<font color=red id=errfnt><bb>".cmsg ("INP_ERR")."</bb><br></font>".cmsg ("WF_ER_NOTARG");exit;};
-	if (($strupdmode=="substrokes") AND (strlen ($sourceid)==0)) { echo "<font color=red id=errfnt><bb>".cmsg ("LIM")."</bb><br></font>".cmsg ("WF_ER_NOSUB"); exit;} ;
+    if (!$strupdmode) { echo "<red><bb>".cmsg ("INP_ERR")."</bb><br></red>".cmsg ("WF_ER_NOMODE");exit;};
+	if (strlen ($exchid)==0) { echo "<red><bb>".cmsg ("INP_ERR")."</bb><br></red>".cmsg ("WF_ER_NOTARG");exit;};
+	if (($strupdmode=="substrokes") AND (strlen ($sourceid)==0)) { echo "<red><bb>".cmsg ("LIM")."</bb><br></red>".cmsg ("WF_ER_NOSUB"); exit;} ;
 	if ($strupdmode==="subindstrokes") { 
-	   if (!$subindex) {echo "<font color=red id=errfnt><bb>".cmsg ("INP_ERR")."</bb><br></font>".cmsg ("WF_ER_NOIND") ; exit;}
-	  if (!$subsplitter) {echo "<font color=red id=errfnt><bb>".cmsg ("INP_ERR")."</bb><br></font>".cmsg ("WF_ER_SPLIT") ; exit;}
+	   if (!$subindex) {echo "<red><bb>".cmsg ("INP_ERR")."</bb><br></red>".cmsg ("WF_ER_NOIND") ; exit;}
+	  if (!$subsplitter) {echo "<red><bb>".cmsg ("INP_ERR")."</bb><br></red>".cmsg ("WF_ER_SPLIT") ; exit;}
 		} ;
 	
-		if (!$wfemptyenab) if (($prauth[$ADM][4]===false)AND($strupdmode==="allstrokes") AND (strlen ($sourceid)==0)) { echo "<font color=red id=errfnt><bb>".cmsg ("LIM")."</bb><br></font>".cmsg ("WF_EX_ANY_D") ; exit;} ;
+		if (!$wfemptyenab) if (($prauth[$ADM][4]===false)AND($strupdmode==="allstrokes") AND (strlen ($sourceid)==0)) { echo "<red><bb>".cmsg ("LIM")."</bb><br></red>".cmsg ("WF_EX_ANY_D") ; exit;} ;
 	//окончание обработки ошибок
 	if ((strlen ($sourceid)==0)AND($strupdmode!=="substrokes")) 
 		{ $cmd="UPDATE `".$prdbdata[$tbl][5]."` SET `".$mycol[$field]."`='".$exchid."' WHERE `".$mycol[$md2column]."`= '".$vID."'";
@@ -3381,7 +3381,7 @@ printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"destination",cmsg ("WF_MAS_DE
  <?   checkbox ($views,"views") ;echo cmsg ("WF_LOG")."<br>"; 
     checkbox ($nolimit,"nolimit") ; echo cmsg ("WF_NOLMTIM")."<br>";
   if ($prauth[$ADM][5]==1) echo ""; // резерв для удаления
-// echo "<font color=gray id=dfnt>Просто просмотр, без копирования</font><input type=checkbox name=delete><br>"; ?>
+// echo "<gray>Просто просмотр, без копирования</red><input type=checkbox name=delete><br>"; ?>
   <? lprint ("WF_MASCPYACT") ; ?> <br>
   <input type="radio" name="cpymod" value="copyabort"> <? lprint ("ABORT") ; ?> 
   <input type="radio" name="cpymod"  value="copyrewrite"> <? lprint ("REWRITE") ; ?>
@@ -3505,14 +3505,14 @@ printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"source",cmsg ("WF_MAS_SRC"),$
 
    // checkbox ($keys,"keys"); echo cmsg ("WF_MASCMP_KEY")."<br>"; пока нет возм сравнить содержимое
    //checkbox ($dbaff,"dbaff") ; echo cmsg ("WF_INSBAS")."<br>"; если поля баз разные то и базы авт надо разные сравнивать!!! -
-//RMV	     checkbox ($execute,"execute") ; echo "<font color=red id=errfnt>".cmsg ("WF_VIEANDEXEC")."<br></font>";
+//RMV	     checkbox ($execute,"execute") ; echo "<red>".cmsg ("WF_VIEANDEXEC")."<br></red>";
    
   //<input type="radio" name="cmpmode" disabled value="1to2"><? lprint ("WF_CMP_12") ; 
   //<input type="radio" name="cmpmode" disabled   value="2to1"> <? lprint ("WF_CMP_21") ;
 ?>  <input type="radio" name="cmpmode"  value="1only" checked><? lprint ("WF_CMP_QRY") ; ?><br>
   <? 	
 // start compare addif
-//checkbox ($cmpifchg,"cmpifchg") ; echo "<font color=gray id=dfnt>".cmsg ("WF_CMPIFCGH")."<br></font>"; 
+//checkbox ($cmpifchg,"cmpifchg") ; echo "<gray>".cmsg ("WF_CMPIFCGH")."<br></red>";
    echo cmsg ("WF_IF1")."1:";  printfield ($data,"addif1"); 
 	printcmp ("addifcmp1");
 ?><textarea name=addiflist1 cols= 25 rows=1 ><?=$vID; ?></textarea><br>
@@ -3977,7 +3977,7 @@ $bestedit=1;};
    	 //echo "===============END WRITEFULLCFGDATAOUT=========================<br>";
   @$best=csvopen ($filbas,"r",0);$data=readfullcsv ($best,"new");
   $bestheader=$data[0];$bestplevel=$data[1];$bestcontent=$data[2];$bestcnt=$data[3];
-  //echo "<font color=magenta>=============CHECK:best.cfg==============<br></font>Massive have lines (bestcnt)=$bestcnt<br>";
+  //echo "<font color=magenta>=============CHECK:best.cfg==============<br></red>Massive have lines (bestcnt)=$bestcnt<br>";
   //debugcfgprint ($bestheader,$bestplevel,$bestcontent) ;
 //echo "=================================================<br>";
   @fclose ($best);	
@@ -4005,7 +4005,7 @@ radio ("massoper",1,"M_OP_1") ;//printfield ($data,"addif1");
        txtarea ("exchid",5,1);
        echo"<br>";
 if ($prdbdata[$tbl][12]!="fdb") radio ("massoper",2,"M_OP_2") ;echo "<bR>";
-if (!$prauth[$ADM][5]) echo "<font color=gray id=dfnt>".cmsg ("M_OP_3").cmsg ("BLOCK")."</font>";
+if (!$prauth[$ADM][5]) echo "<gray>".cmsg ("M_OP_3").cmsg ("BLOCK")."</gray>";
 if ($prauth[$ADM][5]) radio ("massoper",3,"M_OP_3") ;echo "<bR>";
 radio ("massoper",4,"TO_BEST") ;checkbox ($rewr,"rewr"); lprint (REW_IF_PRES);echo "<br>";
 radio ("massoper",5,"NOP") ;echo "<bR>";
@@ -4287,7 +4287,7 @@ function sqlify_line($line, $splitseparator,$separator,$ncols) {
       if ($s[0] == $s[strlen($s)-1] && ($s[0] == "'" || $s[0] == '"')) {
         $s = substr($s,1,strlen($s)-2);
      }
-      $line_chunks[$i] = addslashes($s);  //rejected  <font color="#000BA">  </font>
+      $line_chunks[$i] = addslashes($s);  //rejected  <font color="#000BA">  </red>
    }
    for($i=0;$i<count($line_chunks);$i++) {
       if ($i == (count($line_chunks)-1))
@@ -4315,7 +4315,7 @@ function field_fix($line) {
  submitkey ("write","A_CONV_DEST_CHG");
  ?></form>  <?
    echo cmsg ("A_CONV_TOEXEC").":<br>".cmsg ("A_CONV_SRC").$namebas." (".$tbl1.") -->".cmsg ("A_CONV_DEST")." ".$namebas2." (".$tbl2.")<br>";
-	if ($dbtype==$dbtype2) { echo "<font color=red>".cmsg ("A_ONESTRUCT")."</font><br>";};
+	if ($dbtype==$dbtype2) { echo "<font color=red>".cmsg ("A_ONESTRUCT")."</red><br>";};
 	if (($dbtype=="fdb") AND ($dbtype2=="mysql")) { echo " CSV->->SQL.<br>";};
 	if (($dbtype=="mysql") AND ($dbtype2=="fdb")) { echo " SQL->->CSV.<br>";};
 	
@@ -4328,7 +4328,7 @@ if ($write===cmsg ("A_CONV_START")) {
 	//start decoding SCP to CSV
 	if (($dbtype==2) AND ($dbtype2=="fdb")) {
 		$filbas="_data/".$prdbdata[$tbl1][0];
-		echo "<font color=red>Работа над данным режимом не закончена.</font><br>".$filbas;
+		echo "<font color=red>Работа над данным режимом не закончена.</red><br>".$filbas;
 		iniparse ($filbas,21) ;};
 	//end of decoding SCP to CSV
 
