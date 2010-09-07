@@ -79,6 +79,7 @@ if (($c)OR ($f)) if ($pr[74]) { lprint ("DWN_LNK_DIS");msgexiterror ("notright",
 if ($c) {  //нам пришла ссылка на файл!  возрадуемся!
     for ($a=0;$a<$filcount;$a++) {    //echo $table[$a][4]."<br>";
     if ($fildata[$a][4]==$c) { $filerealid=$a;$pathwithfile=$fildata[$a][5];$commfile=$fildata[$a][7];$hashdel=$fildata[$a][12];};    //if (==$pathandfile) lprint (FSH_EXST_AN_USR); //трёхмерный массив :))
+    if ($fildata[$a][14]==$c) { $filerealid=$a;$pathwithfile=$fildata[$a][5];$commfile=$fildata[$a][7];$hashdel=$fildata[$a][12];};    //if (==$pathandfile) lprint (FSH_EXST_AN_USR); //трёхмерный массив :))
 }
 
 if (file_exists ($pathwithfile)==false) die ("File not found.");
@@ -101,6 +102,7 @@ $filmsv=explode(".",$pathwithfile);
 if ($f) {  //нам пришла ссылка на файл!  возрадуемся!
     for ($a=0;$a<$filcount;$a++) {    //echo $table[$a][4]."<br>";
     if ($fildata[$a][4]==$f) { $filerealid=$a;$pathwithfile=$fildata[$a][5];$hashdel=$fildata[$a][12];};    //if (==$pathandfile) lprint (FSH_EXST_AN_USR); //трёхмерный массив :))
+    if ($fildata[$a][14]==$f) { $filerealid=$a;$pathwithfile=$fildata[$a][5];$hashdel=$fildata[$a][12];};    //if (==$pathandfile) lprint (FSH_EXST_AN_USR); //трёхмерный массив :))
 }
 
 
@@ -297,7 +299,8 @@ if ($go==cmsg (FMG_SHARE))
     if ($share!=="GENLNK_USR") $userlist="";
     if ($file===false) exit;
     //echo "share=$share us=$userlist groupplevels=$groupplevels w=$write file=$file yes=$yes<br>";
-  $hash=md5($prauth[$ADM][0].$file);
+  $hash=$id[0].md5($prauth[$ADM][0].$file);
+  $hashmini=substr ($hash,0,4);
   $pathandfile=$file;
   $filesize=filesize ($file);
 $hashdel=crc32 ($filesize);
@@ -307,7 +310,12 @@ $count=$filcount;//echo "Counts found files.cfg: ".$count."<br>";
 if ($share=="") { lprint (FSH_NO); exit; };
 for ($a=0;$a<$count;$a++) {
     //echo $table[$a][4]."<br>";
-    if ($share!=="FMG_UNSHARE") if ($fildata[$a][4]==$hash) { lprint ("FSH_EXST"); exit  ; }
+    //if (($fildata[$a][14]==$hashmini))
+    if ($share!=="FMG_UNSHARE") if (($fildata[$a][14]==$hashmini)) {
+                if (($fildata[$a][4]!==$hash)) {$hashmini="";} else { lprint ("FSH_EXST"); exit  ; }
+            };// disable mini-link if compared
+    if ($share!=="FMG_UNSHARE") if (($fildata[$a][4]==$hash)) { lprint ("FSH_EXST"); exit  ; }
+    
     if ($share!=="FMG_UNSHARE") if ($fildata[$a][5]==$pathandfile) lprint ("FSH_EXST_AN_USR"); //трёхмерный массив :))
     if ($share=="FMG_UNSHARE") if ($fildata[$a][5]==$pathandfile) { $filefound=1;};
     if ($share=="FMG_UNSHARE")  if ($fildata[$a][4]==$hash) { lprint ("LNK_RMV");
@@ -324,20 +332,22 @@ if (($share=="FMG_UNSHARE")AND($filefound==0)) { lprint ("UNSH_FAIL");exit;};
    $fildata[$count][4]=$hash;   $fildata[$count][5]=$pathandfile;
    $fildata[$count][6]=$yes;   $fildata[$count][7]=$commfile;   $fildata[$count][8]=date("d.m.Y H:i:s");
    $fildata[$count][9]=$downloads;   $fildata[$count][10]=$lastdownload;   $fildata[$count][11]=$srchen;
-   $fildata[$count][12]=$hashdel;   $fildata[$count][13]=$filesize;   $fildata[$count][14]="0";
+   $fildata[$count][12]=$hashdel;   $fildata[$count][13]=$filesize;   $fildata[$count][14]=$hashmini;
    $fildata[$count][15]=$dupname;   $fildata[$count][16]="0";   $fildata[$count][17]="0";
    $fildata[$count][18]=$dupname;   $fildata[$count][19]="0";   $fildata[$count][20]="0";
    $fildata[$count][21]=$dupname;   $fildata[$count][22]="0";   $fildata[$count][23]="0";
    $fildata[$count][24]=$dupname;   $fildata[$count][25]="0";   $fildata[$count][26]="0".$addOSenter;
- echo cmsg ("Y_LNK")." <a href='filemgr.php?c=".$fildata[$count][4]."'>link</a> ".cmsg ("Y_LNK_I")."<br>";
+ echo cmsg ("Y_LNK")." <a href='filemgr.php?c=".$fildata[$count][14]."'>link</a> ".cmsg ("Y_LNK_I")."<br>";
  //echo "server name=".$_SERVER['SERVER_NAME']."<br>"; echo "php self=".$_SERVER['PHP_SELF']."<br>"; echo "doc root=".$_SERVER['DOCUMENT_ROOT']."<br>";
-$link="<br>http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][4]."<br><br>";
+$link="<br>http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][14]."<br><br>";
+$link.="<br>For Sites:[url]http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][14]."[/url]<br><br>";
+$link.="<br>For images only:[img]http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][14]."[/img]<br><br>";
 
 echo $link;
 
- echo cmsg ("D_LNK")." <a href='filemgr.php?c=".$fildata[$count][4]."&d=".$fildata[$count][12]."'>remove link</a> ".cmsg ("Y_LNK_I")."<br>";
+ echo cmsg ("D_LNK")." <a href='filemgr.php?c=".$fildata[$count][14]."&d=".$fildata[$count][12]."'>remove link</a> ".cmsg ("Y_LNK_I")."<br>";
  //echo "server name=".$_SERVER['SERVER_NAME']."<br>"; echo "php self=".$_SERVER['PHP_SELF']."<br>"; echo "doc root=".$_SERVER['DOCUMENT_ROOT']."<br>";
-$link="<br>http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][4]."&d=".$fildata[$count][12]."<br><br>";
+$link="<br>http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][14]."&d=".$fildata[$count][12]."<br><br>";
 
 echo $link;
 //echo "hash from filesdata-2 massive: ".$table[$count][4]."<br>";

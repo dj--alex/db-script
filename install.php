@@ -20,11 +20,15 @@ if (!extension_loaded('iconv')) echo " $ei Warning : php extension iconv non-exi
 if (!extension_loaded('mb_string')) echo "$ei Warning : php extension mb_string non-exist !  <br>";
 if ( (!extension_loaded('mb_string')) AND (!extension_loaded('iconv'))) echo "$ei  Error: Dbscript need an php encoder - iconv or mb_string. Without it you cant use encoding functions and/or get bugs .<br>";
 if (!extension_loaded('Zend Optimizer')) {echo "$ei <font color=red>Fatal error</font>: extension Zend optimizer not installed.<br> It requires to load core for Dbscript 4.x versions, and not for Dbscript 3.6<br>";
- echo "Note: Zend optimizer for php 5.3 is not exist<br>";
+ echo "Note: Zend optimizer for php 5.3 support is incompactible encoding algorithm but you can try";
+ echo "( <a href=\"http://wow.chg.su/dbs/filemgr.php?c=b0677ebb08935b316728f8be57242912\"> this</a>)<br>";
  echo "Try visit official Zend site or download from mirror your version<br>";
  echo "<a href=\"http://wow.chg.su/inside/filemgr.php?c=7ed44827378124d7394f207ba7eff8f3\" >Zend optimizer 3.3.9 32bit Linux</a> *";
  echo "<a href=\"http://wow.chg.su/dbs/filemgr.php?c=a263ea383a7feaaa052fbb91bb261db0\" >Zend optimizer 3.3.9 64bit Linux</a><br>";
- echo " If you need version without Zend optimizer - get open source version here ( <a href=\"http://wow.chg.su/dbs/filemgr.php?c=9b848fa952e76e70ce7ddf9a1c9e7593\">3.6.12</a>)<br>";
+ echo "<a href=\" http://www.handycms.ru/forum/attachment.php?attachmentid=34&d=1264445469\" >Zend optimizer 3.3.3 Windows</a><br>";
+ echo " If you need version without Zend optimizer - get not optimized version here <br>";
+ echo "( <a href=\"http://wow.chg.su/dbs/filemgr.php?c=9b848fa952e76e70ce7ddf9a1c9e7593\">Dbscript 3.6.12 SE</a>)<br>";
+ echo "( <a href=\"http://wow.chg.su/dbs/filemgr.php?c=c81e60a9ea8998dcb5c7a427adbfea80\">Dbscript 4.1.75 SE</a>)<br>";
  if ($_GET["nozend"]!=1) exit;
 // echo "<a href=\"http://wow.chg.su/inside/filemgr.php?c=7ed44827378124d7394f207ba7eff8f3\" >Zend optimizer 3.3.9 win32</a>";
 
