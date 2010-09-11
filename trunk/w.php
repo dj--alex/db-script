@@ -14,7 +14,7 @@ if (!$activation) Header("Location: login.php");;  //http://127.0.0.1/dj/site/lo
            });
     </script><?
 */
-$verwritefile="Editor v4.3.01 beta (c) dj--alex";
+$verwritefile="Editor v4.3.1 beta (c) dj--alex";
  global $verwritefile,$vID,$vID2;
 
 $enterpoint=$verwritefile;// для показа точки входа
@@ -98,6 +98,7 @@ if ($pr[37]) {// analog in getfile
 hidekey ("vID",$vID);
 hidekey ("vID2",$vID2);//...hidekey ("colfind",$colfind);
 hidekey ("groupdb",$groupdb);//added
+hidekey ("ipfilter",$ipfilter);
 
 //модуль запуска и обработки
 if ($write==cmsg ("KEY_CFG")) {
@@ -200,7 +201,11 @@ if ($cfgmod==2) msgexiterror ("nologsedit",$namebas,"w.php");
 ?>
 <form action="w.php" method=post>
 <?
-if (!$hidemenu) { echo "ID1 ";inputtxt ("vID",30); }
+
+if (!$hidemenu) {
+hidekey ("groupdb",$groupdb);//added  - группа при выборе операции в редакторе более не теряеся.
+hidekey ("ipfilter",$ipfilter);//added  - группа при выборе операции в редакторе более не теряеся.
+    echo "ID1 ";inputtxt ("vID",30); }
 if ($prdbdata[$tbl][22]) $directedit=1;
 if (!$directedit) if (($virtualid==true)OR($virtualid=="0")) {
    if (!$hidemenu) {  echo "ID2 ";inputtxt ("vID2",8); }
@@ -251,14 +256,20 @@ if (($prauth[$ADM][43])and($prdbdata[$tbl][12]!="fdb")) { submitkey ("write","BA
 }
 echo "<br>";
   if (($write===cmsg("A_IMPEXP"))AND ($prauth[$ADM][10]>0)) { importexporttbl () ; exit;}
-  if (($ietbl==1)AND ($prauth[$ADM][10]>0)) { importexporttbl () ; exit;}
+  //if (($ietbl==1)AND ($prauth[$ADM][10]>0)) { importexporttbl () ; exit;}
    if ($write===cmsg("A_IE_DEST")) { importexporttbl () ; exit;} // недоперенесено куда надо.
    if ($write===cmsg("A_IE_SRC")) { importexporttbl () ; exit;}
+   if ($write===cmsg("A_CONV_SRC_CHG")) { importexporttbl () ; exit;}
+   if ($write===cmsg("A_CONV_DEST_CHG")) { importexporttbl () ; exit;}
+   if ($write===cmsg("A_CONV_SRC_CHG")) { importexporttbl () ; exit;}
+   if ($write===cmsg("A_CONV_SRC_CHG")) { importexporttbl () ; exit;}
+   
    if ($write===cmsg("A_IE_START")) {
 	    if (($codekey==7)OR($codekey==9)OR($codekey==8)) demo ();
 		if (($codekey==4)OR($codekey==5)) needupgrade ();
 		$act="Exchange $tbl1 to $tbl2";		logwrite ($act); importexporttbl () ; exit;
 		}
+
 if ($menudisable==1) { if ($prdbdata[$tbl][0]=="") exit; };
 
 
@@ -913,20 +924,20 @@ fclose ($dest);
 
 //модуль запуска и обработки
 if (($write==cmsg("KEY_MASCPY"))AND($prdbdata[$tbl][12]=="fdb")) {
-	 if (($codekey==4)) needupgrade ();
+	
 	 if (($codekey==9)OR($codekey==7)) demo ();
 	if ($cfgmod==1) { lprint ("CFG_LIM"); exit;};
-	  needupdate ();
+	
 	lprint ("WF_MASCPYMSG");// Вставлено для выбора поля
 	global $presettedmode,$res16,$mznumb;//	$mode=6; $mode7=1;//$presettedmode=1.1; bylo 1.1
 	$data=readdescripters ();$a=prefixdecode ($res16);
 		if ($data==-1) exit;
    decodecols ($res16);
 //     echo $mznumb[3].$mycols; echo $res16; echo $a; копия модуля из начала writefile
-printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"source",cmsg ("WF_MAS_SRC"),$groupdb);
-printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"destination",cmsg ("WF_MAS_DEST"),$groupdb);
+printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"source",cmsg ("WF_MAS_SRC"),$groupdb,0,0);
+printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"destination",cmsg ("WF_MAS_DEST"),$groupdb,0,0);
 	//конец выбора колонки из текущей базы
-
+// должны использоваься только FDB таблицы.
  ?><br><input type= hidden name=go value=Переход_копирование> 
  <?   checkbox ($nolimit,"nolimit") ; echo cmsg ("WF_NOLMTIM")."<br>";
   if ($prauth[$ADM][5]==1) echo ""; // резерв для удаления
@@ -943,52 +954,14 @@ echo cmsg ("WF_MASCPYIFHLP")."<br> ";
 	echo cmsg ("WF_IF")." 2:"; printfield ($data,"addif2"); 
 	printcmp ("addifcmp2");
 ?><textarea name=addiflist2 cols= 25 rows=1 wrap=virtual><?=$addiflist2; ?></textarea><br>
-	<? submitkey ("write","KEY_S_COPY");
+	<?
+        lprint ("NO_PROC") ;
+        needupdate ();
+        if (($codekey==4)) needupgrade ();
+        submitkey ("write","KEY_S_COPY");
 }
 
 // пока процедура обработки не готова
-
-
-//модуль запуска и обработки
-if (($write==cmsg("KEY_SHOWCODE"))AND($prdbdata[$tbl][12]=="fdb")) {
- 	 if (($codekey==4)) needupgrade ();
-	 if (($codekey==9)OR($codekey==7)) demo ();
-	 if ($cfgmod==1) { lprint ("CFG_LIM");exit;};
-	 needupdate ();
-	//if ($pr[12]) {$act="COMPARE_DAT  B $tbl($nametbl) id1=$vID id2=$vID2 Cmd= $cmd"; logwrite ($act) ;};  // логируе
-		echo cmsg ("WF_MASCPYMSG").cmsg ("WF_MASCMPMSG")."<br>";// Вставлено для выбора поля
-	global $presettedmode,$res16,$mznumb;//	$mode=6; $mode7=1;//$presettedmode=1.1; bylo 1.1
-	$data=readdescripters ();$a=prefixdecode ($res16);
-		if ($data==-1) exit;
-   decodecols ($res16);
-printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"source",cmsg ("WF_MAS_SRC"),$groupdb);
-printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"dest",cmsg ("WF_MAS_DEST"),$groupdb);
-//конец выбора колонки из текущей базы
-echo "<br>";
-   checkbox ($nolimit,"nolimit") ; echo cmsg ("WF_NOLMTIM")."<br>";
-   //checkbox ($keys,"keys"); echo cmsg ("WF_MASCMP_KEY")."<br>";   содержимое пока не будем сравнивать
-?><input type="radio" name="cmpmode" value="1to2"><? lprint ("WF_CMP_12") ; ?><br>
-  <input type="radio" name="cmpmode"  value="2to1"> <? lprint ("WF_CMP_21") ; ?><br>
-  <input type="radio" name="cmpmode"  value="1only" checked><? lprint ("WF_CMP_QRY") ; ?><br>
-  <? 	// start compare addif
-checkbox ($cmpifchg,"cmpifchg") ; echo "<gray>".cmsg ("WF_CMPIFCGH")."<br></gray>";
-   echo cmsg ("WF_IF1")."1:";  printfield ($data,"addif1"); 
-	printcmp ("addifcmp1");
-?><textarea name=addiflist1 cols= 25 rows=1 wrap=virtual><?=$addiflist1; ?></textarea><br>
-		<?
-	checkboxcorrect ("addifenable2",$addifenable2) ;
-	echo cmsg ("WF_IF")." 2:"; printfield ($data,"addif2"); 
-	printcmp ("addifcmp2");
-?><textarea name=addiflist2 cols= 25 rows=1 wrap=virtual><?=$addiflist2; ?></textarea><br>
-	<?  submitkey ("write","KEY_S_SHOWCODE");
-	// end compare addif   Вставлено для выбора поля
-}
-
-
-// пока процедура обработки не готова
-
-
-
 
 //модуль запуска 
 //сделать возможно одновременную или раздельную правки?
@@ -1201,7 +1174,7 @@ for ($a=0;$a<count ($tablelist);$a++) {
 // печать   формирование текста запроса
 	for ($c=0;$myrow = @dbs_fetch_row ($result,$dbtype);$c++) {
     	$mycols=count ($myrow);
-		$insertone=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`",$myrow,$mycols);
+		$insertone=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`",$myrow,$mycols,"");
  		if ($OSTYPE=="LINUX") $insertone.="\n";
 		if ($OSTYPE=="WINDOWS") $insertone.="\n\r";
                         $x=detectencoding($insertone);    if ($views) echo "Encoded ln : ".$x."<br>?";  //dobawil utf-8  какая то левая процедура. die () не работает
@@ -1378,7 +1351,7 @@ for ($a=0;$a<count ($tablelist);$a++) {
 // печать   формирование текста запроса
 	for ($c=0;$myrow = @dbs_fetch_row ($result,$dbtype);$c++) {
     	$mycols=count ($myrow);
-		$insertone=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`",$myrow,$mycols);
+		$insertone=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`",$myrow,$mycols,"");
 		//что генерируется при ' внутри и как оно потом выполняется
  		if ($OSTYPE=="LINUX") $insertone.="\n";
 		if ($OSTYPE=="WINDOWS") $insertone.="\n\r";
@@ -1757,6 +1730,7 @@ if ($write==cmsg ("WF_MODSTRC_DAT2")) { //++
 //модуль запуска 
 if (($write==cmsg ("WF_HDRSQL_VIRT"))AND ($prdbdata[$tbl][12]!="fdb")) { //++
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
+        lprint ("M_LINK") ; Echo "<br>";
 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters (); if ($data==-1) exit; 
@@ -1773,7 +1747,7 @@ if (($write==cmsg ("WF_HDRSQL_VIRT"))AND ($prdbdata[$tbl][12]!="fdb")) { //++
 				<? 				;// 
 				$fil=$tbl.";".$z[$a].";".$a.";".$b."";//tabbydb,columnname,columnnomer,0
 				$pl=$plevel[$a];$pl=str_replace ("#",";",$pl);
-		 echo "CONNECT<a href='w.php?cmd=join&fil=$fil&pl=".$pl."'><img src='_ico/linked_table-no.png' border=0 title='".cmsg ("KEY_LINKING")."'></a></color>";
+		 echo "<a href='w.php?cmd=join&fil=$fil&pl=".$pl."'><img src='_ico/linked_table-no.png' border=0 title='".cmsg ("KEY_LINKING")."'></a></color>";
 				echo "<br>";  //step 1 linkning table master
 			}
 			lprint ("WF_VIDTORID");
@@ -1790,18 +1764,19 @@ if (($write==cmsg ("WF_HDRSQL_VIRT"))AND ($prdbdata[$tbl][12]!="fdb")) { //++
 //CSV HEADE
 if (($write==cmsg("KEY_LINKING"))) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	if ($dbtype!=="fdb") {@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
+        }
 	$data=readdescripters (); if ($data==-1) exit; 
 	$mycol=$data[0];
 //join cmd   fil=$fil  plevel=$plevel
-echo "Set Plevel:";
+lprint ("S_PL") ;echo ":";
 echo "<select name=plevel>";
 		for ($a=0;$a<10;$a++){
 			echo "<option>".$a;
 			}
 echo "</select><br>";
-
+lprint ("LINK_CHK");echo "<br>";
 
 	$datafil=explode (";",$fil); $dataplevel= explode (";",$pl);$plevel=$pl;
 	if ($debug) echo "getting data  $fil  plevel=$pl<br>";$pl=$dataplevel;
@@ -1876,8 +1851,9 @@ if (($write==cmsg("SAV_LNK"))) {
         for ($cycle=1;$cycle<count ($tablelist)+1 ;$cycle++) {
             if ($cycle>1) $cycleno=$cycle;
             $tbl=$tablelist[$cycle];
-            @$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);// 6 - server - 9 - db  5- table
+         if ($dbtype!=="fdb") {   @$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);// 6 - server - 9 - db  5- table
             @dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
+         }
 echo " connecting ... ".$prdbdata[$tablelist[$cycle]][9]."<br>";
 	$data=readdescripters (); if ($data==-1) exit;
 	$mycol=$data[0];
@@ -2031,6 +2007,7 @@ if (($write==cmsg("KEY_HEAD"))AND ($prdbdata[$tbl][12]=="fdb")) {
 		$data=readdescripters();//print_r($data);
 		rewind ($f);
 	}
+               lprint ("M_LINK") ; Echo "<br>";
 	echo "<br>";
 	 if ($f==-1) exit; 
 		$z=xfgetcsv ($f,$xfgetlimit,"¦");$plevel=xfgetcsv ($f,$xfgetlimit,"¦");
@@ -2041,7 +2018,11 @@ if (($write==cmsg("KEY_HEAD"))AND ($prdbdata[$tbl][12]=="fdb")) {
 			echo "$a $headervirtual[$a] (<blu>$mycol[$a]</blu>) ";
 			?><textarea name=z<?=$a; ?> cols=30 rows=1><?=$z[$a]?></textarea>
 				<textarea name=p<?=$a; ?> cols=12 rows=1><?=$plevel[$a]?></textarea>
-				<br><? 
+                                <?
+                                $fil=$tbl.";".$z[$a].";".$a.";".$b."";//tabbydb,columnname,columnnomer,0
+				$pl=$plevel[$a];$pl=str_replace ("#",";",$pl);
+                                echo "<a href='w.php?cmd=join&fil=$fil&pl=".$pl."'><img src='_ico/linked_table-no.png' border=0 title='".cmsg ("KEY_LINKING")."'></a></color>";
+				echo "<br>";
 			}
 			echo "";
 
@@ -2797,7 +2778,7 @@ if ($prdbdata[$tbl][22]) $directedit=1;
 	@$olddata=implode (";",$myrowold); // вот это и надо сохранять и откатывать
         //echo "checking myrowold= $myrowold ".count ($myrowold)." = $olddata<br>";
         if ($myrowold) {$update=1; }else { lprint ("WF_EDITNOTADD");echo "<br>";} // !$directedit
-	if (!$update){// $undodata=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrowold,$mycols); // zdes VALUES ('','','','','');
+	if (!$update){// $undodata=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrowold,$mycols,""); // zdes VALUES ('','','','','');
             	   $udirecteditwhere=gensqldirecteditwhere ($mycol,$myrow,$mycols);
       if (!$directedit)     {$undodata="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE ".$mycol[$md2column]."='".$printid1."'";
 	if (($virtualid>0)AND ($vID2!=="")) { $undodata=$undodata." AND ".$mycol[$virtualid]."= '".$printid2."'";}; }
@@ -3076,7 +3057,7 @@ if (($write==cmsg("KEY_S_DEL"))AND($prdbdata[$tbl][12]!="fdb")) {
 	$result = dbs_query ($cmd, $connect,$dbtype);
         for ($c=0;$myrow = dbs_fetch_row ($result,$dbtype);$c++) {
 		if (!$test) $test=$myrow[0];
-		$undodata.=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrow,$mycols)." ";
+		$undodata.=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrow,$mycols,"")." ";
 	};
 	// тут надо бы undo     //exec reselect  в случае неправильно установленного id2 надо его сбросить, в случае наличия правильных обоих попытаться отредактировать данные другим методом
             // работает отлично даже если неправильно указан ID2 ))))
@@ -3099,7 +3080,7 @@ if (($write==cmsg("KEY_S_DEL"))AND($prdbdata[$tbl][12]!="fdb")) {
 		     $result = dbs_query ($cmd, $connect,$dbtype);
                     $myrow = dbs_fetch_row ($result,$dbtype);
                     if (!$test) $test=$myrow[0];// если есть что удалять тест включен
-                    $undodata.=gencmdlogi ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrow,$mycols)." ";
+                    $undodata.=gencmdlogi ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrow,$mycols,"")." ";
                 //    echo $cmd; записываем отсутствующий undolog
  }
     // udal vse bez undo
@@ -3478,6 +3459,79 @@ if ($errno) {lprint ("WF_POSERR");}
 //копирование таблиц. возможно будет частью модуля работы с базами данных
 //паковка баз данных - список ключей вверху файла, файл обрабатывается до координаты ключа,ключ вст.обр. продолжается
 
+//использовать тот же тип выбора что и в мастере соединения таблиц.
+//модуль запуска - сравнение
+
+// bug - при копировании таблиц не сообщает что они были успешно скопированы,  при исполнении скрипта аналогично
+/*
+ * мои планы на ближайшие 24 часа.
+я думаю у меня выйдет если я отвлекатся не буду.
+
+1 - добавить в сайт новости. - сделаю на страницу сообщество , т.к. другой пустой страницы с кнопкой там нет, а у меня нет шрифтов чтобы делать кнопки
+
+2скрипты в планах
+сравнение баз, сравнение таблиц, выделение разницы в SQL скрипт
+улучшение исполнения дампа до понимания перевода строк любого файлы
+улучшение генерирования лога (с включением шапки в INSERTы)
+добавление macros.cfg для группировки таблиц для совершения однотипных операций сразу с группой по 1 команде. (это в последнюю очередь)
+
+*/
+if (($write==cmsg ("KEY_COMPARE"))AND($prdbdata[$tbl][12]!="fdb")) {
+// checkbox ($views,"views") ; echo cmsg ("WF_LOG")."<br>";
+   // checkbox ($keys,"keys"); echo cmsg ("WF_MASCMP_KEY")."<br>"; пока нет возм сравнить содержимое
+   //checkbox ($dbaff,"dbaff") ; echo cmsg ("WF_INSBAS")."<br>"; если поля баз разные то и базы авт надо разные сравнивать!!! -
+//RMV	     checkbox ($execute,"execute") ; echo "<red>".cmsg ("WF_VIEANDEXEC")."<br></red>";
+//compare database struct   compare table struct   compare table data (with cp
+ ?>  <input type="radio" name="cmpmode"value="1to2"><? lprint ("WF_CMP_12") ; ?><br>
+  <input type="radio" name="cmpmode" value="2to1"> <? lprint ("WF_CMP_21") ;?><br>
+  <?
+  
+  submitkey ("write","KEY_S_COMPARE");
+}
+//
+
+// модуль запуска создание макро
+if (($write==cmsg ("KEY_MACRO"))AND($prdbdata[$tbl][12]!="fdb")) {
+needupdate ();
+// needupgrade ();  модуль для особых версий dbscript
+submitkey ("write","KEY_S_MACRO");
+}
+
+//модуль исполнения - сравнение
+if (($write==cmsg ("KEY_S_COMPARE"))AND($prdbdata[$tbl][12]!="fdb")) {
+  if (1==1) // вывести чего не хватает первой до второй  с ключами
+  //код нужный, но это не годится никуда -  проверка чего не хватает первой базе до второй - должна делаться для обоих таблиц, но  используя Update!!! CFG OPT FUTURE
+	{		if ($cmpmode!=="1only") {echo "В первой базе ($sourcetable) эти записи отличаются от второй ($desttable), для исправления применить:<br>";
+	if ($virtualid) {$vidcmdadd=" AND $sourcetable.`".$id2."`=$desttable.`".$id2."` ";
+	  $vidcmdadd2="	$desttable.`".$id2."` IN (SELECT $desttable.`".$id2."` FROM $sourcetable,$desttable WHERE $sourcetable.`".$id1."`=$desttable.`".$id1."` ".$vidcmdadd." ) AND";
+			}
+   $cmd="SELECT * FROM $desttable WHERE $desttable.`".$id1."` IN (SELECT $desttable.`".$id1."` FROM $sourcetable,$desttable WHERE $sourcetable.`".$id1."`=$desttable.`".$id1."` ".$vidcmdadd." ) AND ".$vidcmdadd2;
+	}
+	}
+        echo "cmd generic :$cmd<br>";exit;
+/*
+ *
+Очень хочется юзануть перенос отсюда  ('эта функция что до сих пор не сделана? )
+SELECT * FROM `ytdb560u`.`table` WHERE `entry` NOT IN (SELECT `entry` FROM `ctdb013_test`.`quest_template` WHERE 1=1)
+взять 2 линка  сравнить число колонок, запустить   set names
+ВЗЯТО ВЫШЕ:::
+WF_MASCMP_KEY;Сравнивать только наличие данных, не содержимое
+WF_CMP_12;Вывести сравнение первой относительно второй+++
+WF_CMP_21;Вывести сравнение второй относительно первой+++
+WF_CMP_QRY;Создать и показать скрипт на объект соотвествующий условию+++
+
+
+ */
+}
+//
+
+// модуль исполнения создание макро
+if (($write==cmsg ("KEY_S_MACRO"))AND($prdbdata[$tbl][12]!="fdb")) {
+needupdate ();
+}
+
+
+
 
 
 
@@ -3485,6 +3539,8 @@ if ($errno) {lprint ("WF_POSERR");}
 //===============================  для масс сравнения будет похожая менюшка.
 // для инстанс режима будет сначала выбор инстансов а дальше уже просто данные будут передаваться похожему скрипту.   вообще то реально сравнение все же нужно сделать без разницы где
 if (($write==cmsg ("KEY_SHOWCODE"))AND($prdbdata[$tbl][12]!="fdb")) {
+    if (1==1) {
+     submitkey ("write","KEY_COMPARE"); submitkey ("write","KEY_MACRO");echo "<br>"    ;};
   @ $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 // выбор колонки из текущей базы
@@ -3500,16 +3556,11 @@ printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"source",cmsg ("WF_MAS_SRC"),$
 //конец выбора колонки из текущей базы
 
  ?><br>
-<?// checkbox ($views,"views") ; echo cmsg ("WF_LOG")."<br>"; 
+<?
    checkbox ($nolimit,"nolimit") ; echo cmsg ("WF_NOLMTIM")."<br>";
-
-   // checkbox ($keys,"keys"); echo cmsg ("WF_MASCMP_KEY")."<br>"; пока нет возм сравнить содержимое
-   //checkbox ($dbaff,"dbaff") ; echo cmsg ("WF_INSBAS")."<br>"; если поля баз разные то и базы авт надо разные сравнивать!!! -
-//RMV	     checkbox ($execute,"execute") ; echo "<red>".cmsg ("WF_VIEANDEXEC")."<br></red>";
-   
-  //<input type="radio" name="cmpmode" disabled value="1to2"><? lprint ("WF_CMP_12") ; 
-  //<input type="radio" name="cmpmode" disabled   value="2to1"> <? lprint ("WF_CMP_21") ;
-?>  <input type="radio" name="cmpmode"  value="1only" checked><? lprint ("WF_CMP_QRY") ; ?><br>
+   checkbox ($GENALT,"GENALT") ; echo cmsg ("GENALT")."<br>";
+?>
+ <input type="radio" name="cmpmode"  value="1only" checked><? lprint ("WF_CMP_QRY") ; ?><br>
   <? 	
 // start compare addif
 //checkbox ($cmpifchg,"cmpifchg") ; echo "<gray>".cmsg ("WF_CMPIFCGH")."<br></red>";
@@ -3559,20 +3610,6 @@ $desttable=$destdb."`".$prdbdata[$dest][5]."`";
 // сравнение   все что равно,  все что не равно по ключам , вообще все что не равно
 // все с условием
 
-	if ($cmpmode=="2to1") {
-			$temp=$sourcetable; $sourcetable=$desttable;$desttable=$temp; }
-
-
-	if ($keys) // вывести чего не хватает первой до второй  с ключами
-
-        //код нужный, но это не годится никуда -  проверка чего не хватает первой базе до второй - должна делаться для обоих таблиц, но  используя Update!!! CFG OPT FUTURE
-	{		if ($cmpmode!=="1only") {echo "В первой базе ($sourcetable) эти записи отличаются от второй ($desttable), для исправления применить:<br>";
-	if ($virtualid) {$vidcmdadd=" AND $sourcetable.`".$id2."`=$desttable.`".$id2."` ";
-	  $vidcmdadd2="	$desttable.`".$id2."` IN (SELECT $desttable.`".$id2."` FROM $sourcetable,$desttable WHERE $sourcetable.`".$id1."`=$desttable.`".$id1."` ".$vidcmdadd." ) AND";
-			}
-   $cmd="SELECT * FROM $desttable WHERE $desttable.`".$id1."` IN (SELECT $desttable.`".$id1."` FROM $sourcetable,$desttable WHERE $sourcetable.`".$id1."`=$desttable.`".$id1."` ".$vidcmdadd." ) AND ".$vidcmdadd2;
-	}
-	}
 
 	if ((!$keys)AND($cmpmode!=="1only"))
 	{ echo "Эти значения в обоих таблицах полностью совпадают.<br>";
@@ -3610,16 +3647,40 @@ $desttable=$destdb."`".$prdbdata[$dest][5]."`";
 //echo $cmd;
 //$cmd=" SHOW DATABASES;";
 	if ($cmd) $result = dbs_query ($cmd, $connect,$dbtype);
-	if ($result===true) { echo $vID.cmsg ("WF_CMP")."<br>";} else { 
-				$errt=cmsg ("WF_CMPFAIL"); $ermsg=cmsg ("WF_NOQUE")."<br>";}
+	if ($result==true) { echo $vID.cmsg ("WF_CMP")."<br>";} else { 
+				$errt=cmsg ("WF_CMPFAIL"); $ermsg=cmsg ("WF_NOQUE")."<br>";
+                                //почему то всегда пишет ошибку
+                                }
 
-
+            $field=" (";$mycols=dbs_num_fields ($result,"");
+                       		global $mycol;  // улучшенное - можно выделить CFG OPT FUTURE// copyed from dbscore readdescripters
+			for ($i = 0; $i < $mycols; $i++) {
+						   $mycol[]= dbs_field_name($result, $i) ;
+						   //$headerrealnumbers[]=$i;
+						   $datatypes[]= dbs_field_type ($result, $i) ;
+						   $fieldlen[]=dbs_field_len($result, $i);
+						   $flags[]=dbs_field_flags($result, $i);
+				  $field.=$mycol[$i];
+                                if ($i<$mycols) $field.=",";
+//							echo "$mycol[$i] - type $datatypos[$i] $fieldlen[$i] - $mycols<br>";
+							//if ($ff!==false) { $mzdata[]=$zdata[$a];$a++;};
+					}
+                         
+               $field.=") ";
+ echo "$field";
 // печать   формирование текста запроса
+$insertone="REPLACE INTO $tablename ".$fields." VALUES ";
     for ($c=0;$myrow = dbs_fetch_row ($result,$dbtype);$c++) {
-		$insertone=gencmdlog ($sourcetable,$myrow,$mycols);
-		echo $insertone."<br>";
-	};
+		if (!$GENALT) $insertone=gencmdlog ($sourcetable,$myrow,$mycols,"");
+                if ($GENALT) {
+                    $insertone.=gennohdlog ($sourcetable,$myrow,$mycols,$field).",";
 
+                }
+                // потом улучшить чтобы не делала излишний код
+		
+	};
+        $insertone[strlen($insertone)-1]=";";
+echo $insertone."<br>";
   echo cmsg ("WF_CCLOK")." ".$c."<br>";
 
 
@@ -3630,7 +3691,7 @@ $desttable=$destdb."`".$prdbdata[$dest][5]."`";
 
 	//executing+errlogделаем нормальную обработку ошибок  исп всегда этот модуль
 $silent=0;$errno=dbserr ();// пишет ошибку и ее код  и его же возвращает
-if ($errno) {echo cmsg ("WF_POSERR")."<br>";}
+//if ($errno) {echo cmsg ("WF_POSERR")."<br>";}
 //endof executing
 
 
@@ -3804,7 +3865,7 @@ for ($xa=0;$xa<$boxcnt;$xa++) { //копия DEL_SQL  renewed!~
 	$result = dbs_query ($cmd, $connect,$dbtype);
         for ($c=0;$myrow = dbs_fetch_row ($result,$dbtype);$c++) {
 		if (!$test) $test=$myrow[0];
-		$undodata.=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrow,$mycols)." ";
+		$undodata.=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrow,$mycols,"")." ";
 	};
 	// тут надо бы undo     //exec reselect  в случае неправильно установленного id2 надо его сбросить, в случае наличия правильных обоих попытаться отредактировать данные другим методом
             // работает отлично даже если неправильно указан ID2 ))))
@@ -3827,7 +3888,7 @@ for ($xa=0;$xa<$boxcnt;$xa++) { //копия DEL_SQL  renewed!~
 		     $result = dbs_query ($cmd, $connect,$dbtype);
                     $myrow = dbs_fetch_row ($result,$dbtype);
                     if (!$test) $test=$myrow[0];// если есть что удалять тест включен
-                    $undodata.=gencmdlogi ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrow,$mycols)." ";
+                    $undodata.=gencmdlogi ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrow,$mycols,"")." ";
                 //    echo $cmd; записываем отсутствующий undolog
  }
     // udal vse bez undo
@@ -3897,7 +3958,7 @@ for ($a=0;$a<$boxcnt;$a++) {
 
 // печать   формирование текста запроса
     for ($c=0;$myrow = @dbs_fetch_row ($result,$dbtype);$c++) {
-		$insertone=gencmdlog ($sourcetable,$myrow,$mycols);
+		$insertone=gencmdlog ($sourcetable,$myrow,$mycols,"");
 		echo $insertone."<br>";
 	};
 
@@ -4175,7 +4236,8 @@ function importexporttbl ()
 {
 	 global $prdbdata; global $prauth; global $ADM;
 	 global $pr; global $sd;global $tbl; global $write;
-	 global $sd17; global $addmode; global $send; global $views;
+  //if (($write==cmsg("A_IMPEXP"))OR($write==cmsg("A_IE_DEST"))OR($write==cmsg("A_IE_SRC"))OR($write==cmsg("A_IE_START"))) { echo "";} else  { return;} // недоперенесено куда надо.
+   	 global $sd17; global $addmode; global $send; global $views;
 	 global $tbl1;global $tbl2;global $totalbas; global $filbas,$codekey,$usecomma2x;
 		 if ($codekey==7) demo ();
 	if ($prauth[$ADM][10]<2) { lprint ("ACCDEN"); exit;};
@@ -4240,8 +4302,7 @@ $k = count($prdbdata);$l= $k+1;
 $filbas=$prdbdata[$a][0] ; $bas[$a]=$prdbdata[$a][1];
 }
 
-// $k= count($db) - вычисление кол-ва столбцов
-// c7 0 - select  c7 1 - start
+// $k= count($db) - вычисление кол-ва столбцов// c7 0 - select  c7 1 - start
 $pr16=$pr[16];
 	echo cmsg ("A_CONV_DEST")." <select name = tbl2 size = ".$pr[2].">";
 	for ($a=0;$a<$totalbas;$a++) {
@@ -4315,7 +4376,7 @@ function field_fix($line) {
  submitkey ("write","A_CONV_DEST_CHG");
  ?></form>  <?
    echo cmsg ("A_CONV_TOEXEC").":<br>".cmsg ("A_CONV_SRC").$namebas." (".$tbl1.") -->".cmsg ("A_CONV_DEST")." ".$namebas2." (".$tbl2.")<br>";
-	if ($dbtype==$dbtype2) { echo "<font color=red>".cmsg ("A_ONESTRUCT")."</red><br>";};
+	if ($dbtype==$dbtype2) { echo "<red>".cmsg ("A_ONESTRUCT")."</red><br>";};
 	if (($dbtype=="fdb") AND ($dbtype2=="mysql")) { echo " CSV->->SQL.<br>";};
 	if (($dbtype=="mysql") AND ($dbtype2=="fdb")) { echo " SQL->->CSV.<br>";};
 	
