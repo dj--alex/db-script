@@ -340,8 +340,8 @@ if (($share=="FMG_UNSHARE")AND($filefound==0)) { lprint ("UNSH_FAIL");exit;};
  echo cmsg ("Y_LNK")." <a href='filemgr.php?c=".$fildata[$count][14]."'>link</a> ".cmsg ("Y_LNK_I")."<br>";
  //echo "server name=".$_SERVER['SERVER_NAME']."<br>"; echo "php self=".$_SERVER['PHP_SELF']."<br>"; echo "doc root=".$_SERVER['DOCUMENT_ROOT']."<br>";
 $link="<br>http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][14]."<br><br>";
-$link.="<br>For Sites:[url]http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][14]."[/url]<br><br>";
-$link.="<br>For images only:[img]http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][14]."[/img]<br><br>";
+$link.="<br>".cmsg ("FL_UP_SIT")."[url]http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][14]."[/url]<br><br>";
+$link.="<br>".cmsg ("FL_UP_IMG")."[img]http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][14]."[/img]<br><br>";
 
 echo $link;
 
