@@ -3651,7 +3651,7 @@ $desttable=$destdb."`".$prdbdata[$dest][5]."`";
 				$errt=cmsg ("WF_CMPFAIL"); $ermsg=cmsg ("WF_NOQUE")."<br>";
                                 //почему то всегда пишет ошибку
                                 }
-
+if ($GENALT) {
             $field=" (";$mycols=dbs_num_fields ($result,"");
                        		global $mycol;  // улучшенное - можно выделить CFG OPT FUTURE// copyed from dbscore readdescripters
 			for ($i = 0; $i < $mycols; $i++) {
@@ -3667,11 +3667,15 @@ $desttable=$destdb."`".$prdbdata[$dest][5]."`";
 					}
                          
                $field.=") ";
- echo "$field";
+}
+// echo "$field";
 // печать   формирование текста запроса
-$insertone="REPLACE INTO $tablename ".$fields." VALUES ";
+ if ($GENALT) $insertone="INSERT INTO $sourcetable ".$fields." VALUES ";
     for ($c=0;$myrow = dbs_fetch_row ($result,$dbtype);$c++) {
-		if (!$GENALT) $insertone=gencmdlog ($sourcetable,$myrow,$mycols,"");
+		if (!$GENALT) {
+                    $insertone=gencmdlog ($sourcetable,$myrow,$mycols,"");
+                    echo $insertone."<br>";
+                }
                 if ($GENALT) {
                     $insertone.=gennohdlog ($sourcetable,$myrow,$mycols,$field).",";
 
@@ -3679,8 +3683,8 @@ $insertone="REPLACE INTO $tablename ".$fields." VALUES ";
                 // потом улучшить чтобы не делала излишний код
 		
 	};
-        $insertone[strlen($insertone)-1]=";";
-echo $insertone."<br>";
+       if ($GENALT)  {$insertone[strlen($insertone)-1]=";";echo $insertone."<br>"; }
+
   echo cmsg ("WF_CCLOK")." ".$c."<br>";
 
 
