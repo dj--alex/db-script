@@ -2,7 +2,7 @@
 $dbdataskip=1;
 require_once ('dbscore.lib'); // функци€ подготовки к работе и авторизации
 if (!$activation) exit;
-$verfilemgr="Filemgr  v 4.2.62 (c) dj--alex ";
+$verfilemgr="Filemgr  v 4.3.08 (c) dj--alex ";
   $enterpoint=$verfilemgr;#end of conf
 // вот наша буферизаци€ - ob_start();ob_end_flush();
 autoexecsql ();// ob_flush ();exit; zdes menueshe est.
@@ -11,6 +11,21 @@ autoexecsql ();// ob_flush ();exit; zdes menueshe est.
 // redir - w dbscore
 ///echo "<form settimeout=\"forma\" onMouseover=\"forma\" href=\"javascript:document.getElementByID(\"forma\").submit(go)\"  action=filemgr.php>";
 //ne rabotaet eta hernya
+
+if ($cmd==cmsg("FMG_DUMP_UPLOAD")) {
+    	$path=getcwd ()."/_local/dump/";   //надо сделать возможность выбора папки пр€мо отсюда, хоть тупо вверх вниз или назначать еЄ через filemgr
+        if (($pr[39])AND(is_dir($pr[39]))) $path=$pr[39]; //path  передаетс€ правильно
+        //echo "ergfoerpgergkergoej";exit;
+        $cmd1=$cmd;$path1=$path;$pid=0;
+        filemgr ($cmd,$stroka,$path,$fileforaction,$mask,$a);
+        exit;
+  //после выполнени€ долно быть доступно что то типа этого <form action=w.php?cmd=sql&tbl=&tab=&dblk=»ћяЅј«џ&fdmp=1></form>
+    ///..    $stroka="";$fileforaction="";$mask="";
+//filemgr ($cmd,$stroka,$path,$fileforaction,$mask,$a);
+//генерир дампы через новый cmdsqllog  CFG OPT FUTURE  
+//отправл€ть дампы и возвращать назад из их отпр
+}
+
 
 //  search theme ----
  if ($pr[86]) if (($pr[87])OR($prauth[$ADM][7])){  //либо право на чтение у юзера, либо разрешение искать всем.
@@ -379,7 +394,6 @@ if ($prauth[$ADM][40]) { $cmd=$cmdtmp; lprint ("DEBUGMSG");echo ":".	cmsg ("GMP_
 //if ($noscreenmode==true) { $cmd=$cmd1;$write=$cmd;}  //NOWORK
 	//if (!$debugmode) echo "filemgr (cmd=$cmd,stroka=$stroka,path=$path,file=$fileforaction,mask=$mask,pid=$a);";
 
-
         if ($multiaction==1) {
              for ($filearrcount=0;$filearrcount<count ($fileforaction);$filearrcount++) {
             $fileforactionfromarray=$fileforaction[$filearrcount];
@@ -437,15 +451,19 @@ if (($cmd==cmsg("FMG_MOV_F"))and($prauth[$ADM][12])) {global $path2;copy($path.$
 echo cmsg ("MOV_END");};
 
 	if (($cmd==cmsg("FMG_DOWNLOAD"))and($prauth[$ADM][9])) { ob_clean ();$err=sendfile ($path.$fileforaction);};
-if (($cmd==cmsg("FMG_UPLOAD"))and($prauth[$ADM][36])) {
+if ((($cmd==cmsg("FMG_UPLOAD"))and($prauth[$ADM][36]))or(($cmd==cmsg("FMG_DUMP_UPLOAD"))and($prauth[$ADM][36]))) {
 	$path=del_endslash ($path);
 //	if ($codekey==7) demo ();
 //<input type="hidden" name="MAX_FILE_SIZE" value="8000000000">
 	?><form enctype="multipart/form-data" action="filemgr.php" method="post">
 	<input name=userfile type=file class=buttonS> <input type=Submit name=go class=buttonS>
-	<input type = hidden name = path value ="<?=$path ;?>"><?=$path;hidekey ("pid",$pid);?></form>
-<?=" ";
+	<input type = hidden name = path value ="<?=$path ;?>"><?
+        hidekey ("pid",$pid);
+        
+        if ($cmd==cmsg("FMG_DUMP_UPLOAD")) { echo "Dump loading.<br>"; }
+        echo "</form>";
 hidekey ("write",$cmd);
+
 exit;//moved from non-function zone
 }
 //возможно сюда присобачим кнопку удалени€ из админки точнее ссылки с нее из w.php :)
