@@ -14,7 +14,7 @@ if (!$activation) Header("Location: login.php");;  //http://127.0.0.1/dj/site/lo
            });
     </script><?
 */
-$verwritefile="Editor v4.3.1 beta (c) dj--alex";
+$verwritefile="Editor v4.3.11 beta (c) dj--alex";
  global $verwritefile,$vID,$vID2;
 
 $enterpoint=$verwritefile;// для показа точки входа
@@ -995,8 +995,8 @@ if (($write==cmsg("BACKUPS"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	  submitkey ("write","WF_ARCH");
 	 submitkey ("write","WF_UNARCH");echo "<br>";
 	 echo "<br>"	 	  ;lprint (WF_AR_OTH);echo "<br>";
-	 checkbox ($addname,"addname");lprint ("ADD_NAME");
-	 checkbox ($adddata,"adddata");lprint ("ADD_DATA");
+	 checkbox (1,"addname");lprint ("ADD_NAME");
+	 checkbox (1,"adddata");lprint ("ADD_DATA");
 	 checkbox ($addtxt,"addtxt");lprint ("WRIT_NM");inputtxt("txtfordb",10);
 	 
 	 echo "<br>IP:";inputtxt("remoteip",10); submitkey ("write","WF_BCK_TRANS");echo "**";
@@ -1004,8 +1004,11 @@ if (($write==cmsg("BACKUPS"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	 submitkey ("write","WF_BCK_ARCH");
 	 submitkey ("write","WF_BCK_UNARCH");echo "";
 	 echo "<br><br>";
+         //..checkbox (0,"onetable"); lprint ("");
+       //printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"source",cmsg ("DUMP1TABLE"),$groupdb,$ipfilter,6);
+//         echo "<br>";
 	  	  submitkey ("write","WF_BCK_FILEDUMP_ARCH");
-	 submitkey ("write","WF_BCK_FILEDUMP_UNARCH");echo "<br>";  //RESTORE FROM DUMP!!!
+  	 submitkey ("write","WF_BCK_FILEDUMP_UNARCH");echo "<br>";  //RESTORE FROM DUMP!!!
 	 echo "<br><br>";
 	  	  //submitkey ("write","WF_BCK_COPYTBL_ARCH");
 	 //submitkey ("write","WF_BCK_COPYTBL_UNARCH");echo "** UNRELEASED<br>";
@@ -1205,7 +1208,7 @@ $action="WF_BCK_TRANS;SQL_REM_START $dumpdbname-->$dumpfile -l $lines -t $table 
 
 //MENU DBS SIDE DUMP 
 if (($write==cmsg("WF_BCK_FILEDUMP_ARCH"))AND ($prdbdata[$tbl][12]!="fdb")) {
-	 set_time_limit(0);// CFG OPT FUTURE?
+	 set_time_limit(0);// CFG OPT FUTURE?  backup restore   
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
 	 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$dumpdbname="backup"; // backup+DATABASEname-opt+data-opt+text-opts;
@@ -1223,7 +1226,9 @@ lprint ("REQ_TIME");
 echo "<br>";
 if (!$pr[20])checkbox ($structure,"structure");lprint ("DUMP_STR");echo "<br>";
 checkbox ($views,"views") ; echo cmsg ("WF_LOG")."<br>"; 
-
+    checkbox (0,"onetable"); lprint ("");
+       printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"source",cmsg ("DUMP1TABLE"),$groupdb,$ipfilter,6);
+         echo "<br>";
 if (!$pr[20]) submitkey ("start","SELF_BCK");
 }
 
@@ -1280,6 +1285,7 @@ while ($result=dbs_fetch_row ($a,$dbtype)) {
 	}
 	
 for ($a=0;$a<count ($tablelist);$a++) {
+    if (($onetable)AND($tablelist[$a]!==$prdbdata[$source][9])) continue; //непроверено!!!!111
  $query="BACKUP TABLE `".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."` TO  '".$file.$dumpdbname."';";
 	$e=dbs_query ($query,$connect,$dbtype);
 	echo "DEBUG $query.<br>";//if (!$pr[8])	
@@ -1315,10 +1321,11 @@ while ($result=dbs_fetch_row ($a,$dbtype)) {
 	}
 	@$a=opendir ("_local/dump"); if ($a==false) mkdir ("_local/dump");@closedir ($a);
 	$dumpfile=fopen ("_local/dump/".$dumpdbname,"w"); if ($dumpfile==false) die ("cannot open file $dumpdbname");
-	$x="#::Dbscript $verchar :: http://dj.chg.su/dbscript/  Mysql Dump File \n\r";
+	$x="#::Dbscript $verchar :: $verwritefile :: http://dj.chg.su/dbscript/  Mysql Dump File \n\r";
 	fwrite ($dumpfile,$x);
+        //echo "STATUS onetable=$onetable , source= $source ".$prdbdata[$source][5]."<br>";
 for ($a=0;$a<count ($tablelist);$a++) {
-	
+	if (($onetable)AND($tablelist[$a]!==$prdbdata[$source][5])) continue;
 	$x="#table `".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`\n";if ($OSTYPE=="WINDOWS") $x.="\r";
 	echo $x."<br>";
 	fwrite ($dumpfile,$x);
@@ -1347,11 +1354,38 @@ for ($a=0;$a<count ($tablelist);$a++) {
 	
 	//if ($debugmode)	echo "DEBUG $query.<br>";
 	$query="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`;";
+        $sourcetable="`".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`";
 	$result=dbs_query ($query,$connect,$dbtype); sqlerr();
 // печать   формирование текста запроса
 	for ($c=0;$myrow = @dbs_fetch_row ($result,$dbtype);$c++) {
-    	$mycols=count ($myrow);
-		$insertone=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`",$myrow,$mycols,"");
+    	$mycols=count ($myrow); //updating to gennohdlog !!! 
+		//$insertone=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`",$myrow,$mycols,"");
+                $GENALT=1;//$insertone=gennohdlog ("`".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`",$myrow,$mycols,"");
+                     // может эту функцию выделить отдельно?                   //..  http://www.thumbshots.com/
+if ($GENALT) {
+    global $mycol;  // улучшенное - можно выделить CFG OPT FUTURE// copyed from dbscore readdescripters
+    $data2=dbs_genericnumlist ($result,$mycols,$mycol);
+    $field=$data2["fieldlist"];
+
+   
+}
+// echo "$field";
+// печать   формирование текста запроса
+ if ($GENALT) $insertone="INSERT INTO $sourcetable ".$fields." VALUES ";
+    for ($c=0;$myrow = dbs_fetch_row ($result,$dbtype);$c++) {
+		if (!$GENALT) {
+                    $insertone=gencmdlog ($sourcetable,$myrow,$mycols,"");
+                    echo $insertone."<br>";
+                }
+                if ($GENALT) {
+                    $insertone.=gennohdlog ($sourcetable,$myrow,$mycols,$field).",\n";
+
+                }
+                // потом улучшить чтобы не делала излишний код
+
+	};
+       if ($GENALT)  {$insertone[strlen($insertone)-2]=";";
+//оконч встав  ошибка
 		//что генерируется при ' внутри и как оно потом выполняется
  		if ($OSTYPE=="LINUX") $insertone.="\n";
 		if ($OSTYPE=="WINDOWS") $insertone.="\n\r";
@@ -1362,6 +1396,7 @@ for ($a=0;$a<count ($tablelist);$a++) {
 		fwrite ($dumpfile,$insertone);
 		$lines++;
 		//echo $insertone."<br>";
+                }// забыл
 		
 	};
 	if (($result==false)) $err++;
@@ -1410,6 +1445,8 @@ echo "</select><br>";
 
 	$path=getcwd ()."/_local/dump/";   //надо сделать возможность выбора папки прямо отсюда, хоть тупо вверх вниз или назначать её через filemgr
         if (($pr[39])AND(is_dir($pr[39]))) $path=$pr[39];
+        
+        
 	echo cmsg (PATH_DUMP_DBS)."$path<br>";
 	echo cmsg (SEL_FILE)."<br>";  //oldcore copy filemgr mod  ..
 	//echo "Path=$path<br>";
@@ -1442,6 +1479,9 @@ checkbox ($dumpmode2,"dumpmode2") ; echo cmsg (OLDCOREDUMPEX2)."<br>";
 
  submitkey ("start","DALEE");
 echo "</form>";
+echo "<form method=\"post\" action=\"filemgr.php\" target=_blank>";
+        submitkey ("cmd","FMG_DUMP_UPLOAD");
+        echo "</form>";
 }
 // для одинаковых надписей мож доб пот. перем. step  1.1 1.2 1.3 :)))
 // процедура восстановления базы данных из дампа.
@@ -3651,26 +3691,14 @@ $desttable=$destdb."`".$prdbdata[$dest][5]."`";
 				$errt=cmsg ("WF_CMPFAIL"); $ermsg=cmsg ("WF_NOQUE")."<br>";
                                 //почему то всегда пишет ошибку
                                 }
+                                // может эту функцию выделить отдельно?
 if ($GENALT) {
-            $field=" (";$mycols=dbs_num_fields ($result,"");
-                       		global $mycol;  // улучшенное - можно выделить CFG OPT FUTURE// copyed from dbscore readdescripters
-			for ($i = 0; $i < $mycols; $i++) {
-						   $mycol[]= dbs_field_name($result, $i) ;
-						   //$headerrealnumbers[]=$i;
-						   $datatypes[]= dbs_field_type ($result, $i) ;
-						   $fieldlen[]=dbs_field_len($result, $i);
-						   $flags[]=dbs_field_flags($result, $i);
-				  $field.=$mycol[$i];
-                                if ($i<$mycols) $field.=",";
-//							echo "$mycol[$i] - type $datatypos[$i] $fieldlen[$i] - $mycols<br>";
-							//if ($ff!==false) { $mzdata[]=$zdata[$a];$a++;};
-					}
-                         
-               $field.=") ";
+    global $mycol;  // улучшенное - можно выделить CFG OPT FUTURE// copyed from dbscore readdescripters
+    $data2=dbs_genericnumlist ($result,$mycols,$mycol);
+    $field=$data2["fieldlist"];
 }
-// echo "$field";
 // печать   формирование текста запроса
- if ($GENALT) $insertone="INSERT INTO $sourcetable ".$fields." VALUES ";
+ if ($GENALT) $insertone="INSERT INTO $sourcetable ".$field." VALUES ";
     for ($c=0;$myrow = dbs_fetch_row ($result,$dbtype);$c++) {
 		if (!$GENALT) {
                     $insertone=gencmdlog ($sourcetable,$myrow,$mycols,"");
@@ -3683,7 +3711,9 @@ if ($GENALT) {
                 // потом улучшить чтобы не делала излишний код
 		
 	};
-       if ($GENALT)  {$insertone[strlen($insertone)-1]=";";echo $insertone."<br>"; }
+       if ($GENALT)  {$insertone[strlen($insertone)-1]=";";
+
+           echo $insertone."<br>"; }
 
   echo cmsg ("WF_CCLOK")." ".$c."<br>";
 
