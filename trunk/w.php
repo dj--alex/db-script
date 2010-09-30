@@ -14,7 +14,7 @@ if (!$activation) Header("Location: login.php");;  //http://127.0.0.1/dj/site/lo
            });
     </script><?
 */
-$verwritefile="Editor v4.3.11 beta (c) dj--alex";
+$verwritefile="Editor v4.3.13 beta (c) dj--alex";
  global $verwritefile,$vID,$vID2;
 
 $enterpoint=$verwritefile;// для показа точки входа
@@ -1106,6 +1106,7 @@ if (($write==cmsg("WF_BCK_TRANS"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	
 echo cmsg ("BCK_CRT_ALL").$prdbdata[$tbl][9].cmsg ("W_NM")."<br>";
 echo "Dbscript side:/_local/dump/".$dumpdbname;
+ // - не работает !!?? Fatal error: Maximum execution time of 60 seconds exceeded in /media/E/KERNEL/dbs/dbscore.lib  on line 4107
 if ($pr[20]) lprint ("BLOCK_CF");
 echo"<br>";
 echo "SQL side:".$pr[39].$dumpdbname."<br>";
@@ -1123,7 +1124,8 @@ submitkey ("start","SQL_REM_START");
 if (($start==cmsg ("SQL_REM_START"))AND($dumpdbname)AND ($prdbdata[$tbl][12]!="fdb")AND(!$pr[20])) {
 	@$connect2 = dbs_connect ($mysqlserver2,$sd[14],$sd[17],$dbtype);
          //echo "bldjad";die ();
-	echo cmsg (W_CRT_DMP)." $backupdbname...<br>";
+	set_time_limit(0);
+        echo cmsg (W_CRT_DMP)." $backupdbname...<br>";
 	echo "Режим: Dbscript side, data";
 	if ($structure) echo "+structure";
 	echo "<br>";
@@ -1227,8 +1229,10 @@ echo "<br>";
 if (!$pr[20])checkbox ($structure,"structure");lprint ("DUMP_STR");echo "<br>";
 checkbox ($views,"views") ; echo cmsg ("WF_LOG")."<br>"; 
     checkbox (0,"onetable"); lprint ("");
+
        printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"source",cmsg ("DUMP1TABLE"),$groupdb,$ipfilter,6);
          echo "<br>";
+         checkbox (0,"mysqldump"); lprint ("M_DMP");echo "<br>";
 if (!$pr[20]) submitkey ("start","SELF_BCK");
 }
 
@@ -1304,7 +1308,7 @@ for ($a=0;$a<count ($tablelist);$a++) {
 if (($start==cmsg ("SELF_BCK"))AND($dumpdbname)AND ($prdbdata[$tbl][12]!="fdb")AND(!$pr[20])) {
 	echo cmsg (W_CRT_DMP)." $backupdbname...<br>";
 	echo "Режим: Dbscript side, data";
-	if ($structure) echo "+structure";
+	if ($structure) echo "+structure";// проверить правильно ли мы получаем соединение если указан сервер из servlst.cfg
 	echo "<br>";
 @$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$query="CREATE DATABASE IF NOT EXISTS `$backupdbname`;";
@@ -1326,7 +1330,23 @@ while ($result=dbs_fetch_row ($a,$dbtype)) {
         //echo "STATUS onetable=$onetable , source= $source ".$prdbdata[$source][5]."<br>";
 for ($a=0;$a<count ($tablelist);$a++) {
 	if (($onetable)AND($tablelist[$a]!==$prdbdata[$source][5])) continue;
-	$x="#table `".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`\n";if ($OSTYPE=="WINDOWS") $x.="\r";
+        if ($mysqldump) { 
+            fclose ($dumpfile);@unlink ($dumpfile); // CFG OPT FUTURE -  некогда ща это править
+            $filetowrite="_local/dump/".$dumpdbname.$date;
+            $sys="mysqldump -u ".$sd[14]." -p".$sd[17]." ".$prdbdata[$tbl][9]." --routines > ".$filetowrite.".sql";
+            logwrite ($sys);//./--routines
+            system ( $sys);
+          
+            echo "<br>".$prdbdata[$tbl][9]."  > ".$filetowrite.$date.".sql<br>Executing external dump end.exit"; die ("");
+        }
+        /* 
+         * Usage: mysqldump [OPTIONS] database [tables]
+     OR     mysqldump [OPTIONS] --databases [OPTIONS] DB1 [DB2 DB3...]
+    OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
+         */
+        echo "bnre4t5gg9[ph5[gk5opgjk5ipju5hju5l45pht45phjybip45ju8jopyhjph8j59j8458g45ou7hr4gop45h45og";
+        //    Делать бекап конкретной базы от пользователся (у которого есть права на эту базу).
+        $x="#table `".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`\n";if ($OSTYPE=="WINDOWS") $x.="\r";
 	echo $x."<br>";
 	fwrite ($dumpfile,$x);
 	ob_flush ();
@@ -1471,6 +1491,7 @@ echo "</select><br>";
 checkbox ($views,"views") ; echo cmsg (WF_LOG).cmsg (NORECOMM)."<br>";
 checkbox ($dumpmode1,"dumpmode1") ; echo cmsg (OLDCOREDUMPEX)."<br>";
 checkbox ($dumpmode2,"dumpmode2") ; echo cmsg (OLDCOREDUMPEX2)."<br>";
+checkbox (0,"mysqldump") ; echo cmsg (M_DMP_UPL)."<br>";
 // hidekey ("dbtype",$dbtype);нихера не передается.
 //checkbox ($disviews,"disviews") ; echo cmsg (WF_LOG).cmsg (NORECOMM)."<br>";
         echo "Encoding can be set in table (alias) properties.<br>";
@@ -1496,7 +1517,19 @@ if (($dblk)AND(!$forcedb)) {$forcedb=1;$dbselected=$dblk;	}
                	$dumpfile=$dump[0];
 	$f=fopen ($path.$dumpfile,"rb");
 	if ($views) print_r ($dump);
-	echo "file=$path $dumpfile"; 
+	echo "file=$path $dumpfile";
+        if ($mysqldump) {
+            $localpath="_local/dump/".$dumpfile."";
+            $localpath=$path.$dumpfile;
+         $sys="mysql -u ".$sd[14]." -p".$sd[17]." ".$dbselected." < ".$localpath."";
+         //$sys="mysql -u ".$sd[14]." -p".$sd[17]." ".$dbselected." < ".$localpath."";
+         logwrite ($sys) ;
+         //$sys=escapeshellcmd ($sys);
+         system ( $sys);
+         echo "<br><br>$sys<br>";
+         echo "Executing external mysql to ".$dbselected." < ".$localpath."<br>Ending.";exit;
+        }
+
 	$query="";
         if ($encodeset) { // global настройка для mysql  pr[76]  почему то не работает .. действует только локальная.
             echo "setting NAMES and CHARACTER SET one more time to $encodeset... <br>";
