@@ -46,8 +46,6 @@ if ($cmd=="sql") { $write=cmsg ("KEY_EXECUTE"); }
 if ($cmd=="sqle") { $write=cmsg ("KEY_S_EXEC"); }
 if ($cmd=="join") { $write=cmsg ("KEY_LINKING"); }
 if (($masstbl)AND($write==cmsg ("KEY_MASS_OPER"))) { $tbl=$masstbl;  }
-	 
- 
 
   if ($commode!==false) { $commode=1;}
   if ($codekey==5) { needupgrade ();exit;};
@@ -251,6 +249,10 @@ if (($prauth[$ADM][35])AND(!$cfgmod)) { submitkey ("write","KEY_MASCPY"); };  //
 if (($prauth[$ADM][35])AND(!$cfgmod)and($prdbdata[$tbl][12]!="fdb")) { submitkey ("write","KEY_SHOWCODE"); };  //CFG OPT FUTURE!
 if (($prauth[$ADM][34])and($prdbdata[$tbl][12]!="fdb")) { submitkey ("write","KEY_EXECUTE"); };  //CFG OPT FUTURE!
 if (($prauth[$ADM][43])and($prdbdata[$tbl][12]!="fdb")) { submitkey ("write","BACKUPS"); };  //CFG OPT FUTURE!
+
+if ($prauth[$ADM][43]) {
+     submitkey ("write","KEY_COMPARE"); submitkey ("write","KEY_MACRO");echo "<br>"    ;};
+
 
 
 }
@@ -1333,7 +1335,11 @@ for ($a=0;$a<count ($tablelist);$a++) {
         if ($mysqldump) { 
             fclose ($dumpfile);@unlink ($dumpfile); // CFG OPT FUTURE -  некогда ща это править
             $filetowrite="_local/dump/".$dumpdbname.$date;
+            //if ($OSTYPE=="LINUX") if ($zip) $sys.="| gzip -c ".$filetowrite.".sql.gz";//'date "+%Y-%m-%d"'
             $sys="mysqldump -u ".$sd[14]." -p".$sd[17]." ".$prdbdata[$tbl][9]." --routines > ".$filetowrite.".sql";
+            $print="mysqldump ".$prdbdata[$tbl][9]." --routines > ".$filetowrite.".sql";
+            if ($onetable) $sys="mysqldump -u ".$sd[14]." -p".$sd[17]." ".$prdbdata[$tbl][9]." ".$tablelist[$a]." --routines > ".$filetowrite.".sql";
+            echo ($print);
             logwrite ($sys);//./--routines
             system ( $sys);
           
@@ -1343,6 +1349,10 @@ for ($a=0;$a<count ($tablelist);$a++) {
          * Usage: mysqldump [OPTIONS] database [tables]
      OR     mysqldump [OPTIONS] --databases [OPTIONS] DB1 [DB2 DB3...]
     OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
+         *     * --skip-opt - отменяет настройки mysqldump по умолчанию. В частности - отменяет многострочный оператор INSERT
+    * --order-by-primary - строки INSERT в дампе будут сортироваться по ИД, так что найти нужную строку будет гораздо проще
+    * --default-character-set=utf8 - помните, я говорил про возможные проблемы с кодировкой? Подстрахуемся (надеюсь, вы уже не используете сp1251?)
+
          */
         echo "bnre4t5gg9[ph5[gk5opgjk5ipju5hju5l45pht45phjybip45ju8jopyhjph8j59j8458g45ou7hr4gop45h45og";
         //    Делать бекап конкретной базы от пользователся (у которого есть права на эту базу).
@@ -2416,7 +2426,7 @@ if (($write==cmsg("KEY_AN"))AND($prdbdata[$tbl][12]!="fdb")) {
 	$countquery="SELECT Count(`".$mycol[$md2column]."`)FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`";
 	$result=dbs_query ($countquery,$connect,$dbtype);	$counttbl = dbs_fetch_row ($result,$dbtype);
 	$result = dbs_query ($maxquery,$connect,$dbtype);;	$maxtbl = dbs_fetch_row ($result,$dbtype);
-	//	распечатка данных из дескрипторов
+     	//	распечатка данных из дескрипторов
  echo "<table id=execsql border=3 width=100% bordercolor=#000099 ><tr>";
  echo "<td>headerreal</td><td>plevels</td><td>headerrealnumbers</td><td>headervirtual</td><td>datatypos</td><td>fieldlen</td></tr><tr>";
 	for ($a=0;$a<count ($data[0]);$a++)	{
@@ -3550,40 +3560,241 @@ if ($errno) {lprint ("WF_POSERR");}
 
 */
 if (($write==cmsg ("KEY_COMPARE"))AND($prdbdata[$tbl][12]!="fdb")) {
-// checkbox ($views,"views") ; echo cmsg ("WF_LOG")."<br>";
+//echo "global $groupdb,$groupdb2,$tablesource,$tabledest,$kol1,$kol2;";
+//global $groupdb,$groupdb2,$tablesource,$tabledest,$kol1,$kol2;
+//echo "global $groupdb,$groupdb2,$tablesource,$tabledest,$kol1,$kol2;";
+    $groupdbthisname="groupdb";
+		groupdbprint ($list,"Group",$prdbdata,$tbl,$groupdb); // wat &   db lost (real name) 
+    $groupdbthisname="groupdb2";
+		groupdbprint ($list,"Group2",$prdbdata,$tbl,$groupdb);
+hidekey ("hidemenu",1);//убирать меню
+hidekey ("menudisable",on);
+   submitkey ("write","KEY_COMPARE_2");
+}
+//
+
+if (($write==cmsg ("KEY_COMPARE_2"))AND($prdbdata[$tbl][12]!="fdb")) {
+//echo "global $groupdb,$groupdb2,$tablesource,$tabledest,$kol1,$kol2;";
+//global $groupdb,$groupdb2,$tablesource,$tabledest,$kol1,$kol2;
+//echo "global $groupdb,$groupdb2,$tablesource,$tabledest,$kol1,$kol2;";
+//$cmd="SELECT * FROM `$tabledest`.`$tabledest` WHERE `$kol2` NOT IN (SELECT `$kol1` FROM `$tablesource`.`$tablesource` WHERE 1=1)";
+ hidekey ("groupdb",$groupdb);
+ hidekey ("groupdb2",$groupdb2);
+ hidekey ("hidemenu",1);//убирать меню
+ hidekey ("menudisable",on);
+
+ $printalias="db+name";//allows return name by printlink  //db+name allows return dbname.dbtable
+   printlink ($prauth,$prdbdata,$ADM,$tablesource,$grouplist,"tablesource",cmsg("SELLINK"),$groupdb,$ipfilter,"");echo "<br>";
+   printlink ($prauth,$prdbdata,$ADM,$tabledest,$grouplist,"tabledest",cmsg("SELLINK"),$groupdb2,$ipfilter,"");echo "<br>";
+  //       echo "cmd=$cmd<br>";
+
+   submitkey ("write","KEY_COMPARE_3");
+ 
+  }
+//
+
+if (($write==cmsg ("KEY_COMPARE_3"))AND($prdbdata[$tbl][12]!="fdb")) {
+//   $cmd="SELECT * FROM `".$tabledest."` WHERE `".$kol2."` NOT IN (SELECT `".$kol1."` FROM `".$tablesource."` WHERE 1=1)";
+ //  echo "global $groupdb,$groupdb2,$tablesource,$tabledest,$kol1,$kol2;";
+  //global $groupdb,$groupdb2,$tablesource,$tabledest,$kol1,$kol2;
+    //echo "global $groupdb,$groupdb2,$tablesource,$tabledest,$kol1,$kol2;";
+    checkbox ($views,"views") ; echo cmsg ("WF_LOG")."<br>";
    // checkbox ($keys,"keys"); echo cmsg ("WF_MASCMP_KEY")."<br>"; пока нет возм сравнить содержимое
    //checkbox ($dbaff,"dbaff") ; echo cmsg ("WF_INSBAS")."<br>"; если поля баз разные то и базы авт надо разные сравнивать!!! -
-//RMV	     checkbox ($execute,"execute") ; echo "<red>".cmsg ("WF_VIEANDEXEC")."<br></red>";
+     
+ hidekey ("tablesource",$tablesource);
+ hidekey ("tabledest",$tabledest);
+ // здесь определяем реальный groupid
+ // хотя этот метод хуже чем определение groupdb и выдача db ,  но всеже alias точно содержит нужный db id , а groupdb может быть одинаковым для разных db
+ //for ($a=)
+ hidekey ("groupdb",$groupdb);
+ hidekey ("groupdb2",$groupdb2);
+ //hidekey ("groupdb",$groupdb);
+ //hidekey ("groupdb2",$groupdb2);
+ hidekey ("hidemenu",1);//убирать меню
+ hidekey ("menudisable",on);
+  $x=explode (".",$tablesource); // разделяем базу данных на базу и таблицу
+  $databasedef=$x[0];
+  $tabledef=$x[1];
+$dbtype="mysql";
+$tbl=gettblidfromdbandtable ($prdbdata,$databasedef,$tabledef,"id");
+//echo "проверка на вшивость -$tbl=gettblidfromdbandtable ($prdbdata,$databasedef,$tabledef,$string);  ";
+ 	$data=readdescripters (); if ($data==-1) exit; //$tbl=0; она ориентируется только на это значение
+	$mycol=$data[0];
+ $a=prefixdecode ($res16);
+   decodecols ($res16);	lprint ("FOR_SEL");
+   $field=$kol;//echo "(field=$kol ";
+   
+   $field1=printfield ($data,"kol1");
+      $field2=printfield ($data,"kol2");
+//      echo "field1=";print_r ($field);
+  //    echo"<br> ";
+echo "<br>";
+ 
 //compare database struct   compare table struct   compare table data (with cp
  ?>  <input type="radio" name="cmpmode"value="1to2"><? lprint ("WF_CMP_12") ; ?><br>
   <input type="radio" name="cmpmode" value="2to1"> <? lprint ("WF_CMP_21") ;?><br>
   <?
-  
+  //submitkey ("write","KEY_COMPARE_3");
+  //checkbox ($a1,"a1"); echo cmsg ("WF_MASCMP_KEY")."<br>";  CANNOT BE DISABLED  , CFG OPT FUTURE
+  checkbox ($wfcmpqry,"wfcmpqry") ; echo cmsg ("WF_CMP_QRY")."<br>";
+     checkbox ($execute,"execute") ; echo "<red>".cmsg ("WF_VIEANDEXEC")."<br></red>";
+     checkbox ($GENALT,"GENALT") ; echo cmsg ("GENALT")."<br>";
+// start compare addif COPY 
+//checkbox ($cmpifchg,"cmpifchg") ; echo "<gray>".cmsg ("WF_CMPIFCGH")."<br></red>";
+   echo "<input type=checkbox name=addifenable1>";
+   echo cmsg ("WF_IF1")."1:";  printfield ($data,"addif1");
+	printcmp ("addifcmp1");
+?><textarea name=addiflist1 cols= 25 rows=1 ><?=$vID; ?></textarea><br>
+		<?
+	echo "<input type=checkbox name=addifenable2>";
+	echo cmsg ("WF_IF")." 2:"; printfield ($data,"addif2");
+	printcmp ("addifcmp2");
+?><textarea name=addiflist2 cols= 25 rows=1 ><?=$addiflist2; ?></textarea><br>
+	<?
+   //   echo "cmd=$cmd<br>";
   submitkey ("write","KEY_S_COMPARE");
-}
+
+  }
 //
 
-// модуль запуска создание макро
-if (($write==cmsg ("KEY_MACRO"))AND($prdbdata[$tbl][12]!="fdb")) {
-needupdate ();
-// needupgrade ();  модуль для особых версий dbscript
-submitkey ("write","KEY_S_MACRO");
-}
+
+
+
+
 
 //модуль исполнения - сравнение
 if (($write==cmsg ("KEY_S_COMPARE"))AND($prdbdata[$tbl][12]!="fdb")) {
-  if (1==1) // вывести чего не хватает первой до второй  с ключами
-  //код нужный, но это не годится никуда -  проверка чего не хватает первой базе до второй - должна делаться для обоих таблиц, но  используя Update!!! CFG OPT FUTURE
-	{		if ($cmpmode!=="1only") {echo "В первой базе ($sourcetable) эти записи отличаются от второй ($desttable), для исправления применить:<br>";
-	if ($virtualid) {$vidcmdadd=" AND $sourcetable.`".$id2."`=$desttable.`".$id2."` ";
-	  $vidcmdadd2="	$desttable.`".$id2."` IN (SELECT $desttable.`".$id2."` FROM $sourcetable,$desttable WHERE $sourcetable.`".$id1."`=$desttable.`".$id1."` ".$vidcmdadd." ) AND";
-			}
-   $cmd="SELECT * FROM $desttable WHERE $desttable.`".$id1."` IN (SELECT $desttable.`".$id1."` FROM $sourcetable,$desttable WHERE $sourcetable.`".$id1."`=$desttable.`".$id1."` ".$vidcmdadd." ) AND ".$vidcmdadd2;
-	}
-	}
-        echo "cmd generic :$cmd<br>";exit;
-/*
- *
+  // result screen
+  $cmdaddif="1=1";
+  
+    $x=explode (".",$tablesource); // разделяем базу данных на базу и таблицу
+  $databasesource="`".$x[0]."`.";
+  $tablesource="`".$x[1]."`";
+  $source=$databasesource.$tablesource;
+  $x=explode (".",$tabledest); // разделяем базу данных на базу и таблицу
+  $databasedest="`".$x[0]."`.";
+  $tabledest="`".$x[1]."`";
+  $dest=$databasedest.$tabledest;
+
+  if ($cmpmode=="2to1")  {
+      $x=$source;
+      $source=$dest;
+      $dest=$x;
+  }
+$sourcetable=$tablesource; //for execute
+
+  //preparing условия WHERE
+if ($addifenable1) {	if (($addifcmp1=="bolee")OR($addifcmp1=="menee")) {
+    	$sampletotest=explode (",",$addiflist1);
+    	$sample=$sampletotest[0];    	lprint ("CMP_B_OR_S_NA");echo "<br>";
+    	}
+    if (($addifcmp2=="bolee")OR($addifcmp2=="menee")) {
+    	$sampletotest=explode (",",$addiflist2);
+    	$sample=$sampletotest[0];    	lprint ("CMP_B_OR_S_NA");echo "<br>";
+    	}
+
+  if ($addiflist1){
+   if ($addif1) {
+		if ($addifcmp1=="rawno") $cmdaddif=" `".$addif1."` IN (".$addiflist1.") ";
+		if ($addifcmp1=="nerawno") $cmdaddif=" `".$addif1."` NOT IN (".$addiflist1.") ";
+		if ($addifcmp1=="bolee") $cmdaddif=" `".$addif1."` >'".$addiflist1."' ";
+		if ($addifcmp1=="menee") $cmdaddif=" `".$addif1."` <'".$addiflist1."' ";
+		};
+   if (($addif2)AND($addifenable2)) {
+		if ($addifcmp2=="rawno") $cmdaddif.=" AND `".$addif2."` IN (".$addiflist2.") ";
+		if ($addifcmp2=="nerawno") $cmdaddif.=" AND `".$addif2."` NOT IN (".$addiflist2.") ";
+		if ($addifcmp2=="bolee") $cmdaddif.=" AND `".$addif2."` >'".$addiflist2."' ";
+		if ($addifcmp2=="menee") $cmdaddif.=" AND `".$addif2."` <'".$addiflist2."' ";
+		};
+	  }
+}
+
+  //echo "USING REAL TABLE NAME !!!!!; tablenam= $tablename <br>:/:";
+  $cmd="SELECT * FROM $dest WHERE `$kol2` NOT IN (SELECT `$kol1` FROM $source WHERE $cmdaddif);";
+  //echo "global $groupdb,$groupdb2,$tablesource,$tabledest,$kol1,$kol2;";
+  //global $groupdb,$groupdb2,$tablesource,$tabledest,$kol1,$kol2;
+  //echo "global $groupdb,$groupdb2,$tablesource,$tabledest,$kol1,$kol2;";
+  hidekey ("menudisable",on);
+  $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+//$dbtype=$prdbdata[$tbl][12];
+     // dbs_selectdb ($prdbdata[tbl2][9],$connect,$dbtype);
+        echo "cmd generic :$cmd<br>";  //  129;79;108
+
+     $printing=1;
+$x=executesql ($cmd,$connect,1);
+
+// execute mode..  try generate and execute script (can be splitteD) CFG OPT FUTURE
+  if ($wfcmpqry) {echo "wfcmpqry _on ";
+//echo $cmd;
+//$cmd=" SHOW DATABASES;";
+	if ($cmd) $result = dbs_query ($cmd, $connect,$dbtype);
+        $mycols=dbs_num_fields ($result,"");
+	if ($result==true) { echo $vID.cmsg ("WF_CMP")."<br>";} else {
+				$errt=cmsg ("WF_CMPFAIL"); $ermsg=cmsg ("WF_NOQUE")."<br>";
+                                //почему то всегда пишет ошибку
+                                }
+                                // может эту функцию выделить отдельно?
+if ($GENALT) {
+    global $mycol;  // улучшенное - можно выделить CFG OPT FUTURE// copyed from dbscore readdescripters
+    $data2=dbs_genericnumlist ($result,$mycols,$mycol);
+    $field=$data2["fieldlist"];
+}
+if ($execute) $sourcetable=$databasedest.$sourcetable;// целевая база данных указывается автоматически.
+// печать   формирование текста запроса
+ if ($GENALT) $insertone="INSERT INTO $sourcetable ".$field." VALUES ";
+    for ($c=0;$myrow = dbs_fetch_row ($result,$dbtype);$c++) {
+		if (!$GENALT) {
+                    $insertone=gencmdlog ($sourcetable,$myrow,$mycols,"");
+                    //echo "faak  -  $insertone=gencmdlog ($sourcetable,$myrow,$mycols,); ";
+                    echo $insertone."<br>";
+                }
+                if ($GENALT) {
+                    $insertone.=gennohdlog ($sourcetable,$myrow,$mycols,$field).",";
+                    //echo "faak  -  $insertone=gennohdlog ($sourcetable,$myrow,$mycols,); ";
+
+                }
+                // потом улучшить чтобы не делала излишний код
+
+	};
+       if ($GENALT)  {$insertone[strlen($insertone)-1]=";";
+
+           echo $insertone."<br>"; }
+
+if ($execute) {
+    echo "starting executing generated script <br>;";
+         $printing=1;
+           if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
+$x=executesql ($insertone,$connect,1);
+};
+
+      };
+  
+ /* if (1==0) {  $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);// 6 - server - 9 - db  5- table
+            dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
+            $data=readdescripters (); if ($data==-1) exit;
+	$mycol=$data[0];
+ $a=prefixdecode ($res16);
+   decodecols ($res16);	lprint ("FOR_SEL");
+          	$maxquery="SELECT MAX(`".$mycol[$md2column]."`)FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`";
+	$countquery="SELECT Count(`".$mycol[$md2column]."`)FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`";
+	$result=dbs_query ($countquery,$connect,$dbtype);	$counttbl = dbs_fetch_row ($result,$dbtype);
+	$result = dbs_query ($maxquery,$connect,$dbtype);;	$maxtbl = dbs_fetch_row ($result,$dbtype);
+        	echo cmsg ("WF_AN_ALLDAT")." ".$counttbl[0].", ".cmsg ("WF_LASTW")." ".$maxtbl[0]."<br>";
+	@$pl=round (($counttbl[0]/$maxtbl[0])*100,5);
+	echo cmsg ("WF_LDED")." = $pl% <br>";
+
+  } */
+ // вывести чего не хватает первой до второй  с ключами
+  //код показывающий содержимое всех ячеек конечной таблицы которых не хватает в начальной
+
+//код список ID всех ячеек конечной таблицы которых не хватает в начальной
+//$cmd="SELECT $kol1 FROM `$tabledest`.`$tabledest` WHERE `$kol2` NOT IN (SELECT `$kol1` FROM `$tablesource`.`$tablesource` WHERE 1=1)";
+
+     
+// a   piiii   rabotaet SELECT * FROM `tchars_t3can`.`guild` WHERE 'guildid' IN (SELECT * FROM `tchars`.`guild`);
+/*  какого хера не работает ????? cmd generic :SELECT * FROM `tchars.account_data` WHERE `criteria_id` NOT IN (SELECT `criteria_id` FROM `trealm.account` WHERE 1=1)
+ *SELECT * FROM `tchars`.`guild` WHERE 'guildid' NOT IN (SELECT 'guildid' FROM `tchars_t3can`.`guild`);
 Очень хочется юзануть перенос отсюда  ('эта функция что до сих пор не сделана? )
 SELECT * FROM `ytdb560u`.`table` WHERE `entry` NOT IN (SELECT `entry` FROM `ctdb013_test`.`quest_template` WHERE 1=1)
 взять 2 линка  сравнить число колонок, запустить   set names
@@ -3598,9 +3809,22 @@ WF_CMP_QRY;Создать и показать скрипт на объект соотвествующий условию+++
 }
 //
 
+// модуль запуска создание макро
+if (($write==cmsg ("KEY_MACRO"))AND($prdbdata[$tbl][12]!="fdb")) {
+needupdate ();
+// needupgrade ();  модуль для особых версий dbscript
+submitkey ("write","KEY_S_MACRO");
+}
+
+// вариант 2 -    написание скрипта лично пользователем, с указанием %a %b  по типу printf и методики выполнеиня :)
+
+
 // модуль исполнения создание макро
 if (($write==cmsg ("KEY_S_MACRO"))AND($prdbdata[$tbl][12]!="fdb")) {
 needupdate ();
+//  1 - выбирается группа таблиц как в dblinker
+// выбирается поле для ID1 операций
+// для операций будут использовать  scr dest id1 tablelist переменные (массивы) 
 }
 
 
@@ -3612,8 +3836,7 @@ needupdate ();
 //===============================  для масс сравнения будет похожая менюшка.
 // для инстанс режима будет сначала выбор инстансов а дальше уже просто данные будут передаваться похожему скрипту.   вообще то реально сравнение все же нужно сделать без разницы где
 if (($write==cmsg ("KEY_SHOWCODE"))AND($prdbdata[$tbl][12]!="fdb")) {
-    if (1==1) {
-     submitkey ("write","KEY_COMPARE"); submitkey ("write","KEY_MACRO");echo "<br>"    ;};
+
   @ $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 // выбор колонки из текущей базы
@@ -4202,8 +4425,11 @@ echo "</select><br>";
         checkbox ($disableprint,"disableprint");lprint ("WF_NO_RES_SQL");
 	
    }
+   echo "<br>";
 	checkbox ($bugkosye,"bugkosye"); lprint ("WF_EX_TRYSKIPBUG");
         checkbox ($utf8,"utf8"); lprint ("UTF8");
+        checkbox ($generic,"generic"); lprint ("GEN_SQL_FROM_EXEC");
+        checkbox ($noprintsave,"noprintsave"); lprint ("NOPRINTSAVE");
         ?>
 		<br>
   <input type="radio" name="cpymod" value="copyabort"> <? lprint ("ABORT") ; ?> 
@@ -4211,7 +4437,11 @@ echo "</select><br>";
 		<textarea name=vd cols=75 rows=8 ></textarea>
 
 <?
-submitkey ("write","KEY_S_EXEC");submitkey ("write","WF_BCK_FILEDUMP_UNARCH");echo "<br>"; 
+echo "<br>";
+submitkey ("write","KEY_S_EXEC");
+submitkey ("write","WF_BCK_FILEDUMP_UNARCH");echo "<br>"; 
+//submitkey ("write","");
+echo "<br>";
 }	
 //модуль обработки
 
@@ -4242,6 +4472,8 @@ if ($printlimit==false) { msgexiterror ("limit","noexit","disable");} else {$lim
         $patterns[0]="/\\\'/" ;$replacements[0]="'"; //4.1  check
 	@$cmd=preg_replace ($patterns,$replacements, $cmd);//4.1  check
         if ($debug) echo "key_s_exec check cmd after preg replace - $cmd<br>";
+
+        //CFG OPT FUTURE - именно здесь содержится глюк вывода на печать
 	if (strpos ($cmd,"SELECT")!==false) $printing=1; // разрешает печать в libmysql
 	if (strpos ($cmd,"SHOW")!==false) $printing=1; // разрешает печать в libmysql
 	if (strpos ($cmd,"CHECK")!==false) $printing=1; // разрешает печать в libmysql
@@ -4251,14 +4483,14 @@ if ($printlimit==false) { msgexiterror ("limit","noexit","disable");} else {$lim
 	if (strpos ($cmd,"BACKUP")!==false) $printing=1; // разрешает печать в libmysql
 	if (strpos ($cmd,"RESTORE")!==false) $printing=1; // разрешает печать в libmysql
 	$cmd=$cmd.$group.$limit; // именно в этом порядке
-        $queries=explode (";\r",$cmd);
+        $queries=explode (";\r",$cmd);  // так просто ????? WTF
         //..$queries=preg_split ('\\' ,$cmd);
         //if (!$pregsplitdisabled) $queries=preg_split("#(ENGINE=[^\;]+)\;\r?\n#i",$cmd,-1,PREG_SPLIT_DELIM_CAPTURE);
         //print_r ($queries); echo "executing aborted --------- test ";
         //exit;
         ////  echo "forced data dblk=$dblk , dbsel, tab=$tab";
-
-
+if ($generic)  { $printing=0; echo "std table out disabled by generating script<br>"; };
+  //  вот бла.  вчера вечером была закрывающая скобка и все работало. а сегодня её нет. что за7
 
         $countqueries=count ($queries);  //тут вот ошибка с выполнением. ;  нельзя так делать  !!! исправить!!!
    // а теперь выполнение большого количества запросов
@@ -4269,6 +4501,71 @@ if ($printlimit==false) { msgexiterror ("limit","noexit","disable");} else {$lim
 		if ($multicmd=="") continue;
 		$a=executesql ($multicmd,$connect,0);// было 
 	if ($a==-1) executesql ($multicmd,$connect,2); //old mode for possible bugs issue
+        //
+        // простой скрипт проверки - SELECT * FROM `tchars_t3can`.`guild` WHERE `guildid` NOT IN (SELECT `guildid` FROM `tchars`.`guild` WHERE 1=1);
+        //. сло /// это не сравнение бла SELECT * FROM `tchars`.`guild_bank_item` WHERE `guildid`='79';
+////SELECT * FROM `tchars`.`item_instance` WHERE `guid` IN (SELECT `item_guid` FROM `tchars`.`guild_bank_item` WHERE `guildid`=79) LIMIT 10;
+//SELECT `guid` FROM `tchars`.`item_instance` WHERE `guid` IN (SELECT `item_guid` FROM `tchars`.`guild_bank_item` WHERE `guildid`=79);
+////SELECT * FROM `tchars_t3can`.`item_instance` WHERE `guid` IN (SELECT `item_guid` FROM `tchars_t3can`.`guild_bank_item` WHERE `guildid`=79) ; FINALE
+// выбрать все ГУИДЫ всех вещей из гильдбанка и показать их в данных  item_instance
+                    // возможно этот код стоит как то выделить ?  на генерацию кода... он уже раз 4-й точно используется почти без изменений
+               if ($generic) {echo "g _on ";  // залочить обычную печать при генерации кода чтобы не лагало
+//echo $cmd;
+$printing=0;  // disables print
+//$cmd=" SHOW DATABASES;";
+	if ($cmd) $result = dbs_query ($cmd, $connect,$dbtype);
+        $mycols=dbs_num_fields ($result,"");
+	if ($result==true) { echo $vID.cmsg ("WF_CMP")."<br>";} else {
+				$errt=cmsg ("WF_CMPFAIL"); $ermsg=cmsg ("WF_NOQUE")."<br>";
+                                //почему то всегда пишет ошибку
+                                }
+                                // может эту функцию выделить отдельно?
+if ($GENALT) {
+    global $mycol;  // улучшенное - можно выделить CFG OPT FUTURE// copyed from dbscore readdescripters
+    $data2=dbs_genericnumlist ($result,$mycols,$mycol);
+    $field=$data2["fieldlist"];
+}
+$sourcetable="`".$prdbdata[$tbl][5]."`";// целевая база данных указывается автоматически.
+//$sourcetable="`".$prdbdata[$tbl][9]."`";// целевая база данных указывается автоматически./
+// печать   формирование текста запроса
+   if ($noprintsave) {$dumpdbname=$sourcetable.$tbl."dbs_cut";
+                        	@$ax=opendir ("_local/dump"); if ($ax==false) mkdir ("_local/dump");@closedir ($ax);
+                        	$dumpfile=fopen ("_local/dump/".$dumpdbname,"w"); if ($dumpfile==false) die ("cannot open file $dumpdbname");
+                                $xx="#::Dbscript $verchar :: $verwritefile :: http://dj.chg.su/dbscript/  Mysql Dump File \n\r";
+                                fwrite ($dumpfile, $xx);
+                    }
+ if ($GENALT) $insertone="INSERT INTO $sourcetable ".$field." VALUES ";
+    for ($c=0;$myrow = dbs_fetch_row ($result,$dbtype);$c++) {
+		if (!$GENALT) {
+                    $insertone=gencmdlog ($sourcetable,$myrow,$mycols,"");
+                    //echo "faak  -  $insertone=gencmdlog ($sourcetable,$myrow,$mycols,); ";
+                    if (!$noprintsave) echo $insertone."<br>";  // в другие части этой копии скрипта внедрить сохранение в файл (!!!) CFg OPT FUTURE
+                    if ($noprintsave)  {
+                        fwrite ($dumpfile,$insertone);
+                    };
+                }
+                if ($GENALT) {
+                    $insertone.=gennohdlog ($sourcetable,$myrow,$mycols,$field).",";
+                    //echo "faak  -  $insertone=gennohdlog ($sourcetable,$myrow,$mycols,); ";
+
+                }
+                // потом улучшить чтобы не делала излишний код
+
+	};
+       if ($GENALT)  {$insertone[strlen($insertone)-1]=";";
+
+           if (!$noprintsave) echo $insertone."<br>";
+                    if ($noprintsave) {
+                        fwrite ($dumpfile,$insertone);
+                    };
+           }
+
+
+      };
+   if ($noprintsave)  { fclose ($dumpfile) ;
+       echo "File dump written to $dumpdbname <br>"; exit;
+   }
+                    //..окончание вставки кода генерации
 		if ($a==-1) {
 			$silent=0;$error++; $errno=dbserr ();
 			if ($errno>0) echo "Full text query:$multicmd<br><br>";
