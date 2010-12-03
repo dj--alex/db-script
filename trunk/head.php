@@ -6,7 +6,7 @@
 //или <script src="jquery142.js"></script>
 // воздушная
  	global $verhead,$systemshrift,$buttonshrift,$tableshrift;
-$verhead="Header v4.2.4 (c) dj--alex"; //hide
+$verhead="Header v4.3.12 (c) dj--alex"; //hide
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=<?php echo$sd[19];?>">
@@ -41,15 +41,53 @@ if (($pr[54])OR(!$dbstyle3en)) { // применяется если стиль DeusModus неактивен
   { text-align:center; font:<?php echo$buttonshrift ; ?>;
    background-color:<?php echo$rgbfon ; ?>; color:<?php echo$rgbtext ?> ; }
 <?php
-if ($prauth[$ADM][47]) { 
+if ($prauth[$ADM][47]) {       $colorfonbackgroundselect=$prauth[$ADM][47];
+                       
 	echo ".hoverRow { background-color:#".$prauth[$ADM][47].";}"; } else  
-		{echo ".hoverRow { background-color: yellow;}";}
+		{echo ".hoverRow { background-color: yellow;}";
+                  $colorfonbackgroundselect="yellow";
+                 
+                }
+if ($prauth[$ADM][57]) {
+
+                        $colortextmouseselect=$prauth[$ADM][57];
+	 } else
+		{  $colortextmouseselect="green";
+                        
+                }
+if ($prauth[$ADM][58]) {
+                        $coloradselect=$prauth[$ADM][58];
+	 } else
+		{
+                        $coloradselect="blue";
+                }
 ?>
 .clickedRow { background-color: green; }
+td.hovered {
+  background-color: yellow;
+  color: #666;
+}
  </style>
 <?php  if (!$trafeconom) { // куй а не размер кнопкам!
+    // Jquery function hover for table  - no work!!!  background not implemented   дочерние классы поддерживаются :)))
     ?>
-<script>
+<script type="text/javascript">
+$('table').hover(function(){
+  $(this).find('td').addClass('hovered');
+}, function(){
+  $(this).find('td').removeClass('hovered');
+});
+$(document).ready(function() {
+$('#myTable').find('td').addGlow({ textColor: '<?=$colortextmouseselect;?>', haloColor: '<?=$coloradselect;?>', radius: 5 });
+$('#myTable').find('tr').addGlow({ textColor: '<?=$coloradselect?>', haloColor: '<?=$colorfonbackgroundselect?>', radius: 5 });
+$('#Adminpanel').find('td').addGlow({ textColor: '<?=$colortextmouseselect?>', haloColor: '<?=$colorfonbackgroundselect?>', radius: 50 });
+$('red').addGlow({ textColor: '#dd00dd', haloColor: '#dd00dd', radius: 50 });
+$('error').animate({ backgroundColor: "<?=$colorerrselect?>" }, 500 );
+});
+</script>
+<script src="jquery.color.js" type="text/javascript"></script>
+<script src="jquery-glowing.js" type="text/javascript"></script>
+    <script type="text/javascript">
 function highlightTableRows(tableId, hoverClass, clickClass, multiple)
 {
 	var table = document.getElementById(tableId);
@@ -63,7 +101,7 @@ function highlightTableRows(tableId, hoverClass, clickClass, multiple)
 		{
 			if (!e) e = window.event;
 			var elem = e.target || e.srcElement;
-			while (!elem.tagName || !elem.tagName.match(/td|th|table/i)) elem = elem.parentNode;
+			while (!elem.tagName || !elem.tagName.match(/td|tr|table/i)) elem = elem.parentNode;
 
 			if (elem.parentNode.tagName == 'TR' && elem.parentNode.parentNode.tagName == 'TBODY')
 			{
@@ -87,53 +125,7 @@ function highlightTableRows(tableId, hoverClass, clickClass, multiple)
 		//Данное рег. выражение используется и в обработчике onclick
 // урезать скрипт  , обнаружено много букв!!!
   // был удален следущий элем  перед  </cкрипт>
-  	/*
-	if (clickClass) table.onclick = function(e)
-	{
-		if (!e) e = window.event;
-		var elem = e.target || e.srcElement;
-		while (!elem.tagName || !elem.tagName.match(/td|th|table/i)) elem = elem.parentNode;
-
-		//Если событие связано с элементом TD или TH из раздела TBODY
-		if (elem.parentNode.tagName == 'TR' && elem.parentNode.parentNode.tagName == 'TBODY')
-		{
-			//регулярное выражение для поиска среди значений атрибута class элемента, имени класса обеспечивающего подсветку по клику на строке.
-			var clickClassReg = new RegExp("\\b"+clickClass+"\\b");
-			var row = elem.parentNode;//ряд содержащий ячейку таблицы в которой произошло событие
-			
-			//Если текущий ряд уже помечен стилем как "кликнутый"
-			if (row.getAttribute('clickedRow'))
-			{
-				row.removeAttribute('clickedRow');//убираем флаг того что ряд "кликнут"
-				row.className = row.className.replace(clickClassReg, "");//убираем стиль для выделения кликом
-				row.className += " "+hoverClass;//назначаем класс для выделения строки по наведею мыши, т.к. курсор мыши в данный момент на строке, а выделение по клику уже снято
-			}
-			else //ряд не подсвечен
-			{
-				//если задана подсветка по наведению на строку, то убираем её
-				if (hoverClass) row.className = row.className.replace(hoverClassReg, "");
-				row.className += " "+clickClass;//применяем класс подсветки по клику
-				row.setAttribute('clickedRow', true);//устанавливаем флаг того, что ряд кликнут и подсвечен
-				
-				//если разрешена подсветка только последней кликнутой строки
-				if (!multiple)
-				{
-					var lastRowI = table.getAttribute("lastClickedRowI");
-					//Если то текущей строки была кликнута другая строка, то снимаем с неё подсветку и флаг "кликнутости"
-					if (lastRowI!==null && lastRowI!=='' && row.sectionRowIndex!=lastRowI)
-					{
-						var lastRow = table.tBodies[0].rows[lastRowI];
-						lastRow.className = lastRow.className.replace(clickClassReg, "");//снимаем подсветку с предыдущей кликнутой строки
-						lastRow.removeAttribute('clickedRow');//удаляем флаг "кликнутости" с предыдущей кликнутой строки
-					}
-				}
-				//запоминаем индекс последнего кликнутого ряда
-				table.setAttribute("lastClickedRowI", row.sectionRowIndex);
-			}
-		}
-	};
-	 отключен лишний элемент или временно ненужный
-	*/ 
+  	
 
 }
 
