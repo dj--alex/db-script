@@ -46,9 +46,10 @@ if ($pr[37]) {// analog in writefile
     <input type=hidden name=printlimit value=<?=$printlimit; ?>></input>
     <input type=hidden name=field value=<?=$field; ?>></input>
     <input type=hidden name=live value=<?=$live; ?>></input>
+    <script src="ajax.js"></script>
     <?
 	//section select group
-    
+
 	//	hidekey ("groupdb",$groupdb);print_r ($list);	//	print_r ($a);
         $grouplist=groupdbfielddetect ($prdbdata,17);// set group as field
         $groupdbthisname="groupdb";

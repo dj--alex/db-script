@@ -918,7 +918,7 @@ hidekey ("kol",$kol);
 						if (($limitenable)AND($findrecords>$printlimit)) {
 							echo "¬сего значений : $findrecords<br><br> ";exit;};
 							$k = count($dbc)-$tablemysqlselect;  // удаление колонки, определено в prop
-							echo "<table border=3 width=100% bgcolor=white>"; echo "<tr>";
+							echo "<tbody><table border=3 width=100% bgcolor=white>"; echo "<tr>";
 
 							for ($b=0;$b<$k;$b++) {
 								// multithread options experimental
@@ -996,7 +996,7 @@ hidekey ("kol",$kol);
 					if (($limitenable)AND($findrecords>$printlimit)) {
 						echo "¬сего значений : $findrecords<br><br> ";exit;};
 						$k = count($dbc)-$tablemysqlselect;  // удаление колонки, определено в prop
-						echo "<table border=3 width=100% bgcolor=white>"; echo "<tr>";
+						echo "<tbody><table border=3 width=100% bgcolor=white>"; echo "<tr>";
 						for ($b=0;$b<$k;$b++) {
 							//	echo "_SYS_content -- ".$content." findid -- ".$findid." vID -- ".$vID."\n";
 							$content1=strtolower ($dbc[$category]); $findid1=strpos($content1,$vID);
