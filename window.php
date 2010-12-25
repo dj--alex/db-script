@@ -1,8 +1,6 @@
-<?php/*<html>
- <body>
+<?php/*<html> <body>
  <!-- 2 необходимы строчки для создания подсказок -->
- <div Style = "POSITION: absolute; VISIBILITY: hidden; Z-INDEX: 200" id="DTip"></div>
- <script src = "ToolTip.js"></script>
+ <div Style = "POSITION: absolute; VISIBILITY: hidden; Z-INDEX: 200" id="DTip"></div>  <script src = "ToolTip.js"></script>
  <!-- ******************************************* -->
  <img width = "100" height = "100" onmouseout="HideTip()" onmouseover="ShowTip('Сюда отправляешь любой текст<br> или теги для его оформления, так<br> так если хочешь можно делать<br> рамки. Но лучше для них измени<br> content = msg; в файле скрипта')" />
  </body></html>*/

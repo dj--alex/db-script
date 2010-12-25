@@ -1482,7 +1482,11 @@ echo "</select><br>";
 	//echo "Path=$path<br>";
 		$path2=$fldup."/_local/dump";
 			$mask="*.*";//wse ok
-			$protect[]="*.php";$protect[]="*.rar";
+                        global $pr;
+                        if ($pr[99]) $mask="*.sql";//wse ok
+			$protect[]="*.php";$protect[]="*.rar";$protect[]="*.zip";$protect[]="*.gz";
+                        $protect[]="*.sql~";
+                        $protect[]="..";
 			$files=getdirdata ($path,$mask,$protect);
 			if ($files==false) { 
 					echo " »щем далее...<br>";
@@ -1491,9 +1495,13 @@ echo "</select><br>";
 					if ($files==false) echo "Folder not found, 2 tryes.";;
 			}
 		echo "<form method=post>";
+                sort ($files) ;
 echo "<select name=\"dump[]\" multiple size=10>";
 		for ($a=2;$a<count ($files);$a++){
 				if ($files[$a][0]=="") continue;
+                                if ($files[$a][0]==".") continue;
+                                if ($files[$a][0]=="..") continue;
+                                
 				echo "<option>".$files[$a][0]."";
 			}
 			unset ($files);

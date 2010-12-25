@@ -32,28 +32,19 @@ if ($dbstyle3en) if (($enrestmenu)AND($menuloaded!==1)){?>
 } 
 ?>
 <style type="text/css"><?php
-?> #myTable { font:<?php echo$tableshrift ; ?> ; }  #Adminpanel { font:<?php echo$tableshrift ; ?> ; }
-body { font:<?php echo$systemshrift ; ?>; <?php
-if (($pr[54])OR(!$dbstyle3en)) { // применяется если стиль DeusModus неактивен
-	?> color:#<?php echo$rgbtext ; ?>;background:#<?php echo$rgbfon ; ?>; }<?php;
-}?>
-.buttonS
-  { text-align:center; font:<?php echo$buttonshrift ; ?>;
-   background-color:<?php echo$rgbfon ; ?>; color:<?php echo$rgbtext ?> ; }
-<?php
 if ($prauth[$ADM][47]) {       $colorfonbackgroundselect=$prauth[$ADM][47];
-                       
-	echo ".hoverRow { background-color:#".$prauth[$ADM][47].";}"; } else  
+
+	echo ".hoverRow { background-color:#".$prauth[$ADM][47].";}"; } else
 		{echo ".hoverRow { background-color: yellow;}";
                   $colorfonbackgroundselect="yellow";
-                 
+
                 }
 if ($prauth[$ADM][57]) {
 
                         $colortextmouseselect=$prauth[$ADM][57];
 	 } else
 		{  $colortextmouseselect="green";
-                        
+
                 }
 if ($prauth[$ADM][58]) {
                         $coloradselect=$prauth[$ADM][58];
@@ -67,7 +58,15 @@ td.hovered {
   background-color: yellow;
   color: #666;
 }
- </style>
+?> #myTable { font:<?php echo$tableshrift ; ?> ; }  #Adminpanel { font:<?php echo$tableshrift ; ?> ; }
+body { font:<?php echo$systemshrift ; ?>; <?php
+if (($pr[54])OR(!$dbstyle3en)) { // применяется если стиль DeusModus неактивен
+	?> color:#<?php echo$rgbtext ; ?>;background:#<?php echo$rgbfon ; ?>; }<?php;
+}?>
+.buttonS
+  { text-align:center; font:<?php echo$buttonshrift ; ?>;
+   background-color:<?php echo$rgbfon ; ?>; color:<?php echo$rgbtext ?> ; }
+?></style>
 <?php  if (!$trafeconom) { // куй а не размер кнопкам!
     // Jquery function hover for table  - no work!!!  background not implemented   дочерние классы поддерживаются :)))
     ?>
@@ -150,7 +149,12 @@ function AL(button)
 <?php
  };
 	
-	function initwindowactions ($enablepositioning) {  ?><SCRIPT LANGUAGE="javascript">
+function initwindowactions ($enablepositioning) {  
+        global $initwindowact;
+        if ($initwindowact==1) return;
+        $initwindowact=1;
+        ?><SCRIPT LANGUAGE="javascript">
+
 function win(id,trigger,lax,lay) {
 if (trigger=="1"){
 	if (document.layers) document.layers[''+id+''].visibility = "show"
