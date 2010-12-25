@@ -85,7 +85,8 @@ if ($cmd[0]==="showmesomemessages") {
 	 if ($cmd[1]>200) die ("Are you all ok?") ;
 	showmemessages($cmd[1]);
 }
-if ($cmd[0]==="window") { window ($cmd[1],$cmd[2]);closewindow ;}
+if ($cmd[0]==="window") { window ($cmd[1],$cmd[2]);closewindow () ;}
+if ($cmd[0]==="testsize") { window ("","");echo "11";closewindow ();}
 if ($cmd[0]==="aboutme") aboutme ();
 if ($cmd[0]==="author") author ();
 
@@ -190,7 +191,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 	echo  "</form>";exit;
 		}
 
-		if (($cmd[0]==="smsg")OR($cmd[0]==="SMSG")) msgexiterror ($cmd[1],$cmd[2],$cmd[3]); //debug
+		if (($cmd[0]==="smsg")OR($cmd[0]==="SMSG")) { echo "This is only error message sample, no really error.<br><br><br><br><br><br><br><br>";msgexiterror ($cmd[1],$cmd[2],$cmd[3]);echo "Error message sample"; }//debug
 		if (($cmd[0]==="cmsg")OR($cmd[0]==="CMSG")) {echo "CMSG:".cmsg ($cmd[1]); exit ;} //debug
 		if (($cmd[0]==="rmsg")OR($cmd[0]==="RMSG")) {echo "RMSG:".rmsg ($cmd[1]); exit;}//debug
 		if (($cmd[0]==="time")OR($cmd[0]==="TIME"))	{ echo "Server time: ".date ("d.m.Y H-i-s")."<br>";exit;};
