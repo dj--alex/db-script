@@ -1,6 +1,17 @@
-<?php	// Данная программа относится к пакету DBSCRIPT v2.1 (с) dj--alex
+<?php ob_start (); // Данная программа относится к пакету DBSCRIPT v2.1 (с) dj--alex
 //header ("Location: main.php");   ЭТА ХЕРЬ ПОЧЕМУ ТО НЕ ПЕЧАТАЕТСЯ ИЗ ДРУГ  СКР <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html>
 //$nomnu=1;
+$x=($_SERVER['HTTP_REFERER']);
+$dbs_ip =$_SERVER['REMOTE_ADDR'];	$dbs_ref= $_SERVER['HTTP_REFERER'];
+$y=($_SERVER['SERVER_NAME']);
+    $xx=strpos ($x,"mho.ws");
+
+if ($xx>0) { ob_clean (); header ("Location: http://dj.chg.su/mestatus.php"); exit;}
+# ob_clean (); 
+#header ("Location: http://wow.chg.su/wow/s",5); exit;
+ob_flush ();
+
+
 @$a=opendir ("_conf"); if ($a==false) Header("Location: install.php");
 	require ('dbscore.lib'); // функция подготовки к работе и авторизации
 

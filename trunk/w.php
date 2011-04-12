@@ -4,6 +4,7 @@ if ($_FILES) ob_start(); // добавлено т.к. в 2033 строке непонятно прислали файл
 require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
 if (!$activation) Header("Location: login.php");;  //http://127.0.0.1/dj/site/login.php  старая авторизация  в dbscript zone всплыла - когда убирать то?
 //$error=pg_connect ("!","2","3");echo $error;    postgre-php not installed
+///if ($enablewin32enctooldmenu)
 // TinyMCE addition 
   /* ?> <script type="text/javascript" src="tinymce/tiny_mce.js"></script>
    <script type="text/javascript">
@@ -14,7 +15,7 @@ if (!$activation) Header("Location: login.php");;  //http://127.0.0.1/dj/site/lo
            });
     </script><?
 */
-$verwritefile="Editor v4.3.13 beta (c) dj--alex";
+$verwritefile="Editor v4.3.3 beta (c) dj--alex";
  global $verwritefile,$vID,$vID2;
 
 $enterpoint=$verwritefile;// для показа точки входа
@@ -189,6 +190,7 @@ if ($prauth[$ADM][2]) {  //модуль совместимости с conf файлами.
         if ($prauth[$ADM][42]) if ($write==cmsg ("CF_CMD")) {$tbl="cmdlines";$namebas=$tbl;};// dalee chastx from libmysql
 	//require_once ("_sys/rfsysdatareq.php");
 	rfsysdatareq ();
+        $encode="windows-1251";$prdbdata[$tbl][21]=$encode; // кодировка не меняется !!
 	if ($namebas=="") { $namebas=$tbl;$filbas=$tbl.".cfg";$cfgmod=1;};
 }
 
@@ -476,6 +478,8 @@ if (($write==cmsg ("KEY_EDIT"))AND($prdbdata[$tbl][12]=="fdb")) {
 
 	if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
 	if ($cfgmod==1) @$f=csvopen ("_conf/".$filbas,"r","0");
+        if ($cfgmod==1) if (!$pr[8]) echo "DEBUG D encode=$encode system(19)=".$sd[19]."<br>";
+
 //	echo "dEBUG vID2=$vID2 virtualid=$virtualid<br>";
 	echo "<br>";
 			$data=readdescripters ();  if ($data==-1) exit;
@@ -496,10 +500,11 @@ if (($write==cmsg ("KEY_EDIT"))AND($prdbdata[$tbl][12]=="fdb")) {
 									//$myrow=xfgetcsv ($f,$xfgetlimit,";");
 							};
 									};
+               
 		@$crc=implode ("¦",$myrow);//added crc32 count
 		//проверка не занят ли ID
 	if ($myrow===false) { 
-		echo cmsg ("QUE_EMP")."<br>";   // какого хера оно незанято из конфигурации когда стопудово известо что оно ЗАНЯТО БЛЯ!!!
+		echo cmsg ("QUE_EMP")."<br>";   // какого хера оно незанято из конфигурации когда стопудово известо что оно ЗАНЯТО !
 		exit;
 	}
 //end проверка не занят ли ID
@@ -514,7 +519,10 @@ if ($oldcoreedit)
 			if ($mycol[$md2column]===$mycol[$a]) echo "<ii>(ID1)</ii>";
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii>(ID2)</ii>";
 			?>
-			<textarea name=z<?=$a; ?> cols=40 rows=1><?=$myrow[$a]?></textarea><br><? ;
+			<textarea name=z<?=$a; ?> cols=40 rows=1><?
+                        //patch for windows-1251 menu editing in utf-8 mode
+                       if ($enablewin32enctooldmenu)  if (($sd[19]=="utf-8")AND($encode=="windows-1251")) $myrow[$a]=iconv("windows-1251","utf-8",$myrow[$a]);
+                        echo $myrow[$a]?></textarea><br><? ;
 			}
 	if (!$oldcoreedit) { echo "<table id=dbmgr_edit border=3 width=100% bordercolor=#602621>";
 		for ($a=0;$a<$countdatafieldstowrite;$a++)
@@ -531,7 +539,10 @@ if ($oldcoreedit)
 			<?
 if ($prauth[$ADM][41]) echo "</tr><tr>"; //optional Box,not linear edit.
 ?>
-			<td><textarea id=dbmgr_txta name=z<?=$a; ?> cols=<?=$lensa;?> rows=1><?=$myrow[$a]?></textarea><br></td><? 
+			<td><textarea id=dbmgr_txta name=z<?=$a; ?> cols=<?=$lensa;?> rows=1><?
+                        //patch for windows-1251 menu editing in utf-8 mode
+                       if ($enablewin32enctooldmenu)  if (($sd[19]=="utf-8")AND($encode=="windows-1251")) $myrow[$a]=iconv("windows-1251","utf-8",$myrow[$a]);
+                        echo $myrow[$a]?></textarea><br></td><?
 			//echo "<tr>";//optionalBox,not linear edit.
 			
 			} //field text
@@ -559,7 +570,10 @@ if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
 	$a=0;$cnt=count ($mycol);
 			for ($a=0;$a<$cnt;$a++)
 			{
-	$myrow[$a]=${"z".$a};//принимаем данные юзера
+	$myrow[$a]=${"z".$a};//принимаем данные юзераъ
+        // внимание, именно тут надо отлавливать enter присланный юзером !!! cfg opt future
+        //patch for windows-1251 menu editing in utf-8 mode   - writing mod
+        if ($enablewin32enctooldmenu)  if (($sd[19]=="utf-8")AND($encode=="windows-1251")) { $myrow[$a]=iconv("utf-8","windows-1251",$myrow[$a]); $noenter=1 ;};
     //$x=getidbyid ($prauth,0,"realid",$myrow[0]);// это имя редактируемого пользователя
     $x=getidbyid ($prauth,0,"realid",$myrow[0]);
  //echo "realid=$x prauth x 0 ".$prauth[$x][0]." prauth adm 0 ".$prauth[$ADM][0]."<br>";exit;
@@ -567,13 +581,20 @@ if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
   if (!$prauth[$ADM][42])  if (($cfgmod==1)and($filbas=="gmdata.cfg")) { $myrow[2]=$prauth[$x][2];$myrow[42]=$prauth[$x][42] ;};
  //защита настроек прав если нет права суперпользователя - целью является принудить использовать настройку профилей.
 	if ($a===0) { $values="".$myrow[$a];}
+        
+  
 	if ($a>0) {$values="".$values."¦".$myrow[$a]; }
 if (!$pr[8]) {  echo "DEBUG Decoding incoming data z$a -- $myrow[$a]<br>";}
 			}
-			echo $OSTYPE;
+			if (!$pr[8]) echo $OSTYPE;
 		//тменен тк при сохранении заголовка вызывал его смещение.
-if ($OSTYPE=="LINUX") if ($values[strlen ($values)-1]!=="\n") $values=$values."\n";
-		if ($OSTYPE=="WINDOWS")	$values=$values."\n";  // csv linux   bug  pustye stroki FI
+                        
+//..if (!$noenter)
+    if ($OSTYPE=="LINUX") if ($values[strlen ($values)-1]!=="\n") $values=$values."\n";
+		if ($OSTYPE=="WINDOWS")	$values=$values."\n";  // csv linux   bug  pustye stroki 
+
+                // //patch for windows-1251 menu editing in utf-8 mode
+                //if (($sd[19]=="utf-8")AND($encode=="windows-1251")) $values=iconv("utf-8","windows-1251",$values); FUUUU 1¦¦¦¦¦
 // заменен vID -> $myrow[$md2column]   myrowid->$myrow[$virtualid] просто мегазатычка :)
 // а теперь поправили мегазатычку более корректно  md2- oridid1  virid - orig2
 //echo "Starting executing query <br>";// эта строка вообще не видна при gmdata ili dbdata   vidimo 200 polej - mnogo
@@ -631,7 +652,10 @@ if ($oldcoreedit)
 			if ($mycol[$md2column]===$mycol[$a]) {echo "<ii>(ID1)</ii>"; $myrow[$a]=($maximalcntmd2+1);};
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii>(ID2)</ii>";
 			?>
-			<textarea name=z<?=$a; ?> cols=30 rows=1><?=$myrow[$a]?></textarea><br><? ;
+			<textarea name=z<?=$a; ?> cols=30 rows=1><?
+                        //patch for windows-1251 menu editing in utf-8 mode
+                        if ($enablewin32enctooldmenu) if (($sd[19]=="utf-8")AND($encode=="windows-1251")) $myrow[$a]=iconv("windows-1251","utf-8",$myrow[$a]);
+                        echo $myrow[$a]; ?></textarea><br><? ;
 			}
 	if (!$oldcoreedit) { echo "<table id=dbmgr_edit border=3 width=0% bordercolor=#602621>"; // непонятное изменение . 100% было заменено на 0 .цель неясна.
 			for ($a=0;$a<count ($mycol);$a++)
@@ -647,7 +671,10 @@ if ($oldcoreedit)
 			<?
 if ($prauth[$ADM][41]) echo "</tr><tr>"; //optional Box,not linear edit.
 ?>
-			<td><textarea id=dbmgr_txta name=z<?=$a; ?> cols=<?=$lensa;?> rows=1><?=$myrow[$a]?></textarea><br></td><? 
+			<td><textarea id=dbmgr_txta name=z<?=$a; ?> cols=<?=$lensa;?> rows=1><?
+                        //patch for windows-1251 menu editing in utf-8 mode
+                        if ($enablewin32enctooldmenu) if (($sd[19]=="utf-8")AND($encode=="windows-1251")) $myrow[$a]=iconv("windows-1251","utf-8",$myrow[$a]);
+                        echo $myrow[$a]?></textarea><br></td><?
 			//echo "<tr>";//optionalBox,not linear edit.
 			
 			} //field text
@@ -675,6 +702,8 @@ if (($write==cmsg ("KEY_S_ADD"))AND($prdbdata[$tbl][12]=="fdb")) {
 			for ($a=0;$a<$cnt;$a++)
 			{
 	$myrow[$a]=${"z".$a};//принимаем данные юзера
+        //patch for windows-1251 menu editing in utf-8 mode   - writing mod
+        if ($enablewin32enctooldmenu)  if (($sd[19]=="utf-8")AND($encode=="windows-1251")) { $myrow[$a]=iconv("utf-8","windows-1251",$myrow[$a]); $noenter=1 ;};
 	if ($a===0) { $values="".$myrow[$a];}
 	if ($a>0) {$values="".$values."¦".$myrow[$a]; }
 if (!$pr[8]) {  echo "DEBUG Decoding incoming data z$a -- $z[$a]<br>";}
@@ -1234,6 +1263,7 @@ checkbox ($views,"views") ; echo cmsg ("WF_LOG")."<br>";
 
        printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"source",cmsg ("DUMP1TABLE"),$groupdb,$ipfilter,6);
          echo "<br>";
+         echo "Request encode to (only internal)"; inputtxt ($requestencode,5);      echo "<br>";
          checkbox (0,"mysqldump"); lprint ("M_DMP");echo "<br>";
 if (!$pr[20]) submitkey ("start","SELF_BCK");
 }
@@ -1326,18 +1356,25 @@ while ($result=dbs_fetch_row ($a,$dbtype)) {
 	$tablelist[]=$result[0];$tables++;//echo "table added to list ::".$result[0]."<br>";
 	}
 	@$a=opendir ("_local/dump"); if ($a==false) mkdir ("_local/dump");@closedir ($a);
+        if ($onetable) $dumpdbname=$dumpdbname.$prdbdata[$source][5];// передает только 1 номер выбранной таблицы.
 	$dumpfile=fopen ("_local/dump/".$dumpdbname,"w"); if ($dumpfile==false) die ("cannot open file $dumpdbname");
+        echo "Final filename:$dumpdbname<br>";
+        if (!$mysqldump) $dumpdbname=$dumpdbname."(int).sql";
+// исправить encoding bla
+
 	$x="#::Dbscript $verchar :: $verwritefile :: http://dj.chg.su/dbscript/  Mysql Dump File \n\r";
 	fwrite ($dumpfile,$x);
+        //if ($onetable) $dumpdbname=$dumpdbname."$tablelist[0]";
         //echo "STATUS onetable=$onetable , source= $source ".$prdbdata[$source][5]."<br>";
 for ($a=0;$a<count ($tablelist);$a++) {
 	if (($onetable)AND($tablelist[$a]!==$prdbdata[$source][5])) continue;
+        // безопасный метод делать дампы. рекомендуется использовать только его  зип пока не поддерживается. 
         if ($mysqldump) { 
             fclose ($dumpfile);@unlink ($dumpfile); // CFG OPT FUTURE -  некогда ща это править
             $filetowrite="_local/dump/".$dumpdbname.$date;
             //if ($OSTYPE=="LINUX") if ($zip) $sys.="| gzip -c ".$filetowrite.".sql.gz";//'date "+%Y-%m-%d"'
             $sys="mysqldump -u ".$sd[14]." -p".$sd[17]." ".$prdbdata[$tbl][9]." --routines > ".$filetowrite.".sql";
-            $print="mysqldump ".$prdbdata[$tbl][9]." --routines > ".$filetowrite.".sql";
+            $print="mysqldump ".$prdbdata[$tbl][9]." --routines > ".$filetowrite."(ext).sql";
             if ($onetable) $sys="mysqldump -u ".$sd[14]." -p".$sd[17]." ".$prdbdata[$tbl][9]." ".$tablelist[$a]." --routines > ".$filetowrite.".sql";
             echo ($print);
             logwrite ($sys);//./--routines
@@ -1354,12 +1391,16 @@ for ($a=0;$a<count ($tablelist);$a++) {
     * --default-character-set=utf8 - помните, я говорил про возможные проблемы с кодировкой? Подстрахуемся (надеюсь, вы уже не используете сp1251?)
 
          */
-        echo "bnre4t5gg9[ph5[gk5opgjk5ipju5hju5l45pht45phjybip45ju8jopyhjph8j59j8458g45ou7hr4gop45h45og";
+        //echo "bnre4t5gg9[ph5[gk5opgjk5ipju5hju5l45pht45phjybip45ju8jopyhjph8j59j8458g45ou7hr4gop45h45og";
+        echo "processing....";
         //    Делать бекап конкретной базы от пользователся (у которого есть права на эту базу).
         $x="#table `".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`\n";if ($OSTYPE=="WINDOWS") $x.="\r";
 	echo $x."<br>";
 	fwrite ($dumpfile,$x);
 	ob_flush ();
+
+
+
 	$x="CREATE DATABASE IF NOT EXISTS `".$prdbdata[$tbl][9]."`;";
 	fwrite ($dumpfile,$x);
 	$x="USE `".$prdbdata[$tbl][9]."`;\n";if ($OSTYPE=="WINDOWS") $x.="\r";
@@ -1373,15 +1414,26 @@ for ($a=0;$a<count ($tablelist);$a++) {
     	//if ($views) echo $insertone;
  		if ($OSTYPE=="LINUX") $insertone.="\n";
 		if ($OSTYPE=="WINDOWS") $insertone.="\n\r";
-		                $x=detectencoding($insertone);   if ($views)   echo "Encoded ln : ".$x."<br>?";  //dobawil utf-8  какая то левая процедура. die () не работает
-                              if (($x!=="utf-8")AND($sd[19]=="utf-8")) $insertone=iconvx("windows-1251","utf-8",$insertone);
+		                $x=detectencoding($insertone);
 
+                                $encodeset=$x;
+                                    if ($views)   echo "Encoded ln : ".$x."<br>?";  //dobawil utf-8  какая то левая процедура. die () не работает
+                                    if ($requestencode) { echo"Request encode as^ $requestencode";$encodeset=$requestencode;$x=$requestencode;};
+                              if (($x!=="utf-8")AND($sd[19]=="utf-8")) $insertone=iconvx("windows-1251","utf-8",$insertone);
+//кодировка устанавливается только при наличии шапки. желательно обойтись без этого  э- это баг cfg opt future
                 fwrite ($dumpfile,$insertone);
 		$strclines++;		//echo $insertone."<br>";
 	};	
 				
 	}
-	
+
+             //скопировано - модуль для принудительной отдачи в кодировке которую нам прислали...
+        if ($encodeset) { // global настройка для mysql  pr[76]  почему то не работает .. действует только локальная.
+            echo "setting NAMES and CHARACTER SET one more time to $encodeset ($requestencode)... <br>";
+        dbs_query("SET NAMES $encodeset", $connect,$dbtype);
+        dbs_query("SET CHARACTER SET $encodeset", $connect,$dbtype);
+        }
+
 	//if ($debugmode)	echo "DEBUG $query.<br>";
 	$query="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`;";
         $sourcetable="`".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`";
@@ -1422,7 +1474,7 @@ if ($GENALT) {
                 if ($views) echo $insertone."<br>";
                                 $x=detectencoding($insertone);    if ($views)  echo "Encoded ln : ".$x."<br>?";  //dobawil utf-8  какая то левая процедура. die () не работает
                               if (($x!=="utf-8")AND($sd[19]=="utf-8")) $insertone=iconvx("windows-1251","utf-8",$insertone);
-
+// мне интересно что это за кодировка во встроенном дампе которая всегда ничего не делает.
 		fwrite ($dumpfile,$insertone);
 		$lines++;
 		//echo $insertone."<br>";

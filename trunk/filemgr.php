@@ -2,7 +2,7 @@
 $dbdataskip=1;
 require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
 if (!$activation) exit;
-$verfilemgr="Filemgr  v 4.3.08 (c) dj--alex ";
+$verfilemgr="Filemgr  v 4.3.4 (c) dj--alex ";
   $enterpoint=$verfilemgr;#end of conf
 // вот наша буферизация - ob_start();ob_end_flush();
 autoexecsql ();// ob_flush ();exit; zdes menueshe est.
@@ -132,6 +132,11 @@ if ($share=="GENLNK_REG") if ($prauth[$ADM][0]!=="UNKNOWN") { $enabledownload=1;
 else {msgexiterror ("notrights","F_DWN_REG You not in userlist this file! ","filemgr.php");} //msgexit update req!!!!
 if ($share=="GEN_PLVL_USR") if (($fildata[$filerealid][3]+1)<$prauth[$ADM][10])  { $enabledownload=1;}
 else {msgexiterror ("notrights","F_DWN_PLVL You not in userlist this file! ","filemgr.php");}
+
+$userlist=(explode (",",$userlist[0]));//ibane userlist fix
+//echo " usern=$username , userli=$userlist  ".in_array ($username,$userlist)."en=$enabledownload;";
+//exit;
+
 if ($share=="GENLNK_USR")  if (in_array ($username,$userlist)) { $enabledownload=1; }
 else {msgexiterror ("notrights","F_DWN_USR You not in userlist this file! ","filemgr.php");}
 //echo "trying ... FMG_LNK_DL ".$prauth[$ADM][0]." download file $pathwithfile)   <br>";
@@ -152,9 +157,11 @@ if (file_exists ($pathwithfile)==false) die ("File not found.");
 if ($enabledownload) { logwrite ("FMG_LNK_DL ".$prauth[$ADM][0]." download file $pathwithfile)" ); if (!$sharedir)ob_clean ();
     fclose ($filescfg) ;//fclose ($file);
 $filescfg=csvopen ("_conf/files.cfg","w",1);
+$xxx=flock ($filescfg, LOCK_EX);
 $fildata[$filerealid][9]=$fildata[$filerealid][9]+1; // set downloads +1
 $fildata[$filerealid][10]=date("d.m.Y H:i:s"); // set downloads +1
 $x=writefullcsv ($filescfg,$filheader,$filplevels,$fildata); // надо себе напомнить чтоб не забывал переоткрывать файл в w
+$xxx=flock ($filescfg, LOCK_UN);
    //writing         new stroke to _conf\files.cfg
     //logwrite ("FMG_SHARE $share (usr=$userlist) (plvl=$groupplevels) $pathandfile");
 
@@ -178,6 +185,8 @@ if ($f=="image") {
 
 
 //print_r ($_POST);
+global $pr ; //dobaw nastr w adm gde budet enable disable ico for filemgr to all  CFG OPT FUTURE invert  echo "FORCE";
+ if ($pr[100]) { $prauth[$ADM][40]=1; $noscreenmode=1; }
 //принимаем графические переменные и преобразовываем их в cmd
 if ($prauth[$ADM][40]) $noscreenmode=1;
  if ($noscreenmode==false) {
@@ -416,30 +425,123 @@ if ($prauth[$ADM][40]) { $cmd=$cmdtmp; lprint ("DEBUGMSG");echo ":".	cmsg ("GMP_
  * syntax: limit_rate скорость
 default: нет
 context: http, server, location, if в location
-
 Директива задаёт скорость передачи ответа клиенту. Скорость задаётся в байтах в секунду. Ограничение работает только для одного соединения, то есть, если клиент откроет 2 соединения, то суммарная скорость будет в 2 раза выше ограниченной.
-
 Если необходимо ограничить скорость для части клиентов на уровне сервера, то директива limit_rate для этого не подходит. Вместо этого следует задать нужную скорость переменной $limit_rate:
-
     server {
-
         if ($slow) {
-            set $limit_rate  4k;
-        }
-
-        ...
-    }
-
+           set $limit_rate  4k;
+       }
+       ...
+   }
+ * есть сложность  необходимо SHARE для всех помеченных файлов делать и mass rename организовать это ещё не считая механизма скриптов с вызовом внешних модулей или утилит
+ * имеющийся слишком простой и
  */
 
 
 
 function filemgr ($cmd,$stroka,$path,$fileforaction,$mask,$pid){  // is a part filemgr- fileio
-	//hidekey ("pidептвоюмать",$pid);
+	//hidekey ("pid",$pid);
 	global $defaultpath,$protect,$prauth,$ADM,$pr,$sd;//..,$file
 	global $filemgrmod,$daysleft,$codekey,$noscreenmode,$maxmgrs,$OSTYPE,$coreredir;
         global $multiaction;
 		if ($codekey==4) needupgrade ();
+     $file=$fileforaction;
+        global $filscheader,$filscdata,$filscplevel,$filsccount,$languageprofile;
+  if ($filscdata)   { if ($filsccount<1) { echo "Filemgr don't have configured scripts<br>";} else
+  { echo "";};
+   //additional keys by   filescript.cfg and starting it
+         // 4.3.4добавлено: cmsg не отрабатывает теперь значения начинающиеся с точки
+         // filescript для генерации кнопок исполнения скриптов ,  заданных администраторами.
+         // dbscore - исправлена ошибка из за которой иногда не вычислялся count
+        //версия конфигов при создании конфигурации теперь берется из ядра
+         //..+++if (!$unauthorized) { //незарегистрированные в любом случае не будут видеть список пользователей ресурса в раздаче.
+  // теперь репозитории работать будут раздельно, проприетарная версия будет отличатся только возможностью подключать специальные модули.
+  //если вы не планируете их заказывать можно использоватьобычную версию.
+         $keylanguage=1; //if not detected;  function detectlanguageidfromheader
+
+         for ($i=0;$i<30;$i++) {
+             
+             //echo "DEBUG ibane $filscheader[$i],  languageprofile=$languageprofile<br>";
+            // echo  "iDEBUG (".substr($filscheader[$i],0,6)."==".substr($languageprofile,0,6).") <br>";
+             if (substr($filscheader[$i],0,6)==substr($languageprofile,0,6)) $keylanguage=$i; // теперь хрен открутится, правда ограничились 6 знаками но пофиг , главное ?  не пролезет
+            // if (strpos ($filscheader[$i],$languageprofile)) $keylanguage=$i;
+            // ну вот почему всегда вместо простой функции приходится городить черт знает что.
+            //  if ($filscheader[$i]==$languageprofile) $keylanguage=$i; // придется сделать по дебильному - ибо // что за ? - откуда оно взялось блджад!!!!
+         }
+         if ($keylanguage==29) $keylanguage=1; //if
+  }
+
+  //..потом добавим проверку на дебильный символ в конце любой строки с утф...вообще бы в парсере как то опознавание глючны файлов сделать
+   if ($filscdata)   {
+     //echo "<br>DEBUG Script:$cmd Key=$keylanguage Lang=$languageprofile Selected=".$filscheader[$keylanguage]."<br>";
+
+for ($i=1;$i<$filsccount;$i++) {
+   // echo "debug $i = $filscdata[$i][$keylanguage]   , key=[$keylanguage]<br>";
+    // plevel checking NOT added!!!!  graphical icon NOT released!  CFG OPT FUTURE disable all scripts not added
+    //echo "  if (".$filscdata[$i][$keylanguage]."==$cmd) <br>";
+    if ($filscdata[$i][$keylanguage].$pid===$cmd)  {
+        $plevelrequired=$filscdata[$i][3];
+        $directcommand=$filscdata[$i][2];
+     if ($debug) echo "DEBUG Command= $directcommand (rightsreq=$plevelrequired)<br>";
+    }
+//path2 redirector?
+
+if (strlen ($directcommand)<2) continue;
+$massivedynamics=0;
+if ($debug) echo "DEBUG for (i=1;i<".strlen ($directcommand).");$i++) {<br>";
+  $parsedcommand=$directcommand;
+    //echo "здесь должен быть выход ибо сцуко виснет ";
+    for ($i=1;$i<strlen ($directcommand)+5;$i++) {
+
+        $a1=strpos ($directcommand,"%",$i+0)+1;
+if ($a1) { $massivedynamics++;
+
+    $a2=strpos($directcommand,"%",0+$a1+1); //this is first   просто это первый , общественный российский.
+   
+   //echo "Try to corrent schetckik -LAAA!!!$i+$a2-1!!!!!!!new $i==$a2!!!!!!!!!!!!!!!!;<br>       ";
+
+   $oldi=$i;
+   //$i=$i+($a2-1);  почти верно
+   $i=($a2);
+   //echo "old i=$oldi  new i=$i<br>";
+   if ($oldi>$i) {
+       //echo "Logic error, breaking cycling<br>";
+       $i=$oldi;$i=100500;continue;};
+$firstcoord[$massivedynamics]=$a1;
+$lastcoord[$massivedynamics]=$a2;
+$cut=substr ($directcommand,$a1,$a2-$a1);
+$cutnow[$massivedynamics]=$cut;
+$cutwprc=substr ($directcommand,$a1-1,$a2-$a1+2);
+$cutwpercent[$massivedynamics]=$cutwprc;
+$md=$massivedynamics;
+if ($debug) echo "DEBUG Parse [$i] param=:: f=".$firstcoord[$md]." ; a2-l=".$lastcoord[$md].";- is cut=".$cutnow[$md]." = %%::<blu>".$cutwpercent[$md]."</blu> = <grn>".${$cut}."</grn><br>";
+$replaceto=${$cut};
+// fukken shit - admin.php?/   а где все остальное?  крап$parsedcommand=str_replace ($parsedcommand, $cutwprc,$replaceto, $count=1);
+$parsedcommand=str_replace ( $cutwprc,$replaceto, $parsedcommand,$count=2);
+}
+
+//al@al-desktop:/media# mencoder
+//mencoder: relocation error: mencoder: symbol codec_wav_tags, version LIBAVFORMAT_52 not defined in file libavformat.so.52 with link time reference
+
+    }
+
+    }
+
+ echo "Parsed command :: $parsedcommand<br>";
+    if ($parsedcommand) {echo " executing (if you enable system () of course )...<br>";
+    
+    $x=system ($parsedcommand);  //ping
+    $f=fopen ("_logs/cmd.log","w");
+    if ($f) fwrite ($f,$x); fclose ($f);
+    lprint ("5MIN");
+    if ($debug) echo "DEBUG $x";
+
+    }
+
+//    ob_flush () ;
+    ////exit;
+   }
+
 
 //echo "ACTION:cmd=$cmd,str ok,path ok,file=$fileforaction,pid=$pid>";// -+++-
  $path=str_replace ("\\\\","\\",$path);  // проверка на вшивость -
@@ -450,6 +552,8 @@ if (($cmd==cmsg("FMG_CPY_F"))and($prauth[$ADM][12])) {global $path2;copy($path.$
 if (($cmd==cmsg("FMG_MOV_F"))and($prauth[$ADM][12])) {global $path2;copy($path.$fileforaction,$path2.$fileforaction);unlink ($path.$fileforaction);
 echo cmsg ("MOV_END");};
 
+  if ($pr[101]) if (($cmd==cmsg("FMG_DOWNLOAD"))and($prauth[$ADM][9])) { ob_clean ();$err=sendfile ($path."/".$fileforaction);};
+  //костыль, ибо на некоторых тупых компьютерах почему то пропадает косая и соответственно файл скачать невозможно. куда она пропадает никто не знает.
 	if (($cmd==cmsg("FMG_DOWNLOAD"))and($prauth[$ADM][9])) { ob_clean ();$err=sendfile ($path.$fileforaction);};
 if ((($cmd==cmsg("FMG_UPLOAD"))and($prauth[$ADM][36]))or(($cmd==cmsg("FMG_DUMP_UPLOAD"))and($prauth[$ADM][36]))) {
 	$path=del_endslash ($path);
@@ -482,11 +586,16 @@ if ((($cmd==cmsg("FMG_SHARE"))and($prauth[$ADM][36])) OR ($coreredir=="SH_UPDD_F
 radio ("share","#GENLNK_UNREG","GENLNK_UNREG");echo "<br>";
 radio ("share","FMG_UNSHARE","FMG_UNSHARE"); echo "<br>";
 
- if (!$pr[70]) { radio ("share","GENLNK_REG","GENLNK_REG");echo "<br>";
- radio ("share","GEN_PLVL_USR","GEN_PLVL_USR");echo "<select name=groupplevels>";
+ if (!$pr[70]) { radio ("share","GENLNK_REG","GENLNK_REG");
+ if ($ADM<1) lprint ("FILE_UNAUTH_NOTE");
+ echo "<br>";
+if ($ADM>0) { radio ("share","GEN_PLVL_USR","GEN_PLVL_USR");echo "<select name=groupplevels>";
 		for ($a=0;$a<10;$a++){			echo "<option>".$a;			}
-echo "</select>";echo "<br>";
+echo "</select>";
+//if ($ADM<1) lprint ("FILE_UNAUTH_NOTE"); - check unauthorized access
+echo "<br>";
 
+ //незарегистрированные в любом случае не будут видеть список пользователей ресурса в раздаче.
 radio ("share","GENLNK_USR","GENLNK_USR");echo "<br>";
 
     echo "<select name=\"username[]\" multiple size=15>";
@@ -494,7 +603,7 @@ radio ("share","GENLNK_USR","GENLNK_USR");echo "<br>";
 	echo "<option>".$prauth[$a][0]."";$cnt++;
 }
 echo "</select>"; }
-echo "<br>";
+echo "<br>";}
 lprint (COMM);inputtext ("commfile",15,$commfile);echo "<br>";
 if ($prauth[$ADM][2]) {checkbox (1,"yes"); lprint (GEN_FL_EPX);} else { hidekey ("yes",1);};
 checkbox (1,"srchen"); lprint (GEN_FILENSRCH);
@@ -721,6 +830,23 @@ if(!$pr[75]){submitkey ("cmd","FMG_REF");
 	 submitkey ("cmd","FMG_RESET");
 }
 	 if (!$hidefolder) submitkey ("cmd","FMG_MASKAPPLY");
+ 
+         //scripting showkey mechanism
+ if ($filscdata)   {
+     echo "<br>Configured scripts:<br>";
+ 
+for ($i=1;$i<$filsccount;$i++) {
+   // echo "debug $i = $filscdata[$i][$keylanguage]   , key=[$keylanguage]<br>";
+    if ($filscdata[$i][$keylanguage]=="") continue;
+    submitkey ("cmd",".".$filscdata[$i][$keylanguage]);
+
+    }
+  //  fwrite ($a,"ID¦NAME¦Script¦Plevel¦keynames-icon¦russian¦english¦f1_russian¦f1_english¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦".$addOSenter);
+/*.*1¦mencoder %path%%file% -oac mp3lame -ovc x264 -o %path%%file%.avi¦0¦0¦перекодить в h264¦encode h264¦0¦0¦0¦0¦0
+2¦mencoder %path%%file% -oac mp3lame -ovc mpg -o %path%%file%.avi¦0¦0¦перекодить в mpeg¦encode mpeg¦0¦0¦0¦0¦0¦0
+*/
+ }
+
 		}
 
 

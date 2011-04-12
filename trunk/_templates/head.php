@@ -1,5 +1,6 @@
 <head>	<style media="all" type="text/css">@import "_templates/style/style.css";</style>
 	<script type="text/javascript" src="_templates/js/navigation.js"></script>
+      
 </head>
 <? /*
 <!--Дизайн от DeusModus, обитающего на форуме getmangos.org-->
@@ -8,7 +9,7 @@
 	<div id="container">
 	<? /*	<!-- Шапка -->*/?>
 		<div id="header">
-			<a href="#"><img src="_templates/images/logo.gif" alt="" id="logo" /></a>
+			<a href="login.php"><img src="_templates/images/logo.gif" border=0 alt="" id="logo" /></a>
 			
 			<ul id="top-navigation">
 			   <? $link="login.php"; if ($ADM>0) { $link="login.php?resetcookie=".cmsg(LOGOUT).""; } ?>
@@ -17,9 +18,10 @@
 				if ($ADM>0) lprint (LOGOUT); 
 			/* Это форма для поиска. Используй только её!
 			<form action="#" class="search">
-				<input type="text" class="text" />
-				<input type="image" src="images/but_search.gif" value="search" />
+				<input type="text" class="text" >
+				<input type="image" src="images/but_search.gif" value="search" >
 			</form>
+                        
 			*/	?></a></li>
 			</ul>
 			

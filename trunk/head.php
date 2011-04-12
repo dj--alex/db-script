@@ -131,8 +131,10 @@ function highlightTableRows(tableId, hoverClass, clickClass, multiple)
 //в режиме экономии не используется внешний файл стилей  em {
 //background-color:<?php echo$rgbtext ; ; color:<?php echo$rgbfon ; ;}
 //<link href="dbscriptstyles.css" rel="stylesheet" type="text/css"> em-invert
+//<link href="menu.css" rel="stylesheet" type="text/css">
  if (!$trafeconom) { //require ("js.inc") ;
-?> <script language="javascript" type="text/javascript">
+?> 
+<script language="javascript" type="text/javascript">
 function OM(button)
 {button.style.color="<?php echo$rgbfon?>";
 button.style.backgroundColor="<?php echo$rgbtext?>";
