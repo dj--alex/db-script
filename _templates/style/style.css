@@ -561,6 +561,7 @@ blockquote  {
 	border-style:dashed;
 	border-color: gray;
 	}
+
 table#dbmgr_edit td {
     border:0;
 	}
@@ -683,6 +684,11 @@ red {
 grn {
   color: green;
 	}
+
+blu {
+  color: blue;
+	}
+
 
 yel {
   color: yellow;

@@ -313,6 +313,8 @@ if ($cmd[0]==="help") { if ($adm==1) {
 	echo "";if ($live) echo "<font color=green id=xfnt>live</font>!!";
 			// а теперь убираем части програмного кода :)
 			echo "<br>";
+                          if ($coreSE==1) echo "You use non-commercial Dbscript 4 SE  Linux edition.";
+
 			if (strlen ($registeredto)>0) echo lprint ("REGTO")." $registeredto<br> ".cmsg ("ADM_@")." $adminmail<br>";
 			echo lprint ("YVDBS").": $yourvrs<br>";
 			if ($nokeys!=1) {

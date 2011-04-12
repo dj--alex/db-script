@@ -3,10 +3,10 @@
 // СКАЖЕМ НЕТ ШАБЛОНАМ, мы за оригинальное программирование!
 // только ломая шаблоны и стереотипы можно добится чего то нового.
 //if (!$languageprofile) $languageprofile="english";
-$verinst="Install v4.3.01 (c) dj--alex";// service hide
+$verinst="Install v4.3.33 (c) dj--alex";// service hide
 //error_reporting (E_ALL);
 //ini_set('error_reporting',E_ALL^E_NOTICE);
-$ei="<img src=\"_ico/error.gif\">";
+$ei="<img src=\"_ico/errorcritical.png\">";
 echo "Starting install process dbscript. <br> Module: $verinst<br>";
 if ($_POST["step"]<1) {echo "Checking ini<br><div style=\"position:absolute; z-index:4;  top:0; right:0; color: #FFFFFF ; background: #0000aF \"><img src=\"_style/dbsDeusModuslogo.jpg\"></div>";
     //переписать msgexiterror  c учётом функции window и вообще сделать там наконец возможность менять размер окна и возможно перемещать его.
@@ -19,9 +19,11 @@ $phpfunc=ini_get ("disable_function");if ($phpfunc) echo "$ei notify: disabled f
 if (!extension_loaded('iconv')) echo " $ei Warning : php extension iconv non-exist !  <br>";
 if (!extension_loaded('mb_string')) echo "$ei Warning : php extension mb_string non-exist !  <br>";
 if ( (!extension_loaded('mb_string')) AND (!extension_loaded('iconv'))) echo "$ei  Error: Dbscript need an php encoder - iconv or mb_string. Without it you cant use encoding functions and/or get bugs .<br>";
+//require aa
 if (!extension_loaded('Zend Optimizer')) {echo "$ei <font color=red>Fatal error</font>: extension Zend optimizer not installed.<br> It requires to load core for Dbscript 4.x versions, and not for Dbscript 3.6<br>";
- echo "Note: Zend optimizer for php 5.3 support is incompactible encoding algorithm but you can try";
- echo "( <a href=\"http://wow.chg.su/dbs/filemgr.php?c=b0677ebb08935b316728f8be57242912\"> this</a>)<br>";
+//echo "Note: If you have Dbscript Open SE version , just ignore this message and click <Next>.";
+echo "Note: Zend optimizer for php 5.3 support is incompactible encoding algorithm.";
+ //echo "( <a href=\"http://wow.chg.su/dbs/filemgr.php?c=b0677ebb08935b316728f8be57242912\"> test core</a>)<br>";
  echo "Try visit official Zend site or download from mirror your version<br>";
  echo "<a href=\"http://wow.chg.su/inside/filemgr.php?c=7ed44827378124d7394f207ba7eff8f3\" >Zend optimizer 3.3.9 32bit Linux</a> *";
  echo "<a href=\"http://wow.chg.su/dbs/filemgr.php?c=a263ea383a7feaaa052fbb91bb261db0\" >Zend optimizer 3.3.9 64bit Linux</a><br>";
@@ -29,13 +31,16 @@ if (!extension_loaded('Zend Optimizer')) {echo "$ei <font color=red>Fatal error<
  echo " If you need version without Zend optimizer - get not optimized version here <br>";
  echo "( <a href=\"http://wow.chg.su/dbs/filemgr.php?c=9b848fa952e76e70ce7ddf9a1c9e7593\">Dbscript 3.6.12 SE</a>)<br>";
  echo "( <a href=\"http://wow.chg.su/dbs/filemgr.php?c=c81e60a9ea8998dcb5c7a427adbfea80\">Dbscript 4.1.75 SE</a>)<br>";
+  echo "<b><br> <a href=\"install.php?nozend=1\">Next:: Restart as is (without encoder)</a><br></b>";
+ echo "<br> <a href=\"install.php?lightcore=1\">event LC (only for dev)</a><br>";
+//echo "fcuk";echo $_GET["lightcore"]; echo "<br>";
+ if ($_GET["lightcore"]=="1") lightcore ();
+
  if ($_GET["nozend"]!=1) exit;
 // echo "<a href=\"http://wow.chg.su/inside/filemgr.php?c=7ed44827378124d7394f207ba7eff8f3\" >Zend optimizer 3.3.9 win32</a>";
 
 };
 
-//echo "fcuk";echo $_GET["lightcore"]; echo "<br>";
- if ($_GET["lightcore"]=="1") lightcore ();
 
 //$silent=1;
 if ($phpsafe){ $phpmaxtime= ini_get ("max_execution_time"); if ($phpmaxtime<60) echo "safe_mode : settings : php.ini : max_execution time <60. Safe mode not allows me set time automatically. Change one of settiongs pleaxe.<br>";
@@ -46,10 +51,12 @@ if ($_POST["step"]<1) {;};
 echo "Loading core...";
 //echo "step $step G ".$_GET["step"]." P".$_POST["step"]."<br>";;
 if ($_GET["step"]>0) {echo "Invalid initializing..."; exit;}
-$nomnu=1;$coreloadskip=1; $debugmode=false;
-$installermode=1;// locks default language to english
-$nolayer=1;// убираем внешние окошким
 
+$nomnu=1;//блокирует вывод интерфейса программы
+$coreloadskip=1; //блокирует загрузку и проверку настроек ядром программы.
+$debugmode=false;// отключение показа сообщений об ошибках
+$installermode=1;// locks default language to english  выключает поддержку lang.cfg соответственно все коды возвращаемые им будут неверными.
+$nolayer=1;// убираем внешние окошким
 require ('dbscore.lib'); // i/o file  INCLUDED!
 
 @$onloadlocal=opendir ("_conf");
@@ -243,36 +250,41 @@ if ($data==-1) {
 $pgheader="0-pageent1¦1page¦2¦russian¦4exchpage¦english¦6redirect0-no1-y2-sp¦7reditime¦8menulevel-1op-2cl¦9skipmenudmstyle¦10openmenu3";
 $pgplevel="¦¦¦¦¦d¦d¦d¦d¦d¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
 if ($languageprofile=="russian") 
-{$p[]="0¦admin.php¦0¦Конфигурация¦0¦Admin¦Конфигурация";
-$p[]="0¦admin.php¦0¦Конфигурация¦0¦Admin¦Конфигурация";// writefullcsv почему то глотает первую строку иноогда
-$p[]="1¦login.php¦0¦Вход¦0¦Enter¦Вход¦¦0¦1";
-$p[]="2¦w.php¦0¦Редактор¦0¦Editor¦Редактор";
-$p[]="3¦getfile.php¦0¦Поиск¦0¦Search¦Поиск";
-$p[]="4¦r.php?viewid=.ver&base=0¦0¦Версия¦0¦Version¦Версия¦¦0¦1¦1¦";
-//$p[]="5¦admin.php?cmd=note¦0¦блокнот¦¦Shared notes¦Общий блокнот¦";
-$p[]="5¦admin.php?cmd=test¦0¦Самотест¦¦Self-test¦Самотест¦¦0¦1¦1";
-$p[]="6¦filemgr.php¦0¦Файлы¦¦Filemanager¦Файлы¦";
-$p[]="8¦dblinker.php¦0¦Менеджер баз¦0¦DB manager¦Менеджер баз¦¦";
-$p[]="14¦admin.php?cmd=myprof¦0¦Мой профиль¦0¦My profile¦Мой профиль¦¦1¦0¦0";
-$p[]="9¦r.php?vID=.author&base=0¦0¦О авторе¦¦Author¦О авторе¦¦1¦0¦0";
-$p[]="11¦r.php?viewid=.info&base=0¦¦Инфо о мне¦¦About me¦Инфо о мне¦¦1¦0¦0";
+{$p[]="0¦admin.php¦0¦Конфигурация¦0¦Admin¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="0¦admin.php¦0¦Конфигурация¦0¦Admin¦0¦0¦0¦0¦0¦0¦0¦0";// writefullcsv почему то глотает первую строку иноогда
+$p[]="1¦login.php¦0¦Вход¦0¦Enter¦Вход¦¦0¦1¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="2¦w.php¦0¦Редактор¦0¦Editor¦Редактор¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="3¦getfile.php¦0¦Поиск¦0¦Search¦Поиск¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="4¦r.php?viewid=.ver&base=0¦0¦Версия¦0¦Version¦Версия¦¦0¦1¦1¦¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="5¦filemgr.php¦0¦Файлы¦¦Filemanager¦Файлы¦¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="6¦dblinker.php¦0¦Менеджер баз¦0¦DB manager¦Менеджер баз¦¦¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="7¦admin.php?cmd=myprof¦0¦Мой профиль¦0¦My profile¦Мой профиль¦¦1¦0¦Настройки¦0¦0¦0¦0";
+$p[]="8¦r.php?viewid=.info&base=0¦¦Инфо о мне¦¦About me¦Инфо о мне¦¦0¦0¦0";
+$p[]="9¦r.php?vID=.author&base=0¦0¦О авторе¦¦Author¦О авторе¦¦3¦0¦0";
+$p[]="11¦news.php¦¦Блог¦¦Blog¦d¦d¦1¦0¦Beta¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="12¦nedit.php¦qwe¦Добавить новость¦¦Blog-edit¦d¦d¦0¦0¦¦0¦0¦0¦0";
+$p[]="13¦admin.php?cmd=note¦0¦блокнот¦¦Shared notes¦Общий блокнот¦¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="14¦admin.php?cmd=test¦0¦Самотест¦¦Self-test¦Самотест¦¦0¦0¦0¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="15¦http://code.google.com/p/db-script/issues¦qweqwe¦Сообщить о баге в SVN¦1¦Send bug message¦3¦2¦d¦0¦0¦0¦0¦0";
 //$p[]="13¦r.php?vID=.aboutme&base=0¦0¦Мои данные¦0¦User info¦Мои данные";
-
 }
 if ($languageprofile!=="russian") 
-{$p[]="0¦admin.php¦0¦Admin¦0¦Admin¦Конфигурация";
-$p[]="0¦admin.php¦0¦Admin¦0¦Admin¦Конфигурация";// writefullcsv почему то глотает первую строку иноогда
-$p[]="1¦login.php¦0¦Вход¦0¦Enter¦Вход¦¦0¦1";
-$p[]="2¦w.php¦0¦Редактор¦0¦Editor¦Редактор";
-$p[]="3¦getfile.php¦0¦Поиск¦0¦Search¦Поиск";
-$p[]="4¦r.php?viewid=.ver&base=0¦0¦Версия¦0¦Version¦Версия¦¦0¦1¦1¦";
-//$p[]="5¦admin.php?cmd=note¦0¦блокнот¦¦Shared notes¦Общий блокнот¦";
-$p[]="5¦admin.php?cmd=test¦0¦Самотест¦¦Self-test¦Самотест¦¦0¦1¦1";
-$p[]="6¦filemgr.php¦0¦Файлы¦¦Filemanager¦Файлы¦";
-$p[]="8¦dblinker.php¦0¦Менеджер баз¦0¦DB manager¦Менеджер баз¦¦";
-$p[]="14¦admin.php?cmd=myprof¦0¦Мой профиль¦0¦My profile¦Мой профиль¦¦1¦0¦0";
-$p[]="9¦r.php?vID=.author&base=0¦0¦О авторе¦¦Author¦О авторе¦¦1¦0¦0";
-$p[]="11¦r.php?viewid=.info&base=0¦¦Инфо о мне¦¦About me¦Инфо о мне¦¦1¦0¦0";
+{$p[]="0¦admin.php¦0¦Admin¦0¦Admin¦Конфигурация¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="0¦admin.php¦0¦Admin¦0¦Admin¦Конфигурация¦0¦0¦0¦0¦0¦0¦0¦0";// writefullcsv почему то глотает первую строку иноогда
+$p[]="1¦login.php¦0¦Вход¦0¦Enter¦Вход¦¦0¦1¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="2¦w.php¦0¦Редактор¦0¦Editor¦Редактор¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="3¦getfile.php¦0¦Поиск¦0¦Search¦Поиск¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="4¦r.php?viewid=.ver&base=0¦0¦Версия¦0¦Version¦Версия¦¦0¦1¦1¦¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="5¦filemgr.php¦0¦Файлы¦¦Filemanager¦Файлы¦¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="6¦dblinker.php¦0¦Менеджер баз¦0¦DB manager¦Менеджер баз¦¦¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="7¦admin.php?cmd=myprof¦0¦Мой профиль¦0¦My profile¦Мой профиль¦¦1¦0¦Settings¦0¦0¦0¦0";
+$p[]="8¦r.php?viewid=.info&base=0¦¦Инфо о мне¦¦About me¦Инфо о мне¦¦0¦0¦0";
+$p[]="9¦r.php?vID=.author&base=0¦0¦О авторе¦¦Author¦О авторе¦¦3¦0¦0";
+$p[]="11¦news.php¦¦Блог¦¦Blog¦d¦d¦1¦0¦Beta¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="12¦nedit.php¦qwe¦Добавить новость¦¦Blog-edit¦d¦d¦0¦0¦¦0¦0¦0¦0";
+$p[]="13¦admin.php?cmd=note¦0¦блокнот¦¦Shared notes¦Общий блокнот¦¦0¦0¦0¦0¦0¦0¦0¦0";
+$p[]="14¦admin.php?cmd=test¦0¦Самотест¦¦Self-test¦Самотест¦¦¦0¦0¦0¦0¦0¦0¦0";
+$p[]="15¦http://code.google.com/p/db-script/issues¦qweqwe¦Сообщить о баге в SVN¦1¦Send bug message¦3¦2¦d¦0¦0¦0¦0¦0";
 //$p[]="13¦r.php?vID=.aboutme&base=0¦0¦Мои данные¦0¦User info¦Мои данные";
 
 
@@ -294,26 +306,26 @@ $stheader="style¦properties¦rgbfon¦rgbtext¦¦";
 $stplevel="0¦0¦0¦0¦0¦";
 $p[]="Default¦dbew_b¦ffffff¦000000¦¦";
 $p[]="Default¦dbew_b¦ffffff¦000000¦¦"; // если везде эта ошибка с глотанием нулевой строки то убрать ее
-$p[]="Черный, русский¦dbr_b¦333333¦ffffff¦¦";
-$p[]="Белый, русский¦dbrw_b¦ffffff¦000000¦¦";
-$p[]="White, English¦dbew_b¦ffffff¦000000¦¦";
-$p[]="Black, English¦dbe_b¦333333¦ffffff¦¦";
-$p[]="Матрица, Русский¦dbs_b¦333333¦00EE00¦¦";
-$p[]="жесть¦dbrw_b¦ffff00¦dddd00¦¦";
-$p[]="пустой¦пустой¦ffffff¦000000¦¦";
-$p[]="красный, русский¦dbr_b¦aa0000¦ffffff¦¦";
-$p[]="Синий, русский¦dbr_b¦000066¦ffffff¦¦";
-$p[]="cyan_blue_rus¦dbrw_b¦55AAEE¦000055¦¦";
-$p[]="cyan_blue_eng¦dbew_b¦ccaa44¦441111¦¦";
+$p[]="Black_r¦dbr_b¦333333¦ffffff¦¦";
+$p[]="White_r¦dbrw_b¦ffffff¦000000¦¦";
+$p[]="White¦dbew_b¦ffffff¦000000¦¦";
+$p[]="Black¦dbe_b¦333333¦ffffff¦¦";
+$p[]="Matrix¦dbs_b¦333333¦00EE00¦¦";
+$p[]="O_o¦dbrw_b¦ffff00¦dddd00¦¦";
+$p[]="empty¦пустой¦ffffff¦000000¦¦";
+$p[]="red¦dbr_b¦aa0000¦ffffff¦¦";
+$p[]="blue¦dbr_b¦000066¦ffffff¦¦";
+$p[]="cyan_blue_r¦dbrw_b¦55AAEE¦000055¦¦";
+$p[]="cyan_blue_e¦dbew_b¦ccaa44¦441111¦¦";
 $p[]="green_blue¦dbrw_b¦55AA00¦000055¦¦";
 $p[]="contrast¦dbrw_b¦000000¦ffffff¦¦";
 $p[]="salatov¦dbrw_b¦99FF22¦333333¦¦";
 $p[]="fiolet¦dbrw_b¦4b5fac¦11ffff¦¦";
 $p[]="desktoptree¦dbrw_b¦ccaa44¦441111¦¦";
-$p[]="green_blue, English¦dbew_b¦55AA00¦000055¦¦";
-$p[]="contrast, English¦dbew_b¦000000¦ffffff¦¦";
-$p[]="salatov, English¦dbew_b¦99FF22¦333333¦¦";
-$p[]="fiolet, English¦dbew_b¦4b5fac¦11ffff¦¦";
+$p[]="green_blue¦dbew_b¦55AA00¦000055¦¦";
+$p[]="contrast¦dbew_b¦000000¦ffffff¦¦";
+$p[]="salatov¦dbew_b¦99FF22¦333333¦¦";
+$p[]="fiolet¦dbew_b¦4b5fac¦11ffff¦¦";
 $p[]="desktoptree, English¦dbew_b¦ccaa44¦441111¦¦";
 $p[]="desktoptree_en¦ae¦ccaa44¦441111¦¦";
 $p[]="desktoptree_ru¦ar¦ccaa44¦441111¦¦";
@@ -327,6 +339,28 @@ $stcontent=splitcfgline ($stcontent);
 $err.=writefullcsv ($tempdescr,$stheader,$stplevel,$stcontent);$edit=0;
 //writing styles
 }
+
+
+//reading filescripts
+$filbas="_conf/filescript.cfg";
+@$filescripts=csvopen ($filbas,"r",0);$data=readfullcsv ($filescripts,"new");
+if ($data==-1) {
+$filescriptheader="ID¦NAME¦Script¦Plevel¦keynames-icon¦russian¦english¦f1_russian¦f1_english¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
+$filescriptplevel="0¦d¦0¦0¦0¦0¦0¦d¦0¦0¦0¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d0¦0¦0¦0¦0¦";
+$p[]="0¦¦mencoder %path%%file% -oac mp3lame -ovc x264 -o %path%%file%.avi¦0¦0¦перекодить в h264¦encode h264¦0¦0¦0¦0¦0¦";
+$p[]="1¦¦mencoder %path%%file% -oac mp3lame -ovc x264 -o %path%%file%.avi¦0¦0¦перекодить в h264¦encode h264¦0¦0¦0¦0¦0¦";
+$p[]="2¦¦mencoder %path%%file% -oac mp3lame -ovc mpg -o %path%%file%.avi¦0¦0¦перекодить в mpeg¦encode mpeg¦0¦0¦0¦0¦0¦0¦"; // если везде эта ошибка с глотанием нулевой строки то убрать ее
+$filescriptcontent=$p;$p="";
+//почему то данные не сохраняются в скрипте - только шапка - все остальное теряется.
+
+	 @$tempdescr=csvopen ("_conf/filescripts.cfg","w",1);
+$filescriptheader=splitcfgline ($filescriptheader);
+ $filescriptplevel=splitcfgline ($filescriptplevel);
+$filescriptcontent=splitcfgline ($filescriptcontent);
+$err.=writefullcsv ($tempdescr,$filescriptheader,$filescriptplevel,$filescriptcontent);$edit=0;
+//writing filescripts
+}
+
 
 $filbas="_conf/gmdata.cfg";
 @$gmdata=csvopen ($filbas,"r","0");$data=readfullcsv ($gmdata,"new");
@@ -344,7 +378,7 @@ $prauth[$ADMM][0]=stripslashes ($LOGINUSER); 			$prauth[$ADMM][1]=hashgen ($PASS
 $prauth[$ADMM][15]=$prauth[$ADMM][0];$prauth[$ADMM][22]=$lang;
 $prauth[$ADMM][21]="Default";$prauth[$ADMM][10]=10;
 
- //блядь да чтож такое  сука тупорылые переменные нихера не желают ничего запоминать!!!!!!!!!!!
+ 
  if ($OSTYPE=="LINUX") $prauth[$ADMM][199].="sayfuck\n";
  //$prauth[$ADMM][198]=$prauth[$ADMM][198]."sayfuck2\n"; $prauth[$ADMM][199]="199sayfuck2\n"; $prauth[$ADMM][200]="200fuck\n";
 $prauth[1]=$prauth[0];// eto i est sohranenie!!!!!!!!!!!!!!!!!!!!1111
@@ -388,9 +422,14 @@ $dbheader=splitcfgline ($dbheader);
 $err.=writefullcsv ($tempdescr,$dbheader,$dbplevel,$prdbdata);$edit=0;
 //writing dbdata
 }
-if ($languageprofile!=="russian") $sitedata="dbslogo.gif¦Welcome string.¦1¦80% Nimbus Roman No9 L¦by name¦by code¦by code2¦showall¦¦¦¦0¦999¦¦root¦localhost¦Dbscript¦¦512¦".$encodingforce."¦main fields¦select field¦all fields¦by comm¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
+if ($languageprofile!=="russian") $sitedata="dbslogo.gif¦Welcome string.¦1¦80% Nimbus Roman No9 L¦by name¦by code¦by code2¦showall¦¦¦¦0¦999¦¦root¦localhost¦Dbscript¦¦512¦".$encodingforce."¦main fields¦select field¦all fields¦by comm¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
 if ($languageprofile=="russian") $sitedata="dbslogo.gif¦Добро пожаловать в наш сервис. Выберите базу и способ поиска и введите название объекта поиска.¦1¦80% Nimbus Roman No9 L¦по названию¦по коду ¦по названию2¦отобразить всё¦mp3pereim.php¦127.0.0.1¦D:/system/www/dj/filemgr/¦0¦999¦¦root¦localhost¦Dbscript¦¦2048¦".$encodingforce."¦по важным полям¦выбрать поле¦по всем полям¦по комментариям¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
-$property="4.0¦4.0¦1¦1¦1¦1¦¦1¦1¦¦¦¦1¦¦¦0¦¦¦¦¦¦¦1¦1¦1¦¦1¦50¦default¦1¦1¦1¦1¦1¦¦1¦¦1¦1¦/media/D/¦1000¦¦html,gif,bmp,png¦127.0.0.1¦20¦1¦1¦on¦¦on¦¦¦on¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
+   //patch for windows-1251 menu editing in utf-8 mode
+//    ?/if (($encodingforce=="utf-8")AND(1==1)) $sitedata=iconv("windows-1251","utf-8",$sitedata);
+    //if (($encodingforce=="utf-8")AND(1==1)) $sitedata=iconv("utf-8","windows-1251",$sitedata);// FUUUUU  ??????  или кракозябры - что лучше??
+$property="".$verchar."¦".$verchar."¦1¦1¦1¦1¦¦1¦1¦¦¦¦1¦¦¦0¦¦¦¦¦¦¦1¦1¦1¦¦1¦50¦default¦1¦1¦1¦1¦1¦¦1¦¦1¦1¦/media/D/¦1000¦¦html,gif,bmp,png¦127.0.0.1¦20¦1¦1¦on¦¦on¦¦¦on¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
+ //patch for windows-1251 menu editing in utf-8 mode
+    //if (($encodingforce=="utf-8")AND(1==1)) $property=iconv("windows-1251","utf-8",$property);
 $sd=explode ("¦",$sitedata);
 $pr=explode ("¦",$property);
 	$sd[14]=$LOGINSQL;
@@ -511,11 +550,10 @@ if ($step) {echo "</form>";	closewindow();}
 ob_flush ();
 
 //============================================//
-exit;
 
 ///Понятно,что предки приносили в жертву девственниц Они были не дураки, чтобы жертвовать теми кто даёт
 
-function lightcore () { // непроверено!!!  не добавлять в ядро!!
+function lightcore () { // проверено!!!  не добавлять в ядро!!
  //echo "Lightcore clean start <br>";
  if (!file_exists("adminc.php")) {copy ("admin.php","adminc.php");
  cleancodex ("admin.php","//SYSTEM KEY_START","//SYSTEM KEY_END");};
@@ -550,6 +588,33 @@ $datafile = fopen ($file,"w") or die ("Не удалось записать, извините.");
 //echo ("<a href=\"adminf.php\">Ваш файл тут.</a> Не забудьте нажать F5 для обновления.");
 }
 
+if ($licenseprint) {
+?><br><b><i>License info</i></b>
+<br><br>
+  <b>Dbscript 4 SE<br></b>
+<br>
+Special Edition is open source and licensed as MPL 1.1 . This means you can freely use, distribute and sell it. You can also add modifications with condition that these modifications are published under the same license. Also, you can embed it to bigger projects which can use other licenses.
+<br>
+The source code is manged at SVN.
+<br>
+We do not offer warranty or official support for CE but keep an eye on forum at all times.
+Some versions have disabled support win32.
+<br><br>
+ <b>Dbscript 4 EE</b>
+<br>
+Enterprise Edition is sold as annual service level agreement (SLA)???? covering commercial product code, problem solving, support and consultation about product usage, installation, upgrading, development.
+<br>
+Although the functionality is comparable to Community Edition, each release of Enterprise Edition is thoroughly tested by Saurus. Also the release cycle is much more conservative.
+<br>
+The EE pricing depends on the service volume, time and number of sites covered.
+EE source code is currently closed as it contains commercial modules. We are in process of re-packaging them as extensions - when done, EE code will be open sourced.
+
+Add-ons
+<br>
+Additional functionality for both EE and CE is available as extensions. Currently some functionality embedded as modules still only work for EE.
+<br>
 
 
+<?
+}
 ?>
