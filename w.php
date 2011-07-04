@@ -83,7 +83,7 @@ if ($pr[37]) {// analog in getfile
 
         $grouplist2=groupdbfielddetect ($prdbdata,6);// set IP as field
         $groupdbthisname="ipfilter";// in future - add this variable to f
-        groupdbprint ($grouplist2,"IP",$prdbdata,$tbl,$ipfilter);// IP CFG OPT FUTURE groupdbfielddetect
+        groupdbprint ($grouplist2,"IP",$prdbdata,$tbl,$ipfilter);// IP CFG OPT FUTURE  TODO: groupdbfielddetect
 	submitkey ("write","SELECT");
 	if ($prauth[$ADM][2]) submitkey ("live","LIVEMOD");echo "*";
  	if ($live) echo "in future release!";  // 		hidekey ("live",$live);  STATEMENT LOST
@@ -106,6 +106,7 @@ if ($write==cmsg ("KEY_CFG")) {
  	submitkey ("write","CF_DWORD");	submitkey ("write","CF_PAGES");
 	submitkey ("write","CF_STYL");	submitkey ("write","CF_LSET");
         submitkey ("write","CF_SRV");	if ($prauth[$ADM][42]) submitkey ("write","CF_CMD");
+        if ($prauth[$ADM][42]) submitkey ("write","CF_FSCR");
         exit;
 }
 
@@ -148,7 +149,7 @@ $modeselectsimilartable=$pr[53];
 		$prdbdata[$tbl][5]=$tab;		$prdbdata[$tbl][0]=$tab;
 		$prdbdata[$tbl][1]=$tab;		$prdbdata[$tbl][6]=$mainhostmysql; //6 
 		$prdbdata[$tbl][9]=$dblk;$errorredirectdb=1;}
-		//подставка значений вместо данных из dbdata CFG OPT FUTURE - возможно переключение 2 режимов
+		//подставка значений вместо данных из dbdata CFG OPT FUTURE  TODO: - возможно переключение 2 режимов
 		} 
 		//if (($prdbdata[$a][5]===$tblk)AND($errorredirectdb==false)) { $tbl="";$errorredirecttb=1;} // 
 if ($cmd=="sql") {
@@ -188,6 +189,7 @@ if ($prauth[$ADM][2]) {  //модуль совместимости с conf файлами.
 	if ($write==cmsg ("CF_LSET")) {$tbl="langset";$namebas=$tbl;};// dalee chastx from libmysql
         if ($write==cmsg ("CF_SRV")) {$tbl="srvlst";$namebas=$tbl;};// dalee chastx from libmysql
         if ($prauth[$ADM][42]) if ($write==cmsg ("CF_CMD")) {$tbl="cmdlines";$namebas=$tbl;};// dalee chastx from libmysql
+        if ($prauth[$ADM][42]) if ($write==cmsg ("CF_FSCR")) {$tbl="filescript";$namebas=$tbl;};// dalee chastx from libmysql
 	//require_once ("_sys/rfsysdatareq.php");
 	rfsysdatareq ();
         $encode="windows-1251";$prdbdata[$tbl][21]=$encode; // кодировка не меняется !!
@@ -244,13 +246,13 @@ submitkey ("write","KEY_DEL");
  if (($prauth[$ADM][23]==true)or($cfgmod==1)) submitkey ("write","KEY_VIEW");	
 submitkey ("write","KEY_COMM");
  
-if ($prauth[$ADM][6]) { submitkey ("write","KEY_HEAD");}; //CFG OPT FUTURE!
+if ($prauth[$ADM][6]) { submitkey ("write","KEY_HEAD");}; //CFG OPT FUTURE  TODO:!
 if ($prauth[$ADM][10]) { submitkey ("write","KEY_AN");  };
-if ($prauth[$ADM][35]) { submitkey ("write","KEY_MASEXC");submitkey ("write","A_IMPEXP"); };  //CFG OPT FUTURE!
-if (($prauth[$ADM][35])AND(!$cfgmod)) { submitkey ("write","KEY_MASCPY"); };  //CFG OPT FUTURE!
-if (($prauth[$ADM][35])AND(!$cfgmod)and($prdbdata[$tbl][12]!="fdb")) { submitkey ("write","KEY_SHOWCODE"); };  //CFG OPT FUTURE!
-if (($prauth[$ADM][34])and($prdbdata[$tbl][12]!="fdb")) { submitkey ("write","KEY_EXECUTE"); };  //CFG OPT FUTURE!
-if (($prauth[$ADM][43])and($prdbdata[$tbl][12]!="fdb")) { submitkey ("write","BACKUPS"); };  //CFG OPT FUTURE!
+if ($prauth[$ADM][35]) { submitkey ("write","KEY_MASEXC");submitkey ("write","A_IMPEXP"); };  //CFG OPT FUTURE  TODO:!
+if (($prauth[$ADM][35])AND(!$cfgmod)) { submitkey ("write","KEY_MASCPY"); };  //CFG OPT FUTURE  TODO:!
+if (($prauth[$ADM][35])AND(!$cfgmod)and($prdbdata[$tbl][12]!="fdb")) { submitkey ("write","KEY_SHOWCODE"); };  //CFG OPT FUTURE  TODO:!
+if (($prauth[$ADM][34])and($prdbdata[$tbl][12]!="fdb")) { submitkey ("write","KEY_EXECUTE"); };  //CFG OPT FUTURE  TODO:!
+if (($prauth[$ADM][43])and($prdbdata[$tbl][12]!="fdb")) { submitkey ("write","BACKUPS"); };  //CFG OPT FUTURE  TODO:!
 
 if ($prauth[$ADM][43]) {
      submitkey ("write","KEY_COMPARE"); submitkey ("write","KEY_MACRO");echo "<br>"    ;};
@@ -483,7 +485,7 @@ if (($write==cmsg ("KEY_EDIT"))AND($prdbdata[$tbl][12]=="fdb")) {
 //	echo "dEBUG vID2=$vID2 virtualid=$virtualid<br>";
 	echo "<br>";
 			$data=readdescripters ();  if ($data==-1) exit;
-                        $mycolvirtualname=$data[3]; if (strlen ($mycolvirtualname[0])<1) $mycolvirtualname=$mycol;// CFG OPT FUTURE
+                        $mycolvirtualname=$data[3]; if (strlen ($mycolvirtualname[0])<1) $mycolvirtualname=$mycol;// CFG OPT FUTURE  TODO:
         if ($virtualid=="") $vID2=""; // затычка , т.к. нам присылают второй ид а он нам не нужен вроде бы
 	$mycol=xfgetcsv ($f,$xfgetlimit,"¦");// $z to mycol  other $z is dupl and changed to myrow
 	if ($cfgmod==1) $mycol=$data[0];
@@ -532,7 +534,7 @@ if ($oldcoreedit)
 			echo "<td>$mycolvirtualname[$a] ";
 			if ($mycol[$md2column]===$mycol[$a]) echo "<ii><bb>(ID1)</ii></bb>";
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii><bb>(ID2)</ii></bb>";
-		$lensa=strlen ($myrow[$a])+2;// CFG OPT FUTURE 
+		$lensa=strlen ($myrow[$a])+2;// CFG OPT FUTURE  TODO: 
 		if ($lensa>50) $lensa=50;
 			?>
 			</td>
@@ -571,7 +573,7 @@ if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
 			for ($a=0;$a<$cnt;$a++)
 			{
 	$myrow[$a]=${"z".$a};//принимаем данные юзераъ
-        // внимание, именно тут надо отлавливать enter присланный юзером !!! cfg opt future
+        // внимание, именно тут надо отлавливать enter присланный юзером !!! CFG OPT FUTURE  TODO:
         //patch for windows-1251 menu editing in utf-8 mode   - writing mod
         if ($enablewin32enctooldmenu)  if (($sd[19]=="utf-8")AND($encode=="windows-1251")) { $myrow[$a]=iconv("utf-8","windows-1251",$myrow[$a]); $noenter=1 ;};
     //$x=getidbyid ($prauth,0,"realid",$myrow[0]);// это имя редактируемого пользователя
@@ -664,7 +666,7 @@ if ($oldcoreedit)
 			echo "<td>$mycolvirtualname[$a] ";// перевести
 			if ($mycol[$md2column]===$mycol[$a])  {echo "<ii>(ID1)</ii>"; $myrow[$a]=($maximalcntmd2+1);};
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii><bb>(ID2)</ii></bb>";
-		$lensa=strlen ($myrow[$a])+2;// CFG OPT FUTURE
+		$lensa=strlen ($myrow[$a])+2;// CFG OPT FUTURE  TODO:
 		if ($lensa>50) $lensa=50;
 			?>
 			</td>
@@ -1084,7 +1086,7 @@ lprint ("REQ_TIME");
 if ($write=="WF_BCK_UNARCH") {
 	echo "Server:".$prdbdata[$tbl][6]." (autodetect)<br>";
 	echo "Restoring from -live- backup <br>";
-set_time_limit(0);// CFG OPT FUTURE?
+set_time_limit(0);// CFG OPT FUTURE  TODO:?
 //echo $sd[14].$sd[17];
 $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 if ($newdb) $dest=$newdb;
@@ -1114,7 +1116,7 @@ submitkey ("start","START");
 // модуль создания живого бэкапа
 //CREATING DUMP AT SQL SIDE AS COPY SQL DATABASE
 if (($start)AND($backupdbname)AND ($prdbdata[$tbl][12]!="fdb")) {echo "Создается -живой- бэкап $backupdbname...<br>";
-set_time_limit(0);// CFG OPT FUTURE?
+set_time_limit(0);// CFG OPT FUTURE  TODO:?
 @$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	copydatabase ($prdbdata[$tbl][9],$backupdbname,$connect);
  $action="DB_COPY ".$prdbdata[$tbl][9].".".$backupdbname.".".$connect." ";logwrite ($action);		
@@ -1125,7 +1127,7 @@ set_time_limit(0);// CFG OPT FUTURE?
 /// /CREATING DUMP AND EXECUTING AT REMOTE SERVER   NA - NOT USED TMP
 if (($write==cmsg("WF_BCK_TRANS"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	@$connect2 = dbs_connect ($mysqlserver2,$sd[14],$sd[17],$dbtype);
-	 set_time_limit(0);// CFG OPT FUTURE?
+	 set_time_limit(0);// CFG OPT FUTURE  TODO:?
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
 	 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$dumpdbname="backup"; // backup+DATABASEname-opt+data-opt+text-opts;
@@ -1241,7 +1243,7 @@ $action="WF_BCK_TRANS;SQL_REM_START $dumpdbname-->$dumpfile -l $lines -t $table 
 
 //MENU DBS SIDE DUMP 
 if (($write==cmsg("WF_BCK_FILEDUMP_ARCH"))AND ($prdbdata[$tbl][12]!="fdb")) {
-	 set_time_limit(0);// CFG OPT FUTURE?  backup restore   
+	 set_time_limit(0);// CFG OPT FUTURE  TODO:?  backup restore   
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
 	 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$dumpdbname="backup"; // backup+DATABASEname-opt+data-opt+text-opts;
@@ -1277,7 +1279,7 @@ if (($write==cmsg("WF_BCK_COPYTBL_UNARCH"))AND ($prdbdata[$tbl][12]!="fdb")) {
 
 //MENU SQL SIDE ;Сделать копии таблиц SQL
 if (($write==cmsg("WF_BCK_COPYTBL_ARCH"))AND ($prdbdata[$tbl][12]!="fdb")) {
-	 set_time_limit(0);// CFG OPT FUTURE?
+	 set_time_limit(0);// CFG OPT FUTURE  TODO:?
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
 	 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$dumpdbname="backup"; // backup+DATABASEname-opt+data-opt+text-opts;
@@ -1300,7 +1302,7 @@ submitkey ("start","SQL_BCK");
 
 //CREATING DUMP AT SQL SIDE AS FILETABLES
 if (($start==cmsg ("SQL_BCK"))AND($dumpdbname)AND ($prdbdata[$tbl][12]!="fdb")) {
-	set_time_limit(0);// CFG OPT FUTURE?
+	set_time_limit(0);// CFG OPT FUTURE  TODO:?
 	echo cmsg (W_CRT_DMP)." $dumpdbname...<br>";
 	echo "Режим: SQL side<br>";
 @$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
@@ -1370,7 +1372,7 @@ for ($a=0;$a<count ($tablelist);$a++) {
 	if (($onetable)AND($tablelist[$a]!==$prdbdata[$source][5])) continue;
         // безопасный метод делать дампы. рекомендуется использовать только его  зип пока не поддерживается. 
         if ($mysqldump) { 
-            fclose ($dumpfile);@unlink ($dumpfile); // CFG OPT FUTURE -  некогда ща это править
+            fclose ($dumpfile);@unlink ($dumpfile); // CFG OPT FUTURE  TODO: -  некогда ща это править
             $filetowrite="_local/dump/".$dumpdbname.$date;
             //if ($OSTYPE=="LINUX") if ($zip) $sys.="| gzip -c ".$filetowrite.".sql.gz";//'date "+%Y-%m-%d"'
             $sys="mysqldump -u ".$sd[14]." -p".$sd[17]." ".$prdbdata[$tbl][9]." --routines > ".$filetowrite.".sql";
@@ -1420,7 +1422,7 @@ for ($a=0;$a<count ($tablelist);$a++) {
                                     if ($views)   echo "Encoded ln : ".$x."<br>?";  //dobawil utf-8  какая то левая процедура. die () не работает
                                     if ($requestencode) { echo"Request encode as^ $requestencode";$encodeset=$requestencode;$x=$requestencode;};
                               if (($x!=="utf-8")AND($sd[19]=="utf-8")) $insertone=iconvx("windows-1251","utf-8",$insertone);
-//кодировка устанавливается только при наличии шапки. желательно обойтись без этого  э- это баг cfg opt future
+//кодировка устанавливается только при наличии шапки. желательно обойтись без этого  э- это баг CFG OPT FUTURE  TODO:
                 fwrite ($dumpfile,$insertone);
 		$strclines++;		//echo $insertone."<br>";
 	};	
@@ -1445,7 +1447,7 @@ for ($a=0;$a<count ($tablelist);$a++) {
                 $GENALT=1;//$insertone=gennohdlog ("`".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`",$myrow,$mycols,"");
                      // может эту функцию выделить отдельно?                   //..  http://www.thumbshots.com/
 if ($GENALT) {
-    global $mycol;  // улучшенное - можно выделить CFG OPT FUTURE// copyed from dbscore readdescripters
+    global $mycol;  // улучшенное - можно выделить CFG OPT FUTURE  TODO:// copyed from dbscore readdescripters
     $data2=dbs_genericnumlist ($result,$mycols,$mycol);
     $field=$data2["fieldlist"];
 
@@ -1579,7 +1581,7 @@ echo "<form method=\"post\" action=\"filemgr.php\" target=_blank>";
 if (($dump)AND($start==cmsg(DALEE))) {
 if (($dblk)AND(!$forcedb)) {$forcedb=1;$dbselected=$dblk;	}
 	$path=getcwd ()."/_local/dump/";
-        $dbtype="mysql"; // default dbtype in CFG OPT FUTURE! 
+        $dbtype="mysql"; // default dbtype in CFG OPT FUTURE  TODO:! 
       	@$connect=dbs_connect ($pr[43],$sd[14],$sd[17],$dbtype); //prdata tbl 6 changing to $pr[43]  EVERYWHERE!!!
         @ini_set('max_execution_time', 0);set_time_limit(0);
         //..echo "$connect=dbs_connect (".$pr[43].",".$sd[14].",".$sd[17].",$dbtype)";
@@ -2381,7 +2383,7 @@ echo "_FILES STATE: $file<br>";
 		if ($file==1) { //файл есть , предпринимаем меры
 
             		if (!$tempsize) {  echo "Это не картинка ! Файл не был сохранен. <br>";exit ;} // тоже 0 при >64k
-        		if ($size>900000) { echo "Превышен hardcoded лимит в 900Кб";exit;}; //CFG OPT FUTURE
+        		if ($size>900000) { echo "Превышен hardcoded лимит в 900Кб";exit;}; //CFG OPT FUTURE  TODO:
                         echo "Куда:".$uploaddir."/ File:".$commmsg.$formatscr."<br>";
                         echo "fullpathname=$scrfullpathname<br>";
                         unlink ($scrfullpathname);
@@ -2606,7 +2608,7 @@ echo "ebanyj splitter 1= ".$datasplitters[$datafieldID]."<br>";
 			{ //hdr text
 	if ($prauth[$ADM][41]) echo "<tr>";//optional   Box,not linear edit.
 			echo "<td>$mycoldat[$a] ";
-		$lensa=strlen ($myrowdat[$a])+2;// CFG OPT FUTURE 
+		$lensa=strlen ($myrowdat[$a])+2;// CFG OPT FUTURE  TODO: 
 		if ($lensa>50) $lensa=50;
 					if ($a===0) { $values="'".$myrowdat[$a];} 				// self-control
 					if ($a>0) {$values="".$values."','".$myrowdat[$a]; }	//self-control
@@ -2706,7 +2708,7 @@ echo "datafieldID=$datafieldID<BR>";//$datafieldID);"
 	if ($a==true) { echo $myrow[0].cmsg ("WF_UPDOK")."!<br>";} else { 
 		$errt=cmsg ("WF_UPDFAIL"); $ermsg="$myrow[0]<br>";}
 	if ($pr[12]) {$act="EDIT_SQL_TYPE_DATA  B $tbl($nametbl) id1=$vID id2=$vID2 Cmd= $cmd"; logwrite ($act) ;undolog ($act,$undodata); };
-	//CFG OPT FUTURE - some action like backup not logging!!!!
+	//CFG OPT FUTURE  TODO: - some action like backup not logging!!!!
 	//if ($views) echo cmsg ("WF_EXQUE")."$cmd<br><br>";
  echo cmsg ("WF_QUECOMP").dbs_affected_rows ().cmsg ("WF_Q1")."<br>";
 $silent=0;$errno=dbserr ();// пишет ошибку и ее код  и его же возвращает
@@ -2792,7 +2794,7 @@ if ($prdbdata[$tbl][22]) $directedit=1;
 			if ($mycol[$md2column]===$mycol[$a]) echo "<ii><bb>(ID1)</ii></bb>";
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii><bb>(ID2)</ii></bb>";
 		
-		$lensa=strlen ($myrow[$a])+2;// CFG OPT FUTURE 
+		$lensa=strlen ($myrow[$a])+2;// CFG OPT FUTURE  TODO: 
 		if ($lensa>50) $lensa=50;
                 if ($prdbdata[$tbl][18]) for ($b=0;$b<count ($datacols);$b++) { $fil=$tbl.";".$myrow[$md2column].";;".$datacols[$b]."";
 				if ($a==$datacols[$b]) {echo "<a href='w.php?cmd=dat&fil=$fil'><img src='_ico/linked_table-yn.png' border=0 title='".cmsg ("KEY_HEAD")."'></a>";}
@@ -3106,7 +3108,7 @@ if (($write==cmsg ("KEY_ADD"))AND($prdbdata[$tbl][12]!="fdb")) {
 			if ($mycol[$md2column]===$mycol[$a])  {echo "<ii>(ID1)</ii>"; $myrow[$a]=($maximalcntmd2+1);};
 			if ($mycol[$virtualid]===$mycol[$a]) echo "<ii><bb>(ID2)</ii></bb>";
 		
-		$lensa=strlen ($myrow[$a])+2;// CFG OPT FUTURE 
+		$lensa=strlen ($myrow[$a])+2;// CFG OPT FUTURE  TODO: 
 		if ($lensa>50) $lensa=50;
 					if ($a===0) { $values="'".$myrow[$a];} 				// self-control
 					if ($a>0) {$values="".$values."','".$myrow[$a]; }	//self-control
@@ -3696,7 +3698,7 @@ echo "<br>";
   <input type="radio" name="cmpmode" value="2to1"> <? lprint ("WF_CMP_21") ;?><br>
   <?
   //submitkey ("write","KEY_COMPARE_3");
-  //checkbox ($a1,"a1"); echo cmsg ("WF_MASCMP_KEY")."<br>";  CANNOT BE DISABLED  , CFG OPT FUTURE
+  //checkbox ($a1,"a1"); echo cmsg ("WF_MASCMP_KEY")."<br>";  CANNOT BE DISABLED  , CFG OPT FUTURE  TODO:
   checkbox ($wfcmpqry,"wfcmpqry") ; echo cmsg ("WF_CMP_QRY")."<br>";
      checkbox ($execute,"execute") ; echo "<red>".cmsg ("WF_VIEANDEXEC")."<br></red>";
      checkbox ($GENALT,"GENALT") ; echo cmsg ("GENALT")."<br>";
@@ -3784,7 +3786,7 @@ if ($addifenable1) {	if (($addifcmp1=="bolee")OR($addifcmp1=="menee")) {
      $printing=1;
 $x=executesql ($cmd,$connect,1);
 
-// execute mode..  try generate and execute script (can be splitteD) CFG OPT FUTURE
+// execute mode..  try generate and execute script (can be splitteD) CFG OPT FUTURE  TODO:
   if ($wfcmpqry) {echo "wfcmpqry _on ";
 //echo $cmd;
 //$cmd=" SHOW DATABASES;";
@@ -3796,7 +3798,7 @@ $x=executesql ($cmd,$connect,1);
                                 }
                                 // может эту функцию выделить отдельно?
 if ($GENALT) {
-    global $mycol;  // улучшенное - можно выделить CFG OPT FUTURE// copyed from dbscore readdescripters
+    global $mycol;  // улучшенное - можно выделить CFG OPT FUTURE  TODO:// copyed from dbscore readdescripters
     $data2=dbs_genericnumlist ($result,$mycols,$mycol);
     $field=$data2["fieldlist"];
 }
@@ -4009,7 +4011,7 @@ $desttable=$destdb."`".$prdbdata[$dest][5]."`";
                                 }
                                 // может эту функцию выделить отдельно?
 if ($GENALT) {
-    global $mycol;  // улучшенное - можно выделить CFG OPT FUTURE// copyed from dbscore readdescripters
+    global $mycol;  // улучшенное - можно выделить CFG OPT FUTURE  TODO:// copyed from dbscore readdescripters
     $data2=dbs_genericnumlist ($result,$mycols,$mycol);
     $field=$data2["fieldlist"];
 }
@@ -4205,7 +4207,7 @@ for ($xa=0;$xa<$boxcnt;$xa++) { //копия DEL_SQL  renewed!~
 	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 		if ($data==-1) exit;
- if ($prdbdata[$tbl][9]=="dbscriptbk") $virtualid=false;  // CFG OPT FUTURE  пока не решил что делать.
+ if ($prdbdata[$tbl][9]=="dbscriptbk") $virtualid=false;  // CFG OPT FUTURE  TODO:  пока не решил что делать.
  if ($prdbdata[$tbl][9]=="dbscriptbk") msgexiterror ("nologsedit"," (DB.TBL ".$prdbdata[$tbl][9].".".$prdbdata[$tbl][5]."","main.php");
  echo "!!";
  if ($prdbdata[$tbl][22]) $directedit=1;
@@ -4404,7 +4406,7 @@ $bestedit=1;};
 
 //=========================================
 //модуль запуска     AND($prdbdata[$tbl][12]!="fdb")
-if (($write==cmsg ("KEY_MASS_OPER"))AND($prauth[$ADM][45])) { //  CFG OPT FUTURE
+if (($write==cmsg ("KEY_MASS_OPER"))AND($prauth[$ADM][45])) { //  CFG OPT FUTURE  TODO:
 lprint (M_OP_INF);echo "<bR>";
 
 $data=readdescripters ();
@@ -4446,7 +4448,7 @@ submitkey ("write","KEY_S_MASS_OPER");
 //..==================================================
 	//=========================================
 //модуль запуска 
-if (($write==cmsg ("KEY_EXECUTE"))AND($prdbdata[$tbl][12]!="fdb")AND($prauth[$ADM][34])) { //  CFG OPT FUTURE
+if (($write==cmsg ("KEY_EXECUTE"))AND($prdbdata[$tbl][12]!="fdb")AND($prauth[$ADM][34])) { //  CFG OPT FUTURE  TODO:
 if ($codekey==7) die ("Disabled for secutiry reasons.");
 
 
@@ -4533,7 +4535,7 @@ if ($printlimit==false) { msgexiterror ("limit","noexit","disable");} else {$lim
 	@$cmd=preg_replace ($patterns,$replacements, $cmd);//4.1  check
         if ($debug) echo "key_s_exec check cmd after preg replace - $cmd<br>";
 
-        //CFG OPT FUTURE - именно здесь содержится глюк вывода на печать
+        //CFG OPT FUTURE  TODO: - именно здесь содержится глюк вывода на печать
 	if (strpos ($cmd,"SELECT")!==false) $printing=1; // разрешает печать в libmysql
 	if (strpos ($cmd,"SHOW")!==false) $printing=1; // разрешает печать в libmysql
 	if (strpos ($cmd,"CHECK")!==false) $printing=1; // разрешает печать в libmysql
@@ -4581,7 +4583,7 @@ $printing=0;  // disables print
                                 }
                                 // может эту функцию выделить отдельно?
 if ($GENALT) {
-    global $mycol;  // улучшенное - можно выделить CFG OPT FUTURE// copyed from dbscore readdescripters
+    global $mycol;  // улучшенное - можно выделить CFG OPT FUTURE  TODO:// copyed from dbscore readdescripters
     $data2=dbs_genericnumlist ($result,$mycols,$mycol);
     $field=$data2["fieldlist"];
 }
@@ -4599,7 +4601,7 @@ $sourcetable="`".$prdbdata[$tbl][5]."`";// целевая база данных указывается автом
 		if (!$GENALT) {
                     $insertone=gencmdlog ($sourcetable,$myrow,$mycols,"");
                     //echo "faak  -  $insertone=gencmdlog ($sourcetable,$myrow,$mycols,); ";
-                    if (!$noprintsave) echo $insertone."<br>";  // в другие части этой копии скрипта внедрить сохранение в файл (!!!) CFg OPT FUTURE
+                    if (!$noprintsave) echo $insertone."<br>";  // в другие части этой копии скрипта внедрить сохранение в файл (!!!) CFG OPT FUTURE  TODO:
                     if ($noprintsave)  {
                         fwrite ($dumpfile,$insertone);
                     };

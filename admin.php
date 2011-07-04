@@ -6,6 +6,23 @@ require_once ('initalize.php'); // функция подготовки к работе и авторизации
     //generic activation table
      ////reading pages
  $filbas="_data/licenses.dat";
+//SYSTEM KEY_START
+@$lic=csvopen ($filbas,"r",0);$data=readfullcsv ($lic,"new");
+if ($data==-1) {
+$lheader="ID¦Type¦Actcode license¦Commercial support¦Maximum days¦Register date¦Admin name¦Admin mail¦¦¦";
+$lplevel="¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
+$l[]="1¦1¦d4bf6665a5f81ee82bb6fc6ad62fbeab¦1¦500¦31.03.2006¦Test user¦dj--alex@ya.ru¦¦¦";
+$lcontent=$l;$l="";
+	 @$tempdescr=csvopen ($filbas,"w",1);
+ $lheader=splitcfgline1 ($lheader);
+ $lplevel=splitcfgline1 ($lplevel);
+ $lcontent=splitcfgline1 ($lcontent);
+ $err.=writefullcsv ($tempdescr,$lheader,$lplevel,$lcontent);$edit=0;
+ unset ($lheader,$lplevel,$lcontent);
+
+}
+//writing pages
+//SYSTEM KEY_END
  } //else { echo "License list already set";exit; };
 
      //generic activation table
@@ -44,7 +61,7 @@ If ($prauth[$ADM][2]==false) { $gmlimitcfg=1;} else {$adm=1;};// {
 
 if ($cmd=="myprof") {$go=cmsg("A_MY_PROF"); displayconfigtblsd () ; exit; }
 
-// CFG OPT FUTURE
+// CFG OPT FUTURE  TODO:
 // Убирание меню в редакторе и поиске.  // nomnu=1 включать для unframedmode
 
 //if (!$pr[8]) echo "DEBUG MODE:dont try to fix me im not broken<br>";
@@ -125,7 +142,7 @@ if (($write==cmsg ("A_ACSS_ED"))or($go==cmsg("A_ACSS_ED"))) { cssed () ;exit; };
    	echo $veradm."<br>";
 	echo lprint ("VCONF").": ".$pr[1]."<br> ".cmsg("A_DOW_LOG")."<a href='_logs/log.dat'>Log</a>,<a href='_logs/errorlog.dat'>Errorlog</a>,<a href='_logs/undolog.dat'>Undolog</a>,<a href='_logs/reportlog.dat'>reportlog</a>,<a href='_logs/execsqllog.dat'>execsqllog</a>";
 ?>
-    <font color=red><a target=help href="http://code.google.com/p/db-script/issues"><img src=_ico/bug1.png border=1 title="<?php echo cmsg (BUGDET)." ".$write?>"></a>
+    <a target=help href="http://code.google.com/p/db-script/issues"><img src=_ico/bug1.png border=1 title="<?php echo cmsg (BUGDET)." ".$write?>"></a>
     <br>
     <?php
 
@@ -173,7 +190,7 @@ $backupstate=@csvopen ("_conf/dbdata.cfg.backup.dat","r","0");
  
  		<?php if ($prauth[$ADM][42]) {?>
  		<form action=admin.php method=post>
-	<?php lprint (SRV_SU_MSG);echo "<br>";
+	<?php echo "</red>";lprint (SRV_SU_MSG);echo "<br>";
 	submitkey ("write","MYSQL_START"); 
 	submitkey ("write","MYSQL_STOP"); 
 	submitkey ("write","MYSQL_REBOOT"); 
@@ -678,7 +695,7 @@ if ($a1==202) { if ($OSTYPE=="LINUX") $prdbdata[$tbl][$a1].="\n"; //  исправлени
   	  if (($ungroup==1)AND($prdbdata[$tbl][12]=="mysql")AND($prdbdata[$tbl][9]==true)) { 
 		echo "$msfixed ".cmsg (A_SF_GRP_TBL)." ".$prdbdata[$tbl][1]." ".cmsg (A_SF_NO)." (".$prdbdata[$tbl][17].cmsg (A_DEF_GRP).$prdbdata[$tbl][9].")<br>";
 		$prdbdata[$tbl][17]=$prdbdata[$tbl][9];
-		$fixed++;$edit=1 ;$ungroup=0;}  //CFG OPT FUTURE  отключаемое 2 реж 1-база может отличатся от 2-база вс=базе.
+		$fixed++;$edit=1 ;$ungroup=0;}  //CFG OPT FUTURE  TODO:  отключаемое 2 реж 1-база может отличатся от 2-база вс=базе.
 
      if ($pr[38]) if (($prdbdata[$tbl][12]=="mysql")AND($prdbdata[$tbl][9]!==$prdbdata[$tbl][17])) { 
 		echo "$msfixed ".cmsg (A_SF_GRP_TBL)." ".$prdbdata[$tbl][1]." ".cmsg (A_SF_GRP_DECL)." ".$prdbdata[$tbl][17].")-->(".$prdbdata[$tbl][9].")<br>";
@@ -688,7 +705,7 @@ if ($a1==202) { if ($OSTYPE=="LINUX") $prdbdata[$tbl][$a1].="\n"; //  исправлени
 		if (($ungroup==1)AND($prdbdata[$tbl][12]=="fdb")) { 
 		echo "$msfixed ".cmsg (A_SF_GRP_TBL)." ".$prdbdata[$tbl][1]." ".cmsg (A_SF_NO)." (".$prdbdata[$tbl][17].cmsg (A_DEF_GRP)."fdb)<br>";
 		$prdbdata[$tbl][17]="fdb";
-		$fixed++;$edit=1 ;$ungroup=0;}  //CFG OPT FUTURE  отключаемое 2 реж 1-база может отличатся от 2-база вс=базе.AS Mysql 
+		$fixed++;$edit=1 ;$ungroup=0;}  //CFG OPT FUTURE  TODO:  отключаемое 2 реж 1-база может отличатся от 2-база вс=базе.AS Mysql 
 }
 //*/$prdbdata[$tbl][18]="\n"; поможе если все таки достигнули крайнее число колонок.
 		
@@ -709,7 +726,7 @@ if ($a1==202) { if ($OSTYPE=="LINUX") $prdbdata[$tbl][$a1].="\n"; //  исправлени
 	// проверкa gmdata.cfg
 	
 	
-	// CFG OPT FUTURE   СОЗДАНИЕ ПАПОК ПОЛЬЗОВАТЕЛЕЙ И ФАЙЛА ПО УМОЛЧАНИЮ -  В ЗАВИС ОТ ИНСТАНЦИИ ПО ТИПУ _DATA .. САП
+	// CFG OPT FUTURE  TODO:   СОЗДАНИЕ ПАПОК ПОЛЬЗОВАТЕЛЕЙ И ФАЙЛА ПО УМОЛЧАНИЮ -  В ЗАВИС ОТ ИНСТАНЦИИ ПО ТИПУ _DATA .. САП
  $cnt=1;$admins=0;$users=0;
   while ($cnt<$prauthcnt) {
 

@@ -6,7 +6,13 @@
 $openedwindows=0;
 $coreSE=1;
 // ajax test - <script>$.get("my.php",[],function(res) { alert("a") });</script>
+// SE repo
 $svn1="http://db-script.googlecode.com/svn/trunk/";
+//SYSTEM KEY_START
+$coreSE=0;
+// cs repo main
+$svn1="http://svn.shamangrad.net/dbscript/";
+//SYSTEM KEY_END
 $svn2="http://db-script.googlecode.com/svn/trunk/";
 
 $OS=$_ENV["OS"];//print_r ($_GET); echo $OS;exit;
@@ -14,19 +20,19 @@ $OSTYPE="LINUX";//$a.=$_SERVER["PATH"];// /usr/  /local - linux    // C:\ WINDOW
 	$winchk=$_SERVER["SystemRoot"] ; //есть только на винде
         $winchk.=$_SERVER["WINDIR"];//есть только на винде
         $winchk.=$_SERVER["COMSPEC"];//есть только на винде
-//setlocale (LC_ALL, 'ru_RU.CP1251');  // CFG OPT FUTURE    локаль выключена.
+//setlocale (LC_ALL, 'ru_RU.CP1251');  // CFG OPT FUTURE  TODO:    локаль выключена.
 if ((strpos ($OS,"indows"))==true) $OSTYPE="WINDOWS";
 if ($winchk==true) $OSTYPE="WINDOWS";
 if ((strpos ($_SERVER["SERVER_SOFTWARE"],"Win32"))==true) $OSTYPE="WINDOWS";//;// содержит Win32 для windows 
 $USERDAT=$_SERVER["HTTP_USER_AGENT"]; // OPT FUTURE    //print_R($_SERVER); hpinfo ();echo $OS ;exit;
 //SHOW USER IP IN INFO
 $testenable="beta";// "alpha"; "beta"; is reserved wordss
-//CFG OPT FUTURE- отметка о необходимости внесении изм в конфигурации при обновлении
+//CFG OPT FUTURE  TODO:- отметка о необходимости внесении изм в конфигурации при обновлении
 global $verinit;$dbs_ip =$_SERVER['REMOTE_ADDR'];$dbs_ref= $_SERVER['HTTP_REFERER'];global $pgconn; // added for compactibility with postgresql
 $msgexitcalled=0;
- $verchar="4.3.4";
+ $verchar="4.3.42";
 $verinit="Core $verchar beta (c) dj--alex";// service hide
-$programname="Dbscript "; $lastupdate="09.04.2011";$vernumb=4.34;
+$programname="Dbscript "; $lastupdate="25.05.2011";$vernumb=4.342;
 $verprogram=$verprogram.$verchar." LU ".$lastupdate; // версия программы   ядро!
 $vercore=$verprogram;
 $enterpoint=$verinit;
@@ -41,6 +47,13 @@ if(isset($_FILES)) ob_start ();
 $folderscript=getcwd ();// получаем абсолютный путь
 $folderscript=str_replace ("\\","/",$folderscript);// ЭТО ВЕРНОЕ НАПИСАНИЕ **** STR_REPLACE
 $fldup=$folderscript ; //FOR DEMO  отключение поддержки multiinstance
+////SYSTEM KEY_START
+$fldup=substr ( $folderscript ,0,strrpos ($folderscript,"/"));
+$scriptpath=substr ( $_SERVER['SCRIPT_NAME'] ,0,strrpos ( $_SERVER['SCRIPT_NAME'],"/"))."/";// FULL SCRIPT PATH WITHOUT NAME 
+$scriptpathwhost="http://".$_SERVER['HTTP_HOST']."/".$scriptpath;
+
+
+//SYSTEM KEY_END
 
 //if ($OSTYPE=="WINDOWS") $fldup=substr ( $folderscript ,0,strrpos ($folderscript,"\\"));// выч как лучше отрезать папку 
 //if ($OSTYPE=="LINUX") $fldup=substr ( $folderscript ,0,strrpos ($folderscript,"/"));// выч как лучше отрезать папку 
@@ -300,8 +313,28 @@ if ($configpresent) {
     $filscdata=readfullcsv ($filsccfg,"new");
 $filscheader=$filscdata[0];$filscplevels=$filscdata[1]; $filscplevel=$filscdata[1];$filsccount=$filscdata[3] ;$filscdata=$filscdata[2];    ;// сука не возвращает это значение !!!
     //end filescript.cfg part
-}/*1¦mencoder %path%%file% -oac mp3lame -ovc x264 -o %path%%file%.avi¦0¦0¦перекодить в h264¦encode h264¦0¦0¦0¦0¦0
-2¦mencoder %path%%file% -oac mp3lame -ovc mpg -o %path%%file%.avi¦0¦0¦перекодить в mpeg¦encode mpeg¦0¦0¦0¦0¦0¦0
+}/*1
+ * Пример использования.
+
+ID¦NAME¦Script¦Plevel¦keynames-icon¦russian¦english¦f1_russian¦f1_english¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦
+ID - идентификатор
+Name - условное имя скрипта, отображается если не задано описания для нужного языка.
+Plevel- проверка прав **
+Script- собственно сам скрипт
+Keynames - базовая иконка для скрипта.**
+russian,english - название кнопки, в режиме utf8 рекомендуется воздержатся от кириллицы.
+(хотя возможно это просто особенность работы моей версии php )
+
+1¦¦mencoder %path%/%file% -oac mp3lame -ovc x264 -o %path%/%file%.avi¦0¦0¦перекодить в h264¦encode h264¦0¦0¦0¦0¦0
+
+переменные работающие в модуле filemgr можно использовать через %var%
+т.е. %path%- это взять текущий путь,  но %path2%  - это будет взять путь из второго файлового менеджера.
+%file% - текущий файл
+Заметьте знак "/" надо предусмотреть самостоятельно, за вас его в скриптах никто ставить не будет
+
+(**пробная версия! графический редактор ещё не добавлен, команды работают только в режиме без иконок файлового менеджера и нет проверки прав)
+
+
 */
 
   //creation and starting it
@@ -501,7 +534,7 @@ $bestheader=$data[0];$bestplevel=$data[1];$bestcontent=$data[2];$bestcnt=$data[3
 @fclose ($best);  //  поточнее проверить
 
 /*
-$filbas=$userfolder."/files.cfg";  // возможно будет дб в initse  с созданием шапки если файла вообще нет  ufiles   CFG OPT FUTURE - fast path
+$filbas=$userfolder."/files.cfg";  // возможно будет дб в initse  с созданием шапки если файла вообще нет  ufiles   CFG OPT FUTURE  TODO: - fast path
 @$uf=csvopen ($filbas,"r",0);
 // SUKA if ($best==false) {$data[0][0]="Table";$data[0][1]="List"; $data[1][0]="0";$data[1][1]="0";}
 $data=readfullcsv ($uf,"new");
@@ -603,12 +636,75 @@ if ($prauth[$ADM][55]) $systemshrift=$prauth[$ADM][55];
 $buttonshrift=$sd[28];
 $tableshrift=$sd[29];
 }
-//    CFG OPT FUTURE
+//    CFG OPT FUTURE  TODO:
 
 
 
+//SYSTEM KEY_START
+
+//registration creation and check
+$actcod=genactcode ();
+$key=readencdat ("_conf/dbs.key",$actcod);
+$stroka=explode (";",$key);
+$dbskeystate=file_exists ("_conf/dbs.key");
+$addkeystate=file_exists ("_conf/add.key");
+
+
+if (($dbskeystate===false)) $nokeys=1;// загрузка ключа и регистрации запускаются из login.php
+
+ // $regresult печатать нельзя иначе прервется вывод - это инфо о применении регистрации
+$daysleft=$stroka[1];$registeredto=$stroka[2];$adminmail=$stroka[3];
+$comm=$stroka[8];
+if ($stroka[9]=="ONLYFORDEMO") if (($codekey<9)AND($codekey!==7)) {  // STRING s9  fixed!!!
+			@unlink ("_conf/dbs.key"); msgexiterror ("key",cmsg ("KEY_NODEMO"),"login.php");
+}
+if ($stroka[9]=="ONLYFORTEST") if (($codekey<9)AND($codekey!==8)) {
+			@unlink ("_conf/dbs.key"); msgexiterror ("key",cmsg ("KEY_NODEMO"),"login.php");
+}
+
+settype ($daysleft,integer);
+//end load cfgs
+//по коду формируем стринг
+ $codekey=loadserial ();
+if ($codekey) {	$activation=true; } else { $activation=false;}
+if (($codekey==4)OR($codekey==6)OR($codekey==7)OR($codekey==9)) $daysleft="unlimited";
+$changedate=datechangedetect ();// проверка можно ли вычитать день
+
+if (($OSTYPE=="LINUX")and($codekey==9)) {$codekey=2;$testenable="Linux";} // в линукс снимаются ограничения 
+//последоработки удалить!
+$finalcodekey=$codekey;$finalactivation=$activation;
+
+
+//вычитание дней.
+if ($ADM>0) if (($changedate)AND($daysleft!=="unlimited")) { // стало одним реальным днем меньше :)
+	$daysleft=$daysleft-1;
+$data=(rand()*5536).";".$daysleft.";".$registeredto.";".$adminmail.";".((rand()*65536).";".$key5.";".$key6.";".$key7.";".$comm.";");
+	writeencdat ("_conf/dbs.key",$actcod,$data);
+}
+if ($codekey==8) $pr[8]=false;
+//if (!$pr[8]) $debug=1; test and demo messages excluded to footer
+
+
+
+if (($codekey==8)OR($codekey==10)) if ($testenable=="") { 
+	@unlink ("_conf/dbs.key");
+	@unlink ("_conf/.key");
+	 msgexiterror ("key",cmsg ("KEY_NOTEST"),"login.php");}
+     // при использовании функции строки регистрации автоматически удалятся открыв код с режимом всегда активировано
+ /*
+ID¦Type¦Actcode license¦Commercial support¦Maximum days¦Register date¦Admin name¦Admin mail¦¦¦
+¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦
+1¦1¦b28cbd249a3af016606b597c59905aee¦1¦500¦31.03.2006¦home¦dj--alex@ya.ru¦¦¦
+2¦2¦351c3e7855079b826ac859a9b1b23b78¦1¦500¦31.03.2006¦Serv250¦dj--alex@ya.ru¦¦¦
+3¦3¦7503aa19c35fa82adee7058cd96221e8¦1¦500¦31.03.2006¦Serv251¦dj--alex@ya.ru¦¦¦
+4¦1¦d4bf6665a5f81ee82bb6fc6ad62fbeab¦1¦500¦31.03.2006¦Serv252¦dj--alex@ya.ru¦¦¦
+// d4bf6665a5f81ee82bb6fc6ad62fbeab  d4bf6665a5f81ee82bb6fc6ad62fbeab   dj/site   252 - one code
+//SYSTEM KEY_END
 
  $activation=1;$codekey=6;$daysleft=50;$finalcodekey=$codekey;$finalactivation=$activation;
+	 //SYSTEM KEY_START
+         */
+         //SYSTEM KEY_END
 
 
 
@@ -629,7 +725,7 @@ if ($pr[37]) $list=groupdbdetect($prdbdata);//ready to groupoperations
 //end check
 
 $yourvrs=cmsg ($codekey."DBS_");
-$enrestmenu=1; //CFG OPT FUTURE
+$enrestmenu=1; //CFG OPT FUTURE  TODO:
   if ($nomnu) { $enrestmenu=false;$menuloaded=false;}
   
 require ("head.php");  // CSS HERE !!!   tbody добавлен но толку что то не вижу
@@ -712,6 +808,296 @@ $realpage=$_GET["pagenow"];
 #########################################################
 // проверка времени
 
+ //SYSTEM KEY_START
+//SYSTEM
+function datechangedetect ()
+{	global $ADM;
+$a=rand (0,1);
+if ($a<0.6) return false; //ускорение проверки
+$filbas="_conf/date.key";
+$potok=@fopen ($filbas,"r");
+$data=@fgets ($potok);
+@fclose ($potok);
+if ($ADM!==0) if ($data!==date("d.m.Y")) { //считает только дни запусков так вернее
+	$potok=fopen ($filbas,"w+");
+	$changedate=1;
+	$chtozapisatx=date("d.m.Y");
+	if ($chtozapisatx==false) die ("NECHEGO ZAP");
+	@fwrite ($potok,$chtozapisatx);
+	@fclose ($potok);
+}
+return $changedate;
+}
+
+
+// конец сохранения времени если оно было нужно.
+
+//SYSTEM
+function writeencdat ($file,$actcode,$stroka) {
+	$key=$actcode;
+	$fp = fopen($file, 'wb');
+	if ($fp===false) return false;
+//echo "before--data--$stroka;	<br>";
+	$data=xxor ($key,$stroka);
+//echo "after-enc with key=$key<br>data final=$data;	<br>";
+ fwrite ($fp,$data);fclose($fp);
+ return $data;
+}
+//SYSTEM
+function readencdat ($file,$actcode) {
+	$key=$actcode;        //echo "EBUCHIJ KLUCH $file";
+@$fp = fopen($file, 'rb');
+@$stroka=fread ($fp,512);
+if ($fp===false) return false;
+$data= xxor ($key,$stroka);
+@fclose($fp);
+return $data;
+}
+
+//SYSTEM
+function genkeySE ($serial)  //исправление случайно вышедшего из под контроля login.php
+{	$actcode=genactcode ();
+	writeserial ($serial) ;
+	if ($serial=="demo") {
+	echo "Demo activated";
+	$key1=100;$key2="";$key3="demo";$key8="DBS_HOME_VER";
+	$stroka=(100*5536).";".$key1.";".$key2.";".$key3.";".((100*65536).";".$key5.";".$key6.";".$key7.";".$key8.";DBS333;ONLYFORDEMO");//echo "Ключ:;Daysleft=".$key1.";Regto=".$key2.";Regmail=".$key3.";;key8=".$key8.";);<br>;";
+	}
+
+	if ($serial=="publicdemo") {
+	echo "Public Demo activated";
+	$key1=150;$key2="";$key3="publicdemo";$key8="DBS_HOME_VER";
+	$stroka=(100*5536).";".$key1.";".$key2.";".$key3.";".((100*65536).";".$key5.";".$key6.";".$key7.";".$key8.";DBS333;ONLYFORDEMO");//echo "Ключ:;Daysleft=".$key1.";Regto=".$key2.";Regmail=".$key3.";;key8=".$key8.";);<br>;";
+	}
+	if (($serial=="alpha")or($serial=="beta")) {
+	echo "$testenable activated, ask developer for free long test key.";
+	$key1=30;$key2="";$key3=$testenable;$key8="DBS_HOME_VER";
+	$stroka=(100*5536).";".$key1.";".$key2.";".$key3.";".((100*65536).";".$key5.";".$key6.";".$key7.";".$key8.";DBS333;ONLYFORTEST");
+	}
+
+	@unlink ("_conf/dbs.key");
+	$encodedstroka=writeencdat ("_conf/dbs.key",$actcode,$stroka);
+	}
+
+
+//SYSTEM
+function xxor ($key,$stroka) {//ord - получение кода    char установка кода
+ $keylen=strlen ($key);
+ if ($keylen==32) {$tactgen=1;} else {$tactgen=0.33;};
+ 	$keytick=0;
+ 	//echo "готов к кодировке keylen=$keylen txtlen=".strlen ($stroka)."<br>";
+ 	//echo "command xxor ($key,$stroka)";
+ 	if ($stroka[$txttick]=="!") $alreadyencoded=1;
+ if ($alreadyencoded==false) $stroka="!".$stroka;
+for ($txttick=1;$txttick<strlen($stroka);$txttick=$txttick+$tactgen) {
+ if ($keytick===$keylen) $keytick=0;
+ $keytick++;
+$codingstrokabyte=ord($stroka[$txttick]);
+//echo"codingstrokabyte=$codingstrokabyte";
+$codingkeybyte=ord ($key[$keytick]);
+$codingkeybyte2=ord ($key[$keylen-$keytick]);
+//echo "codingkeybyte=$codingkeybyte";
+if ($alreadyencoded==false) $stroka[$txttick]=chr ($codingstrokabyte+$codingkeybyte-$codingkeybyte2);// apply
+if ($alreadyencoded==true) {$stroka[$txttick]=chr ($codingstrokabyte-$codingkeybyte+$codingkeybyte2);// apply
+$stroka[0]="";
+}
+//echo "coded=".$stroka[$txttick]."<br>";
+}
+//for ($a=0;$a<strlen($stroka);$a=$a+2){	$buf=$stroka[$a+2];$stroka[$a+2]=$stroka[$a+1];$stroka[$a+1]=$buf;}
+return $stroka;
+}
+//SYSTEM
+#######REQCODE#######REQCODE
+function installnewkey ($key) {
+		global $actcod;
+		    $keyadd=readencdat ("_conf/add.key",$actcod);
+  			$strokakey=explode (";",$key);
+  			$strokakeyadd=explode (";",$keyadd);  //echo "нет основного ключа, пытаемся исп дополнительный";
+  			if ($keyadd===false) return cmsg ("FS_NOFILE");
+  			  //	echo "ept key ".$keyadd;exit;
+  	if ($strokakeyadd[9]!=="DBS333") {
+  	@unlink ("_conf/add.key");return cmsg ("KEY_NODBS");
+  }
+
+   			if ($strokakeyadd[1][0]!=="+") {
+   				$regresult=cmsg ("KEY_INST_OK");
+   			 	@rename ("_conf/add.key","_conf/dbs.key");
+   				} else {
+   				@unlink ("_conf/add.key");
+   				$regresult=cmsg ("KEY_INST_FAIL");
+   				}
+   			return $regresult;
+			}
+//проверка имеемого ключа и увеличение его на величину из add.key
+		//SYSTEM
+function addnewkey ($key) {
+	global $actcod;
+  $keyadd=readencdat ("_conf/add.key",$actcod);
+  if ($keyadd===false) return cmsg ("FS_NOFILE");
+  $strokakey=explode (";",$key);
+  $strokakeyadd=explode (";",$keyadd);
+    if ($strokakeyadd[9]!=="DBS333") {
+  	@unlink ("_conf/add.key");return cmsg ("KEY_NODBS");
+  }
+
+  $tekdata=date ("d.m.Y");
+  if (($strokakey[3]=="demo")AND($strokakey[2]=="")) { @unlink ("_conf/dbs.key"); return cmsg ("KEY_NODEMO");}
+  if (($strokakey[3]=="publicdemo")AND($strokakey[2]=="")) { @unlink ("_conf/dbs.key"); return cmsg ("KEY_NODEMO");}
+   //echo "strokakey="; print_r ($strokakey);echo "<br>";//echo "strokakeyadd=";print_r ($strokakeyadd);echo "<br>";
+if (($strokakeyadd[2]!==$strokakey[2])) if (($strokakey[3]!=="demo")AND($strokakey[2]!=="")) {
+		@unlink ("_conf/add.key");return cmsg ("KEY_OTH_USER");// сдел сообщ  и удалить
+		}
+ $key1valids=$strokakeyadd[6];
+ $key1validpo=$strokakeyadd[7];
+if (($tekdata>$key1validpo)OR($key1valids>$tekdata))
+				{@unlink ("_conf/add.key");
+				return cmsg ("KEY_DATE_FAIL");
+				}
+
+if (($strokakeyadd[2]==$strokakey[2])) { if ($strokakeyadd[1][0]!=="+")
+				{@unlink ("_conf/add.key");
+				return cmsg ("KEY_ONLY_INST");
+				}
+	$nachaldnej=$strokakey[1];
+	$strokakeyadd[1][0]=" "; $strokakey[1]=$strokakey[1]+trim ($strokakeyadd[1]);
+	 if ($strokakeyadd[5]<$strokakey[1]) $strokakey[1]=$strokakeyadd[5];//если больше полож-рез
+	$strokawr=implode ($strokakey,";");
+	//echo "strokawr=";print_r ($strokawr);
+	writeencdat ("_conf/dbs.key",$actcod,$strokawr);
+	@unlink ("_conf/add.key");
+	$msg=cmsg("ADD_DAY_1")." ".$nachaldnej.cmsg ("DO").$strokakey[1]." (".($strokakey[1]-$nachaldnej).cmsg ("ADD_DAY_2").$strokakeyadd[5]."";
+	return $msg;// сдел сообщ  и удалить
+}
+
+}
+#######REQCODE#######REQCODE
+
+
+
+
+//SYSTEM
+function genactcode () {
+	$a=$_SERVER["SERVER_ADDR"];$servip=$a;
+	$a.=$_SERVER["SERVER_ADMIN"];
+	$a.=$_SERVER["DOCUMENT_ROOT"];
+        //замечена неработа ENV защита дополнена
+        $a.=$_ENV["COMPUTERNAME"];
+	$a=$_ENV["OS"];  //  _SERVER["SERVER_SOFTWARE"] переменные начиная с php 5.2  не получаются с сервера. требует замены !!!
+	$a.=$_ENV["NUMBER_OF_PROCESSORS"];
+	$a.=$_ENV["PROCESSOR_IDENTIFIER"];
+	$a.=$_ENV["PROCESSOR_LEVEL"];
+	$a.=$_ENV["PROCESSOR_REVISION"];
+        //4.1 addings without comments here
+        $a.=$_SERVER["SERVER_SOFTWARE"];// содержит Win32 для windows или ubuntu
+        $a.=$_SERVER["PATH"];// /usr/  /local - linux    // C:\ WINDOWS System32 винда.
+	$a.=$_SERVER["SystemRoot"] ; //есть только на винде
+        $a.=$_SERVER["WINDIR"];//есть только на винде
+        $a.=$_SERVER["COMSPEC"];//есть только на винде
+	$b=md5 ($a);
+	//if (strpos ($servip,"127.")===true) return "Please run application from correct IP";
+	return $b;
+ }
+
+ function dmck ($serial) {
+ 	global $testenable;
+ 	$actcode=genactcode ();
+if ($serial=="demo") {	//registration demo
+	genkeySE($serial);
+	exit;}
+
+if ($serial=="publicdemo") {	//registration demo
+	genkeySE($serial);
+	exit;}
+
+	if ($testenable)
+	if (($serial=="beta")or($serial=="alpha")) {
+	genkeySE ($serial);
+	exit;}
+
+	if ($serial=="J3QQ4-H7H2V-2HCH4-M3HK8-6M8VW") {window ("","");echo "Many years ago exist a windows 98se operating system...";closewindow();exit;}
+
+	if ($serial) if (strlen ($serial)!==(32+14)) {
+	$message="Serial len is invalid";$mainheader=cmsg ("ACT");
+	 window (array (
+		"message" => $message,				// сообщение
+		"icon" => "criterror" ,
+     "mainheader" => $mainheader),array ("OK"=>"login.php"));
+ closewindow ();
+ exit;}
+
+$codekey=checkserial ($serial);
+if ($codekey) {
+ writeserial ($serial) ;
+ $activate=true;
+$message=cmsg("ACT_OK");$mainheader=cmsg ("ACT");
+ window (array (
+		"message" => $message,				// сообщение
+		"icon" => "info" ,
+     "mainheader" => $mainheader),array ("OK"=>"login.php"));
+ closewindow ();
+ exit;
+ //окончание вывода окна успешной активации
+}
+
+ }
+
+
+//SYSTEM
+ function genseriali ($lictype,$activ) {
+ 	if ($activ=="") $activ=genactcode ();
+ 	$key="dbs3-".$lictype;
+ 	$licdata=crypt (crypt ($key,"iz"),"iz");
+ 	$serial=md5($activ)."-".$licdata;
+ 	return $serial;
+ }
+
+ 	//SYSTEM
+ //  как сделать регистрацию под определенным режимом программы 1..10
+ //  как сделать список IP или может нафиг его
+function checkserial ($serial){
+	 $checkdemo=strpos (" ".$serial,"publicdemo");
+	if ($checkdemo==true) return 7; // public demo
+	$checkdemo=strpos (" ".$serial,"demo");
+	if ($checkdemo==true) return 9; // user demo
+		$checkdemo=strpos (" ".$serial,"beta");
+	if ($checkdemo==true) return 8;
+	$checkdemo=strpos (" ".$serial,"alpha");
+	if ($checkdemo==true) return 10;
+ $part=explode ("-",$serial);
+ //echo "count serial=".strlen ($part[1]);
+ $finalactiv=md5 (genactcode ());
+ $licdata=$part[1];
+  if ($part[0]==$finalactiv) {// если активации совпадают проверяем сериал
+   for ($a=0;$a<10;$a++)	{
+   	if ($licdata==crypt (crypt ("dbs3-".$a,"iz"),"iz")) return $a;
+  }; // возвращает codekey разрешенный этим ключем write license file info and allow autoskip
+ 	}
+ 	return false;
+}
+//SYSTEM
+function loadserial () {
+	@$filbas="_conf/.key";
+	@$key=fopen ($filbas,"r");
+	for ($a=0;$test=@fgets ($key,32+15);$a++) {
+	$codekey=checkserial ($test);	//echo "codekey=$codekey"."<br>";
+	//echo "key=".$codekey;exit;
+	if ($codekey==true) break;
+	}
+	@fclose ($key);
+	return $codekey;
+		}
+	//SYSTEM
+// сохраняет серийный номер
+function writeserial ($serial)
+{
+	@$filbas="_conf/.key";
+	@$key=fopen ($filbas,"a+");
+	@fwrite ($key,$serial."\n");
+	@fclose ($key);
+}
+
+/*
+         //SYSTEM KEY_END
 
   function datechangedetect () { return 1; }
   function writeencdat ($file,$actcode,$stroka){ return 1; }
@@ -725,6 +1111,9 @@ $realpage=$_GET["pagenow"];
   function checkserial ($serial){ return 1; }
   function loadserial () { return 1; }
   function writeserial ($serial){ return 1; }
+ //SYSTEM KEY_START
+         */
+         //SYSTEM KEY_END
 
 
 
@@ -1257,7 +1646,7 @@ if ($cfgmod<1) {
 	if ($enablemodifyheader) { fclose ($ff);unset ($warndetect); // UNRELEASED
 		 $fixdetect="заголовок $filbas sql structure adapted.<br>";// echo $fixdetect;
 		 if (!$silent) echo $fixdetect;
-		$newplevel=array (); // CFG OPT FUTURE   alternative plevel updating method 
+		$newplevel=array (); // CFG OPT FUTURE  TODO:   alternative plevel updating method 
 		$newplevel=$csvplevel; 
 		for ($a=0;$a<$mycols;$a++) {
 			for ($b=0;$b<count ($csvheader);$b++) {
@@ -1343,7 +1732,7 @@ if ($prdbdata[$tbl][12]=="mysql") {
 		$plevels=$csvplevel;	
 		$headervirtual=$csvheader; 
 		
-if (1==0) { // CFG OPT FUTURE - enable\disable show virtual headers in mysql tables  сейчас ВЫКЛ - рекомендуется
+if (1==0) { // CFG OPT FUTURE  TODO: - enable\disable show virtual headers in mysql tables  сейчас ВЫКЛ - рекомендуется
 	$headervirtual=$headerreal;
 }
 }
@@ -1357,7 +1746,7 @@ if (($cfgmod==1)) {
 		$headervirtual[$a]=cmsg ($extenscfg.$a);
 	}
 	$silent=0;	
-	if (1==1) $zdata=$headervirtual;  	//CFG OPT FUTURE-enable\dis show virtual headers on configs  сейчас ВКЛ - рекомендуется
+	if (1==1) $zdata=$headervirtual;  	//CFG OPT FUTURE  TODO:-enable\dis show virtual headers on configs  сейчас ВКЛ - рекомендуется
 	//if () $extensioncfg=  Ignore config header data (no recommended)
 
 }// SQL RETURNED DATA CAN CONTAIN CSVHEADER
@@ -1835,7 +2224,7 @@ if ($name[0]=="%") { $selected=" disabled";$name[0]=" ";trim ($name);}
 
 echo "<input type=submit $idadd class=buttonS name=\"".$name."\" value=\"".cmsg ($cmsg)."\" $jsadd $hladd $selected>"; //help !  alt=\"1231\"
 //echo "<input type=submit class=buttonS name=\"".$name."\" value=\"".cmsg ($cmsg)."\" $jsadd >"; //help !  alt=\"1231\"
-// Автоматическое нажатие отмены через 15 секунд ?:)   CFG OPT FUTURE
+// Автоматическое нажатие отмены через 15 секунд ?:)   CFG OPT FUTURE  TODO:
 if ($name=="AUTOBACK_") echo  "<SCRIPT>  window.setTimeout(\"window.history.back();\", 15000); </SCRIPT>";
 
 }
@@ -2654,7 +3043,7 @@ function printfield ($data,$name) {
 // выбор колонки из текущей базы - улучшенная версия модуля (contain)	
 	// $name - передается имя для поля select
 	// любое имя начинающееся с N переключит скрытый вывод списка заголовков на числа
-// для корректного обновления баз SQL - лучше сделать дополнительный столбец после Plevel чтобы перевод мог сохранятся CFG OPT FUTURE
+// для корректного обновления баз SQL - лучше сделать дополнительный столбец после Plevel чтобы перевод мог сохранятся CFG OPT FUTURE  TODO:
 	//global $presettedmode,$res16,;//	$ar=$selectedfield;
 //	$datA добавлено т.к почти везде уже readdescripters работает
 // соединение таблиц PLINK производится по названию отображаемому пользователю - напоминание.
@@ -2757,7 +3146,7 @@ function printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,$resource,$nadpisx,$g
         if (!$groupdbfield) $groupdbfield=17; // addfilter is groupdb2 renamed!!
 	$totalbas=count ($prdbdata)-1;
 	if (!$trafeconom) $idadd=" id=\"".$name."\" ";
-  if ((count ($prdbdata))<3) { echo "<red>E_DB:Notning to connect.<br></font>"; return 0;};
+  if ((count ($prdbdata))<3) { echo "<red>E_DB:Notning to connect.<br></red>"; return 0;};
 echo "$nadpisx <select $idadd name = ".$resource." size = ".$pr[2].">";
 	for ($a=1;$a<$totalbas;$a++) {
 		if ($prdbdata[$a][0]=="") continue;
@@ -3019,7 +3408,7 @@ function onlypath ($file) {
 function sendfile ($file) {  // filepath must included ! file downloading!!
   global $sd,$prauth,$ADM;  //
  //ob_flush (); echo $file; exit; имя приходит нормальное.  UrlEncode(string $str) -setlocale('LC_CTYPE','cp1251'); FAILED
- @$download_size = filesize( $file );//tblname is refused ((   maybe check filesize in CFG OPT FUTURE
+ @$download_size = filesize( $file );//tblname is refused ((   maybe check filesize in CFG OPT FUTURE  TODO:
  $setspeedlimit=$sd[37];
  if ($prauth[$ADM][56]) $setspeedlimit=$prauth[$ADM][56];
  //echo "setspeedlimit=$setspeedlimit";exit;
@@ -3091,7 +3480,7 @@ if ($debugmode)	echo "<br>Destination point=".$destinationfilename."<br>";
  	 if ($pr[12])  logwrite ($act) ;
   if (!$pr[8]) print( cmsg ("F_S_NAME")." ".$tempname."<br>");
   			print(cmsg ("F_U_NAME").$userfile_name."<br>");
-            //print ("Постоянный адрес файла на этом сервисе:"); // CFG OPT FUTURE   InCONFIG
+            //print ("Постоянный адрес файла на этом сервисе:"); // CFG OPT FUTURE  TODO:   InCONFIG
   if (!$pr[8]) print("MIME-filetype: ".$userfile_type."<br>");
   $filesizeinmb=round ($userfile_size/1024/1024);
             print(cmsg ("F_SIZE")." ".$filesizeinmb."Mb <br><br>");} else {
@@ -3103,7 +3492,7 @@ if ($error_flag==4) { echo "UPLOAD_ERR_NO_FILE Файл не был загружен.";exit;};
 if ($pr[68]) {
     echo "</form><script language=\"JavaScript\">document.getElementByID(\"forma\").submit(go);</script>";
     echo "<form settimeout=\"forma\" onMouseover=\"forma\" href=\"javascript:document.getElementByID(\"forma\").submit(go)\"  action=filemgr.php>";
-    submitkey ("go","SH_UPDD_FL");
+    submitkey ("go","SH_UPDD_FL"); // не удалось сделать переход для незарегистрированных на следующую вкладку по timeout 
     hidekey ("coreredir","SH_UPDD_FL");
     hidekey ("destinationfilename",$destinationfilename);
     hidekey ("filesizeinmb",$filesizeinmb);
@@ -3267,7 +3656,7 @@ function simpleedit ($file,$limitsze)
 	{
 		global $codekey;
 	global $pr,$prauth,$ADM,$go,$vd,$sd;
-	if ($limitsze==0) {$limitsze=500000;}; // CFG OPT FUTURE , NOW OFF
+	if ($limitsze==0) {$limitsze=500000;}; // CFG OPT FUTURE  TODO: , NOW OFF
 	if ($limitsze<0) {$limitsze=$limitsze*-1;$noexit=1;};
 	 if ($go==cmsg ("SAVE"))
  {
@@ -3949,9 +4338,9 @@ function undolog ($action,$restoreaction,$baseID,$hostIP)
 function logwrite ($act)
 		{
 		global $pr,$sd,$dbs_ip,$dbs_ref,$actscnd,$addtologmonthyear,$baseID,$hostIP,$debugmode;
-		$addtologmonthyear=true;//CFG OPT FUTURE
+		$addtologmonthyear=true;//CFG OPT FUTURE  TODO:
                 $prefix=$sd[30];
-	if (strpos($dbs_ref,"dj.chg.su")!==false) $dbs_ref="local"; //CFG OPT FUTURE  SERVERSELF FILTER
+	if (strpos($dbs_ref,"dj.chg.su")!==false) $dbs_ref="local"; //CFG OPT FUTURE  TODO:  SERVERSELF FILTER
 	if (strpos($dbs_ref,"127.0.0.1")!==false) $dbs_ref="local";
 	if (strpos($dbs_ref,"localhost")!==false) $dbs_ref="local";
 	if (strpos($act,"log()")!==false) return;
@@ -3959,7 +4348,7 @@ function logwrite ($act)
     if (strpos($act,"READ_M")!==false) $accessmod=1;
     if (strpos($act,"SHOW_PATCH_SQL")!==false) $accessmod=1;
     if (strpos($act,"SHOW PATCH SQL")!==false) $accessmod=1;
-	//	$st = substr ($ip,0,7);  no subzones - unsupported - CFG OPT FUTURE
+	//	$st = substr ($ip,0,7);  no subzones - unsupported - CFG OPT FUTURE  TODO:
 		global $prauth,$ADM,$errt,$ermsg;
 		if ($errt==true) { echo "<red><bb>".$errt."</bb></red><br>".$ermsg."<br>"; }
 		if ($pr[21]) { 
@@ -3990,7 +4379,7 @@ function logwrite ($act)
                           $str=str_replace ("\r","<R>",$str);//enabling change \n to
         		$str=$str."\n";
 	// if ($addtologmonthyear) $addict="_".date("m.Y");    cannot be enabled to logs,undologs  - filename unsupported logger system
-	// if ($addtologmonthyear) $addict="_".date("Y"); CFG OPT FUTURE
+	// if ($addtologmonthyear) $addict="_".date("Y"); CFG OPT FUTURE  TODO:
  	$logtblname="_logs/log".$addict.".dat"; 
  	if ($executemod==1) $logtblname="_logs/execsqllog".$addict.".dat";
     if ($accessmod==1) $logtblname="_logs/access".$addict.".dat";
@@ -4041,7 +4430,7 @@ return $res;
 //DEFAULT CHARSET=   esli nado smenit -/*!40101 SET NAMES koi8r */;
 
 
-function detectrequirementID2 () {  // CFG OPT FUTURE
+function detectrequirementID2 () {  // CFG OPT FUTURE  TODO:
  echo "Table have too many lines linked to ID and you must set ID2 column or correct any ID column address. Also you can enable directedit for alias.";
  return;
 }
@@ -4049,7 +4438,7 @@ function detectrequirementID2 () {  // CFG OPT FUTURE
 function checklogsql () {
     global $pr,$sd,$debug,$silent;
       $silent=1;
-    if (!$pr[82]) return false ;         // CFG OPT FUTURE disables script using checklogssql
+    if (!$pr[82]) return false ;         // CFG OPT FUTURE  TODO: disables script using checklogssql
     //if (!$pr[43]) {
         if ($debug) { errorlog ("DEBUG checklogsql:Connection failure. Default host not set or SQL off. trying 127.0.0.1.");       $pr[43]="127.0.0.1";        }
 $dbtype="mysql";
@@ -4074,7 +4463,7 @@ $dbtype="mysql";
 	$a=dbs_query ($query,$connect,$dbtype);
 //("_dbs_undo_logs",$datecurrent,$usr,$dbs_ip,$action,$restoreaction,"",$baseID,$hostIP,"");
         if ($a==false) { sqlerr (); $mysqlanswer=false;} else {$mysqlanswer=true;};
-        // внимание записи ВСЕХ существующих копий дбскрипт будут попадать в эти базы- модификации названия таблиц и т.п. пока отсутствуют CFG OPT FUTURE
+        // внимание записи ВСЕХ существующих копий дбскрипт будут попадать в эти базы- модификации названия таблиц и т.п. пока отсутствуют CFG OPT FUTURE  TODO:
 ## end of creating tables
         }
         return $mysqlanswer;
@@ -4204,20 +4593,20 @@ if (($prdbdata[$tbl][12]=="fdb")AND($prauth[$ADM][10]>=$writeright)) {
             }
 
 if ($virtualid!==0) $fil=$fil.";".$dbc[$virtualid]; // вывод вторго ID если требуется
-
+global $scriptpath;
 if ($tbl=="files")
 {
     if (file_exists ($dbc[5])){
         if (strlen ($dbc[14])>1) {$hashprint=$dbc[14];} else { $hashprint=$dbc[4];};
 	$commstr="_ico/saveme.png";//.$dbc[$md1column]// возможная ошибка - не $dbc[0] а md2column  poprawil
-echo "<td><a target=b3 href='filemgr.php?c=".$hashprint."'><img src=$commstr border=0 title='".cmsg ("FMG_DOWNLOAD")."'></a></td>";
+echo "<td><a target=b3 href='$scriptpath?c=".$hashprint."'><img src=$commstr border=0 title='".cmsg ("FMG_DOWNLOAD")."'></a></td>";
 
 $commstr="_ico/errorcritical.png";
 $fileaddr=getidbyid ($fildata,4,5,$dbc[4]);
 $fsizer="[".round (filesize ($fileaddr)/1024/1024,2)."Mb]";
 echo "<td>".$fsizer ;//"гетид ($fildata,4,5,$dbc[4]) fileaddr=$fileaddr and size=".
 if ($prauth[$ADM][2]==1) $dbc[12]="";
-echo "<a target=b3 href='filemgr.php?c=".$hashprint."&d=a".$dbc[12]."'><img src=$commstr border=0 title='".cmsg ("PHYS_DEL")."'></a></td>";
+echo "<a target=b3 href='$scriptpath?c=".$hashprint."&d=a".$dbc[12]."'><img src=$commstr border=0 title='".cmsg ("PHYS_DEL")."'></a></td>";
 
 }
 else { $commstr="_ico/errorcritical-warningicon.png"; //     file size  file remove ability
@@ -4310,7 +4699,7 @@ if ($pr[8]==2) {
 				
 				}
 			if ($mode==4)
-				{if (@fopen ($scr,"r")) {echo "<td><a href=\"$scr\"><img src=\"$scr\" border=0 height=80 width=60></a></td>";} // CFG OPT FUTURE!
+				{if (@fopen ($scr,"r")) {echo "<td><a href=\"$scr\"><img src=\"$scr\" border=0 height=80 width=60></a></td>";} // CFG OPT FUTURE  TODO:!
 				}
 		}
    $comfile="_local/scrcomm/".$scrdir."/".$scrc.".txt";
@@ -4378,7 +4767,7 @@ if ($pr[8]==2) {
 	global $sd,$msec;// global $sd,$msec;   // процедура при некторых непроверенных условиях неработ!"!
 	
 	$hostaexesql=$sd[15];
-        $defaultsqlserver=$pr[43];// CFG OPT FUTURE Optional use 
+        $defaultsqlserver=$pr[43];// CFG OPT FUTURE  TODO: Optional use 
 	$chastota=$msec*100;
 	 if ($chastota>$sd[11]) return 0;
 		$aexesql=@fopen ("_conf/autoexec.sql","r");
@@ -4801,8 +5190,8 @@ if (!$exitpoint) if(($prauth[$ADM][2]==false)AND(($prauth[$ADM][11]))) { msgexit
 function bluescreen ($message)
 { global $enterpoint,$verprogram,$coreloadskip; //height=999; width:999;
 if ($coreloadskip) {return "Fatal error:$message <br>";};
-echo "</div></div></div><div id=\"bs\" style=\"position:absolute; z-index:4;  top:0; left:0; color: #FFFFFF ; background: #0000aF \">";
-echo "<h2><style> body {color: #FFFFFF ; background: #0000aF; } </style>";
+echo "</div></div></div><div id=\"bs\" style=\"position:absolute; font-family:Courier terminal;  z-index:4;  top:0; left:0; color: #FFFFFF ; background: #0000aF \">";
+echo "<h2><style> body {color: #FFFFFF ; background: #0000aF;  } </style>";
 echo "A problem has been detected. <br>Site shutdown to prevent damage data or users.<br>";
 echo "<br>Next information can help you:<br>".$message."<br>";
 echo "<br>If this is the first time you've seen this stop error screen,<br> restart your browser, if this screen appears again,<br> follow these steps:<br><br>Please check your actions with manual<br>If problem persist contact with site administrator or author<br>";
@@ -5043,6 +5432,7 @@ function rfsysdatareq () {
     if ($tbl=="denywords") {$cfgmod=1;$filbas="denywords.cfg";$namebas=cmsg ("CF_DWORD");$md1column=0; }
     if ($tbl=="srvlst") {$cfgmod=1;$filbas="srvlst.cfg";$namebas=cmsg ("CF_SRV");$md1column=0; }
     if ($prauth[$ADM][42]) if ($tbl=="cmdlines") {$cfgmod=1;$filbas="cmdlines.cfg";$namebas=cmsg ("CF_CMD");$md1column=0; }
+    if ($prauth[$ADM][42]) if ($tbl=="filescript") {$cfgmod=1;$filbas="filescript.cfg";$namebas=cmsg ("CF_CMD");$md1column=0; }
     if ($tbl=="errorlog") {$cfgmod=2;$filbas="errorlog.dat";$namebas=$filbas;$md1column=0; }
     if ($tbl=="log") {$cfgmod=2;$filbas="log.dat";$namebas=$filbas;$md1column=0; }
     if ($tbl=="reportlog") {$cfgmod=2;$filbas="reportlog.dat";$namebas=$filbas;$md1column=0; }
@@ -5054,7 +5444,7 @@ return $filbas;
 }
 
 
-// CFG OPT FUTURE
+// CFG OPT FUTURE  TODO:
 
 // функции фиксации перевода строки для сохранения и возврата перевода обратно
 function entsymb ($a) {
@@ -5126,7 +5516,7 @@ $svn1=$svn;
     lprint ("SVN_UPD");echo "<br>SVN Update <form action=admin.php>";
 		// файлы к этому моменту уже должны быть сгенерированы и хотя бы быть в наличии
 		$path=$folder;	//	$path2=$fldup."/_conf";$path3=getcwd ()."/_langdb/";
-		$mask="*.*";	$protect[]="update*.*";$nameselect="files"; // CFG OPT FUTURE  - mask unfull support on project
+		$mask="*.*";	$protect[]="update*.*";$nameselect="files"; // CFG OPT FUTURE  TODO:  - mask unfull support on project
                 $protect[]="*.txt";$protect[]="~";$nameselect="files";
 		$files=filesselect ($path,$mask,$protect,$nameselect,7);
              
@@ -5178,7 +5568,7 @@ if ($files[$a][2]==0) continue;//length
         } else { if ($raznica<20000) { //echo "Status:<font color=green id=xfnt>Identical</font><br>";
                  $skip++;continue;};
            if ($dateremotefile<$datethisfile) {$skip++;continue;};};//
-if ($check) { echo "Status:<font color=green id=xfnt>Synchronized succesfully</font><br>"; $ok++ ; } else { echo "Status:<red>Not updated</red></font><br>"; $fail++;};
+if ($check) { echo "Status:<grn>Synchronized succesfully<grn><br>"; $ok++ ; } else { echo "Status:<red>Not updated</red><br>"; $fail++;};
 ob_flush  ();
 $enable=0;
 } else { echo "" ;// skipped
