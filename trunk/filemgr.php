@@ -2,7 +2,7 @@
 $dbdataskip=1;
 require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
 if (!$activation) exit;
-$verfilemgr="Filemgr  v 4.3.4 (c) dj--alex ";
+$verfilemgr="Filemgr  v 4.3.5 (c) dj--alex ";
   $enterpoint=$verfilemgr;#end of conf
 // вот наша буферизация - ob_start();ob_end_flush();
 autoexecsql ();// ob_flush ();exit; zdes menueshe est.
@@ -46,11 +46,11 @@ if ($cmd==cmsg("FMG_DUMP_UPLOAD")) {
                      //    echo "countf=$countf<br>";
                          echo"<tr><td>".$filename."(".$fildata[$a][9].")</td><td>".$fsizer."</td>";//bgcolor=white
                          $commstr="_ico/saveme.png";//.$dbc[$md1column]// возможная ошибка - не $dbc[0] а md2column  poprawil
-                         echo "<td><a target=b3 href='filemgr.php?c=".$fildata[$a][4]."'><img src=$commstr border=0 title='".cmsg ("FMG_DOWNLOAD")."'></a>";
+                         echo "<td><a target=b3 href='$scriptpath?c=".$fildata[$a][4]."'><img src=$commstr border=0 title='".cmsg ("FMG_DOWNLOAD")."'></a>";
                        if (($prauth[$ADM][2])OR($prauth[$ADM][2])) {
                       //может добавить отдельное право для редактирования ссылок и удаления слинкованных файлов? ??
                             $commstr="_ico/errorcritical.png";
-                           echo "<a target=b3 href='filemgr.php?c=".$fildata[$a][4]."&d=".$fildata[$a][12]."'><img src=$commstr border=0 title='".cmsg ("PHYS_DEL")."'></a>";
+                           echo "<a target=b3 href='$scriptpath?c=".$fildata[$a][4]."&d=".$fildata[$a][12]."'><img src=$commstr border=0 title='".cmsg ("PHYS_DEL")."'></a>";
                        }
                     echo "</td></tr>";
                          }
@@ -69,18 +69,18 @@ if ((!$countf)AND($searchfilenew)) { echo "</table>No one files found. Or it not
  $fsizer="[".round (@filesize ($fildata[$filewithmaxdown][5])/1024/1024,2)."Mb]";
   echo"<tr><td>".basename($fildata[$filewithmaxdown][5])."(".$fildata[$filewithmaxdown][9].")</td><td>".$fsizer."</td>";//bgcolor=white
                          $commstr="_ico/saveme.png";//.$dbc[$md1column]// возможная ошибка - не $dbc[0] а md2column  poprawil
-                         echo "<td><a target=b3 href='filemgr.php?c=".$fildata[$filewithmaxdown][4]."'><img src=$commstr border=0 title='".cmsg ("FMG_DOWNLOAD")."'></a>";
+                         echo "<td><a target=b3 href='$scriptpath?c=".$fildata[$filewithmaxdown][4]."'><img src=$commstr border=0 title='".cmsg ("FMG_DOWNLOAD")."'></a>";
                          echo "</td></tr></table>";
             }
      exit;}
       
  }
 
-
+//убирание этого куска кода не влияет на multiaction
 //  Shared theme ----
  if ($coreredir=="SH_UPDD_FL")  { //not forced, not automatically  // подстройка для автопредложения share
     $cmd=cmsg ("FMG_SHARE");
-    $fileforaction=$destinationfilename;
+    $fileforaction=$destinationfilename;// multiaction unimplemented  откуда берется destination???
     $filesize=$filesizeinmb;
     // echo "Redirect accepted from fmgr side<br>;";
     $cmd{0}=cmsg ("FMG_SHARE");
@@ -97,7 +97,7 @@ if ($c) {  //нам пришла ссылка на файл!  возрадуемся!
     if ($fildata[$a][14]==$c) { $filerealid=$a;$pathwithfile=$fildata[$a][5];$commfile=$fildata[$a][7];$hashdel=$fildata[$a][12];};    //if (==$pathandfile) lprint (FSH_EXST_AN_USR); //трёхмерный массив :))
 }
 
-if (file_exists ($pathwithfile)==false) die ("File not found.");
+if (file_exists ($pathwithfile)==false) die ("<br><br><font size=40><CENTER>File not found.</CENTER></font><br><br><br>");
 if ($commfile==false) {$f=$c;} else {
 echo cmsg ("COMMFILE")."$commfile<br>";
  echo "<a href='filemgr.php?f=".$c."'>Download!</a><br>";
@@ -207,8 +207,10 @@ if ($prauth[$ADM][40]) $noscreenmode=1;
  if ($codekey!==5) if (isset ($FMG_UPLOAD_x)) $cmd{$pid}=cmsg ("FMG_UPLOAD");
  if ($codekey!==5) if (isset ($FMG_SHARE_x)) $cmd{$pid}=cmsg ("FMG_SHARE");
  if ($codekey!==5) if (isset ($FMG_UNZIP_x)) $cmd{$pid}=cmsg ("FMG_UNZIP");
+ if (isset ($FMG_TEST_x)) $cmd{$pid}=cmsg ("FMG_TEST");
  if ($OSTYPE=="LINUX") if ($codekey!==5) if (isset ($FMG_UNRAR_x)) $cmd{$pid}=cmsg ("FMG_UNRAR");
- if (isset ($FMG_REF_x)) $cmd{$pid}=cmsg ("FMG_REF");
+  if ($OSTYPE=="LINUX") if ($codekey!==5) if (isset ($FMG_RAR_x)) $cmd{$pid}=cmsg ("FMG_RAR");
+if (isset ($FMG_REF_x)) $cmd{$pid}=cmsg ("FMG_REF");
  if (isset ($FMG_RESET_x)) $cmd{$pid}=cmsg ("FMG_RESET");
  if ($codekey!==5) if (isset ($FMG_CPY_F_x)) $cmd{$pid}=cmsg ("FMG_CPY_F");
  if ($codekey!==5) if (isset ($FMG_MOV_F_x)) $cmd{$pid}=cmsg ("FMG_MOV_F");
@@ -314,7 +316,7 @@ if ($prauth[$ADM][37]) $maxmgrs=$prauth[$ADM][37]; else $maxmgrs=2;
 //moved TO Up -- SHARE APPLYING STEP 2 --
 //global $username,$share,$write,$file;
 
-if ($go==cmsg (FMG_SHARE))
+if ($go==cmsg (FMG_SHARE)) if (!$multiactionsign)
 {
 
         if ((!$prauth[$ADM][54])AND($coreredir!="step2")) { lprint ("DIS") ; exit;};
@@ -322,19 +324,20 @@ if ($go==cmsg (FMG_SHARE))
     if ($username) @$userlist=implode ($username,",");
     if ($share!=="GENLNK_USR") $userlist="";
     if ($file===false) exit;
-    //echo "share=$share us=$userlist groupplevels=$groupplevels w=$write file=$file yes=$yes<br>";
-  $hash=$id[0].md5($prauth[$ADM][0].$file);
+    $filelist=(explode ("¦",base64_decode ($filelistmassive))); //здесь мы получили полный список файлов . его надо будет передать далее до следующего пункта без изменений.
+    if ($multiaction) {echo"multiaction share=$multiactionsign, filelist CONTENTS";print_r ($filelist);
+      echo"IF YOU SEE THIS MESSAGE something works not right<br>";exit;
+     }
+  $hash=$id[0].md5($prauth[$ADM][0].$file); //эти 5 переменных будут для массива разными
   $hashmini=substr ($hash,0,4);
+      
   $pathandfile=$file;
   $filesize=filesize ($file);
 $hashdel=crc32 ($filesize);
-
   //check alreasy exist and receive ID
 $count=$filcount;//echo "Counts found files.cfg: ".$count."<br>";
 if ($share=="") { lprint (FSH_NO); exit; };
 for ($a=0;$a<$count;$a++) {
-    //echo $table[$a][4]."<br>";
-    //if (($fildata[$a][14]==$hashmini))
     if ($share!=="FMG_UNSHARE") if (($fildata[$a][14]==$hashmini)) {
                 if (($fildata[$a][4]!==$hash)) {$hashmini="";} else { lprint ("FSH_EXST"); exit  ; }
             };// disable mini-link if compared
@@ -361,15 +364,16 @@ if (($share=="FMG_UNSHARE")AND($filefound==0)) { lprint ("UNSH_FAIL");exit;};
    $fildata[$count][18]=$dupname;   $fildata[$count][19]="0";   $fildata[$count][20]="0";
    $fildata[$count][21]=$dupname;   $fildata[$count][22]="0";   $fildata[$count][23]="0";
    $fildata[$count][24]=$dupname;   $fildata[$count][25]="0";   $fildata[$count][26]="0".$addOSenter;
- echo cmsg ("Y_LNK")." <a href='filemgr.php?c=".$fildata[$count][14]."'>link</a> ".cmsg ("Y_LNK_I")."<br>";
+ echo cmsg ("Y_LNK")." <a href='$scriptpath?c=".$fildata[$count][14]."'>link</a> ".cmsg ("Y_LNK_I")."<br>";
  //echo "server name=".$_SERVER['SERVER_NAME']."<br>"; echo "php self=".$_SERVER['PHP_SELF']."<br>"; echo "doc root=".$_SERVER['DOCUMENT_ROOT']."<br>";
-$link="<br>http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][14]."<br><br>";
+echo "Filename: ".basename($pathandfile)."<br>";
+$link="<br>http://".$_SERVER['SERVER_NAME']."$scriptpath?c=".$fildata[$count][14]."<br><br>";
 $link.="<br>".cmsg ("FL_UP_SIT")."[url]http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][14]."[/url]<br><br>";
 $link.="<br>".cmsg ("FL_UP_IMG")."[img]http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][14]."[/img]<br><br>";
 
 echo $link;
 
- echo cmsg ("D_LNK")." <a href='filemgr.php?c=".$fildata[$count][14]."&d=".$fildata[$count][12]."'>remove link</a> ".cmsg ("Y_LNK_I")."<br>";
+ echo cmsg ("D_LNK")." <a href='$scriptpath?c=".$fildata[$count][14]."&d=".$fildata[$count][12]."'>remove link</a> ".cmsg ("Y_LNK_I")."<br>";
  //echo "server name=".$_SERVER['SERVER_NAME']."<br>"; echo "php self=".$_SERVER['PHP_SELF']."<br>"; echo "doc root=".$_SERVER['DOCUMENT_ROOT']."<br>";
 $link="<br>http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$count][14]."&d=".$fildata[$count][12]."<br><br>";
 
@@ -388,6 +392,85 @@ echo $x;
 if ($debugmode) readfile ("_conf/files.cfg");  //debug//
 exit;
 }
+
+if ($go==cmsg (FMG_SHARE)) if ($multiactionsign)
+{ 
+
+        if ((!$prauth[$ADM][54])AND($coreredir!="step2")) { lprint ("DIS") ; exit;};
+    if ($username) @$userlist=implode ($username,",");
+    if ($share!=="GENLNK_USR") $userlist="";
+    if ($file===false) exit;
+    $pathmulti=base64_decode ($pathmulti);
+    echo "Path: $pathmulti";
+    $filelist=(explode ("¦",base64_decode ($filelistmassive))); //здесь мы получили полный список файлов . его надо будет передать далее до следующего пункта без изменений.
+      echo"multiaction share=$multiactionsign, <br> filelist CONTENTS";print_r ($filelist);
+      echo"<br>";
+      echo "filelistmassive==$filelistmassive<br>";
+$countfilelist=count ($filelist)+1; //
+$filelist[$countfilelist]=$filelist[0];///array_unshift — Добавляет один или несколько элементов в начало
+if ($share=="") { lprint (FSH_NO); exit; };
+$count=$filcount;
+echo "Counts found files.cfg: ".$count."<br>";
+//  
+for ($c=0;$c<$countfilelist;$c++) {//цикл отрабатывает все полученные файлы 
+  $hash[$c]=$id[0].md5($prauth[$ADM][0].$filelist[$c]); //эти 5 переменных будут для массива разными
+  $hashmini[$c]=substr ($hash[$c],0,4);
+  $filename=$filelist;
+ $pathandfile[$c]=$pathmulti.$filelist[$c];
+  $filesize[$c]=filesize ($filelist[$c]);
+$hashdel[$c]=crc32 ($filesize[$c]);
+for ($a=0;$a<$count;$a++) {
+    if ($share!=="FMG_UNSHARE") if (($fildata[$a][14]==$hashmini[$c])) {
+                if (($fildata[$a][4]!==$hash[$c])) {$hashmini[$c]="";} else { lprint ("FSH_EXST"); echo "Skip:".$filename[$c]."<br>";$hash[$c]=0; }
+            };// disable mini-link if compared  //   ($share=="FMG_UNSHARE")-  IS REMOVED !!!! NOT requires
+    if ($share!=="FMG_UNSHARE") if (($fildata[$a][4]==$hash[$c])) { lprint ("FSH_EXST"); echo "Skip:".$filename[$c]."<br>"; $hash[$c]=0;}
+    if ($share!=="FMG_UNSHARE") if ($fildata[$a][5]==$pathandfile[$c]) lprint ("FSH_EXST_AN_USR"); //трёхмерный массив :))
+    }
+   // if ($hash[$c]==0) continue ; // оператор next не помешал бы
+  //check alreasy exist and receive ID
+    //проверка одного конкретного файла на совпадение//заполнение полей данных для 1 файла.    
+ if (!($hash[$c]==0)) { if (!$initalizeIDcounter) { $id=$count+$c; $initalizeIDcounter;};
+
+   echo "<br> File ID $id<br>";// а это какого хера не выводится?  что печатать не нужно? 
+   $fildata[$id][0]=$id;   $fildata[$id][1]=$share;
+   $fildata[$id][2]=$userlist;   $fildata[$id][3]=$groupplevels;
+   $fildata[$id][4]=$hash[$c];   $fildata[$id][5]=$pathandfile[$c];
+   $fildata[$id][6]=$yes;   $fildata[$id][7]=$commfile;   $fildata[$id][8]=date("d.m.Y H:i:s");
+   $fildata[$id][9]=$downloads;   $fildata[$id][10]=$lastdownload;   $fildata[$id][11]=$srchen;
+   $fildata[$id][12]=$hashdel[$c];   $fildata[$id][13]=$filesize[$c];   $fildata[$id][14]=$hashmini[$c];
+   $fildata[$id][15]=$dupname;   $fildata[$id][16]="0";   $fildata[$id][17]="0";
+   $fildata[$id][18]=$dupname;   $fildata[$id][19]="0";   $fildata[$id][20]="0";
+   $fildata[$id][21]=$dupname;   $fildata[$id][22]="0";   $fildata[$id][23]="0";
+   $fildata[$id][24]=$dupname;   $fildata[$id][25]="0";   $fildata[$id][26]="0".$addOSenter;
+   
+ echo cmsg ("Y_LNK")." <a href='$scriptpath?c=".$fildata[$id][14]."'>link</a> ".cmsg ("Y_LNK_I")."<br>";
+// записать все значения из filelist как копии первого параметра не меняя другие и сохранить выдав коды каждого из файлов.
+echo "Filename: ".basename($pathandfile[$c])."<br>";
+$link="<br>http://".$_SERVER['SERVER_NAME']."$scriptpath?c=".$fildata[$id][14]."<br><br>";
+$link.="<br>".cmsg ("FL_UP_SIT")."[url]http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$id][14]."[/url]<br><br>";
+$link.="<br>".cmsg ("FL_UP_IMG")."[img]http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$id][14]."[/img]<br><br>";
+echo $link;
+ echo cmsg ("D_LNK")." <a href='$scriptpath?c=".$fildata[$id][14]."&d=".$fildata[$id][12]."'>remove link</a> ".cmsg ("Y_LNK_I")."<br>";
+ $link="<br>http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$id][14]."&d=".$fildata[$id][12]."<br><br>";
+echo $link;
+echo "End $id   next,,, <br>";
+if ($initalizeIDcounter) {$id=$id+1;};
+ }
+} // end c cycle
+echo "Check counter:: c=$c count=$countfilelist<br>";
+//echo "hash from filesdata-2 massive: ".$table[$count][4]."<br>";
+fclose ($filescfg) ;//fclose ($file);
+$filescfg=csvopen ("_conf/files.cfg","w",1);
+//$testlinuxlinefeed=1;  надо не этот параметр врубать а вручную .add дописывать  все работает, можно копипастить :)))
+$x=writefullcsv ($filescfg,$filheader,$filplevels,$fildata); // надо себе напомнить чтоб не забывал переоткрывать файл в w
+echo $x;
+   //writing new stroke to _conf\files.cfg
+    logwrite ("FMG_SHARE $share (usr=$userlist) (plvl=$groupplevels) $pathandfile");
+if ($debugmode) readfile ("_conf/files.cfg");  //debug//
+echo"Ending";exit;
+}
+
+
 //moved TO Up -- SHARE APPLYING STEP 2 -- ENDING
 
 //added to sharing dir
@@ -399,6 +482,22 @@ if (!$helloprinted) if (!$prauth[$ADM][16]) if ($sd[27]) { echo $sd[27]."<br>"; 
 if ($prauth[$ADM][40]) { $cmd=$cmdtmp; lprint ("DEBUGMSG");echo ":".	cmsg ("GMP_40")."<br>";	}
 
 
+//4.3.5добавть в программу  - воссоздание DBS_PATH
+
+$onlypath=onlypath ($_SERVER["SCRIPT_NAME"]);
+$scriptnamelen=strlen (basename ($onlypath));
+$dbs_path=substr ($onlypath,0,(strlen ($onlypath)-$scriptnamelen));
+echo "path=$dbs_path , onlypath=$onlypath n<br>";
+$denypath=$dbs_path."_conf";
+$ln=strlen ($_SERVER["DOCUMENT_ROOT"]);
+$pathwithnoroot=substr ($path,$ln+1);
+if (strpos ( $pathwithnoroot,"_conf")) {
+$pathwithnoroot=substr ($pathwithnoroot,0,strlen ($pathwithnoroot)-1);
+$detect=strpos ($denypath,$pathwithnoroot);
+if ($debugmode) echo "$detect=strpos ($denypath,$pathwithnoroot";
+if ($detect>0) if ($prauth[$ADM][2]==0) die ("You don't have enough rights to view conf.");
+}
+
 //ending generate filemgr windows
 //if ($noscreenmode==true) { $cmd=$cmd1;$write=$cmd;}  //NOWORK
 	//if (!$debugmode) echo "filemgr (cmd=$cmd,stroka=$stroka,path=$path,file=$fileforaction,mask=$mask,pid=$a);";
@@ -406,6 +505,10 @@ if ($prauth[$ADM][40]) { $cmd=$cmdtmp; lprint ("DEBUGMSG");echo ":".	cmsg ("GMP_
         if ($multiaction==1) {
              for ($filearrcount=0;$filearrcount<count ($fileforaction);$filearrcount++) {
             $fileforactionfromarray=$fileforaction[$filearrcount];
+             //$multiactionfileforaction=$fileforaction;
+            //4.3.5добавть в
+            if ($debugmode) echo" checking $fileforactionfromarray ==_conf";
+         if ($fileforactionfromarray=="_conf") if ($prauth[$ADM][2]==0) die ("You don't have enough rights to actions with conf.");
             if ($debugmode) echo "<br>filemgr (cmd=$cmd,stroka=$stroka,path=$path,file=$fileforactionfromarray,mask=$mask,pid=$a);<br>";
             filemgr ($cmd,$stroka,$path,$fileforactionfromarray,$mask,$a); // глючит не подетски
              }
@@ -414,6 +517,11 @@ if ($prauth[$ADM][40]) { $cmd=$cmdtmp; lprint ("DEBUGMSG");echo ":".	cmsg ("GMP_
         //if (is_array ($fileforactionfromarray)) { echo "Filemgr cannot be runned for Array of files <br>"; };
         if ($debugmode) echo "<br>filemgr (cmd=$cmd,stroka=$stroka,path=$path,file=$fileforaction,mask=$mask,pid=$a);<br>";
         if ($multiaction==0) {
+            
+            //4.3.5добавть в
+           if ($debugmode)      echo" checking $fileforaction ==_conf";
+         if ($fileforaction=="_conf") if ($prauth[$ADM][2]==0) die ("You don't have enough rights to actions with conf.");
+       
             filemgr ($cmd,$stroka,$path,$fileforaction,$mask,$a);
         }
         
@@ -443,13 +551,18 @@ function filemgr ($cmd,$stroka,$path,$fileforaction,$mask,$pid){  // is a part f
 	//hidekey ("pid",$pid);
 	global $defaultpath,$protect,$prauth,$ADM,$pr,$sd;//..,$file
 	global $filemgrmod,$daysleft,$codekey,$noscreenmode,$maxmgrs,$OSTYPE,$coreredir;
-        global $multiaction;
+        global $multiaction,$scriptpath,$scriptpath;
 		if ($codekey==4) needupgrade ();
      $file=$fileforaction;
         global $filscheader,$filscdata,$filscplevel,$filsccount,$languageprofile;
   if ($filscdata)   { if ($filsccount<1) { echo "Filemgr don't have configured scripts<br>";} else
   { echo "";};
-   //additional keys by   filescript.cfg and starting it
+
+  
+
+
+
+//additional keys by   filescript.cfg and starting it
          // 4.3.4добавлено: cmsg не отрабатывает теперь значения начинающиеся с точки
          // filescript для генерации кнопок исполнения скриптов ,  заданных администраторами.
          // dbscore - исправлена ошибка из за которой иногда не вычислялся count
@@ -527,7 +640,7 @@ $parsedcommand=str_replace ( $cutwprc,$replaceto, $parsedcommand,$count=2);
 
     }
 
- echo "Parsed command :: $parsedcommand<br>";
+ if ($debug) echo "DEBUG Parsed command :: $parsedcommand<br>";
     if ($parsedcommand) {echo " executing (if you enable system () of course )...<br>";
     
     $x=system ($parsedcommand);  //ping
@@ -575,13 +688,38 @@ exit;//moved from non-function zone
 //if (($cmd==cmsg("FMG_UNSHARE"))and($prauth[$ADM][36])) {    echo "not implemented";}
 if ((($cmd==cmsg("FMG_SHARE"))and($prauth[$ADM][36])) OR ($coreredir=="SH_UPDD_FL")) {
 	$path=del_endslash ($path); // -- SHARE STEP 1 --
+        if ($multiaction) {global $filearrcount; // 0
+        if ($filearrcount>0) exit;// disables FMG_SHARE for cycle executing;  only one action allowed for one or multiaction files.
+        global $fileforaction;
+        $filearrcount=count ($fileforaction);
+       }  // праздник главное вовремя закончить  тогда он ьудет долго помниться как приятное событие
         // multiaction==1  CFG OPT FUTURE  должен добавлять много файлов по идее, однако пока отрабатывается по файлу за раз.
-    $file=$path."/".$fileforaction;
-    if ($coreredir=="SH_UPDD_FL") { global $destinationfilename,$filesizeinmb;
+        if ($multiaction) echo "Multiaction mode.  Selected files=$filearrcount<br>";
+             //..if ($multiaction==1) {global $filearrcount;$stroka.=$filearrcount;};
+    if (!$multiaction ) $file=$path."/".$fileforaction;
+    if ($multiaction) { for ($a=0;$a<$filearrcount;$a++) { $file[$a]=$path."/".$fileforaction[$a]; 
+     echo "File $a: $fileforaction[$a]<br>;";
+    }
+    $filelistmassive=base64_encode (implode ($fileforaction,"¦")); //список и число объектов надо передать вместе с multiaction
+            } 
+            
+            
+          //лучше всего массив с файлами передать в виде одной переменной
+    if ($coreredir=="SH_UPDD_FL") { // maybe
+        if (!$multiaction) {
+            global $destinationfilename,$filesizeinmb;
             $file=$destinationfilename;
+        }
+         if ($multiaction) {
+            global $destinationfilename,$filesizeinmb;
+            echo "SH_UPDD_FL unimplemented<br>";
+            echo "I dont know where i take destfilename $destinationfilename -- $file (file)<bR>";
+         //   $file=$destinationfilename;
+        }
                                 };
     	?><form enctype="multipart/form-data" action="filemgr.php" method="post"><?
-    echo "File: $file<br>";
+       if (!$multiaction) {   echo "File: $file<br>";}
+       //Sif (!$multiaction) {   echo "File: $file<br>";}
     lprint (GEN_OPT);echo "<br>";
 radio ("share","#GENLNK_UNREG","GENLNK_UNREG");echo "<br>";
 radio ("share","FMG_UNSHARE","FMG_UNSHARE"); echo "<br>";
@@ -609,22 +747,30 @@ if ($prauth[$ADM][2]) {checkbox (1,"yes"); lprint (GEN_FL_EPX);} else { hidekey 
 checkbox (1,"srchen"); lprint (GEN_FILENSRCH);
 echo "<br>";
 if ($coreredir=="SH_UPDD_FL") { hidekey ("coreredir","step2");};
-    hidekey ("file",$file);
-    submitkey ("go","FMG_SHARE");
+   if (!$multiaction) hidekey ("file",$file);
+   if ($multiaction) { hidekey ("multiactionsign",$multiaction);
+   hidekey ("file",$filelistmassive);
+   $path=add_endslash($path);
+   hidekey ("pathmulti",  base64_encode($path));
+   hidekey ("filelistmassive",$filelistmassive);//посылаем дважды на пробу   и каждый раз нихрена нет почему то  какого ???
+   hidekey ("filearrcount",$filearrcount);
+   }
+    submitkey ("go","FMG_SHARE"); // кнопка раздать файл
 	hidekey ("pid",$pid);?></form>
 <?=" ";
 hidekey ("write",$cmd);
-if ($multiaction!==1) exit;
+if ($multiaction==1) exit;//   !
 ////moved from non-function zone -- SHARE STEP 1 -- ENDING
+//ЭТО ОКончание первого шага раздачи
 }
 //
 //	echo "Мы получили из пред сессии  $cmd $fileforaction!<br> <BR>";   ikonki mlya !
 //echo "<br>".cmsg ("FMG_MHLP")."<br>";  ХЕЛП ОТКЛЮЧЕН
  if ($noscreenmode==false) { echo "" ;};
 //тут пишем команды и выполняем их
-
-if (!$prauth[$ADM][38]) $protect[]="*.php";// скрываем файлы скрипта чтобы их никто не стер.
-$protect[]="*.key";// не снимать комментарий - безопасность снизится до 0
+//echo "628_Failure-- protect::";print_r ($protect); неправильно обрабатывался массив  почему то вместо него шла переменная о_О CFG OPT FUTURE
+if (is_Array ($protect)) if (!$prauth[$ADM][38]) $protect[]="*.php";// скрываем файлы скрипта чтобы их никто не стер.
+//$protect[]="*.key";// не снимать комментарий - безопасность снизится до 0
 //if ($OSTYPE=="LINUX") if (($sd[10])AND($ADM==0)) $path=$path."/";  //bug with unregistered users  folder lost /
 //if ($OSTYPE=="WINDOWS") if (($sd[10])AND($ADM==0)) $path=$path."\\";
 
@@ -679,7 +825,7 @@ if (($cmd==cmsg("FMG_EXECUTE"))and($prauth[$ADM][8])) {
  if ($OSTYPE=="LINUX") if (($cmd==cmsg("FMG_UNRAR"))and($prauth[$ADM][12])) {
     $file=$path.$fileforaction;//rar_open rar_list PHP by standart is unsupported!!!
     $unrared=substr($fileforaction,0, strrpos($fileforaction,'.') );; // elf  elfkz  удаляем расширение рар
-    mkdir ($path.$unrared);
+   @mkdir ($path.$unrared);
     echo "Creating folder $unrared<br>";
     $extractionpoint=$path.$unrared;
     echo "Extracting to ".$extractionpoint.";<br>";
@@ -687,11 +833,23 @@ $zip = system("unrar x \"$file\" \"$extractionpoint\"");
 echo "<br>Result=$zip  "; //echo '"unrar e \"'.$file.'\" \"'.$extractionpoint.'\""'; echo " <br>";
  }
 
-
+if ($OSTYPE=="LINUX") if (($cmd==cmsg("FMG_RAR"))and($prauth[$ADM][12])) {
+    $file=$path.$fileforaction;//rar_open rar_list PHP by standart is unsupported!!!
+    $unrared=substr($fileforaction,0, strrpos($fileforaction,'.') );; // elf  elfkz  удаляем расширение рар
+  // @mkdir ($path.$unrared);
+   // echo "Creating folder $unrared<br>";
+    $extractionpoint=$path.$unrared;
+    echo "Archiving to  to ".$fileforaction.".rar;<br>";
+$zip = system("rar a \"$fileforaction\".rar \"$file\"");
+echo "<br>Result=$zip  "; //echo '"unrar e \"'.$file.'\" \"'.$extractionpoint.'\""'; echo " <br>";
+ }
+ 
 
 if (($cmd==cmsg("FMG_UNZIP"))and($prauth[$ADM][12])) {
     $file=$path.$fileforaction;//rar_open rar_list PHP by standart is unsupported!!!
 $zip = zip_open($file);
+ $unrared=substr($fileforaction,0, strrpos($fileforaction,'.') );; // elf  elfkz  удаляем расширение рар
+    @mkdir ($path.$unrared);
 if ($zip) {
 
 while ($zip_entry = zip_read($zip)) {
@@ -705,8 +863,8 @@ echo "File Contents:\n";
 $buf = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
 //echo "$buf\n";
 $x=fopen ($path.zip_entry_name($zip_entry),"w");
-fwrite ($x,$buf);
-fclose ($x);
+@fwrite ($x,$buf);
+@fclose ($x);
 
 zip_entry_close($zip_entry);
 }
@@ -716,6 +874,20 @@ echo "\n";
 zip_close($zip);
 }
 }
+
+
+if (($cmd==cmsg("FMG_TEST"))) {
+    
+    
+
+//at this moment start new script
+	
+	echo cmsg ("FMG_MOD_IN")."<br>";
+	require ("mp3runonce.php");
+	echo cmsg ("FMG_MOD_OUT")."<br>";
+}
+
+
 
 if (($cmd==cmsg("FMG_DEL"))and($prauth[$ADM][13])) {
 	if ($codekey==7) demo ();
@@ -809,7 +981,9 @@ $dircnt= count ($file);
 	 submitkey ("cmd","FMG_MKDIR");
 	 submitkey ("cmd","FMG_JOINFIL");
          submitkey ("cmd","FMG_UNZIP");
+         submitkey ("cmd","FMG_TEST");
           	if ($OSTYPE=="LINUX")submitkey ("cmd","FMG_UNRAR");
+          	if ($OSTYPE=="LINUX")submitkey ("cmd","FMG_RAR");
 	 submitkey ("cmd","FMG_REN");
 	 submitkey ("cmd","FMG_EDIT");
 	 submitkey ("cmd","FMG_NEW"); 			}
@@ -867,8 +1041,9 @@ if ($prauth[$ADM][7]) {
  submitimg ("cmd".$pid,"FMG_NEW","_ico/newfile.png");
  submitimg ("cmd".$pid,"FMG_JOINFIL","_ico/joinfiles.png");
  submitimg ("cmd".$pid,"FMG_UNZIP","_ico/backup.png");
-if ($OSTYPE==="LINUX")  submitimg ("cmd".$pid,"FMG_UNRAR","_ico/backup.png");
- }
+ submitimg ("cmd".$pid,"FMG_TEST","_ico/apply_f2.png");
+if ($OSTYPE==="LINUX")  submitimg ("cmd".$pid,"FMG_UNRAR","_ico/backup.png"); 
+if ($OSTYPE==="LINUX")  submitimg ("cmd".$pid,"FMG_RAR","_ico/backup.png"); }
  if ($prauth[$ADM][13]) {
  if ($prauth[$ADM][5]==true) submitimg ("cmd".$pid,"FMG_DELALL","_ico/removefolder.png");
   submitimg ("cmd".$pid,"FMG_DEL","_ico/removefile.png");

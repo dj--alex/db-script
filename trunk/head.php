@@ -69,6 +69,7 @@ if (($pr[54])OR(!$dbstyle3en)) { // применяется если стиль DeusModus неактивен
 ?></style>
 <?php  if (!$trafeconom) { // куй а не размер кнопкам!
     // Jquery function hover for table  - no work!!!  background not implemented   дочерние классы поддерживаются :)))
+    /*$('red').addGlow({ textColor: '#dd00dd', haloColor: '#dd00dd', radius: 50 });*/
     ?>
 <script type="text/javascript">
 $('table').hover(function(){
@@ -80,7 +81,7 @@ $(document).ready(function() {
 $('#myTable').find('td').addGlow({ textColor: '<?=$colortextmouseselect;?>', haloColor: '<?=$coloradselect;?>', radius: 5 });
 $('#myTable').find('tr').addGlow({ textColor: '<?=$coloradselect?>', haloColor: '<?=$colorfonbackgroundselect?>', radius: 5 });
 $('#Adminpanel').find('td').addGlow({ textColor: '<?=$colortextmouseselect?>', haloColor: '<?=$colorfonbackgroundselect?>', radius: 50 });
-$('red').addGlow({ textColor: '#dd00dd', haloColor: '#dd00dd', radius: 50 });
+
 $('error').animate({ backgroundColor: "<?=$colorerrselect?>" }, 500 );
 });
 </script>

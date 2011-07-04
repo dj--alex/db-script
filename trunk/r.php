@@ -11,7 +11,7 @@
 // Если вы хотите поддержать автора этой программы и увидеть более новые версии и куда более совершенные версии
 // вы можете поддержать автора 3 методами: купить платную версию программы, пожертвовать средства, 
 // или подарить или продать с большой скидкой какое-либо более менее современное железо (интересует ноутбук на данный момент,очень)
-// // echo "<br>".cmsg ("DONATE")." N 4100177805659 ,Webmoney Z777820755783 R207389102594.";
+// // echo "<br>".cmsg ("DONATE")." N 4100177805659 ,.";
 //
 require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
 
@@ -186,8 +186,11 @@ if ($cmd[0]==="help") { if ($adm==1) {
 	submitkey ("write","CF_PAGES");
 	submitkey ("write","CF_STYL");
 	submitkey ("write","CF_LSET");
-        submitkey ("write","CF_SRV");
+                submitkey ("write","CF_SRV");
         if ($prauth[$ADM][42]) submitkey ("write","CF_CMD");
+        if ($prauth[$ADM][42]) submitkey ("write","CF_FSCR");
+        
+        
 	echo  "</form>";exit;
 		}
 
@@ -305,7 +308,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 			$protect="*.cfg";
 			$files=getdirdata ($path,$mask,$protect);
 			for ($a=3;$a<count ($files);$a++){
-				//echo" patch $a path ".$path.$files[$a][0]." size is ".$files[$a][2]."<br>"; CFG OPT FUTURE LISTING
+				//echo" patch $a path ".$path.$files[$a][0]." size is ".$files[$a][2]."<br>"; CFG OPT FUTURE  TODO: LISTING
 				if ($files[$a][0]=="") continue;
 				$modules[]=searchplus ($path.$files[$a][0],"NOPRINT","ver&(c)");
 			}
