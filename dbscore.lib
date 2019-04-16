@@ -8,11 +8,6 @@ $coreSE=1;
 // ajax test - <script>$.get("my.php",[],function(res) { alert("a") });</script>
 // SE repo
 $svn1="http://db-script.googlecode.com/svn/trunk/";
-//SYSTEM KEY_START
-$coreSE=0;
-// cs repo main
-$svn1="http://svn.shamangrad.net/dbscript/";
-//SYSTEM KEY_END
 $svn2="http://db-script.googlecode.com/svn/trunk/";
 
 $OS=$_ENV["OS"];//print_r ($_GET); echo $OS;exit;
@@ -39,7 +34,7 @@ $enterpoint=$verinit;
 $xfgetlimit=4096; //xfgetcsv limit  0 - medlennee   4024 malo dlya trini global $GLOBALS['xfgetlimit'];
 list($msec,$sec)=explode(chr(32),microtime()); 
  $HeadTime=$sec+$msec; 
-@set_magic_quotes_runtime(0);  // is deprecated??
+//@set_magic_quotes_runtime(0);  // is deprecated??
 register_shutdown_function ("onend");
 if(isset($_FILES)) ob_start ();
 
@@ -47,13 +42,6 @@ if(isset($_FILES)) ob_start ();
 $folderscript=getcwd ();// получаем абсолютный путь
 $folderscript=str_replace ("\\","/",$folderscript);// Ё“ќ ¬≈–Ќќ≈ Ќјѕ»—јЌ»≈ **** STR_REPLACE
 $fldup=$folderscript ; //FOR DEMO  отключение поддержки multiinstance
-////SYSTEM KEY_START
-$fldup=substr ( $folderscript ,0,strrpos ($folderscript,"/"));
-$scriptpath=substr ( $_SERVER['SCRIPT_NAME'] ,0,strrpos ( $_SERVER['SCRIPT_NAME'],"/"))."/";// FULL SCRIPT PATH WITHOUT NAME 
-$scriptpathwhost="http://".$_SERVER['HTTP_HOST']."/".$scriptpath;
-
-
-//SYSTEM KEY_END
 
 //if ($OSTYPE=="WINDOWS") $fldup=substr ( $folderscript ,0,strrpos ($folderscript,"\\"));// выч как лучше отрезать папку 
 //if ($OSTYPE=="LINUX") $fldup=substr ( $folderscript ,0,strrpos ($folderscript,"/"));// выч как лучше отрезать папку 
@@ -80,7 +68,7 @@ if ($_GET['crc']) { $_GET['crc']=-1;}  //crcignore ?? not work?
 //http://wow.chg.su/inside/w.php?vID=test&vID2=&tbl=293&z0=test&z1=7&z2=test&origid1=test&origid2=test&write=To+confirm+changes  protected  CRC false from GET
 
 
-@ import_request_variables ("PGC","");
+//@ import_request_variables ("PGC","");
 //$_POST['ADM']=0;  //ignored? 
 if ($_GET['ADM']) { header ("Location: r.php"); die ("R Tape loading error 0:1");}; // эта защита работает и ƒќ и ѕќ—Ћ≈ импорта
 if ($_POST['ADM']) { header ("Location: r.php"); die ("R Tape loading error 0:1");};//  а вообще лучше плашку про защиту показать
@@ -640,71 +628,8 @@ $tableshrift=$sd[29];
 
 
 
-//SYSTEM KEY_START
-
-//registration creation and check
-$actcod=genactcode ();
-$key=readencdat ("_conf/dbs.key",$actcod);
-$stroka=explode (";",$key);
-$dbskeystate=file_exists ("_conf/dbs.key");
-$addkeystate=file_exists ("_conf/add.key");
-
-
-if (($dbskeystate===false)) $nokeys=1;// загрузка ключа и регистрации запускаютс€ из login.php
-
- // $regresult печатать нельз€ иначе прерветс€ вывод - это инфо о применении регистрации
-$daysleft=$stroka[1];$registeredto=$stroka[2];$adminmail=$stroka[3];
-$comm=$stroka[8];
-if ($stroka[9]=="ONLYFORDEMO") if (($codekey<9)AND($codekey!==7)) {  // STRING s9  fixed!!!
-			@unlink ("_conf/dbs.key"); msgexiterror ("key",cmsg ("KEY_NODEMO"),"login.php");
-}
-if ($stroka[9]=="ONLYFORTEST") if (($codekey<9)AND($codekey!==8)) {
-			@unlink ("_conf/dbs.key"); msgexiterror ("key",cmsg ("KEY_NODEMO"),"login.php");
-}
-
-settype ($daysleft,integer);
-//end load cfgs
-//по коду формируем стринг
- $codekey=loadserial ();
-if ($codekey) {	$activation=true; } else { $activation=false;}
-if (($codekey==4)OR($codekey==6)OR($codekey==7)OR($codekey==9)) $daysleft="unlimited";
-$changedate=datechangedetect ();// проверка можно ли вычитать день
-
-if (($OSTYPE=="LINUX")and($codekey==9)) {$codekey=2;$testenable="Linux";} // в линукс снимаютс€ ограничени€ 
-//последоработки удалить!
-$finalcodekey=$codekey;$finalactivation=$activation;
-
-
-//вычитание дней.
-if ($ADM>0) if (($changedate)AND($daysleft!=="unlimited")) { // стало одним реальным днем меньше :)
-	$daysleft=$daysleft-1;
-$data=(rand()*5536).";".$daysleft.";".$registeredto.";".$adminmail.";".((rand()*65536).";".$key5.";".$key6.";".$key7.";".$comm.";");
-	writeencdat ("_conf/dbs.key",$actcod,$data);
-}
-if ($codekey==8) $pr[8]=false;
-//if (!$pr[8]) $debug=1; test and demo messages excluded to footer
-
-
-
-if (($codekey==8)OR($codekey==10)) if ($testenable=="") { 
-	@unlink ("_conf/dbs.key");
-	@unlink ("_conf/.key");
-	 msgexiterror ("key",cmsg ("KEY_NOTEST"),"login.php");}
-     // при использовании функции строки регистрации автоматически удал€тс€ открыв код с режимом всегда активировано
- /*
-ID¶Type¶Actcode license¶Commercial support¶Maximum days¶Register date¶Admin name¶Admin mail¶¶¶
-¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
-1¶1¶b28cbd249a3af016606b597c59905aee¶1¶500¶31.03.2006¶home¶dj--alex@ya.ru¶¶¶
-2¶2¶351c3e7855079b826ac859a9b1b23b78¶1¶500¶31.03.2006¶Serv250¶dj--alex@ya.ru¶¶¶
-3¶3¶7503aa19c35fa82adee7058cd96221e8¶1¶500¶31.03.2006¶Serv251¶dj--alex@ya.ru¶¶¶
-4¶1¶d4bf6665a5f81ee82bb6fc6ad62fbeab¶1¶500¶31.03.2006¶Serv252¶dj--alex@ya.ru¶¶¶
-// d4bf6665a5f81ee82bb6fc6ad62fbeab  d4bf6665a5f81ee82bb6fc6ad62fbeab   dj/site   252 - one code
-//SYSTEM KEY_END
 
  $activation=1;$codekey=6;$daysleft=50;$finalcodekey=$codekey;$finalactivation=$activation;
-	 //SYSTEM KEY_START
-         */
-         //SYSTEM KEY_END
 
 
 
@@ -808,296 +733,6 @@ $realpage=$_GET["pagenow"];
 #########################################################
 // проверка времени
 
- //SYSTEM KEY_START
-//SYSTEM
-function datechangedetect ()
-{	global $ADM;
-$a=rand (0,1);
-if ($a<0.6) return false; //ускорение проверки
-$filbas="_conf/date.key";
-$potok=@fopen ($filbas,"r");
-$data=@fgets ($potok);
-@fclose ($potok);
-if ($ADM!==0) if ($data!==date("d.m.Y")) { //считает только дни запусков так вернее
-	$potok=fopen ($filbas,"w+");
-	$changedate=1;
-	$chtozapisatx=date("d.m.Y");
-	if ($chtozapisatx==false) die ("NECHEGO ZAP");
-	@fwrite ($potok,$chtozapisatx);
-	@fclose ($potok);
-}
-return $changedate;
-}
-
-
-// конец сохранени€ времени если оно было нужно.
-
-//SYSTEM
-function writeencdat ($file,$actcode,$stroka) {
-	$key=$actcode;
-	$fp = fopen($file, 'wb');
-	if ($fp===false) return false;
-//echo "before--data--$stroka;	<br>";
-	$data=xxor ($key,$stroka);
-//echo "after-enc with key=$key<br>data final=$data;	<br>";
- fwrite ($fp,$data);fclose($fp);
- return $data;
-}
-//SYSTEM
-function readencdat ($file,$actcode) {
-	$key=$actcode;        //echo "EBUCHIJ KLUCH $file";
-@$fp = fopen($file, 'rb');
-@$stroka=fread ($fp,512);
-if ($fp===false) return false;
-$data= xxor ($key,$stroka);
-@fclose($fp);
-return $data;
-}
-
-//SYSTEM
-function genkeySE ($serial)  //исправление случайно вышедшего из под контрол€ login.php
-{	$actcode=genactcode ();
-	writeserial ($serial) ;
-	if ($serial=="demo") {
-	echo "Demo activated";
-	$key1=100;$key2="";$key3="demo";$key8="DBS_HOME_VER";
-	$stroka=(100*5536).";".$key1.";".$key2.";".$key3.";".((100*65536).";".$key5.";".$key6.";".$key7.";".$key8.";DBS333;ONLYFORDEMO");//echo " люч:;Daysleft=".$key1.";Regto=".$key2.";Regmail=".$key3.";;key8=".$key8.";);<br>;";
-	}
-
-	if ($serial=="publicdemo") {
-	echo "Public Demo activated";
-	$key1=150;$key2="";$key3="publicdemo";$key8="DBS_HOME_VER";
-	$stroka=(100*5536).";".$key1.";".$key2.";".$key3.";".((100*65536).";".$key5.";".$key6.";".$key7.";".$key8.";DBS333;ONLYFORDEMO");//echo " люч:;Daysleft=".$key1.";Regto=".$key2.";Regmail=".$key3.";;key8=".$key8.";);<br>;";
-	}
-	if (($serial=="alpha")or($serial=="beta")) {
-	echo "$testenable activated, ask developer for free long test key.";
-	$key1=30;$key2="";$key3=$testenable;$key8="DBS_HOME_VER";
-	$stroka=(100*5536).";".$key1.";".$key2.";".$key3.";".((100*65536).";".$key5.";".$key6.";".$key7.";".$key8.";DBS333;ONLYFORTEST");
-	}
-
-	@unlink ("_conf/dbs.key");
-	$encodedstroka=writeencdat ("_conf/dbs.key",$actcode,$stroka);
-	}
-
-
-//SYSTEM
-function xxor ($key,$stroka) {//ord - получение кода    char установка кода
- $keylen=strlen ($key);
- if ($keylen==32) {$tactgen=1;} else {$tactgen=0.33;};
- 	$keytick=0;
- 	//echo "готов к кодировке keylen=$keylen txtlen=".strlen ($stroka)."<br>";
- 	//echo "command xxor ($key,$stroka)";
- 	if ($stroka[$txttick]=="!") $alreadyencoded=1;
- if ($alreadyencoded==false) $stroka="!".$stroka;
-for ($txttick=1;$txttick<strlen($stroka);$txttick=$txttick+$tactgen) {
- if ($keytick===$keylen) $keytick=0;
- $keytick++;
-$codingstrokabyte=ord($stroka[$txttick]);
-//echo"codingstrokabyte=$codingstrokabyte";
-$codingkeybyte=ord ($key[$keytick]);
-$codingkeybyte2=ord ($key[$keylen-$keytick]);
-//echo "codingkeybyte=$codingkeybyte";
-if ($alreadyencoded==false) $stroka[$txttick]=chr ($codingstrokabyte+$codingkeybyte-$codingkeybyte2);// apply
-if ($alreadyencoded==true) {$stroka[$txttick]=chr ($codingstrokabyte-$codingkeybyte+$codingkeybyte2);// apply
-$stroka[0]="";
-}
-//echo "coded=".$stroka[$txttick]."<br>";
-}
-//for ($a=0;$a<strlen($stroka);$a=$a+2){	$buf=$stroka[$a+2];$stroka[$a+2]=$stroka[$a+1];$stroka[$a+1]=$buf;}
-return $stroka;
-}
-//SYSTEM
-#######REQCODE#######REQCODE
-function installnewkey ($key) {
-		global $actcod;
-		    $keyadd=readencdat ("_conf/add.key",$actcod);
-  			$strokakey=explode (";",$key);
-  			$strokakeyadd=explode (";",$keyadd);  //echo "нет основного ключа, пытаемс€ исп дополнительный";
-  			if ($keyadd===false) return cmsg ("FS_NOFILE");
-  			  //	echo "ept key ".$keyadd;exit;
-  	if ($strokakeyadd[9]!=="DBS333") {
-  	@unlink ("_conf/add.key");return cmsg ("KEY_NODBS");
-  }
-
-   			if ($strokakeyadd[1][0]!=="+") {
-   				$regresult=cmsg ("KEY_INST_OK");
-   			 	@rename ("_conf/add.key","_conf/dbs.key");
-   				} else {
-   				@unlink ("_conf/add.key");
-   				$regresult=cmsg ("KEY_INST_FAIL");
-   				}
-   			return $regresult;
-			}
-//проверка имеемого ключа и увеличение его на величину из add.key
-		//SYSTEM
-function addnewkey ($key) {
-	global $actcod;
-  $keyadd=readencdat ("_conf/add.key",$actcod);
-  if ($keyadd===false) return cmsg ("FS_NOFILE");
-  $strokakey=explode (";",$key);
-  $strokakeyadd=explode (";",$keyadd);
-    if ($strokakeyadd[9]!=="DBS333") {
-  	@unlink ("_conf/add.key");return cmsg ("KEY_NODBS");
-  }
-
-  $tekdata=date ("d.m.Y");
-  if (($strokakey[3]=="demo")AND($strokakey[2]=="")) { @unlink ("_conf/dbs.key"); return cmsg ("KEY_NODEMO");}
-  if (($strokakey[3]=="publicdemo")AND($strokakey[2]=="")) { @unlink ("_conf/dbs.key"); return cmsg ("KEY_NODEMO");}
-   //echo "strokakey="; print_r ($strokakey);echo "<br>";//echo "strokakeyadd=";print_r ($strokakeyadd);echo "<br>";
-if (($strokakeyadd[2]!==$strokakey[2])) if (($strokakey[3]!=="demo")AND($strokakey[2]!=="")) {
-		@unlink ("_conf/add.key");return cmsg ("KEY_OTH_USER");// сдел сообщ  и удалить
-		}
- $key1valids=$strokakeyadd[6];
- $key1validpo=$strokakeyadd[7];
-if (($tekdata>$key1validpo)OR($key1valids>$tekdata))
-				{@unlink ("_conf/add.key");
-				return cmsg ("KEY_DATE_FAIL");
-				}
-
-if (($strokakeyadd[2]==$strokakey[2])) { if ($strokakeyadd[1][0]!=="+")
-				{@unlink ("_conf/add.key");
-				return cmsg ("KEY_ONLY_INST");
-				}
-	$nachaldnej=$strokakey[1];
-	$strokakeyadd[1][0]=" "; $strokakey[1]=$strokakey[1]+trim ($strokakeyadd[1]);
-	 if ($strokakeyadd[5]<$strokakey[1]) $strokakey[1]=$strokakeyadd[5];//если больше полож-рез
-	$strokawr=implode ($strokakey,";");
-	//echo "strokawr=";print_r ($strokawr);
-	writeencdat ("_conf/dbs.key",$actcod,$strokawr);
-	@unlink ("_conf/add.key");
-	$msg=cmsg("ADD_DAY_1")." ".$nachaldnej.cmsg ("DO").$strokakey[1]." (".($strokakey[1]-$nachaldnej).cmsg ("ADD_DAY_2").$strokakeyadd[5]."";
-	return $msg;// сдел сообщ  и удалить
-}
-
-}
-#######REQCODE#######REQCODE
-
-
-
-
-//SYSTEM
-function genactcode () {
-	$a=$_SERVER["SERVER_ADDR"];$servip=$a;
-	$a.=$_SERVER["SERVER_ADMIN"];
-	$a.=$_SERVER["DOCUMENT_ROOT"];
-        //замечена неработа ENV защита дополнена
-        $a.=$_ENV["COMPUTERNAME"];
-	$a=$_ENV["OS"];  //  _SERVER["SERVER_SOFTWARE"] переменные начина€ с php 5.2  не получаютс€ с сервера. требует замены !!!
-	$a.=$_ENV["NUMBER_OF_PROCESSORS"];
-	$a.=$_ENV["PROCESSOR_IDENTIFIER"];
-	$a.=$_ENV["PROCESSOR_LEVEL"];
-	$a.=$_ENV["PROCESSOR_REVISION"];
-        //4.1 addings without comments here
-        $a.=$_SERVER["SERVER_SOFTWARE"];// содержит Win32 дл€ windows или ubuntu
-        $a.=$_SERVER["PATH"];// /usr/  /local - linux    // C:\ WINDOWS System32 винда.
-	$a.=$_SERVER["SystemRoot"] ; //есть только на винде
-        $a.=$_SERVER["WINDIR"];//есть только на винде
-        $a.=$_SERVER["COMSPEC"];//есть только на винде
-	$b=md5 ($a);
-	//if (strpos ($servip,"127.")===true) return "Please run application from correct IP";
-	return $b;
- }
-
- function dmck ($serial) {
- 	global $testenable;
- 	$actcode=genactcode ();
-if ($serial=="demo") {	//registration demo
-	genkeySE($serial);
-	exit;}
-
-if ($serial=="publicdemo") {	//registration demo
-	genkeySE($serial);
-	exit;}
-
-	if ($testenable)
-	if (($serial=="beta")or($serial=="alpha")) {
-	genkeySE ($serial);
-	exit;}
-
-	if ($serial=="J3QQ4-H7H2V-2HCH4-M3HK8-6M8VW") {window ("","");echo "Many years ago exist a windows 98se operating system...";closewindow();exit;}
-
-	if ($serial) if (strlen ($serial)!==(32+14)) {
-	$message="Serial len is invalid";$mainheader=cmsg ("ACT");
-	 window (array (
-		"message" => $message,				// сообщение
-		"icon" => "criterror" ,
-     "mainheader" => $mainheader),array ("OK"=>"login.php"));
- closewindow ();
- exit;}
-
-$codekey=checkserial ($serial);
-if ($codekey) {
- writeserial ($serial) ;
- $activate=true;
-$message=cmsg("ACT_OK");$mainheader=cmsg ("ACT");
- window (array (
-		"message" => $message,				// сообщение
-		"icon" => "info" ,
-     "mainheader" => $mainheader),array ("OK"=>"login.php"));
- closewindow ();
- exit;
- //окончание вывода окна успешной активации
-}
-
- }
-
-
-//SYSTEM
- function genseriali ($lictype,$activ) {
- 	if ($activ=="") $activ=genactcode ();
- 	$key="dbs3-".$lictype;
- 	$licdata=crypt (crypt ($key,"iz"),"iz");
- 	$serial=md5($activ)."-".$licdata;
- 	return $serial;
- }
-
- 	//SYSTEM
- //  как сделать регистрацию под определенным режимом программы 1..10
- //  как сделать список IP или может нафиг его
-function checkserial ($serial){
-	 $checkdemo=strpos (" ".$serial,"publicdemo");
-	if ($checkdemo==true) return 7; // public demo
-	$checkdemo=strpos (" ".$serial,"demo");
-	if ($checkdemo==true) return 9; // user demo
-		$checkdemo=strpos (" ".$serial,"beta");
-	if ($checkdemo==true) return 8;
-	$checkdemo=strpos (" ".$serial,"alpha");
-	if ($checkdemo==true) return 10;
- $part=explode ("-",$serial);
- //echo "count serial=".strlen ($part[1]);
- $finalactiv=md5 (genactcode ());
- $licdata=$part[1];
-  if ($part[0]==$finalactiv) {// если активации совпадают провер€ем сериал
-   for ($a=0;$a<10;$a++)	{
-   	if ($licdata==crypt (crypt ("dbs3-".$a,"iz"),"iz")) return $a;
-  }; // возвращает codekey разрешенный этим ключем write license file info and allow autoskip
- 	}
- 	return false;
-}
-//SYSTEM
-function loadserial () {
-	@$filbas="_conf/.key";
-	@$key=fopen ($filbas,"r");
-	for ($a=0;$test=@fgets ($key,32+15);$a++) {
-	$codekey=checkserial ($test);	//echo "codekey=$codekey"."<br>";
-	//echo "key=".$codekey;exit;
-	if ($codekey==true) break;
-	}
-	@fclose ($key);
-	return $codekey;
-		}
-	//SYSTEM
-// сохран€ет серийный номер
-function writeserial ($serial)
-{
-	@$filbas="_conf/.key";
-	@$key=fopen ($filbas,"a+");
-	@fwrite ($key,$serial."\n");
-	@fclose ($key);
-}
-
-/*
-         //SYSTEM KEY_END
 
   function datechangedetect () { return 1; }
   function writeencdat ($file,$actcode,$stroka){ return 1; }
@@ -1111,9 +746,6 @@ function writeserial ($serial)
   function checkserial ($serial){ return 1; }
   function loadserial () { return 1; }
   function writeserial ($serial){ return 1; }
- //SYSTEM KEY_START
-         */
-         //SYSTEM KEY_END
 
 
 
@@ -1321,21 +953,21 @@ if ($host[0]==="#") {  //gethost srvlst.cfg
 if ($dbtype=="mysql") {
 
 if (!extension_loaded('mysql')) { echo " $ei Warning : php extension mysql non-exist !  <br>"; return false; };
-$connect=mysql_connect ($host,$login,$pass);
+$connect=mysqli_connect ($host,$login,$pass);
 //echo "blyat silent $silent <br>";
 if (!$silent) sqlerr ($connect);
 
 
- //mysql_set_charset ("utf8",$connect); echo ">>bug>>set charset =$x";return false;
-///////     mysql_query("SET NAMES `cp1251`", $connect); //  Ќ≈ «јЅџ“№ —ƒ≈Ћј“№ ќѕ÷»ё Ќј‘»√""!""!!!latin1  utf8 cp1251 (joomla) работает только дл€ простых запросов.
+ //mysqli_set_charset ("utf8",$connect); echo ">>bug>>set charset =$x";return false;
+///////     mysqli_query("SET NAMES `cp1251`", $connect); //  Ќ≈ «јЅџ“№ —ƒ≈Ћј“№ ќѕ÷»ё Ќј‘»√""!""!!!latin1  utf8 cp1251 (joomla) работает только дл€ простых запросов.
 //echo "EPT a=$a---($host,$login,$pass)";
 if ($connect===false) {
                          if ($debug) echo "server ".$host." is not available... trying use default server ".$pr[43]."<br>";
                           if ($debug) if (!$pr[43]) {echo "Default server undefined. Fail.<br>";die ("");}
-                          $connect = mysql_connect ($pr[43], $sd[14] , $sd[17]);};
+                          $connect = mysqli_connect ($pr[43], $sd[14] , $sd[17]);};
    if ($connect===false) { if ($debug) echo "default server not connected<br>"; return false;}
-               if (($sqlencodingdefault)AND(!$encode)) mysql_query("SET NAMES `$globalencode`", $connect);
-               if ($encode) mysql_query("SET NAMES `$encode`", $connect);
+               if (($sqlencodingdefault)AND(!$encode)) mysqli_query("SET NAMES `$globalencode`", $connect);
+               if ($encode) mysqli_query("SET NAMES `$encode`", $connect);
     return $connect;
 }
 
@@ -1380,7 +1012,7 @@ if ($connect===false) { echo "server ".$host." is not available... trying use de
 }
 
 //settings for abstraction layer   слой дл€ преобразовани€ команд здесь
-// if dbtype is not set - it becomes mysql
+// if dbtype is not set - it becomes mysqli
 function dbs_query ($cmd,$connect,$dbtype) {
     global $debug;
 if ($dbtype=="") echo ">>fixme>>dbs_query - Dbtype not set.<br>";
@@ -1388,7 +1020,7 @@ if ($debug) if ($dbtype=="fdb") {echo ">>fixme>>dbs_query - fdb given!<br>";$dbt
    if (($dbtype=="pg")AND($cmd=="SHOW DATABASES")) $cmd="SELECT datname FROM pg_database";
    if (($dbtype=="pg")AND($cmd=="SHOW TABLES")) $cmd="SELECT relname FROM pg_class WHERE relname !~ '^pg_'";
     if ($dbtype=="mysql") {mysql_real_escape_string ($cmd);
-                           return mysql_query ($cmd,$connect);
+                           return mysqli_query ($cmd,$connect);
     }
     if ($dbtype=="pg") {   pg_escape_string ($cmd);
                             return pg_query ($connect,$cmd);
@@ -1396,8 +1028,8 @@ if ($debug) if ($dbtype=="fdb") {echo ">>fixme>>dbs_query - fdb given!<br>";$dbt
     if ($dbtype=="ibase") {return ibase_query ($cmd,$connect);
 
     }
-    mysql_real_escape_string ($cmd);
-    return mysql_query ($cmd,$connect);
+    mysqli_real_escape_string ($cmd);
+    return mysqli_query ($cmd,$connect);
 }
 
 function dbs_fetch_row ($a,$dbtype) { //changed all
@@ -5266,8 +4898,8 @@ if (($pr[38]=="on")OR((!$pr[38])AND(isset ($_COOKIE['dbsa'])OR(isset ($_SESSION[
 		 			$a="јвтор программы: ‘уфаев ј.¬. (aka Dj--alex)  –азработка:2006-2009<br>";
 		 			if (($codekey==0)OR($codekey>6)) {$a.="≈сли вам нравитс€ эта программа пожалуйста купите ее и\или сделайте пожертвование."; }
 		 			else { $a.="≈сли вам нравитс€ эта программа пожалуйста,сделайте пожертвование.<br>";};
-		 			$a.="ћои кошельки яндекс N 4100177805659, Webmoney R302666253231 .<br>"; //.. Z777820755783,R207389102594
-		 			$a.="≈сли вы хотите узнать подробнее обо мне - зайдите <a href=\"http://dj.chg.su/mestatus.html\"> сюда</a>.";
+		 			$a.="ћои кошельки яндекс N 4100177805659, Webmoney  .<br>"; //.. Z777820755783,R207389102594
+		 			$a.="≈сли вы хотите узнать подробнее обо мне - зайдите <a href=\"http://dj-alex.ru\"> сюда</a>.";
                                          if ($sd[19]=="utf-8") $a=iconvx("windows-1251","utf-8",$a);
                                          echo $a;
 
@@ -5276,8 +4908,8 @@ if (($pr[38]=="on")OR((!$pr[38])AND(isset ($_COOKIE['dbsa'])OR(isset ($_SESSION[
 		 			echo "Author program: Fufaev A.V. (aka Dj--alex)   Developing:2006-2009";
 		 			if (($codekey==0)OR($codekey>6)) {echo "If you like this programm, please buy it or\and create donate!"; }
 		 			else { echo "I need a donations to make this program more useful! Please help me if you can.<br>";};
-		 			echo "My Yandex-money N 4100177805659, Webmoney R302666253231.<br>";
-		 			echo "If you interest more info about <a href=\"http://dj.chg.su/mestatus.html\"> me</a>.";
+		 			echo "My Yandex-money N 4100177805659, Webmoney .<br>";
+		 			echo "If you interest more info about <a href=\"http://dj-alex.ru\"> me</a>.";
 
 		 		}
 		 		closewindow ();
@@ -5631,196 +5263,6 @@ $datafile = fopen ($file,"w") or die ("Ќе удалось записать, извините.");
 }
 
 
-
-
-/*
-// removed functions for open source versions
-// denywords  maskapply  ungolog  iniparse  SYSTEM
-// support   search () f (($needscr===true)AND($formatscr)
-//v php est 4tota tipa reinterpret_cast ?
-//02:52:45] <kernelbug@jabber.ru> CREATE FUNCTION IntToFloat(int_in INT(10) UNSIGNED) RETURNS CHAR(50) RETURN -1*((int_in DIV 2147483648)-0.5)*2  *   POW( 2, (( int_in MOD 2147483648 ) DIV 8388608) - 127 )  * (1 + ( int_in % 8388608 ) / 8388608 ) ;
-
-
-// ѕ≈–≈–ј«ћ≈– ј  ј–“»Ќќ  !!! - style='width:434.5pt;height:322.75pt' 
-
-/*   пользователь по умолчанию, это postgres
- * # PostgreSQL Functions
-
-    * pg_affected_rows Ч Returns number of affected records (tuples)
-    * pg_cancel_query Ч Cancel an asynchronous query
-    * pg_client_encoding Ч Gets the client encoding
-    * pg_close Ч Closes a PostgreSQL connection
-    * pg_connect Ч Open a PostgreSQL connection
-    * pg_connection_busy Ч Get connection is busy or not
-    * pg_connection_reset Ч Reset connection (reconnect)
-    * pg_connection_status Ч Get connection status
-    * pg_convert Ч Convert associative array values into suitable for SQL statement
-    * pg_copy_from Ч Insert records into a table from an array
-    * pg_copy_to Ч Copy a table to an array
-    * pg_dbname Ч Get the database name
-    * pg_delete Ч Deletes records
-    * pg_end_copy Ч Sync with PostgreSQL backend
-    * pg_escape_bytea Ч Escape a string for insertion into a bytea field
-    * pg_escape_string Ч Escape a string for insertion into a text field
-    * pg_execute Ч Sends a request to execute a prepared statement with given parameters, and waits for the result.
-    * pg_fetch_all_columns Ч Fetches all rows in a particular result column as an array
-    * pg_fetch_all Ч Fetches all rows from a result as an array
-    * pg_fetch_array Ч Fetch a row as an array
-    * pg_fetch_assoc Ч Fetch a row as an associative array
-    * pg_fetch_object Ч Fetch a row as an object
-    * pg_fetch_result Ч Returns values from a result resource
-    * pg_fetch_row Ч Get a row as an enumerated array
-    * pg_field_is_null Ч Test if a field is SQL NULL
-    * pg_field_name Ч Returns the name of a field
-    * pg_field_num Ч Returns the field number of the named field
-    * pg_field_prtlen Ч Returns the printed length
-    * pg_field_size Ч Returns the internal storage size of the named field
-    * pg_field_table Ч Returns the name or oid of the tables field
-    * pg_field_type_oid Ч Returns the type ID (OID) for the corresponding field number
-    * pg_field_type Ч Returns the type name for the corresponding field number
-    * pg_free_result Ч Free result memory
-    * pg_get_notify Ч Gets SQL NOTIFY message
-    * pg_get_pid Ч Gets the backend's process ID
-    * pg_get_result Ч Get asynchronous query result
-    * pg_host Ч Returns the host name associated with the connection
-    * pg_insert Ч Insert array into table
-    * pg_last_error Ч Get the last error message string of a connection
-    * pg_last_notice Ч Returns the last notice message from PostgreSQL server
-    * pg_last_oid Ч Returns the last row's OID
-    * pg_lo_close Ч Close a large object
-    * pg_lo_create Ч Create a large object
-    * pg_lo_export Ч Export a large object to file
-    * pg_lo_import Ч Import a large object from file
-    * pg_lo_open Ч Open a large object
-    * pg_lo_read_all Ч Reads an entire large object and send straight to browser
-    * pg_lo_read Ч Read a large object
-    * pg_lo_seek Ч Seeks position within a large object
-    * pg_lo_tell Ч Returns current seek position a of large object
-    * pg_lo_unlink Ч Delete a large object
-    * pg_lo_write Ч Write to a large object
-    * pg_meta_data Ч Get meta data for table
-    * pg_num_fields Ч Returns the number of fields in a result
-    * pg_num_rows Ч Returns the number of rows in a result
-    * pg_options Ч Get the options associated with the connection
-    * pg_parameter_status Ч Looks up a current parameter setting of the server.
-    * pg_pconnect Ч Open a persistent PostgreSQL connection
-    * pg_ping Ч Ping database connection
-    * pg_port Ч Return the port number associated with the connection
-    * pg_prepare Ч Submits a request to create a prepared statement with the given parameters, and waits for completion.
-    * pg_put_line Ч Send a NULL-terminated string to PostgreSQL backend
-    * pg_query_params Ч Submits a command to the server and waits for the result, with the ability to pass parameters separately from the SQL command text.
-    * pg_query Ч Execute a query
-    * pg_result_error_field Ч Returns an individual field of an error report.
-    * pg_result_error Ч Get error message associated with result
-    * pg_result_seek Ч Set internal row offset in result resource
-    * pg_result_status Ч Get status of query result
-    * pg_select Ч Select records
-    * pg_send_execute Ч Sends a request to execute a prepared statement with given parameters, without waiting for the result(s).
-    * pg_send_prepare Ч Sends a request to create a prepared statement with the given parameters, without waiting for completion.
-    * pg_send_query_params Ч Submits a command and separate parameters to the server without waiting for the result(s).
-    * pg_send_query Ч Sends asynchronous query
-    * pg_set_client_encoding Ч Set the client encoding
-    * pg_set_error_verbosity Ч Determines the verbosity of messages returned by pg_last_error and pg_result_error.
-    * pg_trace Ч Enable tracing a PostgreSQL connection
-    * pg_transaction_status Ч Returns the current in-transaction status of the server.
-    * pg_tty Ч Return the TTY name associated with the connection
-    * pg_unescape_bytea Ч Unescape binary for bytea type
-    * pg_untrace Ч Disable tracing of a PostgreSQL connection
-    * pg_update Ч Update table
-    * pg_version Ч Returns an array with client, protocol and server version (when available)
-    $baseID=$tbl;$hostIP=$prdbdata[$tbl][6];
-            logwrite ($act) ;undolog ($act,$undodata,$baseID,$hostIP); };
- * 
- */
-
-/*
- * —крипт определ€ет размер картинки и "подгон€ет" новое окно так, что картинка аккуратно "вливаетс€" в рамку окна.
-function imgopen(imgf,tit){
-rand_id='image'+(Math.round(Math.random()*1000));
-outf="<html>"
-+"<head>"
-+"<title>"+tit+"</title>"
-+"<style>body{margin:0px}</style>"
-+"</head>"
-+"<body leftmargin=0 topmargin=0>"
-+"<img src=\""+imgf+"\">";
-
-iopen="iwin=self.open('"+imgf+"', '"+rand_id+"', 'width='+(img1.width)+',height='+(img1.height)+',top=0,left=0');"
-+"iwin.document.write('"+outf+"');"
-+"iwin.focus();";
-
-img1=new Image();
-img1.src=imgf;
-
-if(img1.width!=0) eval(iopen);
-
-else {
-iwin = self.open('about:blank', 'f'+rand_id, 'width=100,height=100,top=0,left=0');
-iwin.document.write("<html>"
-+"<body>«агрузка...<br>"
-+"<"+"script>"
-+"function imo(img1){"+iopen
-+"self.close();"
-+"}<"+"/script>"
-+"<img src='"+imgf+"' onload='imo(this);'>");
-}
-}
- * If you want to change the table default character set and all character columns (CHAR, VARCHAR, TEXT) to a new character set, use a statement like this:
-ALTER TABLE tbl_name CONVERT TO CHARACTER SET charset_name; (1)
- *ALTER TABLE `jos_joomgallery` CONVERT TO CHARACTER SET utf8;
-ALTER TABLE `jos_joomgallery_catg` CONVERT TO CHARACTER SET utf8;
-ALTER TABLE `jos_joomgallery_comments` CONVERT TO CHARACTER SET utf8;
-ALTER TABLE `jos_joomgallery_config` CONVERT TO CHARACTER SET utf8;
-ALTER TABLE `jos_joomgallery_countstop` CONVERT TO CHARACTER SET utf8;
-ALTER TABLE `jos_joomgallery_maintenance` CONVERT TO CHARACTER SET utf8;
-ALTER TABLE `jos_joomgallery_nameshields` CONVERT TO CHARACTER SET utf8;
-ALTER TABLE `jos_joomgallery_orphans` CONVERT TO CHARACTER SET utf8;
-ALTER TABLE `jos_joomgallery_users` CONVERT TO CHARACTER SET utf8;
-ALTER TABLE `jos_joomgallery_votes` CONVERT TO CHARACTER SET utf8;
-ѕрограмма писалась изначально дл€ того чтобы √ћы игровых серверов могли с разными уровн€ми прав заниматьс€ разными задачами
-ну и дл€ облегчени€ администрировани€
-позже программа обзавелась более-менее вмен€емым интерфейсом, а также улучшилась как и в плане качества\удобства , так и обросла
-некоторым количеством функций (некоторых даже к делу не относ€щихс€)
-
-на проект затрачено феноменальное количество времени и в никакой отдачи в финансовом плане.
-
-http://dj.chg.su/dbscript - сайт (заценивать не надо, это ƒжумла)
-
-http://dj.chg.su/i  - демо верси€
-    ƒелать полный бекап всех баз от рута.
-
-mysqldump -u ".$user." -p".$pass." --all_databases > ".$base.$name.".sql
-
-    ƒелать бекап конкретной базы от рута.
-
-mysqldump -u ".$user." -p".$pass." ".$base." --routines > ".$base.$date".sql
-(routines - это чтобы вместе с процедурами и функци€ми этой из этой базы)
-
-    ƒелать бекап конкретной базы от пользователс€ (у которого есть права на эту базу).
-mysqldump -u ".$user." -p".$pass." ".$base." --routines > ".$base.$date".sql
-
-mysql -u ".$user." -p".$pass." ".$base."  < ".$dumpname."
- * mysql -u mangos -pmangos tchars_t3can < tchars_20101015copy.sql  ѕЋ≈  -  заливает куда в скрипте указано а не куда надо ...надо форце
-
- * mysql -u ".$user." -p".$pass." ".$base." < ".$dumpname." заработало?
-
-// риальне пыщ пыщ мама  http://www.ixbt.com/news/all/index.shtml?14/21/01
-
-1000025342 - Archibank
-
-REPLACE INTO `tchars`.`guild` VALUES ('79','Hraniteli','1000025342','0','0','0','0','0','','No message set.','1287570348','0');
- *
- * REPLACE INTO `tchars`.`guild_member` VALUES ('79','1000025342','0','','','0','0','0','0','0','0','0','0','0','0','0','0','0','0');
- *
- * REPLACE INTO `tchars`.`guild_rank` VALUES ('79','0','Guild Master','1962495','0'); REPLACE INTO `tchars`.`guild_rank` VALUES ('79','1','Officer','1962495','0'); REPLACE INTO `tchars`.`guild_rank` VALUES ('79','2','Veteran','67','0'); REPLACE INTO `tchars`.`guild_rank` VALUES ('79','3','Member','67','0'); REPLACE INTO `tchars`.`guild_rank` VALUES ('79','4','Initiate','67','0');
- * 
-mysqldump -u им€_пользовател€ -p им€_базы --routines > им€_файла.sql
- *
- *
- * ex1 LUkzJ6xyvsfiM
- */
-
-//test zone/
 // лучше поздно чем никогда...
 
 ?>

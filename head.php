@@ -1,10 +1,10 @@
 <?php // MAIN HEADER , loading automating delayed in FS ul-dl mode
 //echo "Session=";print_r ($_SESSION);  	echo "dbsa=$dbsa"; //ept session
-// EXTERNAL JAVASCRIPT  - задание каскадных стилей для программы и кнопок - интерфейс
+// EXTERNAL JAVASCRIPT  - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 // 3.6.06 edition    if (!$trafeconom) $idadd=" id=\"".$name."\" ";
-//<script src="http://code.jquery.com/jquery-latest.js"></script> полная
-//или <script src="jquery142.js"></script>
-// воздушная
+//<script src="http://code.jquery.com/jquery-latest.js"></script> пїЅпїЅпїЅпїЅпїЅпїЅ
+//пїЅпїЅпїЅ <script src="jquery142.js"></script>
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
  	global $verhead,$systemshrift,$buttonshrift,$tableshrift;
 $verhead="Header v4.3.12 (c) dj--alex"; //hide
 ?>
@@ -18,15 +18,15 @@ if ($sd[19]=="utf-8") $pagename=iconvx("windows-1251","utf-8",$pagename);
 $titleout= $sd[16]." - ".$pagename." - ".$write." $element ";
 echo $titleout ;
 ?></title>
- <? if ((!$pr[97])and (!$pr[98])) { echo "<script src=\"jquery142.js\"></script>" ; };
+ <?php if ((!$pr[97])and (!$pr[98])) { echo "<script src=\"jquery142.js\"></script>" ; };
   if (($pr[98])AND(!$pr[97])) { echo "<script src=\"http://yandex.st/jquery/1.4.2/jquery.min.js\"></script>" ; };
 if ($pr[83]) { echo "";;
      ?><!--head-->
 <script type="text/javascript" src="http://vkontakte.ru/js/api/share.js?3"></script><?php
-// мля где переменная с координатами меню когда она здесь так нужна???
+// пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ???
 }
 
-//этот модуль выводиться только в стиле DM (4)
+//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ DM (4)
 if ($dbstyle3en) if (($enrestmenu)AND($menuloaded!==1)){?>
 <div id="module4" style="position:absolute; z-index:0; left: <?php echo$pr[44]+2 ; ?>px; top: 0px; background-color:<?php echo$rgbfon ; ?>; color:#<?php echo$rgbtext ; ?>;background:#<?php echo$rgbfon ; ?>; "><?php
 } 
@@ -60,15 +60,15 @@ td.hovered {
 }
 ?> #myTable { font:<?php echo$tableshrift ; ?> ; }  #Adminpanel { font:<?php echo$tableshrift ; ?> ; }
 body { font:<?php echo$systemshrift ; ?>; <?php
-if (($pr[54])OR(!$dbstyle3en)) { // применяется если стиль DeusModus неактивен
+if (($pr[54])OR(!$dbstyle3en)) { // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ DeusModus пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	?> color:#<?php echo$rgbtext ; ?>;background:#<?php echo$rgbfon ; ?>; }<?php;
 }?>
 .buttonS
   { text-align:center; font:<?php echo$buttonshrift ; ?>;
    background-color:<?php echo$rgbfon ; ?>; color:<?php echo$rgbtext ?> ; }
 ?></style>
-<?php  if (!$trafeconom) { // куй а не размер кнопкам!
-    // Jquery function hover for table  - no work!!!  background not implemented   дочерние классы поддерживаются :)))
+<?php  if (!$trafeconom) { // пїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ!
+    // Jquery function hover for table  - no work!!!  background not implemented   пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ :)))
     /*$('red').addGlow({ textColor: '#dd00dd', haloColor: '#dd00dd', radius: 50 });*/
     ?>
 <script type="text/javascript">
@@ -113,23 +113,23 @@ function highlightTableRows(tableId, hoverClass, clickClass, multiple)
 
 }</script>
 <?php //
-/*  wwww.tigir.com - 14.06.2006 - используется частично ибо больше нафиг надо - thx авторам.
-// не используется ни подсветка выделенного . вообще можно ее удалить наверное, галочки и так есть у меня.
-Библиотека hltable.js из статьи "Подсвечивание строк таблицы" - http://www.tigir.com/highlight_table_rows.htm*/
-//if (typeof... если не был передан четвертый аргумент, то по умолчанию принимаем его как true
-//if (hoverClass)...регулярное выражение для поиска среди значений атрибута class элемента, имени класса обеспечивающего подсветку по наведению мыши на строку.
-//while (!elem.tagName |Если событие связано с элементом TD или TH из раздела TBODY
-//var row = elem.parentNode var row = elem.parentNode;//ряд содержащий ячейку таблицы в которой произошло событие
-//--Если текущий ряд не "кликнутый" ряд, то в разисимости от события либо применяем стиль, назначая класс, либо убираем.
+/*  wwww.tigir.com - 14.06.2006 - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ - thx пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+// пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ . пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ.
+пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ hltable.js пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ" - http://www.tigir.com/highlight_table_rows.htm*/
+//if (typeof... пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ true
+//if (hoverClass)...пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ class пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
+//while (!elem.tagName |пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ TD пїЅпїЅпїЅ TH пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ TBODY
+//var row = elem.parentNode var row = elem.parentNode;//пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+//--пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ" пїЅпїЅпїЅ, пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 				
-		//Данное рег. выражение используется и в обработчике onclick
-// урезать скрипт  , обнаружено много букв!!!
-  // был удален следущий элем  перед  </cкрипт>
+		//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ onclick
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ  , пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ!!!
+  // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ  пїЅпїЅпїЅпїЅпїЅ  </cпїЅпїЅпїЅпїЅпїЅ>
   	
 
 }
 
-//в режиме экономии не используется внешний файл стилей  em {
+//пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ  em {
 //background-color:<?php echo$rgbtext ; ; color:<?php echo$rgbfon ; ;}
 //<link href="dbscriptstyles.css" rel="stylesheet" type="text/css"> em-invert
 //<link href="menu.css" rel="stylesheet" type="text/css">
@@ -169,7 +169,7 @@ else if (trigger=="0"){
 	else if (document.all) {document.all[''+id+''].style.visibility = "hidden"}
 	else if (document.getElementById) document.getElementById(''+id+'').style.visibility = "hidden"				
 	}
-<?php if ($enablepositioning) { // list of blocked functions  этой переменной нет поэтому разрешить перемещение пока нельзя
+<?php if ($enablepositioning) { // list of blocked functions  пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 ?>// Set horizontal position	
 if (lax){
 	if (document.layers){document.layers[''+id+''].left = lax}
@@ -189,7 +189,7 @@ return true;
 }
 
 
-//unset ($dbstyle3en);// временно меню 3 отключено, т.к. проблем хватает с имеенмыми меню 1 и меню 2
+//unset ($dbstyle3en);// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 3 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ.пїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 1 пїЅ пїЅпїЅпїЅпїЅ 2
 if (($enrestmenu)AND($menuloaded!==1)) if ((!$pr[54])AND($dbstyle3en)) {
 	require_once("_templates/head.php");
 } else { echo "</head>";	echo ""; }// tut smena shrifta  echo "<style type=text/css> font:$systemshrift ;</style>"; kak obychno ne rabotaet

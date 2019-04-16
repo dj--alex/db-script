@@ -1,8 +1,8 @@
 <?php
-// Данная программа относится к пакету DBSCRIPT v2.1 (с) dj--alex
-if ($_FILES) ob_start(); // добавлено т.к. в 2033 строке непонятно прислали файл вообще или нет
+// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ DBSCRIPT v2.1 (пїЅ) dj--alex
+if ($_FILES) ob_start(); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ.пїЅ. пїЅ 2033 пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ
 $nomnu=true;
-    require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
+    require_once ('dbscore.lib'); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 if (!$activation) exit;
 
 // TinyMCE addition
@@ -16,8 +16,7 @@ if (!$activation) exit;
            });
     </script>
 
-<?
-
+<?php 
 // EXTERNAL MINI EDITOR DEMO DBS
 function player ($file) {
      ?><object type="application/x-shockwave-flash" data="/player/player.swf" width="" height="">
@@ -27,14 +26,13 @@ function player ($file) {
         <param name="wmode" value="transparent" />
         <param name="movie" value="/player/player.swf" />
         <param name="flashvars" value="/video/<?=$file?>.flv" />
-        </object><?
-}
+        </object><?php }
 
 function newswritesql ($id,$user,$plevelview,$subject,$gutentag,$video,$message,$data) {
-    //// задача - сохранить лог в sQl базе.
+    //// пїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ sQl пїЅпїЅпїЅпїЅ.
 	global $dbtype,$pr,$sd;
         echo "ebaat doshlo!!";
-        //## Если не созданы нужные таблицы то выполняется иначе пропускать
+        //## пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	     $query="SHOW CREATE TABLE `dbscriptbk`.`_dbs_".$prefix."_news43`;";
         $silent=0;$e=dbs_query ($query,$connect,$dbtype);
         if ($e==true) {$mysqlanswer=true;} else  { die ("NB_F_NEWSWRITESQL_NOT_CONNECTED.");};
@@ -49,7 +47,7 @@ function newswritesql ($id,$user,$plevelview,$subject,$gutentag,$video,$message,
  if (!$pr[8]) echo "DEBUG $query.<br>";
 	return $a;
  }
-// при редактировании использовать эту херню -  записывать только измененные значения , а не все подряд!  и в базу и в лог!
+// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ -  пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ , пїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!  пїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅ пїЅпїЅпїЅ!
 //end of duplicate mysql log
 
 /*
@@ -64,22 +62,21 @@ if (!$action) {
 //  COPY PAST nedit.php  4.1.117
 if ($menudisable==0) {
 ?><form action="nedit.php" method=post>
-<?
-echo "ID1 ";inputtxt ("vID",30);
+<?php echo "ID1 ";inputtxt ("vID",30);
 submitkey ("write","KEY_EDIT");
 submitkey ("write","KEY_ADD");
 submitkey ("write","KEY_DEL");
 echo "</form>";
 }
 
-//показать новости за последний месяц   data  gutentag
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ   data  gutentag
 $date=date("d.m.Y H:i:s");
 $datesrch=date("m.Y");
-$dateinunix=strdbstounixtime ($date);// переводим обычную dbs дату в юникс
-//..$dateinunix2=strdbstounixtime ("13.04.2010 10:38:53");// переводим обычную dbs дату в юникс
+$dateinunix=strdbstounixtime ($date);// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ dbs пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ
+//..$dateinunix2=strdbstounixtime ("13.04.2010 10:38:53");// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ dbs пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ
 //
 //
-//подстройки для блока кода
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 $tbl=192;//$tbl=0;
 $dbtype="mysql";
 $tbl=$sd[38];
@@ -89,17 +86,17 @@ $prauth[$ADM][39]=1;
 $md2column=0;
 //$oldcoreedit=$prauth[$ADM][39];
 //$result=newscreatesql ();
-// окончание подстроек
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 //
 //
 ////  COPY PAST nedit.php  4.1.117
-//модуль запуска
+//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 if ($write) echo '<form action="nedit.php" method=post>';
 if ($write==cmsg ("KEY_EDIT")) {
 	if ($vID==="") { lprint ("WF_FSELID")."<br>"; exit;};
 	$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	dbs_selectdb ("dbscriptbk", $connect,$dbtype);
-	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
+	$data=readdescripters ();// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ mycol пїЅпїЅпїЅ-пїЅпїЅ mycols
 		if ($data==-1) exit;
                 $mycolvirtualname=$data[3];if (strlen ($mycolvirtualname[0])<1) $mycolvirtualname=$mycol;
              //   echo $data[3][0];
@@ -146,7 +143,7 @@ $datasplitters=explode (",",$prdbdata[$tbl][20]);
 		//if (($virtualid)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
 	$result = dbs_query ($cmd, $connect,$dbtype);
 	$myrow = dbs_fetch_row ($result,$dbtype);
-	//проверка не занят ли ID
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ ID
 	if ($myrow===false) { echo cmsg ("QUE_EMP")."<br>";		exit;	}
 	@$crc=crc32(trim(implode (";",$myrow)));
 	$oldcoreedit=$prauth[$ADM][39];
@@ -164,15 +161,15 @@ $datasplitters=explode (",",$prdbdata[$tbl][20]);
 					if ($a>0) {$values="".$values."','".$myrow[$a]; }	//self-control
                        $z{$a}=$myrow[$a]; echo "<td>";
                        $myrow[1]==$prauth[$ADM][0]; //username fix
-                        if ($a==6) { txtarea ("z6",$lensa,99)  ; }; //  делаем особый стиль для 5 поля - сообщения.
+                        if ($a==6) { txtarea ("z6",$lensa,99)  ; }; //  пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ 5 пїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
                            if ($a!=6) {inputtext ("z$a",20,$myrow[$a]);}
                      echo "<br></td>";
 			}
-	if (!$oldcoreedit) { //  в этом месте происх. иниц. генерац таблицы для dbmgr_редактора  только для нового и вертикального стилей !! копировать изменения отсюда!
-		echo "<table id=dbmgr_edit border=3 width=100% bordercolor=#602621>";//изменение утверждено неполностью.если редактировать то уж сразу все <table> а не одну.а то они все станут разные.
+	if (!$oldcoreedit) { //  пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ dbmgr_пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ  пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ !! пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!
+		echo "<table id=dbmgr_edit border=3 width=100% bordercolor=#602621>";//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ <table> пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ.пїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
 		for ($a=0;$a<$mycols;$a++)
 			{ //hdr text
-	if ($prauth[$ADM][41]) echo "<tr>";//optional   Box,not linear edit.   GMP_41;Редактор, вертикаль интерфейс  из lang/russian.cfg
+	if ($prauth[$ADM][41]) echo "<tr>";//optional   Box,not linear edit.   GMP_41;пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ  пїЅпїЅ lang/russian.cfg
 			echo "<td>$mycolvirtualname[$a] ";
 			if ($mycol[$md2column]===$mycol[$a]) echo "<ii><bb>(ID1)</ii></bb>";
 			//if ($mycol[$virtualid]===$mycol[$a]) echo "<ii><bb>(ID2)</ii></bb>";
@@ -186,22 +183,22 @@ $datasplitters=explode (",",$prdbdata[$tbl][20]);
 					if ($a===0) { $values="'".$myrow[$a];} 				// self-control
 					if ($a>0) {$values="".$values."','".$myrow[$a]; }	//self-control
 			?>			</td>
-			<? if ($prauth[$ADM][41]) echo "</tr><tr>"; //optional Box,not linear edit.
-                       $z{$a}=$myrow[$a]; echo "<td>"; //возможно похожий механизм стоит разработать и для editor base
+			<?php if ($prauth[$ADM][41]) echo "</tr><tr>"; //optional Box,not linear edit.
+                       $z{$a}=$myrow[$a]; echo "<td>"; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ editor base
                        $myrow[1]==$prauth[$ADM][0];
-                        if ($a==6) { txtarea ("z6",$lensa,99)  ; }; //  делаем особый стиль для 5 поля - сообщения.
+                        if ($a==6) { txtarea ("z6",$lensa,99)  ; }; //  пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ 5 пїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
                            if ($a!=6) {inputtext ("z$a",20,$myrow[$a]);}
 
                      echo "<br></td>";
 			//if ($a!==5) <textarea id=dbmgr_txta name=z=$a;  cols=; rows=1>=$myrow[$a]</textarea>
-			//echo "<tr>";//optionalBox,not linear edit.  имя ID должно быть как можно короче, т.к. элементов могут быть 1000и
-			// добавить потом сюда trafeconom mode  поправлю позже другие стили аналогично этому.
+			//echo "<tr>";//optionalBox,not linear edit.  пїЅпїЅпїЅ ID пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ.пїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 1000пїЅ
+			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ trafeconom mode  пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
 
 			} //field text
 
-			echo "</table>"; // конец генератору таблицы для dbmgr_edit
+			echo "</table>"; // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ dbmgr_edit
 	}
-	// проверка заморозки
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	$values=$values."'";
 	$cmd="REPLACE INTO `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` VALUES ($values);";
 				@$afile="_conf/autoexec.sql";
@@ -212,7 +209,7 @@ $datasplitters=explode (",",$prdbdata[$tbl][20]);
 				if ($findcmd!==false) { $frozen=1; };
 				}
 				fclose ($f);
-	// окончание проверки заморозки
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
 checkbox ($crcignore,"crcignore"); lprint ("WF_NOCRC");echo "<br>";
 hidekey ("crc",$crc);
@@ -230,21 +227,21 @@ submitkey ("write","KEY_S_EDIT");echo "<br>";
 
 
 //=========================================
-//модуль  обработки
+//пїЅпїЅпїЅпїЅпїЅпїЅ  пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 if (($write==cmsg("KEY_S_EDIT"))AND(1==1)) {
 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();
-	// заменен vID -> $myrow[$md2column]   myrowid->$myrow[$virtualid]
-// сборка всех переменных в values и myrow[]
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ vID -> $myrow[$md2column]   myrowid->$myrow[$virtualid]
+// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ values пїЅ myrow[]
 		for ($a=0;$a<$mycols;$a++)	{
 	$myrow[$a]=${"z".$a};
 	if ($a===0) { $values="'".$myrow[$a];}
 	if ($a>0) {$values="".$values."','".$myrow[$a]; }
 			}
 			$values=$values."'";
-// сборка всех переменных в values и myrow[]
-// начало разморозки если вкл
+// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ values пїЅ myrow[]
+// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
 if ($unfreez) {
 	$cmd="REPLACE INTO `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` VALUES ($values); #".$prauth[$ADM][0];
 				$afile="_conf/autoexec.sql";
@@ -259,47 +256,47 @@ if ($unfreez) {
 				fclose ($f);fclose ($fw);
 				if ($unfrozen) { unlink ($afile);rename ($afilenew,$afile);};
 				if (!$unfrozen)echo "<font color=red id=errfnt>".lprint ("FROZ_OTH_USR")."</font><br>";
-				// может эту процедуру тоже как то стандартизировать?
+				// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?
 }
-//конец разморозки если вкл
-	//проверка старых данных для CRC i UnDO
+//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ CRC i UnDO
 	$cmd="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$myrow[$md2column]."'";
 	if ($virtualid==true) { $addcmd=" AND ".$mycol[$virtualid]."= '".$myrow[$virtualid]."'"; $cmd.=$addcmd;};
 	$result = dbs_query ($cmd, $connect,$dbtype);
 	$myrowold = dbs_fetch_row ($result,$dbtype);
 	if ($myrowold==false) {lprint ("WF_EDITNOTADD");echo "<br>";
-	//процедура undo старого ID
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ undo пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ID
 		$cmd="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE  ".$mycol[$md2column]."='".$origid1."'";
 		if ($virtualid==true) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$origid2."'";};
 		$result=dbs_query ($cmd,$connect,$dbtype);;
-		$myrowold=dbs_fetch_row ($result,$dbtype); // тут false если то значит ппц :)
+		$myrowold=dbs_fetch_row ($result,$dbtype); // пїЅпїЅпїЅ false пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ :)
 	}
-	@$olddata=implode (";",$myrowold); // вот это и надо сохранять и откатывать
+	@$olddata=implode (";",$myrowold); // пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	$undodata=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrowold,$mycols);
 	if (!$crcignore) {
 				@$crcnew=crc32(trim($olddata));
 				if ($myrowold!==false) if ($crcnew!=$crc) {lprint ("WF_CRCFAIL"); exit;} ;}; //crc32testfunction
 
-	// старое условие до 3.2.6 ++ $mycol[$md2column]."='".$vID."'";
-	// опять возможная ошибка  - необязательно 0 является ключом
+	// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 3.2.6 ++ $mycol[$md2column]."='".$vID."'";
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ  - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 0 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	$cmd="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE  ".$mycol[$md2column]."='".$myrow[$md2column]."'";
 	if ($virtualid==true) {  $cmd.=$addcmd;};
 
 		$cmd2="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE  ".$mycol[$md2column]."='".$origid1."'";
 	if ($virtualid==true) { $cmd2=$cmd2." AND ".$mycol[$virtualid]."= '".$origid2."'";};
-	// это удаление старого ID если был
+	// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ID пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
 
 
-	$a=dbs_query ($cmd,$connect,$dbtype);  // условие обновлено
-	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
+	$a=dbs_query ($cmd,$connect,$dbtype);  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	if (!$pr[8]) {echo "DEBUG пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ $a<br>";}
 	if ($a==true) { echo $myrow[0].cmsg ("WF_DELOK")."!<br>";} else { echo cmsg ("WF_DELFAIL")."$myrow[0]<br>";}
-	$a=dbs_query ($cmd2,$connect,$dbtype);  // условие обновлено
-	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
+	$a=dbs_query ($cmd2,$connect,$dbtype);  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	if (!$pr[8]) {echo "DEBUG пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ $a<br>";}
 	if ($a==true) { echo $myrow[0].cmsg ("WF_DELOK")."!<br>";} else { echo cmsg ("WF_DELFAIL")."$myrow[0]<br>";}
 
 
 	$cmd="INSERT INTO `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` VALUES ($values)";
-	$a=dbs_query ($cmd,$connect,$dbtype);//сделать любое кол-во
+	$a=dbs_query ($cmd,$connect,$dbtype);//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅ
 	$cmd="REPLACE INTO `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` VALUES ($values)";
 	if ($enfreez) {
 		if (($codekey==9)or($codekey==7)) demo ();
@@ -309,7 +306,7 @@ if ($unfreez) {
 				if ($a) { echo "<font color=blue id=bfnt>".cmsg ("KEY_FRZD")."</font><br>";};
 				fclose ($f);
 				}
-	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
+	if (!$pr[8]) {echo "DEBUG пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ $a<br>";}
 	if ($a==true) { echo $myrow[0].cmsg ("WF_ADDED").".<br>";if ($views) echo cmsg ("WF_EXQUE")."$cmd<br>"; } else { echo cmsg ("WF_ADDFAIL")."$myrow[0]<br>";}
 	if ($a==true) { echo $myrow[0].cmsg ("WF_UPDOK")."!<br>";} else {
 		$errt=cmsg ("WF_UPDFAIL"); $ermsg="$myrow[0]<br>";}
@@ -318,20 +315,20 @@ if ($unfreez) {
             logwrite ($act) ;undolog ($act,$undodata,$baseID,$hostIP); };
 	//if ($views) echo cmsg ("WF_EXQUE")."$cmd<br><br>";
  echo cmsg ("WF_QUECOMP").dbs_affected_rows ().cmsg ("WF_Q1")."<br>";
-$silent=0;$errno=dbserr ();// пишет ошибку и ее код  и его же возвращает
+$silent=0;$errno=dbserr ();// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅ  пїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 submitkey ("write","WF_UNDO_LAST");
 //endof executing
 }
 
 
-//infa  DISTINCT - отключить дубликаты
+//infa  DISTINCT - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
 //=========================================
-//модуль запуска
+//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 if (($write==cmsg ("KEY_ADD"))AND(1==1)) {
 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
-	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
+	$data=readdescripters ();// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ mycol пїЅпїЅпїЅ-пїЅпїЅ mycols
 		if ($data==-1) exit;
 	if ($data==-1) exit;
                  $mycolvirtualname=$data[3];
@@ -344,13 +341,13 @@ if (($write==cmsg ("KEY_ADD"))AND(1==1)) {
 	$result = dbs_query ($cmd, $connect,$dbtype);
 	$myrow = dbs_fetch_row ($result,$dbtype);
         
-//проверка не занят ли ID
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ ID
 	if ($myrow===false) {
 		echo cmsg ("QUE_EMP")."<br>";
 		$myrow[$md2column]=$vID;
 		//if (($virtualid>0)AND ($vID2!=="")) $myrow[$virtualid]=$vID2;
 	}
-//end проверка не занят ли ID
+//end пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ ID
 	$oldcoreedit=$prauth[$ADM][39];
 	if ($oldcoreedit)
 	for ($a=0;$a<$mycols;$a++)
@@ -361,7 +358,7 @@ if (($write==cmsg ("KEY_ADD"))AND(1==1)) {
                        $z{$a}=$myrow[$a];
                        if ($a==7) { $value=$dateinunix;echo "($date)";};
                               echo "<td>";
-                        if ($a==6) { txtarea ("z$a",$lensa,1)  ; }; //  делаем особый стиль для 5 поля - сообщения.
+                        if ($a==6) { txtarea ("z$a",$lensa,1)  ; }; //  пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ 5 пїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
                            if ($a!=6) {inputtext ("z$a",$lensa,$value);}
                      echo "<br></td>";
 			}
@@ -383,7 +380,7 @@ if (($write==cmsg ("KEY_ADD"))AND(1==1)) {
                        $z{$a}=$myrow[$a];
                                 if ($a==7) { $value=$dateinunix;echo "($date)";};
                        echo "<td>";
-                        if ($a==6) { txtarea ("z$a",$lensa,1)  ; }; //  делаем особый стиль для 5 поля - сообщения.
+                        if ($a==6) { txtarea ("z$a",$lensa,1)  ; }; //  пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ 5 пїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
                            if ($a!=6) {inputtext ("z$a",$lensa,$value);}
                      echo "<br></td>";
 			if ($prauth[$ADM][41]) echo "<tr>";//optionalBox,not linear edit.
@@ -398,13 +395,13 @@ if (($write==cmsg ("KEY_ADD"))AND(1==1)) {
 
 //=========================================
 
-//модуль обработки
+//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 if (($write==cmsg ("KEY_S_ADD"))AND(1==1)) {
 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();
 
-// сборка всех переменных в values и myrow[]
+// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ values пїЅ myrow[]
 			for ($a=0;$a<$mycols;$a++)
 			{
 	$myrow[$a]=${"z".$a};
@@ -413,30 +410,30 @@ if (($write==cmsg ("KEY_S_ADD"))AND(1==1)) {
 	if ($a>0) {$values="".$values."','".$myrow[$a]; }
 			}
 			$values=$values."'";
-// сборка всех переменных в values и myrow[]
-//тут надо бы undo
+// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ values пїЅ myrow[]
+//пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ undo
 	$cmd="INSERT INTO `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` VALUES ($values)";
-	$a=dbs_query ($cmd,$connect,$dbtype);//сделать любое кол-во
+	$a=dbs_query ($cmd,$connect,$dbtype);//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅ
 	$cmd="REPLACE INTO `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` VALUES ($values)";
-	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
+	if (!$pr[8]) {echo "DEBUG пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ $a<br>";}
 	if ($a==true) { echo $myrow[0].cmsg ("WF_ADDED").".<br>";	if ($views) echo cmsg ("WF_EXQUE")."$cmd<br>"; } else 	{
 		$errt=cmsg ("WF_ADDFAIL"); $ermsg="$myrow[0]".cmsg ("WF_ADDPRS")."<br>";}
 	$undodata="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE ".$mycol[$md2column]."='".$vID."'";
 	//if (($virtualid>0)AND ($vID2!=="")) { $undodata=$undodata." AND ".$mycol[$virtualid]."= '".$vID2."'";};
 	if ($pr[12]) {$act="ADD_SQL  B $tbl($nametbl) Find$vID Cmd $cmd";
             $baseID=$tbl;$hostIP=$prdbdata[$tbl][6];
-            logwrite ($act) ; undolog ($act,$undodata,$baseID,$hostIP);}; // логируемся
-	 //executing+errlogделаем нормальную обработку ошибок  исп всегда этот модуль
+            logwrite ($act) ; undolog ($act,$undodata,$baseID,$hostIP);}; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	 //executing+errlogпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ  пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	 	     //if ($views) echo cmsg ("WF_EXQUE")."$cmd<br><br>";
  echo cmsg ("WF_QUECOMP").dbs_affected_rows ().cmsg ("WF_Q1")."<br>";
-$silent=0;$errno=dbserr ();// пишет ошибку и ее код  и его же возвращает
+$silent=0;$errno=dbserr ();// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅ  пїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 submitkey ("write","WF_UNDO_LAST");
 //endof executing
 }
 
 
 //=========================================
-//модуль запуска
+//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 if (($write==cmsg ("KEY_DEL"))AND(1==1)) {
 	if (($virtualid==true)AND($vID2==false)) echo "<font color=red id=errfnt>".cmsg
 		("WF_DEL_GROUP")." ".$vID." </font><br>";
@@ -448,11 +445,11 @@ if (($write==cmsg ("KEY_DEL"))AND(1==1)) {
 
 
 //=========================================
-//модуль обработки
+//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 if (($write==cmsg("KEY_S_DEL"))AND(1==1)) {
 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
-	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
+	$data=readdescripters ();// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ mycol пїЅпїЅпїЅ-пїЅпїЅ mycols
 		if ($data==-1) exit;
 	$cmd="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= '".$vID."'";
         echo $cmd;
@@ -462,12 +459,12 @@ if (($write==cmsg("KEY_S_DEL"))AND(1==1)) {
 		if (!$test) $test=$myrow[0];
 		$undodata.=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`",$myrow,$mycols)." ";
 	};
-	// тут надо бы undo
+	// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ undo
 	$a=$test;
 	$cmd="DELETE FROM `".$prdbdata[$tbl][9]."`.`".$prdbdata[$tbl][5]."`  WHERE ".$mycol[$md2column]."='".$vID."'";
 	//if (($virtualid>0)AND ($vID2!=="")) { $cmd=$cmd." AND ".$mycol[$virtualid]."= '".$vID2."'";};
 	dbs_query ($cmd,$connect,$dbtype);
-	if (!$pr[8]) {echo "DEBUG Получен код $a<br>";}
+	if (!$pr[8]) {echo "DEBUG пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ $a<br>";}
 	if ($a==true) { echo $vID.cmsg ("WF_DELOK")."!<br>";} else {
 				$errt=cmsg ("WF_DELFAIL"); $ermsg=cmsg ("WF_NOQUE")."<br>";}
 
@@ -519,7 +516,7 @@ $dbtype="mysql";
 	$a=dbs_query ($query,$connect,$dbtype);
 
         if ($a==false) { sqlerr (); $mysqlanswer=false;} else {$mysqlanswer=true;};
-        // внимание записи ВСЕХ существующих копий дбскрипт будут попадать в эти базы- модификации названия таблиц и т.п. пока отсутствуют CFG OPT FUTURE
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅ.пїЅ. пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ CFG OPT FUTURE
 ## end of creating tables
         }
         return $mysqlanswer;

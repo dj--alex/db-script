@@ -1,5 +1,5 @@
 <?php
-require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
+require_once ('dbscore.php');
 //$script="login.php";
  if ($pr[36]=="on")  { 
  	$script="disable";

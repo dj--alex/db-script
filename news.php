@@ -1,62 +1,61 @@
 <?php   echo 'News block module.<br>';// module for dbscript
 if ($debug) echo "Starting...loading core...<br>";
-// Данная программа относится к пакету DBSCRIPT v2.1 (с) dj--alex
-// Заказной плагин кrequires tbl dbs id пакету. "Новости для сайта".
-if ($_FILES) ob_start(); // добавлено т.к. в 2033 строке непонятно прислали файл вообще или нет
+// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ DBSCRIPT v2.1 (пїЅ) dj--alex
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅrequires tbl dbs id пїЅпїЅпїЅпїЅпїЅпїЅ. "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ".
+if ($_FILES) ob_start(); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ.пїЅ. пїЅ 2033 пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ
 $nomnu=true;
-require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
+require_once ('dbscore.lib'); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 $nomnu=1;
 if (!$activation) exit;
 /*
- * Что за блог?   news.php  nedit.php - блог для Dbscript
- * Идентификатор таблицы блога создающейся при первом его запуске, ID этой таблицы из алиасов _нужно_ прописать в админке
- * после этого блог будет работать с таблицей (dbscriptbk._dbs__news43)
- * Поддерживается показ новостей за последние 15 дней по умолчанию
- * Новости все по умолчанию свернуты и могут быть открыты
- * Работают щелчки в шапке по тегам , по авторам, и поддержка видеоплееров. (можно заливать flv)
- * важно: В показе таблицы поддерживаются HTML теги
- * выдаются в виде стандартной Dbscript таблицы.
- * Для создания новостей в блоге используется редактор TinyMCE
- * Поддерживается показ видео
- * Планируется поддержка показа по любым щелчкам (почти сделано), буду рад помощи в доработке.
+ * пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ?   news.php  nedit.php - пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ Dbscript
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, ID пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ _пїЅпїЅпїЅпїЅпїЅ_ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+ * пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (dbscriptbk._dbs__news43)
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 15 пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ , пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. (пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ flv)
+ * пїЅпїЅпїЅпїЅпїЅ: пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ HTML пїЅпїЅпїЅпїЅ
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Dbscript пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+ * пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ TinyMCE
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ), пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 
  *
- * При редактировании в одном из полей теряются данные...хз почему. если копировать перед редактированием это помогает.
- * * поддержки notable пока нет
- * Возможность поиска по > < необходимо внедрить в основной поиск
- * Также в основной поиск неплохо добавить и поискать same parameter.
- * Планируется загрузка и выгрузка пользовательски данных в отдельный plugins.cfg для начала хотябы общие настройки.
+ * пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ...пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+ * * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ notable пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ > < пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+ * пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ same parameter.
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ plugins.cfg пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
  *
  */
 ?>
 
 </head>
 <body>
-<style media="all" type="text/css">@import "_style/insidestyles.css";</style>
+<style media="all" type="text/css">import "_style/insidestyles.css";</style>
 
-<?
-
+<?php 
 $dbtype="mysql";
 $tbl=192;
 $tbl=$sd[38];
 
 $x=newscreatesql (); 
-//..echo " Вы должны установить tbl= тому ИД , которому равен _dbs__news43  он есть в админке - $sd[38]  Мод Блог - идентификатор таблицы. ";
+//..echo " пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ tbl= пїЅпїЅпїЅпїЅ пїЅпїЅ , пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ _dbs__news43  пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - $sd[38]  пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. ";
 
 if ($debug) echo "Returned message about existing tables:$x<br>";
 if ($debug)echo "Settings: requires tbl dbs id for work: $tbl *usually 1<br>";
-//показать новости за последний месяц   data  gutentag
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ   data  gutentag
 $date=date("d.m.Y H:i:s");
 $datesrch=date("m.Y");
-$dateinunix=strdbstounixtime ($date);// переводим обычную dbs дату в юникс
-//..$dateinunix2=strdbstounixtime ("13.04.2010 10:38:53");// переводим обычную dbs дату в юникс
+$dateinunix=strdbstounixtime ($date);// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ dbs пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ
+//..$dateinunix2=strdbstounixtime ("13.04.2010 10:38:53");// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ dbs пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ
 if ($debug) echo "Now $date = Now date in unix=".$dateinunix."<br>";
 //echo "Now date in unix by time ".time ()."<br>";
-$dateinunixminux15=$dateinunix-(1295684*2);  //CFG OPT FUTURE - это число дней 15  его можно изменять.
+$dateinunixminux15=$dateinunix-(1295684*2);  //CFG OPT FUTURE - пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 15  пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 $dateminus15=date("d.m.Y H:i:s",$dateinunixminux15);
-if ($debug) echo "date -15days= ".$dateminus15." ($dateinunixminux15)<br>";  //1295684 - 15 юникс дней.
+if ($debug) echo "date -15days= ".$dateminus15." ($dateinunixminux15)<br>";  //1295684 - 15 пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.
 $vID=$datesrch;
-//$tempdate=date("d.m.Y H:i:s",1272436417);  //переводим юникс дату в дбс
+//$tempdate=date("d.m.Y H:i:s",1272436417);  //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ
 //echo "Tempdate =$tempdate  and date-tempdate=".($dateinunix-1272436417)."<br>";
 
 //TEST TEST TEST!
@@ -65,7 +64,7 @@ $vID=$datesrch;
 if ($ADM!==0)echo "<a target=b2 href='news.php?stdout=1'><img src=\"_ico/admin.png\" border=0 title='".cmsg ("WF_CANCSHOW")."'></a>";
 
 
-// функция поиска похожих новостей по щелчку из заголовка.
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 function tag ($tag,$field) {
 //generating automatic tag
     $tags=explode (",",$tag);
@@ -80,7 +79,7 @@ function tag ($tag,$field) {
   // copy of search r.php mode == 2
 					$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 					dbs_selectdb ("dbscriptbk", $connect,$dbtype);  //mod
-					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
+					$data=readdescripters ();// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ mycol пїЅпїЅпїЅ-пїЅпїЅ mycols
 					global $query,$connect;
 					global $mzdata,$mycols,$myrow,$findrecords,$scrcolumn;
 					settype ($vID,"integer");
@@ -91,9 +90,9 @@ function tag ($tag,$field) {
                                         if ($author) $query = "SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE `user` LIKE '%".$author."%'";
                                         //author !!!
                                         //debug $query = "SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE `data` < ".$dateinunixminux15;
-                                        echo $query."<br>";  // CFG OPT FUTURE - это условие неплохо бы добавить в основной поиск  > < !=
+                                        echo $query."<br>";  // CFG OPT FUTURE - пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ  > < !=
 					//if (($prdbdata[$tbl][15]>0)AND ($vID2!=="")) { $query = $query." AND ".$mycol[$prdbdata[$tbl][15]]."= '".$vID2."'";};
-					//$query=$query.$addsql;// сортировка, лимит
+					//$query=$query.$addsql;// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ
 
 
         if (($stdout==1)&&($ADM!==0)) {	selectedprintsql ($data); } else {
@@ -101,8 +100,7 @@ function tag ($tag,$field) {
 //..echo "[debug] mycols=$mycols";
 
 initwindowactions (0);
-?> <link href="msgerr.css" rel="stylesheet" type="text/css"> <?
-echo "<font class=text><table id=myTable border=1 width=100% bordercolor=#206621 style=\" color: #".$rgbtext.";  \"  >";
+?> <link href="msgerr.css" rel="stylesheet" type="text/css"> <?php echo "<font class=text><table id=myTable border=1 width=100% bordercolor=#206621 style=\" color: #".$rgbtext.";  \"  >";
 echo "<tr>";
 			for ($a=0;$a<$mycols;$a++)
 				{
@@ -124,11 +122,10 @@ echo "<tr>";
                                                echo "<table border=1 width=100% bordercolor=#206621 style=\" color: #".$rgbtext.";  \" ><tr><td>";
                                                            }
                                                            
-                                                            if ($b==0) { echo "<td >"; //оригинальный "каталог постов"
+                                                            if ($b==0) { echo "<td >"; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"
 ?><a HREF="javascript:win('l<?php echo $l;?>',0)"><img src="_ico/w_hide.png" border=0></a>
 <a HREF="javascript:win('l<?php echo $l;?>',1)"><img src="_ico/w_zoom_out.png" border=0></a>
-                    <?
-                    
+                    <?php                     
 echo cmsg("B_POTS")." ".$myrow[0];}// id post
                                           if ($b==1) { echo "<ll ><tr>"; echo cmsg ("B_AUTH")." "; tag ($myrow[1],"author"); echo " :"; };// plevel ignored
                                           if ($b==2) { echo "" ; };// plevel ignored
@@ -157,8 +154,7 @@ function player ($file) {
      ?>
 <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab
 #version=8,0,0,0" width="320" height="260" id="fp" align="middle"><param name="allowScriptAccess" value="sameDomain" /><param name="movie" value="player/fp.swf?video=<?=$file?>&image=img.jpg &title=my video" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" /><embed src="player/fp.swf?video=video/<?=$file;?>&image=img.jpg&title=my video" quality="high" bgcolor="#ffffff" width="320" height="260" name="fp" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" /></object>
-<?
-}
+<?php }
 /*.*
 function player ($file) {
      ?><object type="application/x-shockwave-flash" data="/player/player.swf" width="" height="">
@@ -168,8 +164,7 @@ function player ($file) {
         <param name="wmode" value="transparent" />
         <param name="movie" value="/player/player.swf" />
         <param name="flashvars" value="/video/<?=$file?>" />
-        </object><?
-}
+        </object><?php }
  * *
  */
 function newscreatesql () {
@@ -178,7 +173,7 @@ function newscreatesql () {
     //if (!$pr[43]) {
         if ($debug) { errorlog ("DEBUG checklogsql:Connection failure. Default host not set or SQL off. trying 127.0.0.1.");       $pr[43]="127.0.0.1";        }
 $dbtype="mysql";
-    	@$connect=dbs_connect ($pr[43],$sd[14] , $sd[17],$dbtype);
+    	$connect=dbs_connect ($pr[43],$sd[14] , $sd[17],$dbtype);
         dbs_selectdb ("dbscriptbk", $connect,$dbtype);
 	if ($connect==false) {  errorlog ("DEBUG checklogsql:Connection failure. Default host lost. $pr[43]");return false;}
         $mysqlanswer=1;
@@ -195,7 +190,7 @@ $dbtype="mysql";
 	$a=dbs_query ($query,$connect,$dbtype);
         
         if ($a==false) { sqlerr (); $mysqlanswer=false;} else {$mysqlanswer=true;};
-        // внимание записи ВСЕХ существующих копий дбскрипт будут попадать в эти базы- модификации названия таблиц и т.п. пока отсутствуют CFG OPT FUTURE
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅ.пїЅ. пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ CFG OPT FUTURE
 ## end of creating tables
         }
         return $mysqlanswer;

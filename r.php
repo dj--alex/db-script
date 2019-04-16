@@ -1,24 +1,11 @@
 <?// Данная программа относится к пакету DBSCRIPT v1.8 (с) dj--alex
-//pcntl_getpriority(1) ;// r.php rev202 - part of Site Unknown Project
-//
-//  Внимание, изначально данный код не предназначался для просмотра и поэтому
-//  составлен достаточно хаотично.
-//  Также комментарии могут содержать данные относящиеся к будущим изменениями
-//  или к уже выполненным фиксам (такие убираются)
-//
-// Если необходима информация по внутренним функциям - обращайтесь ко мне. dj--alex.
-//
-// Если вы хотите поддержать автора этой программы и увидеть более новые версии и куда более совершенные версии
-// вы можете поддержать автора 3 методами: купить платную версию программы, пожертвовать средства, 
-// или подарить или продать с большой скидкой какое-либо более менее современное железо (интересует ноутбук на данный момент,очень)
-// // echo "<br>".cmsg ("DONATE")." N 4100177805659 ,.";
 //
 require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
 
 autoexecsql ();
 /*SELECT `name`,(SUBSTRING_INDEX(SUBSTRING_INDEX(`data`,' ', Номер),' ', -1)+0) AS `money` FROM `character` WHERE (SUBSTRING_INDEX(SUBSTRING_INDEX(`data`,' ', Номер),' ', -1)+0)>1000000;
 1325  деньги --- SEARCH по субстроке   неподдерживается */
-import_request_variables ("PG","");
+//import_request_variables ("PG","");
 
 if (($vID[0]=="!")AND(strtolower ($vID[1])=="m")) {$vID[0]="#";$vID[1]="";}
 if ($tbl==-2) if ($vID=="Relogin") $vID=".relogin";
@@ -112,7 +99,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
                        $userplevel=$prauth[$ADM][10]+(1 AND $srvdata[$a][7]!="a"); // check admin only 
                         if ($srvdata[$a][8]<1) if ((($srvdata[$a][7])<$userplevel)OR(($srvdata[$a][7]=="a")AND($prauth[$ADM][2]=="on"))) {
                                    //     echo "plevel passed!<br>";ccука заклинило его на первой записи,урод.
-                                  $fp = @fsockopen ($srvdata[$a][1],$srvdata[$a][4],$error,$errstr,1);
+                                  $fp =  fsockopen ($srvdata[$a][1],$srvdata[$a][4],$error,$errstr,1);
                                   $x="error=$error; rrstr=$errstr<br>";
                                //..   echo "блджад!! $a";
                                   if ($fp) { $online="<font color=green id=okfnt>Online</font>";} else {$online="<font color=red id=errfnt>Offline</font>";};
@@ -178,8 +165,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 		if ($cmd[0]=="config") {
 	?> <br>Для продолжения необходимо выбрать тип заголовка <br>
 	<form action=w.php>
-	<?
-	submitkey ("write","CF_USRS");
+	<?php 	submitkey ("write","CF_USRS");
 	submitkey ("write","CF_DB");
 	submitkey ("write","CF_FIL");
 	submitkey ("write","CF_DWORD");
@@ -225,7 +211,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 		if ($cmd[0]==="print") { echo (${$cmd[1]});exit;}
 		if (($cmd[0]==="deactivate")AND($prauth[$ADM][42])) {
 				$a=genactcode();
-				if ($cmd[1]===$a) { unlink ("_conf/.key");@unlink ("_conf/dbs.key");@unlink ("_conf/add.key"); echo lprint ("REGRESET").".<br>";};
+				if ($cmd[1]===$a) { unlink ("_conf/.key"); unlink ("_conf/dbs.key"); unlink ("_conf/add.key"); echo lprint ("REGRESET").".<br>";};
 				exit;}
 		
 	if (($cmd[0]==="del")AND($prauth[$ADM][42])) {
@@ -234,7 +220,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 				
 		if (($cmd[0]==="deactivate")AND(!$prauth[$ADM][42])) msgexiterror ("notrights"," superuser","admin.php");
 		
-		if (($cmd[0]==="deactivate_all")AND($prauth[$ADM][42])) {	 unlink ("_conf/.key");	@unlink ("_conf/dbs.key");@unlink ("_conf/add.key"); echo lprint ("REGRESET").".<br>";	exit;} 
+		if (($cmd[0]==="deactivate_all")AND($prauth[$ADM][42])) {	 unlink ("_conf/.key");	 unlink ("_conf/dbs.key"); unlink ("_conf/add.key"); echo lprint ("REGRESET").".<br>";	exit;}
 		if (($cmd[0]==="deactivate_all")AND(!$prauth[$ADM][42]))  msgexiterror ("notrights"," superuser","admin.php");
 
 		if ($cmd[0]=="ban") { echo "trying to ban ".$cmd[1]."<Br>";$action="BAN IP ".$cmd[1]."!";logwrite ($action);  //BAD
@@ -269,7 +255,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 			exit;}
 
 			if (($cmd[0])=="remove") {
-				if ($cmd[1]=="key") { @unlink ("_conf/dbs.key");@unlink ("_conf/add.key"); msgexiterror ("key".cmsg ("KEY_NODEMO")."login.php","","");}
+				if ($cmd[1]=="key") {  unlink ("_conf/dbs.key"); unlink ("_conf/add.key"); msgexiterror ("key".cmsg ("KEY_NODEMO")."login.php","","");}
 }
 
 		}
@@ -318,7 +304,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 			echo "<br>";
                           if ($coreSE==1) echo "You use non-commercial Dbscript 4 SE  Linux edition.";
 
-			if (strlen ($registeredto)>0) echo lprint ("REGTO")." $registeredto<br> ".cmsg ("ADM_@")." $adminmail<br>";
+			if (strlen ($registeredto)>0) echo lprint ("REGTO")." $registeredto<br> ".cmsg ("ADM_ ")." $adminmail<br>";
 			echo lprint ("YVDBS").": $yourvrs<br>";
 			if ($nokeys!=1) {
 				if (($daysleft!=="unlimited")AND(!($daysleft<1))) echo lprint ("DAYREM").": $daysleft<br><br>";
@@ -347,7 +333,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 				echo "<br>".cmsg ("VLANG").": ".$verlang."<br>";
 				echo "Server OS:".$OSTYPE."<br>";
 				if ((!$pr[54])AND($dbstyle3en)) {
-				$fp=@fopen ("_templates/copyright.txt","r");
+				$fp= fopen ("_templates/copyright.txt","r");
 				if ($fp) {
 					$f=fread ($fp,1000);
 					echo cmsg (DESIGN).":".$f."<br>";
@@ -362,7 +348,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 				if ($pr[7]) { print "<form action=r.php method=post>";} else {  print "<form action=disable method=post>";} ;
 //<input type=hidden name=colfind value=<?=$colfind; 
 ?> <form action="r.php" method="post" id="read">
-	<? 
+	<?php
 echo "!";if ($live) echo "<font color=green id=xfnt>live</font>!";
 		hidekey ("intf","master-mode");
 		hidekey ("vID",$vID);//vid1 fixed   lost selection during db select  CFG OPT FUT 
@@ -398,7 +384,7 @@ echo "!";if ($live) echo "<font color=green id=xfnt>live</font>!";
 	<form action="r.php" method=post>
 		<input type=hidden name=tbl value=<?=$deftbl; ?>>
 			<input type=submit name=write value=Войти>
-	<? };// для случая выбранной по умолч базы.
+	<?php };// для случая выбранной по умолч базы.
 
  print "</form>";
 
@@ -467,10 +453,10 @@ print "<html><bb>".cmsg ("COMM").":</bb><br>";
 // вообшще вместо этого безобразия надо бы сделать просто JS ку   //print $d ;//method2
 $comfile="_local/scrcomm/".$scrdir."/".$scrc.".txt";
 $imgfile="_local/scrcomm/".$scrdir."/".$scrc."$formatscr";
-@$wr = fopen ($comfile,"r");
-@$wrimg = fopen ($imgfile,"r");
+ $wr = fopen ($comfile,"r");
+ $wrimg = fopen ($imgfile,"r");
 if (!$wr) echo "No commented ^  $comfile<br>;";
-if ($wr) { @$vd=fread ($wr,10000); echo $vd;echo "<br>";}
+if ($wr) {  $vd=fread ($wr,10000); echo $vd;echo "<br>";}
 if (($needscr==true)AND($formatscr)) if ($wrimg) echo "<img src=\"$imgfile\">";
 
 
@@ -572,8 +558,8 @@ function search ()
 
 				//процедура поиска по имени - mode 1 - SQL
 				if (($mode == 1)AND($prdbdata[$tbl][12]!="fdb")) {
-					@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
-					@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
+					 $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+					 dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
 					global $query,$connect;
 					global $mzdata,$mycols,$myrow,$findrecords,$scrcolumn;
@@ -624,7 +610,7 @@ function search ()
 					global $fullfield;
 					if ($categorymode==false) {   msgexiterror ("nocategory",$mode,"disable");  }
 					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
-					$myrow=$data[0];// bordf\der
+					$myrow=$data[0];// bordf\derК
 					$namecategorycol=$myrow[$category];
 					$query="SELECT DISTINCT $namecategorycol FROM `".$prdbdata[$tbl][5]."` WHERE ".$mycol[$category]." LIKE '%".$vID."%'";
 					if ($vID=="!101") $query="SELECT DISTINCT $namecategorycol FROM `".$prdbdata[$tbl][5]."`";
@@ -663,7 +649,7 @@ function search ()
 					{ 		$selectedfield="!1".$field;
 					// если field выбран то выполняется
 	?> 	<form action="r.php" method=post>
-<? if ($multisearch==1) {// urlencode ($oldvID);serialize ($olddvID); $vID="!S".$vID;
+<?php if ($multisearch==1) {// urlencode ($oldvID);serialize ($olddvID); $vID="!S".$vID;
 			hidekey ("vID",$eolddid); 	 } else {  hidekey ("vID",$eid);	 };
 hidekey ("mode",7);
 hidekey ("adm",$adm);
@@ -728,7 +714,7 @@ echo " </form> ";
 				{
 					$findrecords=0;echo cmsg ("RF_RESSRCH").$namebas." - ".$vID.":\n\n";
 					$vIDold=$vID; $vID=strtolower ($vID);
-					// @$f=fopen ("_data/".$filbas,"r") or die ("Файл базы не найден");
+					//  $f=fopen ("_data/".$filbas,"r") or die ("Файл базы не найден");
 					// echo ""; $z=xfgetcsv ($f,$xfgetlimit,"¦");
 					// $mycol=$z;$myrow=array ();$selected=array ();//added
 					//$md1column=1;$md2column=0;
@@ -787,8 +773,8 @@ echo " </form> ";
 					if ($debug)echo "kol=$kol";$field=$kol;
 					///	echo "encodevID  $eid;  encodevID(old) $eolddid ";
 					$mode=6; $mode7=1;//$presettedmode=-1; bylo 1.1
-					//..	if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
-					//..	if ($cfgmod==1) @$f=csvopen ("_conf/".$filbas,"r","0");echo "<br>";
+					//..	if (!$cfgmod)  $f=csvopen ("_data/".$filbas,"r","0");
+					//..	if ($cfgmod==1)  $f=csvopen ("_conf/".$filbas,"r","0");echo "<br>";
 					$eid=encodevID ($vID);  $eolddid=encodevID ($olddvID);  //setup id
 					if (($field===false)OR($go=="Выбрать_колонку")) {
 						echo "Выберите поле для поиска:<br>";// Вставлено для выбора поля
@@ -803,7 +789,7 @@ echo " </form> ";
 						if ($debug)echo "result res16=$res16 selfield $selectedfield STR607 a=$a m6=$m6field[0] , $m6field[1] , $m6field[2] <br>";
 						// echo "Всего колонок $mycols - ищем значения из списка $mznumb[0];$mznumb[1];$mznumb[2];$mznumb[3]<br>";
 ?>	<form action="r.php" method=post>
-<? 	if ($multisearch==1) {
+<?php 	if ($multisearch==1) {
 	hidekey ("vID",$eolddid); 	 } else {  hidekey ("vID",$eid); };
 hidekey ("mode",7);
 hidekey ("adm",$adm);
@@ -824,10 +810,10 @@ echo "<br>do  596 readdesc mznumb1=".$mznumb[1]." mycols".$mycols." mzdata1=".$m
 echo "result res16=$res16 STR621<br>";$field=printfield ($data,"nfield");
 ?>
 	<input type = "image" name = "go" src = "_ico/find.png">
-	</form><?  $selectedfield="!1".$field;exit;
+	</form><?php  $selectedfield="!1".$field;exit;
 					} else { 	$selectedfield="!1".$field;
 	?> 	<form action="r.php" method=post>
-<? if ($multisearch==1) {
+<?php if ($multisearch==1) {
 	hidekey ("vID",$eolddid); 	 } else {  hidekey ("vID",$eid); };
 hidekey ("mode",7);
 hidekey ("adm",$adm);
@@ -918,7 +904,7 @@ hidekey ("kol",$kol);
 
 					if ($vID!=="!101") { echo "По вашему запросу ".$vID." было найдено:\n\n"; }
 					$vIDorig=$vID; $vID=strtolower ($vID); $found=0;
-					@$f=fopen ("_data/".$filbas,"r") or die ("Не удалось выполнить подключение к базе, попробуйте позже.");
+					 $f=fopen ("_data/".$filbas,"r") or die ("Не удалось выполнить подключение к базе, попробуйте позже.");
 					echo ""; $z=xfgetcsv ($f,$xfgetlimit,"¦"); // заголовок
 					for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
 						if (($limitenable)AND($findrecords>$printlimit)) {
@@ -951,7 +937,7 @@ hidekey ("kol",$kol);
 
 								if (($vID=="!101")AND($content1!=="")AND($content1int==0))
 								{
-									$findrecords++;echo "<bb><ii>".strtoupper($content1)."</ii></bb>";?>				<form action="r.php" method=post><? 	hidekey ("go",$content1);
+									$findrecords++;echo "<bb><ii>".strtoupper($content1)."</ii></bb>";?>				<form action="r.php" method=post><?php 	hidekey ("go",$content1);
 									hidekey ("vID",$content1); hidekey ("mode",3);
 									hidekey ("adm",$adm);	hidekey ("commode",$commode);				hidekey ("tbl",$tbl); echo "</form>" ; break;
 								} //!101
@@ -996,7 +982,7 @@ hidekey ("kol",$kol);
 				//если колонка 1==false и 2==false пишем значение 3 если уже находились такие
 				//echo $findrecords;//if ($vID!=="!101") { echo "По вашему запросу ".$vID." было найдено:\n\n"; }
 				$vIDorig=$vID; $vID=strtolower ($vID); $found=0;
-				@$f=fopen ("_data/".$filbas,"r") or die ("Не удалось выполнить подключение к базе, попробуйте позже.");
+				 $f=fopen ("_data/".$filbas,"r") or die ("Не удалось выполнить подключение к базе, попробуйте позже.");
 				echo ""; $z=xfgetcsv ($f,$xfgetlimit,"¦"); // заголовок
 				for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
 					if (($limitenable)AND($findrecords>$printlimit)) {
@@ -1022,8 +1008,7 @@ hidekey ("kol",$kol);
 
 							}
 							if (($vID=="!101")AND($content1!=="")) {
-								$findrecords++;echo "<bb><ii>".strtoupper($content1)."</ii></bb>";?>				<form action="r.php" method=post> <?
-		hidekey ("vID",$content1); hidekey ("mode",3);
+								$findrecords++;echo "<bb><ii>".strtoupper($content1)."</ii></bb>";?>				<form action="r.php" method=post> <?php 		hidekey ("vID",$content1); hidekey ("mode",3);
 		hidekey ("adm",$adm);	hidekey ("commode",$commode);
 		hidekey ("tbl",$tbl);	hidekey ("go",$content1);
 		hidekey ("kol",$kol);
@@ -1037,8 +1022,7 @@ hidekey ("kol",$kol);
 									print "<font color=red id=errfnt><bb>Не найдено</bb><br></font>";
 									print "Среди категорий не удалось найти искомую группу.<br>Поискать среди наименований?";
 		?>
-				<form action="r.php" method=post><?
-						hidekey ("vID",$vID); hidekey ("mode",1);
+				<form action="r.php" method=post><?php 						hidekey ("vID",$vID); hidekey ("mode",1);
 		hidekey ("adm",$adm);	hidekey ("commode",$commode);
 		hidekey ("tbl",$tbl);	hidekey ("go",$content1);
 
@@ -1125,11 +1109,11 @@ hidekey ("kol",$kol);
 			//echo "Active table: $activetable [$tablemysqlselect'$tblmysqlselect]; Given data total:$boxcnt<br>";
 			echo cmsg(A_BEST).".<br>";
 			$filbas=$userfolder."/best.cfg";  // возможно будет дб в initse  с созданием шапки если файла вообще нет+++
-  				@$best=csvopen ($filbas,"r",0);$data=readfullcsv ($best,"new");
+  				 $best=csvopen ($filbas,"r",0);$data=readfullcsv ($best,"new");
  				// $data=readdescripters ();
    			$bestheader=$data[0];$bestplevel=$data[1];$bestcontent=$data[2];$bestcnt=$data[3];
   			$strokedata=$activetable."¦".$tablemysqlselect."¦".$tblmysqlselect."¦"; // FORMAT^    tablename;id1Xid2;id1Xid2
-  			@fclose ($best);	
+  			 fclose ($best);
   
   /*//$editor=csvopen ("editor.cfg","r",1);
 				//if ($editor===false) echo "Config cannot be loaded...";
@@ -1138,7 +1122,7 @@ hidekey ("kol",$kol);
 				}
 				*/
    for ($a=0;$a<$bestcnt;$a++) {
-  	if ($bestcontent[$a]!=="") if (strpos (@implode ($bestcontent[$a],"¦"),$strokedata)!==false) {
+  	if ($bestcontent[$a]!=="") if (strpos ( implode ($bestcontent[$a],"¦"),$strokedata)!==false) {
   		$rewritecnt=$a;
   		//echo "Found $rewritecnt contains ".$bestcontent[$rewritecnt][0]."<br>";
  // 		echo "Already present, remove first please. Address:$rewritecnt of $bestcnt<br>";exit;
@@ -1172,7 +1156,7 @@ hidekey ("kol",$kol);
 			// mode 10 - find comment  sql
 			if ($mode == 10) {
 				$scrdir="_local/scrcomm/".$scrdir;
-				@$dircb=opendir ($scrdir);if (!$dircb) {echo "Для этой базы нет комментариев.";exit ;};
+				 $dircb=opendir ($scrdir);if (!$dircb) {echo "Для этой базы нет комментариев.";exit ;};
 				//echo "Файл комментариев = $comfile ";
 				while (($filescb[]=readdir($dircb))!==false) ;
 				$dircntcb= count ($filescb)-1;
@@ -1181,9 +1165,9 @@ hidekey ("kol",$kol);
 					$comfile=$scrdir."/".$filescb[$aa];
 					$findid=strpos(strtolower($comfile),"txt");
 					if ($findid==false) { $commcount--;continue;}
-					if (@fopen ($comfile,"r")) {
+					if ( fopen ($comfile,"r")) {
 						echo "<br>";
-						$comm=@file_get_contents ($comfile,"r");
+						$comm= file_get_contents ($comfile,"r");
 						$aaa=strpos ($comm, $vID);
 						if ($aaa!==false) echo "<font color=gray id=dfnt>".$filescb[$aa]." содержит </font><br>".$comm."<br><br>";
 					}
@@ -1243,15 +1227,7 @@ hidekey ("kol",$kol);
 
 
 			function errors () {
-?>
- Данная информация могла устареть в вашей версии программы<br>
- Ошибка ввода - ошибка связанная с вводимыми пользователем данными.<br>
- Не найдено - в принципе ошибкой не является,может не отображатся вообще<br>
- Ошибка в настройках - неверная конфигурация.<br>
- Нет доступа (Сервис недоступен)- закрыт доступ администрацией .<br>
- * - в будущей версии.<br>
-<?
-
+echo"no_smsg";
 			}
 
 			function helplog ()
@@ -1287,52 +1263,6 @@ hidekey ("kol",$kol);
 		 		exit;
 			}
 
-//http://dj.chg.su/dbscript/DBSCRIPTinstruction.doc
-
-/* not include in  - не добавлено в руководство
-
-	Для подключения сервиса.
-Достаточно написать письмо с следующими пунктами.
-
-1.Цели для которых будет применятся программа, и название для сервиса.
-2.Выбранный план подключения,
-3.Список баз данных и пользователей.
-4.Базы данных в форматах sql принимаются как есть. Excel, Access, Csv базы данных конвертируются во внутреннее представление.
-5.Желаемые названия кнопок в дизайне, окраска.
-
-Важная заметка: Возможно подключение сервиса к вашему sql серверу, вам необходимо разрешить серверу dj.chg.su управлять вашим SQL, нам же от вас потребуются знание адреса, и логина и пароля для программы. Также потребуется схема подключения баз данных на вашем сервере (б\д и таблицы).
-
-Важно: сервис является платным,т.к. хостинг, трафик и др. я вам бесплатно предоставить не могу
-взамен - улучшенное техническое обслуживание.
-
-Как подключится бесплатно или очень дешево - см документацию.
-
-
-О расходе трафика сервисом:
-Программа создавалась с расчетом на модемное соединение 28.8к
-Т.е на модеме открытие одной страницы занимает 2 секунды.
-Разумеется при первом входе или смене конфигурации время немного больше,т.к. кэшируется графика.
-Для одной типовой операции поиск-чтение-изменение-сохранение расходуется около 70кб.
-Есть опции экономии трафика.
-
-
-Для владельцев серверов SQL:
-Для работы программы с вашим сервером данных требуется доступ к mysql с сервера dj.chg.su.
-Для ее работы создайте пользователя и необходимыми правами,и не забудьте настроить пароль.
-Только вы будете видеть ваш пароль, а также те кого вы назначите администраторами сервиса.
-Порт sql открывать только для этого сервера,иначе могут возникнуть проблемы с безопасностью.
-Предоставляемые права: SELECT , INSERT, UPDATE,DELETE,CREATE,DROP, ALTER, SHOW DB.
-Перснональные ограничения на выполнение команд есть встроенное.Рекомендуется использовать его а не ограничсивать на уровне сервиса.
-
-PS.Cрок использования сервиса (если есть) теперь считается по количеству использованных дней а не прошедших.
-Как подключить программную версию - рассказано подробно в руководстве.
-все весьма просто, особенно если скачивать версию для новичков в соседней теме.
-
-Для расширения возможностей программы нужно связатся со мной по адресу dj--alex@ya.ru.
-
-Цены на некоммерческую и коммерческую версию довольно сильно отличаются в пользу первой. Т.е. если вы не планируете исп. в организациях dbscript - для вас это будет очень дешево. (подробнее - см. документацию).
-
-*/
 
 /*  Sample windows   он используется или нет? может удалить его и оставить window
 

@@ -2,8 +2,8 @@
 			</div>
 			<!-- end -->
 		</div>
-		<? /*<!-- Конец тела -->
-		<!-- Нажняя часть -->*/?>
+		<?php /*<!-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ -->
+		<!-- пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ -->*/?>
 		<div id="bottom">
 			<ul class="second-navigation">
 				<li><a href="http://dj.chg.su/dbscript" id="off_site"><?=cmsg ("DEVSIT")?></a></li>
@@ -12,7 +12,7 @@
 				<li><a href="mailto:dj--alex@ya.ru" id="sn_signup"><?if ($codekey>6) lprint ("REGI_DBS");?></a></li>
 			</ul>
 			<div class="txt">
-		<? 
+		<?php
 		if (($prauth[$ADM][16]==false)AND($write==true) ) {
 			$messageid=rmsg ($write);
 			$msghelpid="F1_".$messageid;//	echo "msg for key $msghelpid is ".cmsg ($msghelpid)."<br>";
@@ -32,16 +32,15 @@
 				</ul>
 			</div>
 		</div>
-		<? /*<!-- конец нижней части -->
-		<!-- совсем низ =) -->*/?>
+		<?php /*<!-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ -->
+		<!-- пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ =) -->*/?>
 		<div id="footer">
-			<!-- имеет смысл потом в этот совсем-низ вынести ссылки-->
+			<!-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ-->
 	  </div>
-		<? /*<!-- конец совсем низа-->
-		<!-- дочерняя навигация   add by dj--alex  тут получаем данные из pages.cfg,языкозависимые--> */?>
+		<?php /*<!-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ-->
+		<!-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ   add by dj--alex  пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ pages.cfg,пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ--> */?>
 		<ul id="navigation">
-		<?
-		// function used li and ul tags function genericmenu 
+		<?php 		// function used li and ul tags function genericmenu
 	
 		for ($a=0;$a<64;$a++) {
 	if ($pgheader[$a]==$languageprofile) $thislanguagepagescolumn=$a;
@@ -50,8 +49,8 @@ for ($a=0;$a<$pgcnt;$a++) {
     	if ($pgcontent[$a+1][1]=="") continue;
   $b=$a+1;
      $printmenuoption=$pgcontent[$b][3];
-//при openmenu вместо </li> печатать открытие меню
-// при closemenu вместо <li> печатать </ut>
+//пїЅпїЅпїЅ openmenu пїЅпїЅпїЅпїЅпїЅпїЅ </li> пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+// пїЅпїЅпїЅ closemenu пїЅпїЅпїЅпїЅпїЅпїЅ <li> пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ </ut>
  if ($thislanguagepagescolumn) $printmenuoption=$pgcontent[$b][$thislanguagepagescolumn];
  if ($sd[19]=="utf-8") $printmenuoption=iconv("windows-1251","utf-8",$printmenuoption);
  if ($sd[19]=="utf-8") $pgcontent[$b][10]=iconv("windows-1251","utf-8",$pgcontent[$b][10]);
@@ -62,9 +61,9 @@ for ($a=0;$a<$pgcnt;$a++) {
  if ($pgcontent[$b][8]==3) { echo "</li></ul>";$nolitag=0; }// close menu
  if ($pgcontent[$b][8]!=="undefined") {echo "</li>"; }// close menu  main li for menu closing
 
- }  // cцуко бажит блин сутки потратил но меню разворачиваться не хочет, ну и туды его в качель. 
- // fuuuuuuuuuuuuuuuuuuuuuuuu  бла  все верно ошибок нет  нихера не работает.
-    /*<!-- конец навигации -->*/ ?>
+ }  // cпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. 
+ // fuuuuuuuuuuuuuuuuuuuuuuuu  пїЅпїЅпїЅ  пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ  пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+    /*<!-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ -->*/ ?>
 	</div>
                         <div class="service">Service provided by <a class="service" href="#">Dj--alex</a></div>
                         

@@ -2,21 +2,20 @@
 	<script type="text/javascript" src="_templates/js/navigation.js"></script>
       
 </head>
-<? /*
-<!--Дизайн от DeusModus, обитающего на форуме getmangos.org-->
+<?php /*
+<!--пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ DeusModus, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ getmangos.org-->
 */?>
 <body>
 	<div id="container">
-	<? /*	<!-- Шапка -->*/?>
+	<?php /*	<!-- пїЅпїЅпїЅпїЅпїЅ -->*/?>
 		<div id="header">
 			<a href="login.php"><img src="_templates/images/logo.gif" border=0 alt="" id="logo" /></a>
 			
 			<ul id="top-navigation">
-			   <? $link="login.php"; if ($ADM>0) { $link="login.php?resetcookie=".cmsg(LOGOUT).""; } ?>
-				<li><a href=<?=$link?> id="tn_login"><?
-				if ($ADM==0) lprint (ENTER);
+			   <?php $link="login.php"; if ($ADM>0) { $link="login.php?resetcookie=".cmsg(LOGOUT).""; } ?>
+				<li><a href=<?=$link?> id="tn_login"><?php 				if ($ADM==0) lprint (ENTER);
 				if ($ADM>0) lprint (LOGOUT); 
-			/* Это форма для поиска. Используй только её!
+			/* пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ!
 			<form action="#" class="search">
 				<input type="text" class="text" >
 				<input type="image" src="images/but_search.gif" value="search" >
@@ -26,13 +25,13 @@
 			</ul>
 			
 		</div>
-		<? /*<!-- Конец шапки. -->
-		<!-- Главное тело --> */?>
+		<?php /*<!-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ. -->
+		<!-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ --> */?>
 		<div id="mainx">
 			<div class="doors" id="doors">
 			</div>
-			<? /*тут чето таблицы с широкими данными режутся, пришлось под X ить :) некрасиво, но зато работает*/?>
+			<?php /*пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ X пїЅпїЅпїЅ :) пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ*/?>
 			<div class="wrapx" id="wrapx"> 
-			<? /*<!-- В этом блоке должны находится все твои страницы.  1614 wphp--> */?>
+			<?php /*<!-- пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.  1614 wphp--> */?>
 			
 			

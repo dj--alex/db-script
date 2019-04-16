@@ -1,6 +1,6 @@
 <?php
-/*  кусок из середины
-$stroka="<div id=23> Я люблю мангос, но </nobr> иногда косячу</br>";
+/*  пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+$stroka="<div id=23> пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ </nobr> пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ</br>";
 $a1=strpos ($stroka,"</nobr>")+7;  $a2=strpos($stroka,"</br>") ;
 $res=substr ($stroka,$a1,$a2);
 echo $res;
@@ -31,9 +31,9 @@ $enterpoint=$vergetfile;
 If ($prauth[$ADM][4]==true) {$adm=1;} else { $gmlimitcfg=1;} ;// { $adm=$ADM;
 if ($ADM<1) $adm=0;
 
-?><CENTER> <p align="center">	<? if (!$pr[10]) { echo "<img src=_style/$sd[0] align=middle></p>"; }?>
-<h<? print $sd[3]; ?>><? print "$sd[1]"; ?>
-<? // MASTER MODE
+?><CENTER> <p align="center">	<?php if (!$pr[10]) { echo "<img src=_style/$sd[0] align=middle></p>"; }?>
+<h<?php print $sd[3]; ?>><?php print "$sd[1]"; ?>
+<?php // MASTER MODE
 $deftbl=$pr[16];
 
 if ($pr[37]) {// analog in writefile
@@ -47,8 +47,7 @@ if ($pr[37]) {// analog in writefile
     <input type=hidden name=field value=<?=$field; ?>></input>
     <input type=hidden name=live value=<?=$live; ?>></input>
     <script src="ajax.js"></script>
-    <?
-	//section select group
+    <?php 	//section select group
 
 	//	hidekey ("groupdb",$groupdb);print_r ($list);	//	print_r ($a);
         $grouplist=groupdbfielddetect ($prdbdata,17);// set group as field
@@ -79,9 +78,8 @@ if ($pr[37]) {// analog in writefile
     <input type=hidden name=ipfilter value=<?=$ipfilter; ?>></input>
     <input type=hidden name=page value=<?=0; ?>></input>
     <input type=hidden name=live value=<?=$live; ?>></input>
-		 <?
-
-        //if (($groupdb!=="Unsorted")or ($ipfilter!=="Unsorted")) зачем вообще это условие?
+		 <?php 
+        //if (($groupdb!=="Unsorted")or ($ipfilter!=="Unsorted")) пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ?
  printlink ($prauth,$prdbdata,$ADM,$tbl,0,"tbl",cmsg("SELLINK"),$groupdb,$ipfilter,6);
 //if  printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"tbl",cmsg("SELLINK"),$ipfilter);
 submitkey ($write,"A_USRGO");
@@ -89,7 +87,7 @@ submitkey ($write,"A_USRGO");
  if (($adm==0)AND($deftbl==true)) { ?> 
 	<form action="r.php" method="post">
 		<input type=hidden name=tbl value=<?=$deftbl; ?>></input>
-	<? submitkey ("write","FMG_ENTER");
+	<?php submitkey ("write","FMG_ENTER");
 	 };
 echo "</form>";
 }; // MASTER MODE ENDS

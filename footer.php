@@ -20,13 +20,13 @@ if ($sd[31]) echo "{url: \"".$sd[31]."\"}";
 --></script></div><?php
 
 }
-	//DIVX - уплотняем DIVы. выглядит как панель баффов :)
+	//DIVX - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ DIVпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ :)
 ?><div id="help" style="position:absolute;  opacity:1; width: 200; height:40px; z-index:1; left: 420px; top: 5px;" class=div><h5><?php
 
 if (!$pr[84]) {
 ?> <a target=help href="http://navstar-gps.ru"><img src="_ico/navstar.ico" border=1 title="Navstar-gps"></a> <?php
 ;}
-if ($pr[95]) { //куда нибудь бы закрепить эту рекламу чтоли.
+if ($pr[95]) { //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
 ?><script target=help type="text/javascript"><!--
 document.write("<a href='http://www.liveinternet.ru/click' "+
 "target=_blank><img src='//counter.yadro.ru/hit?t54.5;r"+
@@ -34,14 +34,13 @@ escape(document.referrer)+((typeof(screen)=="undefined")?"":
 ";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
 screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 ";"+Math.random()+
-"' alt='' title='LiveInternet: показано число просмотров и"+
-" посетителей за 24 часа' "+
+"' alt='' title='LiveInternet: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ"+
+" пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 24 пїЅпїЅпїЅпїЅ' "+
 "border='0' width='88' height='31'><\/a>")
-//--></script><!--/LiveInternet--><?
-}
+//--></script><!--/LiveInternet--><?php }
 
 
-// реклама - выше
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅ
 
 
 
@@ -58,7 +57,7 @@ if (!$pr[50]) {
 ?><font color=red><a href="login.php?rmsg=<?php echo$write; ?>"><img src=_ico/gearsofwar.png border=1 title="<?php echo$write;?>"></a><?php
 }
 }
-if (($prauth[$ADM][160]==true)) { //в будущем разделить??
+if (($prauth[$ADM][160]==true)) { //пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ??
 	?><div Style = "POSITION: absolute; VISIBILITY: hidden; Z-INDEX: 200" id="DTip"></div>
 <script src = "ToolTip.js"></script><?php
 	}
@@ -68,7 +67,7 @@ if (($prauth[$ADM][160]==true)) { //в будущем разделить??
   //}
 		echo "<h".$shriftsize.">";	echo "</html><!--endscript-->";
 if (($enrestmenu)AND(!$menuloaded)) echo "</div>";
-//только для тест версий - вывод надписи
+//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 if (($codekey==7)OR($codekey==9)) {
 ?><div id="menu" style="position:absolute; z-index:2; left: 10px; top: 16px;" ><h2><font color=red><bb>DEMO</bb></a></font></h2></div><?php
 }

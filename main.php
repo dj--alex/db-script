@@ -1,9 +1,9 @@
 <?php
-// Данная программа относится к пакету DBSCRIPT v1.8 (с) dj--alex
-$nomnu=1; //эта переменная должна задаваться если нужна до инициализации
-require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
+// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ DBSCRIPT v1.8 (пїЅ) dj--alex
+$nomnu=1; //пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+require_once ('dbscore.lib'); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 echo "<CENTER>";
-$enterpoint="help";// для показа точки входа
+$enterpoint="help";// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 $hlp=getvar ('hlp');
 
 
@@ -14,22 +14,22 @@ if ($hlp!==false) {
 exit (1);
 } 
 
-// ПРИ НЕСООТВЕТСТВИИ LANGDB СЕРВЕР МОЖЕТ НЕ ПРИНЯТЬ ДАННЫЕ"!!
+// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ LANGDB пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"!!
 
  	
  	$actcode=genactcode();
  		$dbs_ip =$_SERVER['REMOTE_ADDR'];
-$rmsg=getvar ('rmsg');  //надо это делать в три шага 1- получение инфы. два подтверждение и отправка, 3 сохранение на сервере
+$rmsg=getvar ('rmsg');  //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 1- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ. пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, 3 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 //echo "rmsg=$rmsg go=$go inet=$inet str=$str <br>!!!!!!!!!!!!!!!!!1";
 if ($rmsg!==false) {
-	@$inet=fopen ("http://dj.chg.su/dbscript/update.txt","r");
+	 $inet=fopen ("http://dj.chg.su/dbscript/update.txt","r");
 	$authorreport=$prauth[$ADM][0];$keyword=$rmsg;
 	echo " Report by $authorreport  (pressed last key ".$keyword."<br>";
 	lprint ("REP_MSG");
 	//if ($str) $go==cmsg ("SENDMSG");
 	if ($inet==false) { lprint (NO_INET) ; echo "<form action=main.php method=post>";}
 	if ($inet==true) { lprint (INETD) ; echo "<form action=\"http://dj.chg.su/dbscript/old/main.php\" method=post>";}
-$str="Date:".date("m.d.y H:i:s")."¦User:".$authorreport."¦IP:".$dbs_ip."¦ACTCODE:".$actcode."¦CORE:".$verinit."¦REGTO:".$registeredto."¦ADMINMAIL:".$adminmail."¦REPORT:".$report." ";
+$str="Date:".date("m.d.y H:i:s")."пїЅUser:".$authorreport."пїЅIP:".$dbs_ip."пїЅACTCODE:".$actcode."пїЅCORE:".$verinit."пїЅREGTO:".$registeredto."пїЅADMINMAIL:".$adminmail."пїЅREPORT:".$report." ";
 	
 	submitkey ("go","SENDMSG1");
 	hidekey ("goID","SENDMSG1");
@@ -42,7 +42,7 @@ $str="Date:".date("m.d.y H:i:s")."¦User:".$authorreport."¦IP:".$dbs_ip."¦ACTCODE
 
 $go=getvar ('go');  
 if ($goID=="SENDMSG1") {
-@$inet=fopen ("http://dj.chg.su/dbscript/update.txt","r");
+ $inet=fopen ("http://dj.chg.su/dbscript/update.txt","r");
 echo "getting data $report <br>this ok?...<br>";
 if ($inet==true) { lprint (INETD) ; echo "<form action=\"http://dj.chg.su/dbscript/old/main.php\" method=post>";}
 	if ($inet==false) { lprint (NO_INET) ; echo "<form action=main.php method=post>";}
@@ -57,28 +57,28 @@ if ($inet==true) { lprint (INETD) ; echo "<form action=\"http://dj.chg.su/dbscri
   
 $go=getvar ('go');
 if ($goID==("SENDMSG")) {
-@$inet=fopen ("http://dj.chg.su/dbscript/update.txt","r");
+ $inet=fopen ("http://dj.chg.su/dbscript/update.txt","r");
 echo "getting data $str... saving...<br>";
 echo "sorry if encoding fail... it will fix later<br>";
 	$w=csvopen ("_logs/reportlog.dat","a+",1);
 	if ($w==false) {mkdir ("_logs");
 	$w=csvopen ("_logs/reportlog.dat","a+",1);}
-	@$a=fwrite ($w,$str);		  @fclose ($w);
+	 $a=fwrite ($w,$str);		   fclose ($w);
 	if ($w==false) {echo "FAILED!!!";} else { lprint (BUGREPORT_OK);echo "Sending ... OK";}
 	exit;
   }
 
 
 if (!$pr[10])  {
-	?> <img src=_style/<? echo $sd[0]; ?> align=middle></p><? 
+	?> <img src=_style/<?php echo $sd[0]; ?> align=middle></p><?php 
 }
 echo $sd[1]."<br><br><br>"; 
 {
 echo cmsg ("AUTHOR")." Dj--alex  *";
-echo cmsg ("EMAIL").":dj--alex@yandex.ru<br>";
+echo cmsg ("EMAIL").":dj--alex yandex.ru<br>";
 echo "<br>".cmsg ("REGTO")." ".$registeredto."<br>";
 echo "$yourvrs<br>";
-if (($daysleft!=="unlimited")AND(!($daysleft<1))AND($daysleft<11)) echo "Дней осталось:$daysleft<br>";
+if (($daysleft!=="unlimited")AND(!($daysleft<1))AND($daysleft<11)) echo "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:$daysleft<br>";
 if (($daysleft!=="unlimited")AND($daysleft<1)) echo "<font color=red>".cmsg ("DBSEXPIRE")."<br></font>";
 
 	echo "<br>".$sd[2]."<br><br>";

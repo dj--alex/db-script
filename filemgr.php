@@ -1,10 +1,10 @@
 <?php
 $dbdataskip=1;
-require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
+require_once ('dbscore.lib'); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 if (!$activation) exit;
 $verfilemgr="Filemgr  v 4.3.5 (c) dj--alex ";
   $enterpoint=$verfilemgr;#end of conf
-// вот наша буферизация - ob_start();ob_end_flush();
+// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - ob_start();ob_end_flush();
 autoexecsql ();// ob_flush ();exit; zdes menueshe est.
 @ import_request_variables ("PG","");
 
@@ -13,24 +13,24 @@ autoexecsql ();// ob_flush ();exit; zdes menueshe est.
 //ne rabotaet eta hernya
 
 if ($cmd==cmsg("FMG_DUMP_UPLOAD")) {
-    	$path=getcwd ()."/_local/dump/";   //надо сделать возможность выбора папки прямо отсюда, хоть тупо вверх вниз или назначать её через filemgr
-        if (($pr[39])AND(is_dir($pr[39]))) $path=$pr[39]; //path  передается правильно
+    	$path=getcwd ()."/_local/dump/";   //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ filemgr
+        if (($pr[39])AND(is_dir($pr[39]))) $path=$pr[39]; //path  пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         //echo "ergfoerpgergkergoej";exit;
         $cmd1=$cmd;$path1=$path;$pid=0;
         filemgr ($cmd,$stroka,$path,$fileforaction,$mask,$a);
         exit;
-  //после выполнения долно быть доступно что то типа этого <form action=w.php?cmd=sql&tbl=&tab=&dblk=ИМЯБАЗЫ&fdmp=1></form>
+  //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ <form action=w.php?cmd=sql&tbl=&tab=&dblk=пїЅпїЅпїЅпїЅпїЅпїЅпїЅ&fdmp=1></form>
     ///..    $stroka="";$fileforaction="";$mask="";
 //filemgr ($cmd,$stroka,$path,$fileforaction,$mask,$a);
-//генерир дампы через новый cmdsqllog  CFG OPT FUTURE  
-//отправлять дампы и возвращать назад из их отпр
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ cmdsqllog  CFG OPT FUTURE  
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
 }
 
 
 //  search theme ----
- if ($pr[86]) if (($pr[87])OR($prauth[$ADM][7])){  //либо право на чтение у юзера, либо разрешение искать всем.
+ if ($pr[86]) if (($pr[87])OR($prauth[$ADM][7])){  //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.
      //if ($searchfilenew) { echo $searchfilenew;}
-     //добавить ссылочку 1 <br>http://wow.chg.su/dbs/filemgr.php?start=DALEE&searchfilenew=dbscript<br>
+     //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 1 <br>http://wow.chg.su/dbs/filemgr.php?start=DALEE&searchfilenew=dbscript<br>
      if ($searchfilenew) echo cmsg ("SRCH_FND")."<table border=3 width=100% bordercolor=#302621 >";
     // echo "filcount = $filcount <br>";
      for ($a=0;$a<$filcount;$a++) {
@@ -39,16 +39,16 @@ if ($cmd==cmsg("FMG_DUMP_UPLOAD")) {
                                                                                $oldmaxdown=$maxdown; $filewithmaxdown=$a;$maxdown=$fildata[$a][9] ;}}
         if (($fildata[$a][11])or($prauth[$ADM][2])) if (strpos (" ".$filename,$searchfilenew)==true) {
                         $ex=@file_exists ($fildata[$a][5]);
-                        $dir=is_dir ($fildata[$a][5]);  // папок от файлов нихера не отличает !! че за
+                        $dir=is_dir ($fildata[$a][5]);  // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ !! пїЅпїЅ пїЅпїЅ
                         if (($ex)AND(!$dir)) {
                             $fsizer="[".round (@filesize ($fildata[$a][5])/1024/1024,2)."Mb]";
                          $countf++;
                      //    echo "countf=$countf<br>";
                          echo"<tr><td>".$filename."(".$fildata[$a][9].")</td><td>".$fsizer."</td>";//bgcolor=white
-                         $commstr="_ico/saveme.png";//.$dbc[$md1column]// возможная ошибка - не $dbc[0] а md2column  poprawil
+                         $commstr="_ico/saveme.png";//.$dbc[$md1column]// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅ $dbc[0] пїЅ md2column  poprawil
                          echo "<td><a target=b3 href='$scriptpath?c=".$fildata[$a][4]."'><img src=$commstr border=0 title='".cmsg ("FMG_DOWNLOAD")."'></a>";
                        if (($prauth[$ADM][2])OR($prauth[$ADM][2])) {
-                      //может добавить отдельное право для редактирования ссылок и удаления слинкованных файлов? ??
+                      //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ? ??
                             $commstr="_ico/errorcritical.png";
                            echo "<a target=b3 href='$scriptpath?c=".$fildata[$a][4]."&d=".$fildata[$a][12]."'><img src=$commstr border=0 title='".cmsg ("PHYS_DEL")."'></a>";
                        }
@@ -68,7 +68,7 @@ if ((!$countf)AND($searchfilenew)) { echo "</table>No one files found. Or it not
  if ($pr[90]) {echo cmsg ("POP_FIL")."<table border=3 width=100% bordercolor=#302621 >";
  $fsizer="[".round (@filesize ($fildata[$filewithmaxdown][5])/1024/1024,2)."Mb]";
   echo"<tr><td>".basename($fildata[$filewithmaxdown][5])."(".$fildata[$filewithmaxdown][9].")</td><td>".$fsizer."</td>";//bgcolor=white
-                         $commstr="_ico/saveme.png";//.$dbc[$md1column]// возможная ошибка - не $dbc[0] а md2column  poprawil
+                         $commstr="_ico/saveme.png";//.$dbc[$md1column]// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅ $dbc[0] пїЅ md2column  poprawil
                          echo "<td><a target=b3 href='$scriptpath?c=".$fildata[$filewithmaxdown][4]."'><img src=$commstr border=0 title='".cmsg ("FMG_DOWNLOAD")."'></a>";
                          echo "</td></tr></table>";
             }
@@ -76,11 +76,11 @@ if ((!$countf)AND($searchfilenew)) { echo "</table>No one files found. Or it not
       
  }
 
-//убирание этого куска кода не влияет на multiaction
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ multiaction
 //  Shared theme ----
- if ($coreredir=="SH_UPDD_FL")  { //not forced, not automatically  // подстройка для автопредложения share
+ if ($coreredir=="SH_UPDD_FL")  { //not forced, not automatically  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ share
     $cmd=cmsg ("FMG_SHARE");
-    $fileforaction=$destinationfilename;// multiaction unimplemented  откуда берется destination???
+    $fileforaction=$destinationfilename;// multiaction unimplemented  пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ destination???
     $filesize=$filesizeinmb;
     // echo "Redirect accepted from fmgr side<br>;";
     $cmd{0}=cmsg ("FMG_SHARE");
@@ -91,10 +91,10 @@ if ((!$countf)AND($searchfilenew)) { echo "</table>No one files found. Or it not
 
 if (($c)OR ($f)) if ($pr[74]) { lprint ("DWN_LNK_DIS");msgexiterror ("notright","","disable");exit;}
 
-if ($c) {  //нам пришла ссылка на файл!  возрадуемся!
+if ($c) {  //пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ!  пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!
     for ($a=0;$a<$filcount;$a++) {    //echo $table[$a][4]."<br>";
-    if ($fildata[$a][4]==$c) { $filerealid=$a;$pathwithfile=$fildata[$a][5];$commfile=$fildata[$a][7];$hashdel=$fildata[$a][12];};    //if (==$pathandfile) lprint (FSH_EXST_AN_USR); //трёхмерный массив :))
-    if ($fildata[$a][14]==$c) { $filerealid=$a;$pathwithfile=$fildata[$a][5];$commfile=$fildata[$a][7];$hashdel=$fildata[$a][12];};    //if (==$pathandfile) lprint (FSH_EXST_AN_USR); //трёхмерный массив :))
+    if ($fildata[$a][4]==$c) { $filerealid=$a;$pathwithfile=$fildata[$a][5];$commfile=$fildata[$a][7];$hashdel=$fildata[$a][12];};    //if (==$pathandfile) lprint (FSH_EXST_AN_USR); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ :))
+    if ($fildata[$a][14]==$c) { $filerealid=$a;$pathwithfile=$fildata[$a][5];$commfile=$fildata[$a][7];$hashdel=$fildata[$a][12];};    //if (==$pathandfile) lprint (FSH_EXST_AN_USR); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ :))
 }
 
 if (file_exists ($pathwithfile)==false) die ("<br><br><font size=40><CENTER>File not found.</CENTER></font><br><br><br>");
@@ -106,7 +106,7 @@ echo cmsg ("COMMFILE")."$commfile<br>";
 
 
 $filmsv=explode(".",$pathwithfile);
- $exts=array('gif','png','jpg'); //Возможные расширения
+ $exts=array('gif','png','jpg'); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
  if(count($filmsv)>1) if(!in_array(strtolower($filmsv[count($filmsv)-1]), $exts)) { $z=""; } else {
    $f="image";
 
@@ -114,15 +114,15 @@ $filmsv=explode(".",$pathwithfile);
 
  }
 }
-if ($f) {  //нам пришла ссылка на файл!  возрадуемся!
+if ($f) {  //пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ!  пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!
     for ($a=0;$a<$filcount;$a++) {    //echo $table[$a][4]."<br>";
-    if ($fildata[$a][4]==$f) { $filerealid=$a;$pathwithfile=$fildata[$a][5];$hashdel=$fildata[$a][12];};    //if (==$pathandfile) lprint (FSH_EXST_AN_USR); //трёхмерный массив :))
-    if ($fildata[$a][14]==$f) { $filerealid=$a;$pathwithfile=$fildata[$a][5];$hashdel=$fildata[$a][12];};    //if (==$pathandfile) lprint (FSH_EXST_AN_USR); //трёхмерный массив :))
+    if ($fildata[$a][4]==$f) { $filerealid=$a;$pathwithfile=$fildata[$a][5];$hashdel=$fildata[$a][12];};    //if (==$pathandfile) lprint (FSH_EXST_AN_USR); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ :))
+    if ($fildata[$a][14]==$f) { $filerealid=$a;$pathwithfile=$fildata[$a][5];$hashdel=$fildata[$a][12];};    //if (==$pathandfile) lprint (FSH_EXST_AN_USR); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ :))
 }
 
 
-// RIGHTS пока не проверяются..чисто проврка.
-//echo "будет скачан $pathwithfile <br>";
+// RIGHTS пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ..пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+//echo "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ $pathwithfile <br>";
 $share=$fildata[$filerealid][1];
 //echo " GEN USR LINK  ".$fildata[$filerealid][2]."......".$prauth[$ADM][0]."<br><br>";
 $userlist[]=$fildata[$filerealid][2];$username=$prauth[$ADM][0];
@@ -147,7 +147,7 @@ if (($d)and($pathwithfile)and($f)) {
     if (is_dir ($pathwithfile)==true) { echo "FMG_TEST: Cannot remove dir<Br>";  exit;};
     if (($prauth[$ADM][2])AND($d)) { unlink ($pathwithfile); echo "Administrative remove file<br>";exit; }
     //echo "hashdel=$hashdel  d=$d";exit;
-    if ($d==$hashdel) { unlink ($pathwithfile); echo "remove file by user<br>";exit;}  // по идее надо бы спросить удалять или нет, но мне пофиг..
+    if ($d==$hashdel) { unlink ($pathwithfile); echo "remove file by user<br>";exit;}  // пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ..
 }
 
 if (!$pathwithfile) die ("File not found.");
@@ -160,7 +160,7 @@ $filescfg=csvopen ("_conf/files.cfg","w",1);
 $xxx=flock ($filescfg, LOCK_EX);
 $fildata[$filerealid][9]=$fildata[$filerealid][9]+1; // set downloads +1
 $fildata[$filerealid][10]=date("d.m.Y H:i:s"); // set downloads +1
-$x=writefullcsv ($filescfg,$filheader,$filplevels,$fildata); // надо себе напомнить чтоб не забывал переоткрывать файл в w
+$x=writefullcsv ($filescfg,$filheader,$filplevels,$fildata); // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ w
 $xxx=flock ($filescfg, LOCK_UN);
    //writing         new stroke to _conf\files.cfg
     //logwrite ("FMG_SHARE $share (usr=$userlist) (plvl=$groupplevels) $pathandfile");
@@ -169,28 +169,28 @@ $xxx=flock ($filescfg, LOCK_UN);
 if ($f=="image") {
    ob_clean ();// echo "<img src=\'$pathwithfile\'>";
    $content =  file_get_contents ($pathwithfile);
-   // печатает тем не менее эта строка видимо    // показывает картинки отдельно если залита была картинко
+   // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
      header("Content-type: image/jpg");
-     echo $content;// показ php файлов залитых вместо jpg будет неудачен.
+     echo $content;// пїЅпїЅпїЅпїЅпїЅ php пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ jpg пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
      $img= imagecreatefromstring($content);
 //     print imagejpeg($img);
   }
   if (($f!="image")AND(!$sharedir)) sendfile ($pathwithfile);
-  if ($sharedir) {$pathshare=$pathwithfile;}; // куда пропадает меню ?
+  if ($sharedir) {$pathshare=$pathwithfile;}; // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ ?
   if (!$sharedir)exit;
 
 };
 
-} //окончание работы с ссылкой и выдачей файла и возврат к норм работе
+} //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 
 //print_r ($_POST);
 global $pr ; //dobaw nastr w adm gde budet enable disable ico for filemgr to all  CFG OPT FUTURE invert  echo "FORCE";
  if ($pr[100]) { $prauth[$ADM][40]=1; $noscreenmode=1; }
-//принимаем графические переменные и преобразовываем их в cmd
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ cmd
 if ($prauth[$ADM][40]) $noscreenmode=1;
  if ($noscreenmode==false) {
- if ($pid>0){ // пид нихера не получаем.
+ if ($pid>0){ // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
  if (isset ($FMG_SRCH_x)) $cmd{$pid}=cmsg ("FMG_SRCH");
  if (isset ($FMG_ENTER_x)) $cmd{$pid}=cmsg ("FMG_ENTER");
  if (isset ($FMG_EXIT_x)) $cmd{$pid}=cmsg ("FMG_EXIT");
@@ -227,7 +227,7 @@ if ($prauth[$ADM][40]) $cmdtmp=$cmd;
 	$$cmdname=$cmd{$a};
 	//echo "$a=".$$cmd{$a}.";;";
 	}
-//Filemgr ne trebuet registracii и скачивать можно без нее.
+//Filemgr ne trebuet registracii пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ.
 //echo $sd[10];
 //echo "erogog;rgrtgrg;grggg;jljlrg;rtjglrjglrglrglrjg;rjgrg;jg;ij;;'osf'rsg'rsg";
 //print_r ($POST);
@@ -235,7 +235,7 @@ if ($prauth[$ADM][40]) $cmdtmp=$cmd;
 
 if (isset($_FILES["userfile"])) {
  if ($codekey==7) demo ();
- if (!$path) { echo "Path потерян... конец операции...";exit;} else {
+ if (!$path) { echo "Path пїЅпїЅпїЅпїЅпїЅпїЅпїЅ... пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ...";exit;} else {
      if ($pr[68]) $redirecttoshare=1;
      $err=uploadfile ($path,"original");}
  if ($err==false) echo "upload fail.";  if ($err==true)  echo "upload complete.";
@@ -260,26 +260,26 @@ if (isset($_FILES["userfile"])) {
   if (($sd[10])AND($ADM==0)) {
       $prauth[0][37]="1";$defaultpath=$sd[10];// restriction right on unregistered user
 
-        if ($pr[66]) $prauth[0][54]="on";// пока что зависит от прав на Upload // echo cmsg ("FMG_SHARE");
+        if ($pr[66]) $prauth[0][54]="on";// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ Upload // echo cmsg ("FMG_SHARE");
         if ($pr[67]) $prauth[0][9]="on"; //echo cmsg ("FMG_DOWNLOAD");
         if ($pr[71]) $prauth[0][36]="on";// echo cmsg ("FMG_UPLOAD");
         if ($pr[72]) $prauth[0][7]="on";//echo cmsg ("NAVI")."<br>";
 
       }
 
-// в ядре произвести аналогичное изменение.
+// пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 $filemgrmod=$sd[8];
 #call filemanager
 //echo "cmd1=$cmd1;<br>";
 if ($prauth[$ADM][37]) $maxmgrs=$prauth[$ADM][37]; else $maxmgrs=2;
-	for ($a=1;$a<$maxmgrs+1;$a++) { // generate filemgr windows save pid data КОНЕЦ ЭТОЙ процедуры почти в упор к функции наъодится
+	for ($a=1;$a<$maxmgrs+1;$a++) { // generate filemgr windows save pid data пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		//$fileforaction1="ept";		$cmd1="ept";
 	$cmdname="cmd".$a;
 	//echo "cmd{1}=".$cmd{1}.";<br>";
 	$strokaname="stroka".$a;//$$strokaname=$stroka{$a};//$cmd1=$cmd{1};  $cmd2=$cmd{2};
 	$pathname="path".$a;//$$pathname=$path{$a};
 	$fileforactionname="fileforaction".$a;//$$fileforactionname=$fileforaction{$a};
-    // вот здесь будет внедрение multiple files CFG OPT FUTURE
+    // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ multiple files CFG OPT FUTURE
 	$maskname="mask".$a;//$$maskname=$mask{$a};
 	$cmd=${$cmdname};$stroka=${$strokaname};$path=${$pathname};$fileforaction=${$fileforactionname};$mask=${$maskname};
         ////echo "cmd1=$cmd1;<br>";
@@ -287,20 +287,20 @@ if ($prauth[$ADM][37]) $maxmgrs=$prauth[$ADM][37]; else $maxmgrs=2;
   if ($daysleft<1) expire ();
 	if ($debugmode) { echo "DEBUG do = ";print_r ($fileforaction);};
         if ($debugmode) echo " count ".count ($fileforaction)."<br>";
-        // тут список команд не требующих атрибута fileforaction а значит им ненужен цикл
+        // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ fileforaction пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 
  
- // FMG_ENTER - обязательно 1 аргумент
- // FMG_REN - при наличии аргумента можно переименовать много файлов, будет очень полезно. ( по номерам #)
- // FMG_NEW FMG_MKDIR - при наличии аргументов можно создать много папок  (список через ; или по номерам #
- // FMG_SHARE - раздачу принимать с одинаковыми условиями.
-// Для переименования можно использовать группу файлов , если файл не один , то он будет получать префикс. Для создания большого количества пустых файлов или папок надо пометить нужное количество объектов
+ // FMG_ENTER - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 1 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+ // FMG_REN - пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. ( пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ #)
+ // FMG_NEW FMG_MKDIR - пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ  (пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ ; пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ #
+ // FMG_SHARE - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ , пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ , пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
  $noactionlist=explode (",",cmsg ("FMG_EXIT").",".cmsg ("FMG_DRV").",".cmsg ("FMG_UPLOAD").",".cmsg ("FMG_RESET").",".cmsg ("FMG_JOINFIL"));
- //* не требуют аргументов
+ //* пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
  $oneactionlist=explode (",",cmsg ("FMG_ENTER").",".cmsg ("FMG_DOWNLOAD").",".cmsg ("FMG_DELALL").",".cmsg ("FMG_EXECUTE").",".cmsg ("FMG_EDIT"));
         //..FMG_NEW,FMG_REN,FMG_MKDIR
- //* требуют 1 аргумент
+ //* пїЅпїЅпїЅпїЅпїЅпїЅпїЅ 1 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
   //echo "in_array ($cmd,$noactionlist)<br>";
         if (count ($fileforaction)>1) { 
                     $multiaction=1;$fileforactionfromarray=$fileforaction[$filearrcount];
@@ -308,10 +308,10 @@ if ($prauth[$ADM][37]) $maxmgrs=$prauth[$ADM][37]; else $maxmgrs=2;
                 if (in_array ($cmd,$oneactionlist)) {$multiaction=-1;  };
             };
         if ((count ($fileforaction)<2)or($multiaction==-1)) { $multiaction=0; $fileforaction=$fileforaction[0]; } ;
-        if ($debugmode) echo "<br>DEBUG multiaction=$multiaction filefa=$fileforaction filefa(array)=$fileforactionfromarray filefa0=$fileforaction[0] filefa1=$fileforaction[1] filearrcount=$filearrcount <br> ";// проверка на вшивость
+        if ($debugmode) echo "<br>DEBUG multiaction=$multiaction filefa=$fileforaction filefa(array)=$fileforactionfromarray filefa0=$fileforaction[0] filefa1=$fileforaction[1] filearrcount=$filearrcount <br> ";// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         if ($debugmode) { echo "DEBUG posle: "; print_r ($fileforaction); };
         
-        // тцт надо получ перв элемент массива... для много кратного - надо каждый раз выдавать лишь одно имя из него
+        // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ... пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
 
 //moved TO Up -- SHARE APPLYING STEP 2 --
 //global $username,$share,$write,$file;
@@ -324,11 +324,11 @@ if ($go==cmsg (FMG_SHARE)) if (!$multiactionsign)
     if ($username) @$userlist=implode ($username,",");
     if ($share!=="GENLNK_USR") $userlist="";
     if ($file===false) exit;
-    $filelist=(explode ("¦",base64_decode ($filelistmassive))); //здесь мы получили полный список файлов . его надо будет передать далее до следующего пункта без изменений.
+    $filelist=(explode ("В¦",base64_decode ($filelistmassive))); //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ . пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
     if ($multiaction) {echo"multiaction share=$multiactionsign, filelist CONTENTS";print_r ($filelist);
       echo"IF YOU SEE THIS MESSAGE something works not right<br>";exit;
      }
-  $hash=$id[0].md5($prauth[$ADM][0].$file); //эти 5 переменных будут для массива разными
+  $hash=$id[0].md5($prauth[$ADM][0].$file); //пїЅпїЅпїЅ 5 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
   $hashmini=substr ($hash,0,4);
       
   $pathandfile=$file;
@@ -343,11 +343,11 @@ for ($a=0;$a<$count;$a++) {
             };// disable mini-link if compared
     if ($share!=="FMG_UNSHARE") if (($fildata[$a][4]==$hash)) { lprint ("FSH_EXST"); exit  ; }
     
-    if ($share!=="FMG_UNSHARE") if ($fildata[$a][5]==$pathandfile) lprint ("FSH_EXST_AN_USR"); //трёхмерный массив :))
+    if ($share!=="FMG_UNSHARE") if ($fildata[$a][5]==$pathandfile) lprint ("FSH_EXST_AN_USR"); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ :))
     if ($share=="FMG_UNSHARE") if ($fildata[$a][5]==$pathandfile) { $filefound=1;};
     if ($share=="FMG_UNSHARE")  if ($fildata[$a][4]==$hash) { lprint ("LNK_RMV");
         $fildata[$a]="";fclose ($filescfg) ;$filescfg=csvopen ("_conf/files.cfg","w",1); //reopen for write
-        $x=writefullcsv ($filescfg,$filheader,$filplevels,$fildata); // надо себе напомнить чтоб не забывал переоткрывать файл в w
+        $x=writefullcsv ($filescfg,$filheader,$filplevels,$fildata); // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ w
 echo $x;   //writing new stroke to _conf\files.cfg
     logwrite ("FMG_UNSHARE $share (usr=$userlist) (plvl=$groupplevels) $pathandfile");exit;
     }
@@ -379,12 +379,12 @@ $link="<br>http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[
 
 echo $link;
 //echo "hash from filesdata-2 massive: ".$table[$count][4]."<br>";
-//echo "writefullcsv вернул:";
+//echo "writefullcsv пїЅпїЅпїЅпїЅпїЅпїЅ:";
 fclose ($filescfg) ;//fclose ($file);
 $filescfg=csvopen ("_conf/files.cfg","w",1);
 
-//$testlinuxlinefeed=1;  надо не этот параметр врубать а вручную .add дописывать  все работает, можно копипастить :)))
-$x=writefullcsv ($filescfg,$filheader,$filplevels,$fildata); // надо себе напомнить чтоб не забывал переоткрывать файл в w
+//$testlinuxlinefeed=1;  пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ .add пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ  пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ :)))
+$x=writefullcsv ($filescfg,$filheader,$filplevels,$fildata); // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ w
 echo $x;
    //writing new stroke to _conf\files.cfg
     logwrite ("FMG_SHARE $share (usr=$userlist) (plvl=$groupplevels) $pathandfile");
@@ -402,18 +402,18 @@ if ($go==cmsg (FMG_SHARE)) if ($multiactionsign)
     if ($file===false) exit;
     $pathmulti=base64_decode ($pathmulti);
     echo "Path: $pathmulti";
-    $filelist=(explode ("¦",base64_decode ($filelistmassive))); //здесь мы получили полный список файлов . его надо будет передать далее до следующего пункта без изменений.
+    $filelist=(explode ("В¦",base64_decode ($filelistmassive))); //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ . пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
       echo"multiaction share=$multiactionsign, <br> filelist CONTENTS";print_r ($filelist);
       echo"<br>";
       echo "filelistmassive==$filelistmassive<br>";
 $countfilelist=count ($filelist)+1; //
-$filelist[$countfilelist]=$filelist[0];///array_unshift — Добавляет один или несколько элементов в начало
+$filelist[$countfilelist]=$filelist[0];///array_unshift пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 if ($share=="") { lprint (FSH_NO); exit; };
 $count=$filcount;
 echo "Counts found files.cfg: ".$count."<br>";
 //  
-for ($c=0;$c<$countfilelist;$c++) {//цикл отрабатывает все полученные файлы 
-  $hash[$c]=$id[0].md5($prauth[$ADM][0].$filelist[$c]); //эти 5 переменных будут для массива разными
+for ($c=0;$c<$countfilelist;$c++) {//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ 
+  $hash[$c]=$id[0].md5($prauth[$ADM][0].$filelist[$c]); //пїЅпїЅпїЅ 5 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
   $hashmini[$c]=substr ($hash[$c],0,4);
   $filename=$filelist;
  $pathandfile[$c]=$pathmulti.$filelist[$c];
@@ -424,14 +424,14 @@ for ($a=0;$a<$count;$a++) {
                 if (($fildata[$a][4]!==$hash[$c])) {$hashmini[$c]="";} else { lprint ("FSH_EXST"); echo "Skip:".$filename[$c]."<br>";$hash[$c]=0; }
             };// disable mini-link if compared  //   ($share=="FMG_UNSHARE")-  IS REMOVED !!!! NOT requires
     if ($share!=="FMG_UNSHARE") if (($fildata[$a][4]==$hash[$c])) { lprint ("FSH_EXST"); echo "Skip:".$filename[$c]."<br>"; $hash[$c]=0;}
-    if ($share!=="FMG_UNSHARE") if ($fildata[$a][5]==$pathandfile[$c]) lprint ("FSH_EXST_AN_USR"); //трёхмерный массив :))
+    if ($share!=="FMG_UNSHARE") if ($fildata[$a][5]==$pathandfile[$c]) lprint ("FSH_EXST_AN_USR"); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ :))
     }
-   // if ($hash[$c]==0) continue ; // оператор next не помешал бы
+   // if ($hash[$c]==0) continue ; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ next пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ
   //check alreasy exist and receive ID
-    //проверка одного конкретного файла на совпадение//заполнение полей данных для 1 файла.    
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ 1 пїЅпїЅпїЅпїЅпїЅ.    
  if (!($hash[$c]==0)) { if (!$initalizeIDcounter) { $id=$count+$c; $initalizeIDcounter;};
 
-   echo "<br> File ID $id<br>";// а это какого хера не выводится?  что печатать не нужно? 
+   echo "<br> File ID $id<br>";// пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?  пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ? 
    $fildata[$id][0]=$id;   $fildata[$id][1]=$share;
    $fildata[$id][2]=$userlist;   $fildata[$id][3]=$groupplevels;
    $fildata[$id][4]=$hash[$c];   $fildata[$id][5]=$pathandfile[$c];
@@ -444,7 +444,7 @@ for ($a=0;$a<$count;$a++) {
    $fildata[$id][24]=$dupname;   $fildata[$id][25]="0";   $fildata[$id][26]="0".$addOSenter;
    
  echo cmsg ("Y_LNK")." <a href='$scriptpath?c=".$fildata[$id][14]."'>link</a> ".cmsg ("Y_LNK_I")."<br>";
-// записать все значения из filelist как копии первого параметра не меняя другие и сохранить выдав коды каждого из файлов.
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ filelist пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
 echo "Filename: ".basename($pathandfile[$c])."<br>";
 $link="<br>http://".$_SERVER['SERVER_NAME']."$scriptpath?c=".$fildata[$id][14]."<br><br>";
 $link.="<br>".cmsg ("FL_UP_SIT")."[url]http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?c=".$fildata[$id][14]."[/url]<br><br>";
@@ -461,8 +461,8 @@ echo "Check counter:: c=$c count=$countfilelist<br>";
 //echo "hash from filesdata-2 massive: ".$table[$count][4]."<br>";
 fclose ($filescfg) ;//fclose ($file);
 $filescfg=csvopen ("_conf/files.cfg","w",1);
-//$testlinuxlinefeed=1;  надо не этот параметр врубать а вручную .add дописывать  все работает, можно копипастить :)))
-$x=writefullcsv ($filescfg,$filheader,$filplevels,$fildata); // надо себе напомнить чтоб не забывал переоткрывать файл в w
+//$testlinuxlinefeed=1;  пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ .add пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ  пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ :)))
+$x=writefullcsv ($filescfg,$filheader,$filplevels,$fildata); // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ w
 echo $x;
    //writing new stroke to _conf\files.cfg
     logwrite ("FMG_SHARE $share (usr=$userlist) (plvl=$groupplevels) $pathandfile");
@@ -474,7 +474,7 @@ echo"Ending";exit;
 //moved TO Up -- SHARE APPLYING STEP 2 -- ENDING
 
 //added to sharing dir
-if ($sharedir) { $path=$pathshare ;$cmd=cmsg ("FMG_ENTER");}; //working but странно.
+if ($sharedir) { $path=$pathshare ;$cmd=cmsg ("FMG_ENTER");}; //working but пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 
 if (!$helloprinted) if (!$prauth[$ADM][16]) if ($sd[27]) { echo $sd[27]."<br>"; $helloprinted=1;}// FMG_HELLO Printing
 	//echo "<br>zad per<br>$cmd={$cmdname};$stroka={$strokaname};$path={$pathname};$fileforaction={$fileforactionname};$mask={$maskname};<br>";
@@ -482,7 +482,7 @@ if (!$helloprinted) if (!$prauth[$ADM][16]) if ($sd[27]) { echo $sd[27]."<br>"; 
 if ($prauth[$ADM][40]) { $cmd=$cmdtmp; lprint ("DEBUGMSG");echo ":".	cmsg ("GMP_40")."<br>";	}
 
 
-//4.3.5добавть в программу  - воссоздание DBS_PATH
+//4.3.5пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ  - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ DBS_PATH
 
 $onlypath=onlypath ($_SERVER["SCRIPT_NAME"]);
 $scriptnamelen=strlen (basename ($onlypath));
@@ -506,11 +506,11 @@ if ($detect>0) if ($prauth[$ADM][2]==0) die ("You don't have enough rights to vi
              for ($filearrcount=0;$filearrcount<count ($fileforaction);$filearrcount++) {
             $fileforactionfromarray=$fileforaction[$filearrcount];
              //$multiactionfileforaction=$fileforaction;
-            //4.3.5добавть в
+            //4.3.5пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ
             if ($debugmode) echo" checking $fileforactionfromarray ==_conf";
          if ($fileforactionfromarray=="_conf") if ($prauth[$ADM][2]==0) die ("You don't have enough rights to actions with conf.");
             if ($debugmode) echo "<br>filemgr (cmd=$cmd,stroka=$stroka,path=$path,file=$fileforactionfromarray,mask=$mask,pid=$a);<br>";
-            filemgr ($cmd,$stroka,$path,$fileforactionfromarray,$mask,$a); // глючит не подетски
+            filemgr ($cmd,$stroka,$path,$fileforactionfromarray,$mask,$a); // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
              }
              $multiaction=0;$fileforaction="";
         }
@@ -518,7 +518,7 @@ if ($detect>0) if ($prauth[$ADM][2]==0) die ("You don't have enough rights to vi
         if ($debugmode) echo "<br>filemgr (cmd=$cmd,stroka=$stroka,path=$path,file=$fileforaction,mask=$mask,pid=$a);<br>";
         if ($multiaction==0) {
             
-            //4.3.5добавть в
+            //4.3.5пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ
            if ($debugmode)      echo" checking $fileforaction ==_conf";
          if ($fileforaction=="_conf") if ($prauth[$ADM][2]==0) die ("You don't have enough rights to actions with conf.");
        
@@ -530,19 +530,19 @@ if ($detect>0) if ($prauth[$ADM][2]==0) die ("You don't have enough rights to vi
 
 
 /*
- * syntax: limit_rate скорость
-default: нет
-context: http, server, location, if в location
-Директива задаёт скорость передачи ответа клиенту. Скорость задаётся в байтах в секунду. Ограничение работает только для одного соединения, то есть, если клиент откроет 2 соединения, то суммарная скорость будет в 2 раза выше ограниченной.
-Если необходимо ограничить скорость для части клиентов на уровне сервера, то директива limit_rate для этого не подходит. Вместо этого следует задать нужную скорость переменной $limit_rate:
+ * syntax: limit_rate пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+default: пїЅпїЅпїЅ
+context: http, server, location, if пїЅ location
+пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ 2 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ 2 пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ limit_rate пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ $limit_rate:
     server {
         if ($slow) {
            set $limit_rate  4k;
        }
        ...
    }
- * есть сложность  необходимо SHARE для всех помеченных файлов делать и mass rename организовать это ещё не считая механизма скриптов с вызовом внешних модулей или утилит
- * имеющийся слишком простой и
+ * пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ  пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ SHARE пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ mass rename пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ
  */
 
 
@@ -563,28 +563,28 @@ function filemgr ($cmd,$stroka,$path,$fileforaction,$mask,$pid){  // is a part f
 
 
 //additional keys by   filescript.cfg and starting it
-         // 4.3.4добавлено: cmsg не отрабатывает теперь значения начинающиеся с точки
-         // filescript для генерации кнопок исполнения скриптов ,  заданных администраторами.
-         // dbscore - исправлена ошибка из за которой иногда не вычислялся count
-        //версия конфигов при создании конфигурации теперь берется из ядра
-         //..+++if (!$unauthorized) { //незарегистрированные в любом случае не будут видеть список пользователей ресурса в раздаче.
-  // теперь репозитории работать будут раздельно, проприетарная версия будет отличатся только возможностью подключать специальные модули.
-  //если вы не планируете их заказывать можно использоватьобычную версию.
+         // 4.3.4пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: cmsg пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ
+         // filescript пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ,  пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+         // dbscore - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ count
+        //пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
+         //..+++if (!$unauthorized) { //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+  // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
+  //пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
          $keylanguage=1; //if not detected;  function detectlanguageidfromheader
 
          for ($i=0;$i<30;$i++) {
              
              //echo "DEBUG ibane $filscheader[$i],  languageprofile=$languageprofile<br>";
             // echo  "iDEBUG (".substr($filscheader[$i],0,6)."==".substr($languageprofile,0,6).") <br>";
-             if (substr($filscheader[$i],0,6)==substr($languageprofile,0,6)) $keylanguage=$i; // теперь хрен открутится, правда ограничились 6 знаками но пофиг , главное ?  не пролезет
+             if (substr($filscheader[$i],0,6)==substr($languageprofile,0,6)) $keylanguage=$i; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 6 пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ , пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ?  пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             // if (strpos ($filscheader[$i],$languageprofile)) $keylanguage=$i;
-            // ну вот почему всегда вместо простой функции приходится городить черт знает что.
-            //  if ($filscheader[$i]==$languageprofile) $keylanguage=$i; // придется сделать по дебильному - ибо // что за ? - откуда оно взялось блджад!!!!
+            // пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ.
+            //  if ($filscheader[$i]==$languageprofile) $keylanguage=$i; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅ // пїЅпїЅпїЅ пїЅпїЅ ? - пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!!!!
          }
          if ($keylanguage==29) $keylanguage=1; //if
   }
 
-  //..потом добавим проверку на дебильный символ в конце любой строки с утф...вообще бы в парсере как то опознавание глючны файлов сделать
+  //..пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ...пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
    if ($filscdata)   {
      //echo "<br>DEBUG Script:$cmd Key=$keylanguage Lang=$languageprofile Selected=".$filscheader[$keylanguage]."<br>";
 
@@ -603,18 +603,18 @@ if (strlen ($directcommand)<2) continue;
 $massivedynamics=0;
 if ($debug) echo "DEBUG for (i=1;i<".strlen ($directcommand).");$i++) {<br>";
   $parsedcommand=$directcommand;
-    //echo "здесь должен быть выход ибо сцуко виснет ";
+    //echo "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ ";
     for ($i=1;$i<strlen ($directcommand)+5;$i++) {
 
         $a1=strpos ($directcommand,"%",$i+0)+1;
 if ($a1) { $massivedynamics++;
 
-    $a2=strpos($directcommand,"%",0+$a1+1); //this is first   просто это первый , общественный российский.
+    $a2=strpos($directcommand,"%",0+$a1+1); //this is first   пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ , пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
    
    //echo "Try to corrent schetckik -LAAA!!!$i+$a2-1!!!!!!!new $i==$a2!!!!!!!!!!!!!!!!;<br>       ";
 
    $oldi=$i;
-   //$i=$i+($a2-1);  почти верно
+   //$i=$i+($a2-1);  пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
    $i=($a2);
    //echo "old i=$oldi  new i=$i<br>";
    if ($oldi>$i) {
@@ -629,7 +629,7 @@ $cutwpercent[$massivedynamics]=$cutwprc;
 $md=$massivedynamics;
 if ($debug) echo "DEBUG Parse [$i] param=:: f=".$firstcoord[$md]." ; a2-l=".$lastcoord[$md].";- is cut=".$cutnow[$md]." = %%::<blu>".$cutwpercent[$md]."</blu> = <grn>".${$cut}."</grn><br>";
 $replaceto=${$cut};
-// fukken shit - admin.php?/   а где все остальное?  крап$parsedcommand=str_replace ($parsedcommand, $cutwprc,$replaceto, $count=1);
+// fukken shit - admin.php?/   пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?  пїЅпїЅпїЅпїЅ$parsedcommand=str_replace ($parsedcommand, $cutwprc,$replaceto, $count=1);
 $parsedcommand=str_replace ( $cutwprc,$replaceto, $parsedcommand,$count=2);
 }
 
@@ -657,7 +657,7 @@ $parsedcommand=str_replace ( $cutwprc,$replaceto, $parsedcommand,$count=2);
 
 
 //echo "ACTION:cmd=$cmd,str ok,path ok,file=$fileforaction,pid=$pid>";// -+++-
- $path=str_replace ("\\\\","\\",$path);  // проверка на вшивость -
+ $path=str_replace ("\\\\","\\",$path);  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ -
  //$path=str_replace ("/","\\",$path);
 
 
@@ -666,7 +666,7 @@ if (($cmd==cmsg("FMG_MOV_F"))and($prauth[$ADM][12])) {global $path2;copy($path.$
 echo cmsg ("MOV_END");};
 
   if ($pr[101]) if (($cmd==cmsg("FMG_DOWNLOAD"))and($prauth[$ADM][9])) { ob_clean ();$err=sendfile ($path."/".$fileforaction);};
-  //костыль, ибо на некоторых тупых компьютерах почему то пропадает косая и соответственно файл скачать невозможно. куда она пропадает никто не знает.
+  //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
 	if (($cmd==cmsg("FMG_DOWNLOAD"))and($prauth[$ADM][9])) { ob_clean ();$err=sendfile ($path.$fileforaction);};
 if ((($cmd==cmsg("FMG_UPLOAD"))and($prauth[$ADM][36]))or(($cmd==cmsg("FMG_DUMP_UPLOAD"))and($prauth[$ADM][36]))) {
 	$path=del_endslash ($path);
@@ -674,8 +674,7 @@ if ((($cmd==cmsg("FMG_UPLOAD"))and($prauth[$ADM][36]))or(($cmd==cmsg("FMG_DUMP_U
 //<input type="hidden" name="MAX_FILE_SIZE" value="8000000000">
 	?><form enctype="multipart/form-data" action="filemgr.php" method="post">
 	<input name=userfile type=file class=buttonS> <input type=Submit name=go class=buttonS>
-	<input type = hidden name = path value ="<?=$path ;?>"><?
-        hidekey ("pid",$pid);
+	<input type = hidden name = path value ="<?=$path ;?>"><?php         hidekey ("pid",$pid);
         
         if ($cmd==cmsg("FMG_DUMP_UPLOAD")) { echo "Dump loading.<br>"; }
         echo "</form>";
@@ -683,7 +682,7 @@ hidekey ("write",$cmd);
 
 exit;//moved from non-function zone
 }
-//возможно сюда присобачим кнопку удаления из админки точнее ссылки с нее из w.php :)
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅ w.php :)
 
 //if (($cmd==cmsg("FMG_UNSHARE"))and($prauth[$ADM][36])) {    echo "not implemented";}
 if ((($cmd==cmsg("FMG_SHARE"))and($prauth[$ADM][36])) OR ($coreredir=="SH_UPDD_FL")) {
@@ -692,19 +691,19 @@ if ((($cmd==cmsg("FMG_SHARE"))and($prauth[$ADM][36])) OR ($coreredir=="SH_UPDD_F
         if ($filearrcount>0) exit;// disables FMG_SHARE for cycle executing;  only one action allowed for one or multiaction files.
         global $fileforaction;
         $filearrcount=count ($fileforaction);
-       }  // праздник главное вовремя закончить  тогда он ьудет долго помниться как приятное событие
-        // multiaction==1  CFG OPT FUTURE  должен добавлять много файлов по идее, однако пока отрабатывается по файлу за раз.
+       }  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ  пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        // multiaction==1  CFG OPT FUTURE  пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ.
         if ($multiaction) echo "Multiaction mode.  Selected files=$filearrcount<br>";
              //..if ($multiaction==1) {global $filearrcount;$stroka.=$filearrcount;};
     if (!$multiaction ) $file=$path."/".$fileforaction;
     if ($multiaction) { for ($a=0;$a<$filearrcount;$a++) { $file[$a]=$path."/".$fileforaction[$a]; 
      echo "File $a: $fileforaction[$a]<br>;";
     }
-    $filelistmassive=base64_encode (implode ($fileforaction,"¦")); //список и число объектов надо передать вместе с multiaction
+    $filelistmassive=base64_encode (implode ($fileforaction,"В¦")); //пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ multiaction
             } 
             
             
-          //лучше всего массив с файлами передать в виде одной переменной
+          //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     if ($coreredir=="SH_UPDD_FL") { // maybe
         if (!$multiaction) {
             global $destinationfilename,$filesizeinmb;
@@ -717,8 +716,7 @@ if ((($cmd==cmsg("FMG_SHARE"))and($prauth[$ADM][36])) OR ($coreredir=="SH_UPDD_F
          //   $file=$destinationfilename;
         }
                                 };
-    	?><form enctype="multipart/form-data" action="filemgr.php" method="post"><?
-       if (!$multiaction) {   echo "File: $file<br>";}
+    	?><form enctype="multipart/form-data" action="filemgr.php" method="post"><?php        if (!$multiaction) {   echo "File: $file<br>";}
        //Sif (!$multiaction) {   echo "File: $file<br>";}
     lprint (GEN_OPT);echo "<br>";
 radio ("share","#GENLNK_UNREG","GENLNK_UNREG");echo "<br>";
@@ -733,7 +731,7 @@ echo "</select>";
 //if ($ADM<1) lprint ("FILE_UNAUTH_NOTE"); - check unauthorized access
 echo "<br>";
 
- //незарегистрированные в любом случае не будут видеть список пользователей ресурса в раздаче.
+ //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 radio ("share","GENLNK_USR","GENLNK_USR");echo "<br>";
 
     echo "<select name=\"username[]\" multiple size=15>";
@@ -752,25 +750,25 @@ if ($coreredir=="SH_UPDD_FL") { hidekey ("coreredir","step2");};
    hidekey ("file",$filelistmassive);
    $path=add_endslash($path);
    hidekey ("pathmulti",  base64_encode($path));
-   hidekey ("filelistmassive",$filelistmassive);//посылаем дважды на пробу   и каждый раз нихрена нет почему то  какого ???
+   hidekey ("filelistmassive",$filelistmassive);//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ   пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ  пїЅпїЅпїЅпїЅпїЅпїЅ ???
    hidekey ("filearrcount",$filearrcount);
    }
-    submitkey ("go","FMG_SHARE"); // кнопка раздать файл
+    submitkey ("go","FMG_SHARE"); // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	hidekey ("pid",$pid);?></form>
 <?=" ";
 hidekey ("write",$cmd);
 if ($multiaction==1) exit;//   !
 ////moved from non-function zone -- SHARE STEP 1 -- ENDING
-//ЭТО ОКончание первого шага раздачи
+//пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 }
 //
-//	echo "Мы получили из пред сессии  $cmd $fileforaction!<br> <BR>";   ikonki mlya !
-//echo "<br>".cmsg ("FMG_MHLP")."<br>";  ХЕЛП ОТКЛЮЧЕН
+//	echo "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ  $cmd $fileforaction!<br> <BR>";   ikonki mlya !
+//echo "<br>".cmsg ("FMG_MHLP")."<br>";  пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
  if ($noscreenmode==false) { echo "" ;};
-//тут пишем команды и выполняем их
-//echo "628_Failure-- protect::";print_r ($protect); неправильно обрабатывался массив  почему то вместо него шла переменная о_О CFG OPT FUTURE
-if (is_Array ($protect)) if (!$prauth[$ADM][38]) $protect[]="*.php";// скрываем файлы скрипта чтобы их никто не стер.
-//$protect[]="*.key";// не снимать комментарий - безопасность снизится до 0
+//пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ
+//echo "628_Failure-- protect::";print_r ($protect); пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ  пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ_пїЅ CFG OPT FUTURE
+if (is_Array ($protect)) if (!$prauth[$ADM][38]) $protect[]="*.php";// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ.
+//$protect[]="*.key";// пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 0
 //if ($OSTYPE=="LINUX") if (($sd[10])AND($ADM==0)) $path=$path."/";  //bug with unregistered users  folder lost /
 //if ($OSTYPE=="WINDOWS") if (($sd[10])AND($ADM==0)) $path=$path."\\";
 
@@ -785,11 +783,11 @@ if ($OSTYPE=="WINDOWS") if (($cmd==cmsg("FMG_EXIT"))and($prauth[$ADM][7])) $path
 if ($OSTYPE=="LINUX") if (($cmd==cmsg("FMG_EXIT"))and($prauth[$ADM][7])) $path=dirname ($path)."/";
 
 if (($cmd==cmsg("FMG_SRCH"))and($prauth[$ADM][7])) {
-$file=$path.$fileforaction; // далее скрипт рассчитан на эту переменную, к томуже массив стереть надо:)
+$file=$path.$fileforaction; // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ:)
 $a=searchplus ($file,$fileforaction,$stroka);
 if ($pr[12]) {$act="FILEMGR_SRCH $cmd $file word=$stroka"; logwrite ($act) ;
-	};  // логируемся
-//if ($a==false) die ("<br>Ошибка!Файл $file не найден!!!.<br>");
+	};  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+//if ($a==false) die ("<br>пїЅпїЅпїЅпїЅпїЅпїЅ!пїЅпїЅпїЅпїЅ $file пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!!!.<br>");
 echo " <form action=filemgr.php method=post>";
 	hidekey ("pid",$pid);
 	hidekey ("write",$cmd);
@@ -808,11 +806,11 @@ if (($cmd==cmsg("FMG_JOINFIL"))and($prauth[$ADM][12])) {
 	if ($codekey==7) demo (); 
 	$err=joinfiles ($path,$mask,$protect,$stroka);
 }
-if (($cmd==cmsg("FMG_DELALL"))and($prauth[$ADM][13])) { // rmdir теперь  полное удаление (!)
+if (($cmd==cmsg("FMG_DELALL"))and($prauth[$ADM][13])) { // rmdir пїЅпїЅпїЅпїЅпїЅпїЅ  пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (!)
 	if ($codekey==7) demo ();
 	if ($prauth[$ADM][5]==true) {
-		if (($stroka)=="accept") { $err=kill_dir ($path.$fileforaction);} else { echo "Вы не сказали accept";} } else {
-		msgexiterror ("notright","","disable");exit ;}	 // круто удаляет отключим
+		if (($stroka)=="accept") { $err=kill_dir ($path.$fileforaction);} else { echo "пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ accept";} } else {
+		msgexiterror ("notright","","disable");exit ;}	 // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 }
 if (($cmd==cmsg("FMG_EXECUTE"))and($prauth[$ADM][8])) {
 	if ($codekey==7) demo ();
@@ -824,7 +822,7 @@ if (($cmd==cmsg("FMG_EXECUTE"))and($prauth[$ADM][8])) {
 
  if ($OSTYPE=="LINUX") if (($cmd==cmsg("FMG_UNRAR"))and($prauth[$ADM][12])) {
     $file=$path.$fileforaction;//rar_open rar_list PHP by standart is unsupported!!!
-    $unrared=substr($fileforaction,0, strrpos($fileforaction,'.') );; // elf  elfkz  удаляем расширение рар
+    $unrared=substr($fileforaction,0, strrpos($fileforaction,'.') );; // elf  elfkz  пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
    @mkdir ($path.$unrared);
     echo "Creating folder $unrared<br>";
     $extractionpoint=$path.$unrared;
@@ -835,7 +833,7 @@ echo "<br>Result=$zip  "; //echo '"unrar e \"'.$file.'\" \"'.$extractionpoint.'\
 
 if ($OSTYPE=="LINUX") if (($cmd==cmsg("FMG_RAR"))and($prauth[$ADM][12])) {
     $file=$path.$fileforaction;//rar_open rar_list PHP by standart is unsupported!!!
-    $unrared=substr($fileforaction,0, strrpos($fileforaction,'.') );; // elf  elfkz  удаляем расширение рар
+    $unrared=substr($fileforaction,0, strrpos($fileforaction,'.') );; // elf  elfkz  пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
   // @mkdir ($path.$unrared);
    // echo "Creating folder $unrared<br>";
     $extractionpoint=$path.$unrared;
@@ -848,7 +846,7 @@ echo "<br>Result=$zip  "; //echo '"unrar e \"'.$file.'\" \"'.$extractionpoint.'\
 if (($cmd==cmsg("FMG_UNZIP"))and($prauth[$ADM][12])) {
     $file=$path.$fileforaction;//rar_open rar_list PHP by standart is unsupported!!!
 $zip = zip_open($file);
- $unrared=substr($fileforaction,0, strrpos($fileforaction,'.') );; // elf  elfkz  удаляем расширение рар
+ $unrared=substr($fileforaction,0, strrpos($fileforaction,'.') );; // elf  elfkz  пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
     @mkdir ($path.$unrared);
 if ($zip) {
 
@@ -914,20 +912,20 @@ if (($cmd==cmsg("FMG_EDIT"))and($prauth[$ADM][12])) {
 
 if ($pr[12]) {$act="FILEMGR_CMD $cmd $file($path $fileforaction) word=$stroka";
 if ($cmd) if ($cmd!==cmsg("FMG_ENTER")AND($cmd!==cmsg("FMG_EXIT"))) logwrite ($act) ;
-	};  // логируемся
+	};  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 // } else { echo "<br><font color=red id=errfnt>".cmsg ("LIM")."</font>".cmsg ("FMG_HLP2");}
 
 #selectin files using  fileio.php
 if ((!$path)OR($cmd==cmsg("FMG_RESET"))) { $path=$defaultpath;$mask="*.*";$file="";$stroka=""; };
-//$path=str_replace ("//","/",$path);проверка на вшивость -
+//$path=str_replace ("//","/",$path);пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ -
 
 if ($err) echo "$err <br>";
  //global disables visual menu for executing action
 if (!$multiaction ) {// start menu show
-// маска для файла может быть поиск по части имени и поиск по формату
-//выделить обращение к директории и режим парсинга (маска)
-//насчет маски - возможно стоит ее добавить в поисковик МЕ
-     if ($pid==1) {if ($pr[86]) if (($pr[87])OR($prauth[$ADM][7])){  //либо право на чтение у юзера, либо разрешение искать всем.
+// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅ)
+//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ
+     if ($pid==1) {if ($pr[86]) if (($pr[87])OR($prauth[$ADM][7])){  //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.
        echo "<br><form action=filemgr.php method=post>";lprint ("SRCH_FILE");inputtxt ("searchfilenew",30);submitkey ("start","DALEE"); echo "</form>";
        if ($searchfilenew) { echo $searchfilenew;};
        }
@@ -939,13 +937,13 @@ if (!$multiaction ) {// start menu show
        
 echo "<form action=filemgr.php method=post>";
 hidekey ("write",$cmd);
-//выделить отдельно модуль создания меню выбора файла.
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
 $file=getdirdata ($path,$mask,$protect);//print_r ($file);
 if ($file) asort ($file);
 $dircnt= count ($file);
 	if (($ADM>0)) echo "<font color=blue>$path</font><br>";
 	hidekey ("pid",$pid);
-	// cобственно это и мешает многооконной идее ))   вроде теперь кое-
+	// cпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ ))   пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-
 	for ($a=1;$a<$maxmgrs+1;$a++) { // save pid data
 	$strokaname="stroka".$a;
 	$pathname="path".$a;
@@ -954,8 +952,8 @@ $dircnt= count ($file);
 	global $$strokaname,$$pathname,$$fileforactionname,$$maskname;
 
 	$$pathname=str_replace ("\\\\","\\",$$pathname);	$$pathname=str_replace ("\\\\","\\",$$pathname);
-	if ($OSTYPE=="WINDOWS") $path=str_replace ("\\\\","\\",$path);  // проверка на вшивость -
- 	if ($OSTYPE=="LINUX") $path=str_replace ("\\\\","\\",$path);  // проверка на вшивость -xc
+	if ($OSTYPE=="WINDOWS") $path=str_replace ("\\\\","\\",$path);  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ -
+ 	if ($OSTYPE=="LINUX") $path=str_replace ("\\\\","\\",$path);  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ -xc
 	hidekey ("stroka".$a,$$strokaname);		hidekey ("mask".$a,$$maskname);
 	hidekey ("path".$a,$$pathname);			hidekey ("fileforaction".$a,$$fileforactionname);
 
@@ -964,13 +962,12 @@ $dircnt= count ($file);
 //lprint ("FMG_CREATE");
 	if ($ADM>0) inputtext("stroka".$pid,15,$stroka);//<textarea type = text name=stroka<?=$pid  cols= 15 rows=1 wrap=NONE><?=$stroka; </textarea>
         if ($ADM>0) { $hidefolder=$prauth[$ADM][52];} else {$hidefolder=$pr[73];};
-        if (!$hidefolder) { lprint ("FMG_MASK");inputtext ("mask".$pid,15,$mask);} //<textarea type = text name=mask<?=$pid  cols= 7 rows=1 wrap=NONE><?=$mask; </textarea> <?
-
+        if (!$hidefolder) { lprint ("FMG_MASK");inputtext ("mask".$pid,15,$mask);} //<textarea type = text name=mask<?=$pid  cols= 7 rows=1 wrap=NONE><?=$mask; </textarea> <?php 
  if ($noscreenmode) {
- 	if ($prauth[$ADM][7]) { //FMG.pid удален
+ 	if ($prauth[$ADM][7]) { //FMG.pid пїЅпїЅпїЅпїЅпїЅпїЅ
  		echo "generate cmd$pid<br>";
  	//$cmdx="cmd".$pid;
- //работает но передает только вторую букву [1] FIXED?
+ //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ [1] FIXED?
  	 submitkey ("cmd","FMG_SRCH");
  	 submitkey ("cmd","FMG_ENTER");
 	 submitkey ("cmd","FMG_EXIT"); 		}
@@ -1015,9 +1012,9 @@ for ($i=1;$i<$filsccount;$i++) {
     submitkey ("cmd",".".$filscdata[$i][$keylanguage]);
 
     }
-  //  fwrite ($a,"ID¦NAME¦Script¦Plevel¦keynames-icon¦russian¦english¦f1_russian¦f1_english¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦".$addOSenter);
-/*.*1¦mencoder %path%%file% -oac mp3lame -ovc x264 -o %path%%file%.avi¦0¦0¦перекодить в h264¦encode h264¦0¦0¦0¦0¦0
-2¦mencoder %path%%file% -oac mp3lame -ovc mpg -o %path%%file%.avi¦0¦0¦перекодить в mpeg¦encode mpeg¦0¦0¦0¦0¦0¦0
+  //  fwrite ($a,"IDпїЅNAMEпїЅScriptпїЅPlevelпїЅkeynames-iconпїЅrussianпїЅenglishпїЅf1_russianпїЅf1_englishпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ".$addOSenter);
+/*.*1пїЅmencoder %path%%file% -oac mp3lame -ovc x264 -o %path%%file%.aviпїЅ0пїЅ0пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ h264пїЅencode h264пїЅ0пїЅ0пїЅ0пїЅ0пїЅ0
+2пїЅmencoder %path%%file% -oac mp3lame -ovc mpg -o %path%%file%.aviпїЅ0пїЅ0пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ mpegпїЅencode mpegпїЅ0пїЅ0пїЅ0пїЅ0пїЅ0пїЅ0
 */
  }
 
@@ -1070,7 +1067,7 @@ if ($OSTYPE==="LINUX")  submitimg ("cmd".$pid,"FMG_RAR","_ico/backup.png"); }
 
 	 }
 
-if (($pid==1)AND($prauth[$ADM][12])) { // только 1 раз исполняется этот блок .  на 1 пиде.
+if (($pid==1)AND($prauth[$ADM][12])) { // пїЅпїЅпїЅпїЅпїЅпїЅ 1 пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ .  пїЅпїЅ 1 пїЅпїЅпїЅпїЅ.
 		echo "<br>";echo cmsg ("FMG2");
 		 submitimg ("cmd".$pid,"FMG_CPY_F","_ico/copyfile.png");echo " ";
 		 submitimg ("cmd".$pid,"FMG_MOV_F","_ico/movefile.png");echo " ";
@@ -1082,11 +1079,10 @@ if (($pid==1)AND($prauth[$ADM][12])) { // только 1 раз исполняется этот блок .  
 	}
 
 	?> <input type = hidden name = path<?=$pid ;?> value ="<?=$path ?>" >
-<?
-   if ($hidefolder) unset ($file); //no filelist
+<?php    if ($hidefolder) unset ($file); //no filelist
 	IF ($file) { echo "<BR>".cmsg ("FMG_FILDB").":<select name =fileforaction".$pid."[] multiple size = ".$prauth[$ADM][49].">";
 
-        sort ($file); //нет реакции... print_r ($file); echo "Rewefkowe";
+        sort ($file); //пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ... print_r ($file); echo "Rewefkowe";
 
 	for ($a=0;$a<$dircnt;$a++) {
 		if (($file[$a][0])===".") continue;
@@ -1118,7 +1114,7 @@ echo "<br>";
 $dbsdiskfree=round ((int)(@disk_free_space($path)/(1024*1024*1024)),1);
 $dbsdisktotal=(int)(@disk_total_space($path)/(1024*1024*1024));
 
-if ($pid==1) {if ($ADM) echo "Selected : Free ".$dbsdiskfree."Gb ";  // сделать переключатель дисков или что то вроде указателя
+if ($pid==1) {if ($ADM) echo "Selected : Free ".$dbsdiskfree."Gb ";  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 if ($ADM) echo "\\".$dbsdisktotal."Gb<br>";
 
 

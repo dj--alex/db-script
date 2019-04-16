@@ -6,23 +6,6 @@ require_once ('initalize.php'); // ôóíêöèÿ ïîäãîòîâêè ê ðàáîòå è àâòîðèçàöèè
     //generic activation table
      ////reading pages
  $filbas="_data/licenses.dat";
-//SYSTEM KEY_START
-@$lic=csvopen ($filbas,"r",0);$data=readfullcsv ($lic,"new");
-if ($data==-1) {
-$lheader="ID¦Type¦Actcode license¦Commercial support¦Maximum days¦Register date¦Admin name¦Admin mail¦¦¦";
-$lplevel="¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
-$l[]="1¦1¦d4bf6665a5f81ee82bb6fc6ad62fbeab¦1¦500¦31.03.2006¦Test user¦dj--alex@ya.ru¦¦¦";
-$lcontent=$l;$l="";
-	 @$tempdescr=csvopen ($filbas,"w",1);
- $lheader=splitcfgline1 ($lheader);
- $lplevel=splitcfgline1 ($lplevel);
- $lcontent=splitcfgline1 ($lcontent);
- $err.=writefullcsv ($tempdescr,$lheader,$lplevel,$lcontent);$edit=0;
- unset ($lheader,$lplevel,$lcontent);
-
-}
-//writing pages
-//SYSTEM KEY_END
  } //else { echo "License list already set";exit; };
 
      //generic activation table
@@ -149,8 +132,7 @@ if (($write==cmsg ("A_ACSS_ED"))or($go==cmsg("A_ACSS_ED"))) { cssed () ;exit; };
 if (($pr[54])OR(!$dbstyle3en)) { ?>	<a href="mailto:dj--alex@ya.ru">email author</a>
  <a href="http://dj.chg.su/dbscript/">Visit site</a>.
 
- <?
-}
+ <?php }
 	for ($a=0;$a<count ($pr);$a++) { ${"pr".$a}=stripslashes ($pr[$a]);} //íîâîå ÷òåíèå êîíôèãîâ,êîððåêòíîå
 	for ($a=0;$a<count ($sd);$a++) { ${"sd".$a}=stripslashes ($sd[$a]);}  //PARTIAL EXCHANGE
 
@@ -159,8 +141,7 @@ if (($pr[54])OR(!$dbstyle3en)) { ?>	<a href="mailto:dj--alex@ya.ru">email author
         
 $backupstate=@csvopen ("_conf/dbdata.cfg.backup.dat","r","0");
 ?><form action=admin.php method="post">
- <?
- submitkey ("go","A_MY_PROF");
+ <?php  submitkey ("go","A_MY_PROF");
  submitkey ("write","A_USR_CFG");
  
  ?>
@@ -170,7 +151,7 @@ $backupstate=@csvopen ("_conf/dbdata.cfg.backup.dat","r","0");
 ?>
 <input type= hidden name= tbl value=0>
 </form>
-<?//   submitkey ("go","A_SQLRES"); hiddenkey ("write","KEY_S_EXEC	");hidekey ("tbl",1);hidekey ("vd","SHOW PROCESSLIST ;");
+<?php//   submitkey ("go","A_SQLRES"); hiddenkey ("write","KEY_S_EXEC	");hidekey ("tbl",1);hidekey ("vd","SHOW PROCESSLIST ;");
  // echo "<form action=w.php method=post>";  submitkey ("go","A_SQLDBS");  hiddenkey ("write","KEY_S_EXEC");hidekey ("tbl",1);hidekey ("vd","SHOW DATABASES ;"); echo "</form>";
   // echo "<form action=w.php method=post>";submitkey ("go","A_SQLCFG"); hiddenkey ("write","KEY_S_EXEC");hidekey ("tbl",1);hidekey ("vd","SHOW VARIABLES ;"); echo "</form>";
 		?> <form action=admin.php method=post>
@@ -258,14 +239,11 @@ lprint ("A_EN_EV_SRCH_AEXEC");nextkolumnelement ();
   lprint ("A_HD_UP") ; nextkolumnelement ();txtarea ("sd1",70,2);  lprint ("");
     nextstrokeelement ();
   lprint ("A_HD_DW") ;nextkolumnelement (); ?><textarea name=sd2 cols=70 rows=2 ><?=$sd2; ?></textarea>  <br>
-  <?
-    nextstrokeelement ();
+  <?php     nextstrokeelement ();
   lprint ("A_METATAG") ;nextkolumnelement (); ?><textarea name=sd24 cols=70 rows=2 ><?=$sd24; ?></textarea>  <br>
-     <?
-       nextstrokeelement ();
+     <?php        nextstrokeelement ();
   lprint ("FMG_HELLO") ;nextkolumnelement (); ?><textarea name=sd27 cols=70 rows=2 ><?=$sd27; ?></textarea>  <br>
-     <?
-
+     <?php 
   nextstrokeelement ();
     lprint ("A_BRW_TITLE") ; nextkolumnelement ();inputtxt ("sd16",40);echo  "<br>";
      nextstrokeelement ();
@@ -1157,8 +1135,7 @@ print cmsg ("GMP_47"); inputtext ("pradm47",6,$pradm47); 	 echo "<br>";
 print cmsg ("GMP_57"); inputtext ("pradm57",6,$pradm57); 	 echo "<br>";
 print cmsg ("GMP_58"); inputtext ("pradm58",6,$pradm58); 	 echo "<br>";
   ?>	
- <br><?php lprint ("A_U_ANCFG") ; ?>:<br> <?
-global $stcontent,$lscontent;
+ <br><?php lprint ("A_U_ANCFG") ; ?>:<br> <?php global $stcontent,$lscontent;
 lprint ("A_U_STYLE");   printselect ($stcontent,1,1,"pradm21",$pradm21,0,0); echo cmsg ("")."<br>";
 lprint ("A_U_LANG");    printselect ($lscontent,1,1,"pradm22",$pradm22,1,0);echo "<br>";
  hidekey ("ADMM",$ADMM) ;
