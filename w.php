@@ -379,8 +379,8 @@ for ($aaa=0;$aaa<count ($mode6);$aaa++)	{ $fndcolumn=$mznumb[$aaa];
 }
 //модуль запуска и обработки
 if (($write==cmsg("KEY_AN"))AND($prdbdata[$tbl][12]=="fdb")) {
-	if (!$cfgmod) $f=csvopen ("_data/".$filbas,"r","0");
-	if ($cfgmod==1) $f=csvopen ("_conf/".$filbas,"r","0");echo "<br>";
+	if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
+	if ($cfgmod==1) @$f=csvopen ("_conf/".$filbas,"r","0");echo "<br>";
 // $z to mycol  other $z is dupl and changed to myrow  
 			$data=readdescripters ();  if ($data==-1) exit; 
 	while ($myrow=xfgetcsv ($f,$xfgetlimit,"¦")) {	$countquery=$myrow[$md2column];
@@ -397,7 +397,7 @@ if (($write==cmsg("KEY_AN"))AND($prdbdata[$tbl][12]=="fdb")) {
 echo "</tr></table>";
 
 	echo "<br> ".cmsg ("WF_AN_ALLDAT").": $maxquery, ".cmsg ("WF_LASTW")."$maximalcntmd2<br>";
-		$pl=round (($maximalcntmd2/$maxquery)*100,5);
+		@$pl=round (($maximalcntmd2/$maxquery)*100,5);
 		if ($pl) echo cmsg ("WF_LDED")." $pl% <br>";
 }
 
@@ -414,7 +414,7 @@ if ($write==cmsg ("WF_UNDO")) {
 	$ulog=csvopen ("_logs/undolog.dat","r",1);
 	//echo $u0.$u1.$u3;
 	while ($dbc=xfgetcsv ($ulog,$xfgetlimit,"¦")){
-		$chto=strpos ($dbc[4],$u3);//AND($chto==true) - ne pashet
+		@$chto=strpos ($dbc[4],$u3);//AND($chto==true) - ne pashet
 		if (($dbc[0]==$u0)AND($dbc[1]==$u1)){  //
 			//echo "dbc3=chto=$chto--cmd=".$dbc[3]."---undocmd=".$dbc[4]."<br>";;
 			$query=$dbc[4];break;	
@@ -432,7 +432,7 @@ if ($write==cmsg ("KEY_S_UNDO")) {
 			$ulog=csvopen ("_logs/undolog.dat","r",1);
 	//echo $u0.$u1.$u3;
 	while ($dbc=xfgetcsv ($ulog,$xfgetlimit,"¦")){
-		$chto=strpos ($dbc[4],$u3);//AND($chto==true) - ne pashet
+		@$chto=strpos ($dbc[4],$u3);//AND($chto==true) - ne pashet
 		if (($dbc[0]==$u0)AND($dbc[1]==$u1)){  //
 			//echo "dbc3=chto=$chto--cmd=".$dbc[3]."---undocmd=".$dbc[4]."<br>";;
 			$query=$dbc[4];break;	
@@ -457,8 +457,8 @@ if ($write==cmsg ("KEY_S_UNDO")) {
 if (($write==cmsg ("KEY_EDIT"))AND($prdbdata[$tbl][12]=="fdb")) {
 	if ($vID==="") { echo cmsg ("WF_FSELID")."<br>"; exit;};
 
-	if (!$cfgmod) $f=csvopen ("_data/".$filbas,"r","0");
-	if ($cfgmod==1) $f=csvopen ("_conf/".$filbas,"r","0");
+	if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
+	if ($cfgmod==1) @$f=csvopen ("_conf/".$filbas,"r","0");
         if ($cfgmod==1) if (!$pr[8]) echo "DEBUG D encode=$encode system(19)=".$sd[19]."<br>";
 
 //	echo "dEBUG vID2=$vID2 virtualid=$virtualid<br>";
@@ -482,7 +482,7 @@ if (($write==cmsg ("KEY_EDIT"))AND($prdbdata[$tbl][12]=="fdb")) {
 							};
 									};
                
-		$crc=implode ("¦",$myrow);//added crc32 count
+		@$crc=implode ("¦",$myrow);//added crc32 count
     //проверка не занят ли ID
 	if ($myrow===false) { 
 		echo cmsg ("QUE_EMP")."<br>";   //  !
@@ -536,8 +536,8 @@ submitkey ("write","KEY_S_EDIT");echo "<br>";
 
 //модуль обработки
 if (($write==cmsg("KEY_S_EDIT"))AND($prdbdata[$tbl][12]=="fdb")) {
-if (!$cfgmod) $f=csvopen ("_data/".$filbas,"r","0");
-	if ($cfgmod==1) { $f=csvopen ("_conf/".$filbas,"r","0");
+if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
+	if ($cfgmod==1) { @$f=csvopen ("_conf/".$filbas,"r","0");
 	if ($codekey==7) demo ();
 	}
 	echo "<br>";
@@ -582,8 +582,8 @@ submitkey ("write","WF_UNDO_LAST");
 
 //модуль запуска
 if (($write==cmsg ("KEY_ADD"))AND($prdbdata[$tbl][12]=="fdb")) {
-	if (!$cfgmod) $f=csvopen ("_data/".$filbas,"r","0");
-	if ($cfgmod==1) $f=csvopen ("_conf/".$filbas,"r","0");echo "<br>";
+	if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
+	if ($cfgmod==1) @$f=csvopen ("_conf/".$filbas,"r","0");echo "<br>";
 	$data=readdescripters ();  if ($data==-1) exit; 
 		$mycolvirtualname=$data[3]; if (strlen ($mycolvirtualname[0])<1) $mycolvirtualname=$mycol;
             ////подсчета пустой ячейки
@@ -658,8 +658,8 @@ if ($oldcoreedit)
 
 //модуль обработки
 if (($write==cmsg ("KEY_S_ADD"))AND($prdbdata[$tbl][12]=="fdb")) {
-		if (!$cfgmod) $f=csvopen ("_data/".$filbas,"r","0");
-	if ($cfgmod==1) { $f=csvopen ("_conf/".$filbas,"r","0");echo "<br>";
+		if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
+	if ($cfgmod==1) { @$f=csvopen ("_conf/".$filbas,"r","0");echo "<br>";
 		if ($codekey==7) demo ();
 		if ($filbas=="gmdata.cfg") if (($codekey==5)OR($codekey==9)) {
 			print cmsg ("WF_NONEWUSR")."<br>";exit;};
@@ -701,9 +701,9 @@ if (($write==cmsg ("KEY_DEL"))AND($prdbdata[$tbl][12]=="fdb")) {
 //модуль обработки
 if (($write==cmsg ("KEY_S_DEL"))AND($prdbdata[$tbl][12]=="fdb")) {
 		if ($codekey==7) demo ();
-		if (!$cfgmod) $f=csvopen ("_data/".$filbas,"r","0");
+		if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
 	if ($cfgmod==1) {
-		$f=csvopen ("_conf/".$filbas,"r","0");echo "<br>";
+		@$f=csvopen ("_conf/".$filbas,"r","0");echo "<br>";
 		if ($filbas=="gmdata.cfg") {
 			$a=testadmin ($prauth,$vID);
 			if ($a==1) {print cmsg ("WF_NODELADM")."<br>";exit;};};
@@ -783,7 +783,7 @@ if ($cfgmod==2) $filename="_logs/".$filbas;
 		} ; exit; };
 	if (($prauth[$ADM][4]===false)AND($strupdmode!=="substrokes") AND (strlen ($sourceid)==0)) { echo "<red><bb>Ограничение</bb><br></red>." ; exit;} ;// all_> sub
     //окончание обработки ошибок    	//	начало csv части обновителя  ===!!!!======
-    $f=csvopen ($filename,"r","0");//открываем базу
+    @$f=csvopen ($filename,"r","0");//открываем базу
 	echo "<br>";
 	$hdr=xfgetcsv ($f,$xfgetlimit,"¦");// пропускаем заголовки,т.к. их перемотала программа чтения
 	$mycol=$hdr;
@@ -944,7 +944,7 @@ echo cmsg ("WF_MASCPYIFHLP")."<br> ";
 //SQL HEADER
 if (($write==cmsg("KEY_HEAD"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	 	$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	 	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
  if ($data==-1) exit; 
 	 echo "<br>".cmsg ("WF_HDSEL")."<br>";
@@ -963,7 +963,7 @@ if (($write==cmsg("KEY_HEAD"))AND ($prdbdata[$tbl][12]!="fdb")) {
 //сделать возможно одновременную или раздельную правки?
 if (($write==cmsg("BACKUPS"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	 	$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	 infrestsql($connect,$prdbdata,$tbl);
 
 	$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
@@ -997,7 +997,7 @@ if (($write==cmsg("BACKUPS"))AND ($prdbdata[$tbl][12]!="fdb")) {
 
 // RESTORING FROM SAVED DATABASE IN OTHER DATABASE&&**
 if (($write==cmsg("WF_BCK_UNARCH"))AND ($prdbdata[$tbl][12]!="fdb")) {
-$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
 lprint (W_BCK_UNARCH_TIP);
 $separator="¦";lprint ("GEN_DB_SEL");
@@ -1043,7 +1043,7 @@ if ($newdb) $dest=$newdb;
 // Запускной модуль создания бэкапа
 if (($write==cmsg("WF_BCK_ARCH"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	 	$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$backupdbname="backup"; // backup+DATABASEname-opt+data-opt+text-opt;
 	if ($addname) $backupdbname.=$prdbdata[$tbl][9]."_";
 	if ($adddata) $backupdbname.=date ("dmY")."_";
@@ -1061,7 +1061,7 @@ submitkey ("start","START");
 //CREATING DUMP AT SQL SIDE AS COPY SQL DATABASE
 if (($start)AND($backupdbname)AND ($prdbdata[$tbl][12]!="fdb")) {echo "Создается -живой- бэкап $backupdbname...<br>";
 set_time_limit(0);// CFG OPT FUTURE  TODO:?
-$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	copydatabase ($prdbdata[$tbl][9],$backupdbname,$connect);
  $action="DB_COPY ".$prdbdata[$tbl][9].".".$backupdbname.".".$connect." ";logwrite ($action);		
 }
@@ -1070,10 +1070,10 @@ $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 //#########################################################################
 /// /CREATING DUMP AND EXECUTING AT REMOTE SERVER   NA - NOT USED TMP
 if (($write==cmsg("WF_BCK_TRANS"))AND ($prdbdata[$tbl][12]!="fdb")) {
-	$connect2 = dbs_connect ($mysqlserver2,$sd[14],$sd[17],$dbtype);
+	@$connect2 = dbs_connect ($mysqlserver2,$sd[14],$sd[17],$dbtype);
 	 set_time_limit(0);// CFG OPT FUTURE  TODO:?
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	 	$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$dumpdbname="backup"; // backup+DATABASEname-opt+data-opt+text-opts;
 	if ($addname) $dumpdbname.=$prdbdata[$tbl][9]."_";
 	if ($adddata) $dumpdbname.=date ("dmY")."_";
@@ -1099,14 +1099,14 @@ submitkey ("start","SQL_REM_START");
 //TRANSPORT TO ANOTHER SQL SERVER??
 //CREATING DUMP AT DBSCRIPT SIDE AS ONE SQL FILE
 if (($start==cmsg ("SQL_REM_START"))AND($dumpdbname)AND ($prdbdata[$tbl][12]!="fdb")AND(!$pr[20])) {
-	$connect2 = dbs_connect ($mysqlserver2,$sd[14],$sd[17],$dbtype);
+	@$connect2 = dbs_connect ($mysqlserver2,$sd[14],$sd[17],$dbtype);
 
 	set_time_limit(0);
         echo cmsg (W_CRT_DMP)." $backupdbname...<br>";
 	echo "�����: Dbscript side, data";
 	if ($structure) echo "+structure";
 	echo "<br>";
-$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$query="CREATE DATABASE IF NOT EXISTS `$backupdbname`;";
 	$silent=0;dbs_query ($query,$connect,$dbtype);
 	//generate table list
@@ -1118,7 +1118,7 @@ $a=dbs_query ($cmd,$connect,$dbtype);;
 while ($result=dbs_fetch_row ($a,$dbtype)) {
 	$tablelist[]=$result[0];$tables++;//echo "table added to list ::".$result[0]."<br>";
 	}
-	$a=opendir ("_local/dump"); if ($a==false) mkdir ("_local/dump");closedir ($a);
+	@$a=opendir ("_local/dump"); if ($a==false) mkdir ("_local/dump");@closedir ($a);
 	$dumpfile=fopen ("_local/dump/".$dumpdbname,"w"); if ($dumpfile==false) die ("cannot open file $dumpdbname");
 	$x="#::Dbscript $verchar ::  Mysql dump \n\r";
     // тут мы где то потеряли encoding
@@ -1137,7 +1137,7 @@ for ($a=0;$a<count ($tablelist);$a++) {
 	if ($structure) { //if ($debugmode)	echo "DEBUG $query.<br>";
 		$query="SHOW CREATE TABLE `".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`;"; //OPT STRUCTURE
 		$result=dbs_query ($query,$connect,$dbtype); sqlerr();
-	for ($c=0;$myrow = dbs_fetch_row ($result,$dbtype);$c++) {
+	for ($c=0;$myrow = @dbs_fetch_row ($result,$dbtype);$c++) {
     	$insertone=$myrow[1].";";
     	//if ($views) echo $insertone;
  		if ($OSTYPE=="LINUX") $insertone.="\n";
@@ -1154,7 +1154,7 @@ for ($a=0;$a<count ($tablelist);$a++) {
 	$query="SELECT * FROM `".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`;";
 	$result=dbs_query ($query,$connect,$dbtype); sqlerr();
 // печать   формирование текста запроса
-	for ($c=0;$myrow = dbs_fetch_row ($result,$dbtype);$c++) {
+	for ($c=0;$myrow = @dbs_fetch_row ($result,$dbtype);$c++) {
     	$mycols=count ($myrow);
 		$insertone=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`",$myrow,$mycols,"");
  		if ($OSTYPE=="LINUX") $insertone.="\n";
@@ -1189,7 +1189,7 @@ $action="WF_BCK_TRANS;SQL_REM_START $dumpdbname-->$dumpfile -l $lines -t $table 
 if (($write==cmsg("WF_BCK_FILEDUMP_ARCH"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	 set_time_limit(0);// CFG OPT FUTURE  TODO:?  backup restore   
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	 	$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$dumpdbname="backup"; // backup+DATABASEname-opt+data-opt+text-opts;
         if ($addname) $dumpdbname.=$prdbdata[$tbl][9]."_";
 	if ($adddata) $dumpdbname.=date ("dmY")."_";
@@ -1224,7 +1224,7 @@ if (($write==cmsg("WF_BCK_COPYTBL_UNARCH"))AND ($prdbdata[$tbl][12]!="fdb")) {
 if (($write==cmsg("WF_BCK_COPYTBL_ARCH"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	 set_time_limit(0);// CFG OPT FUTURE  TODO:?
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	 	$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	 	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$dumpdbname="backup"; // backup+DATABASEname-opt+data-opt+text-opts;
 	if ($addname) $dumpdbname.=$prdbdata[$tbl][9]."_";
 	if ($adddata) $dumpdbname.=date ("dmY")."_";
@@ -1248,12 +1248,12 @@ if (($start==cmsg ("SQL_BCK"))AND($dumpdbname)AND ($prdbdata[$tbl][12]!="fdb")) 
 	set_time_limit(0);// CFG OPT FUTURE  TODO:?
 	echo cmsg (W_CRT_DMP)." $dumpdbname...<br>";
 	echo "Режим: SQL side<br>";
- $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	//generate table list
 	echo "connecting..".$prdbdata[$tbl][9]."<br>";
 	$file=$pr[39];
 	echo "Make folder: $file$dumpdbname<br>";
-	 mkdir ($file.$dumpdbname)	;
+	@mkdir ($file.$dumpdbname)	;
 	//opendir ($file.$dumpdbname)	;
 		 if ($file==false) die ("File to backup set to NULL!<bR>");
 	//echo "File:$file<br>";
@@ -1287,7 +1287,7 @@ if (($start==cmsg ("SELF_BCK"))AND($dumpdbname)AND ($prdbdata[$tbl][12]!="fdb")A
 	echo "�����: Dbscript side, data";
 	if ($structure) echo "+structure";// проверить правильно ли мы получаем соединение если указан сервер из servlst.cfg
 	echo "<br>";
- $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	$query="CREATE DATABASE IF NOT EXISTS `$backupdbname`;";
 	$silent=0;dbs_query ($query,$connect,$dbtype);
 	//generate table list
@@ -1299,7 +1299,7 @@ $a=dbs_query ($cmd,$connect,$dbtype);;
 while ($result=dbs_fetch_row ($a,$dbtype)) {
 	$tablelist[]=$result[0];$tables++;//echo "table added to list ::".$result[0]."<br>";
 	}
-	 $a=opendir ("_local/dump"); if ($a==false) mkdir ("_local/dump"); closedir ($a);
+	@$a=opendir ("_local/dump"); if ($a==false) mkdir ("_local/dump");@closedir ($a);
         if ($onetable) $dumpdbname=$dumpdbname.$prdbdata[$source][5];// передает только 1 номер выбранной таблицы.
 	$dumpfile=fopen ("_local/dump/".$dumpdbname,"w"); if ($dumpfile==false) die ("cannot open file $dumpdbname");
         echo "Final filename:$dumpdbname<br>";
@@ -1314,7 +1314,7 @@ for ($a=0;$a<count ($tablelist);$a++) {
 	if (($onetable)AND($tablelist[$a]!==$prdbdata[$source][5])) continue;
     // безопасный метод делать дампы. рекомендуется использовать только его  зип пока не поддерживается.
         if ($mysqldump) { 
-            fclose ($dumpfile); unlink ($dumpfile); // CFG OPT FUTURE  TODO: -
+            fclose ($dumpfile);@unlink ($dumpfile); // CFG OPT FUTURE  TODO: -
             $filetowrite="_local/dump/".$dumpdbname.$date;
             //if ($OSTYPE=="LINUX") if ($zip) $sys.="| gzip -c ".$filetowrite.".sql.gz";//'date "+%Y-%m-%d"'
             $sys="mysqldump -u ".$sd[14]." -p".$sd[17]." ".$prdbdata[$tbl][9]." --routines > ".$filetowrite.".sql";
@@ -1344,7 +1344,7 @@ for ($a=0;$a<count ($tablelist);$a++) {
 	if ($structure) { //if ($debugmode)	echo "DEBUG $query.<br>";
 		$query="SHOW CREATE TABLE `".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`;"; //OPT STRUCTURE
 		$result=dbs_query ($query,$connect,$dbtype); sqlerr();
-	for ($c=0;$myrow =  dbs_fetch_row ($result,$dbtype);$c++) {
+	for ($c=0;$myrow = @dbs_fetch_row ($result,$dbtype);$c++) {
     	$insertone=$myrow[1].";";
     	//if ($views) echo $insertone;
  		if ($OSTYPE=="LINUX") $insertone.="\n";
@@ -1374,7 +1374,7 @@ for ($a=0;$a<count ($tablelist);$a++) {
         $sourcetable="`".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`";
 	$result=dbs_query ($query,$connect,$dbtype); sqlerr();
 // печать   формирование текста запроса
-	for ($c=0;$myrow =  dbs_fetch_row ($result,$dbtype);$c++) {
+	for ($c=0;$myrow = @dbs_fetch_row ($result,$dbtype);$c++) {
     	$mycols=count ($myrow); //updating to gennohdlog !!! 
 		//$insertone=gencmdlog ("`".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`",$myrow,$mycols,"");
                 $GENALT=1;//$insertone=gennohdlog ("`".$prdbdata[$tbl][9]."`.`".$tablelist[$a]."`",$myrow,$mycols,"");
@@ -1435,7 +1435,7 @@ $action="SELF_BCK_DBS_SIDE $dumpdbname-->$backupdbname -l $lines -t tables -e $e
 //Restore from file dump at dbscript folder
 //восстановить из дампа в папке dbscript
 if (($write==cmsg("WF_BCK_FILEDUMP_UNARCH"))AND ($prdbdata[$tbl][12]!="fdb")) {
- $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 if ($connect==false) {sqlerr($connect);exit;}
 if ($dblk) { hidekey ("dblk",$dblk);$forcedb=1;};//  ajфорсировать выбор если прислали название базы данных
 	checkbox ($forcedb,"forcedb");lprint ("FORCE_DB");echo ":";
@@ -1511,8 +1511,8 @@ if (($dump)AND($start==cmsg(DALEE))) {
 if (($dblk)AND(!$forcedb)) {$forcedb=1;$dbselected=$dblk;	}
 	$path=getcwd ()."/_local/dump/";
         $dbtype="mysql"; // default dbtype in CFG OPT FUTURE  TODO:! 
-      	 $connect=dbs_connect ($pr[43],$sd[14],$sd[17],$dbtype); //prdata tbl 6 changing to $pr[43]  EVERYWHERE!!!
-         ini_set('max_execution_time', 0);set_time_limit(0);
+      	@$connect=dbs_connect ($pr[43],$sd[14],$sd[17],$dbtype); //prdata tbl 6 changing to $pr[43]  EVERYWHERE!!!
+        @ini_set('max_execution_time', 0);set_time_limit(0);
         //..echo "$connect=dbs_connect (".$pr[43].",".$sd[14].",".$sd[17].",$dbtype)";
           sqlerr ($connect);
                	$dumpfile=$dump[0];
@@ -1609,8 +1609,8 @@ lprint (COMPLETED);exit;//теперь не должно быть никаких
 //модуль запуска
 if (($write==cmsg ("CFG_COPY"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	 $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
-	 dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	readdescripters (); if ($data==-1) exit; 
 	//     echo $mznumb[3].$mycols; echo $res16; echo $a; копия модуля из начала writefile
 printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"source",cmsg ("WF_MAS_SRC"),$groupdb,$ipfilter,6);
@@ -1636,8 +1636,8 @@ printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"destination",cmsg ("WF_MAS_DE
 //модуль запуска
 if (($write==cmsg ("WF_HDRSQL_REAL"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	 $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
-	 dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	readdescripters (); if ($data==-1) exit;  
 }
 
@@ -1651,8 +1651,8 @@ if (($write==cmsg ("WF_HDRSQL_REAL"))AND ($prdbdata[$tbl][12]!="fdb")) {
 //модуль запуска
 	if (($write==cmsg  ("WF_STRC_SQL"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	 $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
-	 dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters (); if ($data==-1) exit; 
 	echo cmsg ("WF_SELROW").":";
 	printfield ($data,"field");
@@ -1707,8 +1707,8 @@ if (($write==cmsg ("WF_HDRSQL_REAL"))AND ($prdbdata[$tbl][12]!="fdb")) {
 //модуль запуска
 	if (($write==cmsg  ("WF_NEW_TAB"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	 $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
-	 dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters (); if ($data==-1) exit; 
 			echo cmsg ("WF_NEW_TAB_INFO").":";	echo "<br>";
 			lprint ("WF_NEW_NAME");inputtxt("newtable",25);
@@ -1720,8 +1720,8 @@ if (($write==cmsg ("WF_HDRSQL_REAL"))AND ($prdbdata[$tbl][12]!="fdb")) {
 			if ($codekey==7) demo ();
 		if ($codekey==4) needupgrade ();
 		if (($newtable=="")) { lprint ("WF_ROW_NODATA"); exit ;};
- $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
-	 dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
+@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 		$exec="CREATE TABLE `".$newtable."` (
   `id` bigint(20) unsigned NOT NULL auto_increment COMMENT 'Identifier' ,
     PRIMARY KEY  (`id`) ); ";
@@ -1739,8 +1739,8 @@ if (($write==cmsg ("WF_HDRSQL_REAL"))AND ($prdbdata[$tbl][12]!="fdb")) {
 			if ($codekey==7) demo ();
 		if ($codekey==4) needupgrade ();
 	//	if (($newtable=="")) { lprint ("WF_ROW_NODATA"); exit ;};
-         $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
-	 dbs_selectdb ($prdbdata[$tbl][9],$connect,$dbtype);
+        @$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9],$connect,$dbtype);
         $query="SHOW CREATE TABLE `".$prdbdata[$tbl][5]."`;";
         //$query="SHOW CREATE TABLE `".$prdbdata[$tbl][9].".".$prdbdata[$tbl][5]."`;";
 
@@ -1803,11 +1803,11 @@ if ($write==cmsg ("WF_MODSTRC_DAT2")) { //++
 if (($write==cmsg ("WF_HDRSQL_VIRT"))AND ($prdbdata[$tbl][12]!="fdb")) { //++
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
         lprint ("M_LINK") ; Echo "<br>";
-	 $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
-	 dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
+	@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters (); if ($data==-1) exit; 
 	$mycol=$data[0];
-	 $f=csvopen ("_data/".$filbas,"r","0");$new=0;
+	@$f=csvopen ("_data/".$filbas,"r","0");$new=0;
 		if ($f==true) { $z=xfgetcsv ($f,$xfgetlimit,"¦");$plevel=xfgetcsv ($f,$xfgetlimit,"¦"); };
 		$a=0;$cnt=count ($mycol);
 	for ($a=0;$a<$cnt;$a++)
@@ -1836,8 +1836,8 @@ if (($write==cmsg ("WF_HDRSQL_VIRT"))AND ($prdbdata[$tbl][12]!="fdb")) { //++
 //CSV HEADE
 if (($write==cmsg("KEY_LINKING"))) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	if ($dbtype!=="fdb") { $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
-	 dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
+	if ($dbtype!=="fdb") {@$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
+	@dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
         }
 	$data=readdescripters (); if ($data==-1) exit; 
 	$mycol=$data[0];
@@ -1925,8 +1925,8 @@ if (($write==cmsg("SAV_LNK"))) {
         for ($cycle=1;$cycle<count ($tablelist)+1 ;$cycle++) {
             if ($cycle>1) $cycleno=$cycle;
             $tbl=$tablelist[$cycle];
-         if ($dbtype!=="fdb") {    $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);// 6 - server - 9 - db  5- table
-             dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
+         if ($dbtype!=="fdb") {   @$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);// 6 - server - 9 - db  5- table
+            @dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
          }
 echo " connecting ... ".$prdbdata[$tablelist[$cycle]][9]."<br>";
 	$data=readdescripters (); if ($data==-1) exit;
@@ -2068,9 +2068,9 @@ if ($step>4) {
 //CSV HEADER
 if (($write==cmsg("KEY_HEAD"))AND ($prdbdata[$tbl][12]=="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN");exit;};
-	if (!$cfgmod)  $f=csvopen ("_data/".$filbas,"r","0");
+	if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
 	if ($cfgmod==1) {
-		 $f=csvopen ("_conf/".$filbas,"r","0");
+		@$f=csvopen ("_conf/".$filbas,"r","0");
 		$data=readdescripters();//print_r($data);
 		rewind ($f);
 	}
@@ -2106,7 +2106,7 @@ if (($write==cmsg ("WF_HDR_REWR"))AND ($prdbdata[$tbl][12]!="fdb")) {
 	$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 	dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 	$data=readdescripters ();	
-	 $f=csvopen ("_data/".$filbas,"r","1");$new=0;
+	@$f=csvopen ("_data/".$filbas,"r","1");$new=0;
 		$z=xfgetcsv ($f,$xfgetlimit,"¦"); $p=xfgetcsv ($f,$xfgetlimit,"¦");
 		for ($a=0;$a<count ($z);$a++)	{
 	if (!$sqltocsv) $z[$a]=${"z".$a};////принимаем данные юзера
@@ -2117,7 +2117,7 @@ if ($OSTYPE=="LINUX") $z[$a-1]=$z[$a-1]."\n";//фикс бага с перево
 //фикс отменен тк при сохранении заголовка вызывал его смещение.
 fclose ($f);
 	if ($sqltocsv) { $z=$data[0]; $z[]=""; };//headerreal
-	 $f=csvopen ("_data/".$filbas,"w","1");
+	@$f=csvopen ("_data/".$filbas,"w","1");
 writefullcsv ($f,$z,$p,"");
 	if ($pr[12]) {$act="HEADER_SQL $tbl to $values"; logwrite ($act) ;};
 }
@@ -2127,8 +2127,8 @@ writefullcsv ($f,$z,$p,"");
 //модуль обработки
 if (($write==cmsg ("WF_HDR_REWR"))AND ($prdbdata[$tbl][12]=="fdb")) {
 	if (!$prauth[$ADM][6]) { lprint ("ACCDEN"); exit;};
-	if (!$cfgmod)  $f=csvopen ("_data/".$filbas,"r","0");
-	if ($cfgmod==1)  $f=csvopen ("_conf/".$filbas,"r","0");echo "<br>";
+	if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"r","0");
+	if ($cfgmod==1) @$f=csvopen ("_conf/".$filbas,"r","0");echo "<br>";
 		$new=0;
 	$data=readdescripters ();
 	$z=xfgetcsv ($f,$xfgetlimit,"¦"); $plevels=xfgetcsv ($f,$xfgetlimit,"¦");// надо терять их!!
@@ -2141,7 +2141,7 @@ if (($write==cmsg ("WF_HDR_REWR"))AND ($prdbdata[$tbl][12]=="fdb")) {
 	$plevels=implode ($p,"¦");if ($OSTYPE=="WINDOWS") $plevels.="\n";
 	$a="";
 	while (!feof($f))
-	{  $a.=fread ($f,10000); //echo $a;
+	{ @$a.=fread ($f,10000); //echo $a;
    };
    fclose ($f); 	
    	if (!$cfgmod) @$f=csvopen ("_data/".$filbas,"w","0");

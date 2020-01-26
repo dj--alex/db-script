@@ -1,7 +1,7 @@
-<?php // Данная программа относится к пакету DBSCRIPT v2.1 (с) dj--alex
+<?php // Р”Р°РЅРЅР°СЏ РїСЂРѕРіСЂР°РјРјР° РѕС‚РЅРѕСЃРёС‚СЃСЏ Рє РїР°РєРµС‚Сѓ DBSCRIPT v2.1 (СЃ) dj--alex
 $veradm="Admin v4.3.4 (c) dj--alex";
  //register_shutdown_function ("endtm");
-require_once ('initalize.php'); // функция подготовки к работе и авторизации
+require_once ('initalize.php'); // С„СѓРЅРєС†РёСЏ РїРѕРґРіРѕС‚РѕРІРєРё Рє СЂР°Р±РѕС‚Рµ Рё Р°РІС‚РѕСЂРёР·Р°С†РёРё
  if ($cmd=="setconflic") {
     //generic activation table
      ////reading pages
@@ -10,15 +10,15 @@ require_once ('initalize.php'); // функция подготовки к работе и авторизации
 
      //generic activation table
      //
- //У рекламы есть и хорошие стороны - теперь все знают, где женщины прячут свои крылышки<br>
+ //РЈ СЂРµРєР»Р°РјС‹ РµСЃС‚СЊ Рё С…РѕСЂРѕС€РёРµ СЃС‚РѕСЂРѕРЅС‹ - С‚РµРїРµСЂСЊ РІСЃРµ Р·РЅР°СЋС‚, РіРґРµ Р¶РµРЅС‰РёРЅС‹ РїСЂСЏС‡СѓС‚ СЃРІРѕРё РєСЂС‹Р»С‹С€РєРё<br>
 autoexecsql (); 
 if (!$activation) Header("Location: login.php");
    if (!isset($_SERVER['PHP_AUTH_USER']) ||
    ($_POST['SeenBefore'] == 1 && $_POST['OldAuth'] == $_SERVER['PHP_AUTH_USER'])) {
   authenticate ();}  
 $pageenter=0;
-if ($frameoldcore==1) $write=getvar ('write');//пока не нашел почему равные переменные не равны  write не сравнивается!!!
-import_request_variables ("PG","");  // универсальное решение проблемы
+if ($frameoldcore==1) $write=getvar ('write');//РїРѕРєР° РЅРµ РЅР°С€РµР» РїРѕС‡РµРјСѓ СЂР°РІРЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ РЅРµ СЂР°РІРЅС‹  write РЅРµ СЃСЂР°РІРЅРёРІР°РµС‚СЃСЏ!!!
+import_request_variables ("PG","");  // СѓРЅРёРІРµСЂСЃР°Р»СЊРЅРѕРµ СЂРµС€РµРЅРёРµ РїСЂРѕР±Р»РµРјС‹
      if ($write==cmsg("LST_SHA_FLS")) { header ("Location: r.php?tbl=files&m=4&vID=1&vID2="); };
         if ($write==cmsg("LST_SHA_FLS_DL")) { header ("Location: r.php?tbl=files&m=7.9&vID=!0"); };
         if ($write==cmsg("LST_SHA_FLS_NO")) { header ("Location: r.php?tbl=files&m=7.9&vID=0&fullfield=on"); };
@@ -30,7 +30,7 @@ $enterpoint=$veradm;
 if ($encoder=="not installed") errorlog ("Dbscript need an php encoder - iconv or mb_string.");
 
 
- // настройка префиксов для работы с любым языкомым cmd
+ // РЅР°СЃС‚СЂРѕР№РєР° РїСЂРµС„РёРєСЃРѕРІ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ Р»СЋР±С‹Рј СЏР·С‹РєРѕРјС‹Рј cmd
 if ($cmd=="test") { testcfgs () ; exit; }
 if ($cmd=="note") { bloknot (); exit; }
 if ($cmd=="asql") { asqledit (); exit; }
@@ -45,7 +45,7 @@ If ($prauth[$ADM][2]==false) { $gmlimitcfg=1;} else {$adm=1;};// {
 if ($cmd=="myprof") {$go=cmsg("A_MY_PROF"); displayconfigtblsd () ; exit; }
 
 // CFG OPT FUTURE  TODO:
-// Убирание меню в редакторе и поиске.  // nomnu=1 включать для unframedmode
+// РЈР±РёСЂР°РЅРёРµ РјРµРЅСЋ РІ СЂРµРґР°РєС‚РѕСЂРµ Рё РїРѕРёСЃРєРµ.  // nomnu=1 РІРєР»СЋС‡Р°С‚СЊ РґР»СЏ unframedmode
 
 //if (!$pr[8]) echo "DEBUG MODE:dont try to fix me im not broken<br>";
 	echo "<cite>".cmsg("A_WELC").$prauth[$ADM][15]." <br></cite>";   
@@ -66,7 +66,7 @@ global $mirroraddress,$pr;//$mirroraddress="http://la2.chg.su/dbs4/_conf/";
 $mirroraddress=$pr[96];
 if (!$mirroraddress) { echo "Mirror not found";exit;};
 lprint ("SYNC_SEL");echo "<br><form action=admin.php>";
-		// файлы к этому моменту уже должны быть сгенерированы и хотя бы быть в наличии
+		// С„Р°Р№Р»С‹ Рє СЌС‚РѕРјСѓ РјРѕРјРµРЅС‚Сѓ СѓР¶Рµ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ СЃРіРµРЅРµСЂРёСЂРѕРІР°РЅС‹ Рё С…РѕС‚СЏ Р±С‹ Р±С‹С‚СЊ РІ РЅР°Р»РёС‡РёРё
 		$path=getcwd ()."/_conf/";	//	$path2=$fldup."/_conf";$path3=getcwd ()."/_langdb/";
 		$mask="*.cfg";	$protect[]="*.php";$nameselect="files";
 		filesselect ($path,$mask,$protect,$nameselect,7);
@@ -92,7 +92,7 @@ if (($write==cmsg ("A_ACSS_ED"))or($go==cmsg("A_ACSS_ED"))) { cssed () ;exit; };
  if ($write==cmsg ("ADM_DEL_OFF_TABLES")) { deleteemptytables (); exit; };
 
    if (($write===cmsg("A_USR_CFG"))or($write==cmsg("A_USR_CN"))) { displayconfigtblsd () ; }
-      if ($gmlimitcfg===1) { displayconfigtblsd () ; } //лимитировалка прав
+      if ($gmlimitcfg===1) { displayconfigtblsd () ; } //Р»РёРјРёС‚РёСЂРѕРІР°Р»РєР° РїСЂР°РІ
     if ($write===cmsg("A_BCK_CFG")) { backupcfgs () ; }
 	if ($write===cmsg("A_RES_CFG")) { restorecfgs () ; }
  	if ($prauth[$ADM][42]) {
@@ -133,7 +133,7 @@ if (($pr[54])OR(!$dbstyle3en)) { ?>	<a href="mailto:dj--alex@ya.ru">email author
  <a href="http://dj.chg.su/dbscript/">Visit site</a>.
 
  <?php }
-	for ($a=0;$a<count ($pr);$a++) { ${"pr".$a}=stripslashes ($pr[$a]);} //новое чтение конфигов,корректное
+	for ($a=0;$a<count ($pr);$a++) { ${"pr".$a}=stripslashes ($pr[$a]);} //РЅРѕРІРѕРµ С‡С‚РµРЅРёРµ РєРѕРЅС„РёРіРѕРІ,РєРѕСЂСЂРµРєС‚РЅРѕРµ
 	for ($a=0;$a<count ($sd);$a++) { ${"sd".$a}=stripslashes ($sd[$a]);}  //PARTIAL EXCHANGE
 
 	/*$pr2= stripslashes ($pr[2]);*/
@@ -192,7 +192,7 @@ $backupstate=@csvopen ("_conf/dbdata.cfg.backup.dat","r","0");
 	
 	hidekey ("write",1); echo "<br><ii><bb>";
 		echo "<form action=admin.php method=post> ";
-	echo "<table id=Adminpanel border=2 bordercolor=#402621 style=\" color: #".$rgbtext."; \" ;width=80%>"; //font : ".$systemshrift."; работать будет , но не надо этого
+	echo "<table id=Adminpanel border=2 bordercolor=#402621 style=\" color: #".$rgbtext."; \" ;width=80%>"; //font : ".$systemshrift."; СЂР°Р±РѕС‚Р°С‚СЊ Р±СѓРґРµС‚ , РЅРѕ РЅРµ РЅР°РґРѕ СЌС‚РѕРіРѕ
 
 	 firsttableelement ();
 	 hidekey ("write",1);
@@ -276,7 +276,7 @@ checkbox ($pr[32],"pr32"); echo cmsg ("A_MODE")." 10 ";nextkolumnelement ();inpu
  <?php   nextstrokeelement ();
  if (($codekey==7)OR($codekey==7)OR($codekey==7)OR($codekey==7))
 		{ echo cmsg ("A_DEM_NOSQL")."<br>" ;
-		  if (1==1) {// потом позже поправлю чтобы даже уберхакеру было нельзя выдрать
+		  if (1==1) {// РїРѕС‚РѕРј РїРѕР·Р¶Рµ РїРѕРїСЂР°РІР»СЋ С‡С‚РѕР±С‹ РґР°Р¶Рµ СѓР±РµСЂС…Р°РєРµСЂСѓ Р±С‹Р»Рѕ РЅРµР»СЊР·СЏ РІС‹РґСЂР°С‚СЊ
 					?><input type= hidden name=sd14 value="A_DEM_NOSQL"> <?php
 					}
 		} else {
@@ -528,21 +528,21 @@ $comfile="msgerr.css";simpleedit($comfile,-10000);
  }
 
 function chklic () {
-    // потом добавить скрипт который делает эту задачу прямо на сайте без клиентской части !
-    // принять данные что и где искать,  отослать обратно данные что выводить - не делая это самостоятельно.
+    // РїРѕС‚РѕРј РґРѕР±Р°РІРёС‚СЊ СЃРєСЂРёРїС‚ РєРѕС‚РѕСЂС‹Р№ РґРµР»Р°РµС‚ СЌС‚Сѓ Р·Р°РґР°С‡Сѓ РїСЂСЏРјРѕ РЅР° СЃР°Р№С‚Рµ Р±РµР· РєР»РёРµРЅС‚СЃРєРѕР№ С‡Р°СЃС‚Рё !
+    // РїСЂРёРЅСЏС‚СЊ РґР°РЅРЅС‹Рµ С‡С‚Рѕ Рё РіРґРµ РёСЃРєР°С‚СЊ,  РѕС‚РѕСЃР»Р°С‚СЊ РѕР±СЂР°С‚РЅРѕ РґР°РЅРЅС‹Рµ С‡С‚Рѕ РІС‹РІРѕРґРёС‚СЊ - РЅРµ РґРµР»Р°СЏ СЌС‚Рѕ СЃР°РјРѕСЃС‚РѕСЏС‚РµР»СЊРЅРѕ.
       $filbas="http://dj.chg.su/dbscript/old/_data/licenses.dat";global $actcod;
 @$lic=fopen ($filbas,"r",0);
 $datamassive=readfullcsv ($lic,"new");
   $lcontent=$datamassive[2];
   /*for ($a=0;$a<count ($lcontent);$a++) {  //realidcontain wam w pomosh!!
-      echo "dm2a2=".$lcontent[$a][2]."";;// хер вам а не & posle akt koda ^)) скажем нет дермецовым глюкам
+      echo "dm2a2=".$lcontent[$a][2]."";;// С…РµСЂ РІР°Рј Р° РЅРµ & posle akt koda ^)) СЃРєР°Р¶РµРј РЅРµС‚ РґРµСЂРјРµС†РѕРІС‹Рј РіР»СЋРєР°Рј
       $x=substr ($lcontent[$a][2],0,32);
       echo "now $x<br>";
       $lcontent[$a][2]=$x;
   }
    * 
    */
-  // я не понял какого хера в ядре оказывается неисправленная версия базы данных?
+  // СЏ РЅРµ РїРѕРЅСЏР» РєР°РєРѕРіРѕ С…РµСЂР° РІ СЏРґСЂРµ РѕРєР°Р·С‹РІР°РµС‚СЃСЏ РЅРµРёСЃРїСЂР°РІР»РµРЅРЅР°СЏ РІРµСЂСЃРёСЏ Р±Р°Р·С‹ РґР°РЅРЅС‹С…?
   $licnumber=getidbyid ($lcontent,2,"realidcontain",$actcod);  // fix for lost license 4.1.8  what?? 
   //echo "($licnumber=getidbyid ($lcontent,2,0,$actcod))";
   //print_r ($lcontent);
@@ -553,7 +553,7 @@ if ($licnumber) echo cmsg ("LIC")."$licnumber ".cmsg (REG)." ".$lcontent[$licnum
 }
 //
 
- // КАКбЭ ВНИМАНЕ КОТЭ ОПАСНОСТЕ!  ПЫЩЬЬЬЬЬ!!!!111 ПЫЩЬ!!!!111111111111
+ // РљРђРљР±Р­ Р’РќРРњРђРќР• РљРћРўР­ РћРџРђРЎРќРћРЎРўР•!  РџР«Р©Р¬Р¬Р¬Р¬Р¬!!!!111 РџР«Р©Р¬!!!!111111111111
 function testcfgs ()
 	{
 	 global $sd,$pr,$mycol,$mycols,$ADM,$tbl;	global $gmheader,$gmplevel,$prauth,$prauthcnt;
@@ -561,7 +561,7 @@ function testcfgs ()
 	 global	$dnheader,$dnplevel,$dncontent,$dncnt; 	 global $pgheader,$pgplevel,$pgcontent,$pgcnt;
 	global $stheader,$stplevel,$stcontent,$stcnt;	global $lsheader,$lsplevel,$lscontent,$lscnt;
         global $filheader,$filplevel,$fildata,$filcount;
-	$error=0;$war=0; $fixed=0;//счетчик ошибок
+	$error=0;$war=0; $fixed=0;//СЃС‡РµС‚С‡РёРє РѕС€РёР±РѕРє
 #inside func
 $mserror="<red>==></red>";
 $mswar="<yel>==></yel>";
@@ -569,8 +569,8 @@ $msfixed="<grn>==></grn>";
 echo "---------------------------<br>";
 
 
-	// проверка dbdata.cfg
-$tbl=1;$edit=0; // edit - флаг запуска записи
+	// РїСЂРѕРІРµСЂРєР° dbdata.cfg
+$tbl=1;$edit=0; // edit - С„Р»Р°Рі Р·Р°РїСѓСЃРєР° Р·Р°РїРёСЃРё
  $silent=0;global $silent;
 while ($tbl<$prdbdatacnt-1) {
 				$exist=1;
@@ -590,12 +590,12 @@ while ($tbl<$prdbdatacnt-1) {
 					 $fixmsg=$code[7];$warnmsg=$code[8];
 					 if (strlen ($fixmsg)>15) { echo "$msfixed ".$fixmsg;$fixed++; };
 					 if (strlen ($warnmsg)>15) { echo "$mswarn ".$warnmsg;$warn++; };
-					 if ($code==-1) { echo "$mserror DAT  ".cmsg (A_T_DB)." ".$prdbdata[$tbl][0]." ".cmsg (NOREP)."<br>";$error++;//$tbl++; именно эта параша всё сбивала.
+					 if ($code==-1) { echo "$mserror DAT  ".cmsg (A_T_DB)." ".$prdbdata[$tbl][0]." ".cmsg (NOREP)."<br>";$error++;//$tbl++; РёРјРµРЅРЅРѕ СЌС‚Р° РїР°СЂР°С€Р° РІСЃС‘ СЃР±РёРІР°Р»Р°.
                                              $errortables[]=$prdbdata[$tbl];	//continue; remove as tes
 								};
 				$mycols=$mzcnt;   $mycolsreal=$code[6]; 
 				}
-// К этому моменту  уже должны быть базы обновлены
+// Рљ СЌС‚РѕРјСѓ РјРѕРјРµРЅС‚Сѓ  СѓР¶Рµ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ Р±Р°Р·С‹ РѕР±РЅРѕРІР»РµРЅС‹
 		
 			if (($prdbdata[$tbl][12]=="1")) {  
 		echo "$msfixed ".cmsg (TB)." ".$prdbdata[$tbl][1]." ".cmsg (A_SF_UDBT)." -sql-<br>";$prdbdata[$tbl][12]="mysql";$fixed++;$edit=1 ;}
@@ -646,34 +646,34 @@ if ($fields<199) {
 	echo "$mswar Registered table ".$prdbdata[$tbl][1]." have ".$fields." header fields but must have 202 , requires run update350.php or manual fix <br>";
 	$warn++;	/*
 	$fixadd="";
-for ($a1=$fields-2;$a1++;$a1<202) {//$fixadd.="¦";// echo $a1." ";
+for ($a1=$fields-2;$a1++;$a1<202) {//$fixadd.="В¦";// echo $a1." ";
 	$prdbdata[$tbl][$a1]="0";
-if ($a1==202) { if ($OSTYPE=="LINUX") $prdbdata[$tbl][$a1].="\n"; //  исправление соединения строк
+if ($a1==202) { if ($OSTYPE=="LINUX") $prdbdata[$tbl][$a1].="\n"; //  РёСЃРїСЂР°РІР»РµРЅРёРµ СЃРѕРµРґРёРЅРµРЅРёСЏ СЃС‚СЂРѕРє
 				if ($OSTYPE=="WINDOWS") $prdbdata[$tbl][$a1].="\r\n";
 				break;
 }
 
-//die ("a1==202 !!!!!!!!!!!!!!!!!!!!!"); возможно добавление WINDOWS вызовет баг - не проверено
+//die ("a1==202 !!!!!!!!!!!!!!!!!!!!!"); РІРѕР·РјРѕР¶РЅРѕ РґРѕР±Р°РІР»РµРЅРёРµ WINDOWS РІС‹Р·РѕРІРµС‚ Р±Р°Рі - РЅРµ РїСЂРѕРІРµСЂРµРЅРѕ
 //$ax++; if ($ax>700) { echo "a1=$a1; ax=$ax; fixadd=$fixadd";exit;}
-} // FUCKING SHsIT   ВИСНЕТ"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+} // FUCKING SHsIT   Р’РРЎРќР•Рў"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 */
 } 
 
-//исправляем если конфиг слишком короткий. не знаю в чем дело - но автоисправление длины алиаса почему то не пашет как надо
+//РёСЃРїСЂР°РІР»СЏРµРј РµСЃР»Рё РєРѕРЅС„РёРі СЃР»РёС€РєРѕРј РєРѕСЂРѕС‚РєРёР№. РЅРµ Р·РЅР°СЋ РІ С‡РµРј РґРµР»Рѕ - РЅРѕ Р°РІС‚РѕРёСЃРїСЂР°РІР»РµРЅРёРµ РґР»РёРЅС‹ Р°Р»РёР°СЃР° РїРѕС‡РµРјСѓ С‚Рѕ РЅРµ РїР°С€РµС‚ РєР°Рє РЅР°РґРѕ
 //
 		//$plinkname=$data[12];
-                //.//...$exist=0;// чезахерня?
+                //.//...$exist=0;// С‡РµР·Р°С…РµСЂРЅСЏ?
 			};//end EXIST list
  	  //ho "prb ".$prdbdata[$tbl][17]." M<br>";
  	 			
- 	 			//Временно отключено после расширения глючть не будет   writefullcsv вызывает ошибку если нет \n
+ 	 			//Р’СЂРµРјРµРЅРЅРѕ РѕС‚РєР»СЋС‡РµРЅРѕ РїРѕСЃР»Рµ СЂР°СЃС€РёСЂРµРЅРёСЏ РіР»СЋС‡С‚СЊ РЅРµ Р±СѓРґРµС‚   writefullcsv РІС‹Р·С‹РІР°РµС‚ РѕС€РёР±РєСѓ РµСЃР»Рё РЅРµС‚ \n
  	 	if (count($prdbdata[$tbl])>40) {
  	 $a=$prdbdata[$tbl][17];//echo "ept 17=$a<br>";
  if ((strlen (trim ($a))<2)or($a===" ")) {$ungroup=1;}; if ((strlen (trim ($a))>1)) { $ungroup=0;};
   	  if (($ungroup==1)AND($prdbdata[$tbl][12]=="mysql")AND($prdbdata[$tbl][9]==true)) { 
 		echo "$msfixed ".cmsg (A_SF_GRP_TBL)." ".$prdbdata[$tbl][1]." ".cmsg (A_SF_NO)." (".$prdbdata[$tbl][17].cmsg (A_DEF_GRP).$prdbdata[$tbl][9].")<br>";
 		$prdbdata[$tbl][17]=$prdbdata[$tbl][9];
-		$fixed++;$edit=1 ;$ungroup=0;}  //CFG OPT FUTURE  TODO:  отключаемое 2 реж 1-база может отличатся от 2-база вс=базе.
+		$fixed++;$edit=1 ;$ungroup=0;}  //CFG OPT FUTURE  TODO:  РѕС‚РєР»СЋС‡Р°РµРјРѕРµ 2 СЂРµР¶ 1-Р±Р°Р·Р° РјРѕР¶РµС‚ РѕС‚Р»РёС‡Р°С‚СЃСЏ РѕС‚ 2-Р±Р°Р·Р° РІСЃ=Р±Р°Р·Рµ.
 
      if ($pr[38]) if (($prdbdata[$tbl][12]=="mysql")AND($prdbdata[$tbl][9]!==$prdbdata[$tbl][17])) { 
 		echo "$msfixed ".cmsg (A_SF_GRP_TBL)." ".$prdbdata[$tbl][1]." ".cmsg (A_SF_GRP_DECL)." ".$prdbdata[$tbl][17].")-->(".$prdbdata[$tbl][9].")<br>";
@@ -683,14 +683,14 @@ if ($a1==202) { if ($OSTYPE=="LINUX") $prdbdata[$tbl][$a1].="\n"; //  исправлени
 		if (($ungroup==1)AND($prdbdata[$tbl][12]=="fdb")) { 
 		echo "$msfixed ".cmsg (A_SF_GRP_TBL)." ".$prdbdata[$tbl][1]." ".cmsg (A_SF_NO)." (".$prdbdata[$tbl][17].cmsg (A_DEF_GRP)."fdb)<br>";
 		$prdbdata[$tbl][17]="fdb";
-		$fixed++;$edit=1 ;$ungroup=0;}  //CFG OPT FUTURE  TODO:  отключаемое 2 реж 1-база может отличатся от 2-база вс=базе.AS Mysql 
+		$fixed++;$edit=1 ;$ungroup=0;}  //CFG OPT FUTURE  TODO:  РѕС‚РєР»СЋС‡Р°РµРјРѕРµ 2 СЂРµР¶ 1-Р±Р°Р·Р° РјРѕР¶РµС‚ РѕС‚Р»РёС‡Р°С‚СЃСЏ РѕС‚ 2-Р±Р°Р·Р° РІСЃ=Р±Р°Р·Рµ.AS Mysql 
 }
-//*/$prdbdata[$tbl][18]="\n"; поможе если все таки достигнули крайнее число колонок.
+//*/$prdbdata[$tbl][18]="\n"; РїРѕРјРѕР¶Рµ РµСЃР»Рё РІСЃРµ С‚Р°РєРё РґРѕСЃС‚РёРіРЅСѓР»Рё РєСЂР°Р№РЅРµРµ С‡РёСЃР»Рѕ РєРѕР»РѕРЅРѕРє.
 		
  $tbl++;
  } echo "<br>".cmsg (A_SF_ALLDB).($prdbdatacnt-2)."<br>---------------------------------------<br>";
 
-##проверка на факт редактирования должна быть обязательно везде - незачем постоянно делать сохранения.
+##РїСЂРѕРІРµСЂРєР° РЅР° С„Р°РєС‚ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РІРµР·РґРµ - РЅРµР·Р°С‡РµРј РїРѕСЃС‚РѕСЏРЅРЅРѕ РґРµР»Р°С‚СЊ СЃРѕС…СЂР°РЅРµРЅРёСЏ.
  if ($edit==1) {
 	 @$tempdescr=csvopen ("_conf/dbdata.cfg","w",1);
    writefullcsv ($tempdescr,$dbheader,$dbplevel,$prdbdata);$edit=0;
@@ -701,10 +701,10 @@ if ($a1==202) { if ($OSTYPE=="LINUX") $prdbdata[$tbl][$a1].="\n"; //  исправлени
 
 
 
-	// проверкa gmdata.cfg
+	// РїСЂРѕРІРµСЂРєa gmdata.cfg
 	
 	
-	// CFG OPT FUTURE  TODO:   СОЗДАНИЕ ПАПОК ПОЛЬЗОВАТЕЛЕЙ И ФАЙЛА ПО УМОЛЧАНИЮ -  В ЗАВИС ОТ ИНСТАНЦИИ ПО ТИПУ _DATA .. САП
+	// CFG OPT FUTURE  TODO:   РЎРћР—Р”РђРќРР• РџРђРџРћРљ РџРћР›Р¬Р—РћР’РђРўР•Р›Р•Р™ Р Р¤РђР™Р›Рђ РџРћ РЈРњРћР›Р§РђРќРР® -  Р’ Р—РђР’РРЎ РћРў РРќРЎРўРђРќР¦РР РџРћ РўРРџРЈ _DATA .. РЎРђРџ
  $cnt=1;$admins=0;$users=0;
   while ($cnt<$prauthcnt) {
 
@@ -734,7 +734,7 @@ $su=$su+$prauth[$cnt][42];
 
 /*
 
-// проверка editor.cfg  files.cfg ???
+// РїСЂРѕРІРµСЂРєР° editor.cfg  files.cfg ???
   $cnt=1;
   while ($cnt<$edcnt) {
   $cnt++;
@@ -751,10 +751,10 @@ $su=$su+$prauth[$cnt][42];
 */
 
 
- 	// проверка pages.cfg
+ 	// РїСЂРѕРІРµСЂРєР° pages.cfg
  $cnt=1;
  while ($cnt<$pgcnt) {
-//if ($cnt>10) { echo "Страница $cnt (".$pgcontent[$cnt][1].") не может быть обслужена из за встроенных ограничений.<br>"; $war++;}
+//if ($cnt>10) { echo "РЎС‚СЂР°РЅРёС†Р° $cnt (".$pgcontent[$cnt][1].") РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕР±СЃР»СѓР¶РµРЅР° РёР· Р·Р° РІСЃС‚СЂРѕРµРЅРЅС‹С… РѕРіСЂР°РЅРёС‡РµРЅРёР№.<br>"; $war++;}
 if ($pgcontent[$cnt][1]==="") {echo "$mserror  ".cmsg (A_PAGE)." $cnt (".$pgcontent[$cnt][1].") ".cmsg (A_T_PGNOCONN).".<br>";$error++;}
 if ((strpos($pgcontent[$cnt][1],"readfile.php"))!==false) {echo "$msfixed ".cmsg (A_PAGE)." $cnt (".$pgcontent[$cnt][1].") up to 3.5.18+.<br>";
 $pgcontent[$cnt][1]=str_replace("readfile.php","r.php",$pgcontent[$cnt][1]);$fixed++;$edit=1;}
@@ -778,10 +778,10 @@ if ($pgcontent[$cnt][3]==="") {echo "$mswar  ".cmsg (A_PAGE)."$cnt (".$pgcontent
  }
  unset ($tempdescr,$pgheader,$pgplevel,$pgcontent);
 
- 	// проверка denywords.cfg
+ 	// РїСЂРѕРІРµСЂРєР° denywords.cfg
  $cnt=1;
  while ($cnt<$dncnt) {
-	if (strlen ($dncontent[$cnt][0])<4) { echo "$mswar Длина слова (".$dncontent[$cnt][0].") мала =".strlen ($dncontent[$cnt][0]).", это может вызвать ошибки <br>";
+	if (strlen ($dncontent[$cnt][0])<4) { echo "$mswar Р”Р»РёРЅР° СЃР»РѕРІР° (".$dncontent[$cnt][0].") РјР°Р»Р° =".strlen ($dncontent[$cnt][0]).", СЌС‚Рѕ РјРѕР¶РµС‚ РІС‹Р·РІР°С‚СЊ РѕС€РёР±РєРё <br>";
 	 $warn++;};
  	
 	$cnt++;
@@ -796,35 +796,35 @@ if ($pgcontent[$cnt][3]==="") {echo "$mswar  ".cmsg (A_PAGE)."$cnt (".$pgcontent
  }
 
 
-$date=date("d.m.Y H:i:s");// текущая дата
-$dateinunix=strdbstounixtime ($date);// переводим обычную dbs дату в юникс
+$date=date("d.m.Y H:i:s");// С‚РµРєСѓС‰Р°СЏ РґР°С‚Р°
+$dateinunix=strdbstounixtime ($date);// РїРµСЂРµРІРѕРґРёРј РѕР±С‹С‡РЅСѓСЋ dbs РґР°С‚Сѓ РІ СЋРЅРёРєСЃ
 
-// прове files.cfg
+// РїСЂРѕРІРµ files.cfg
  $cnt=1;$edit=0;
  while ($cnt<$filcount-1) {
       //echo "filcount mlya $filcount , count fildata-= ".count ($fildata)."<br>";// zaebalo  gde counter?
       if ($debug) echo $fildata[$cnt][4]."=".$fildata[$cnt][9]."<br>";// debug
 $downloadedfiles=$downloadedfiles+$fildata[$cnt][9];
 //
-////if (1==1) { echo "$fildata";};  при удалении сохранять 2 в колонку об удалении
-// Извините, файл найти не удалось -  Возможно файл устарел , перемещён или не соответствует правилам хостинга
+////if (1==1) { echo "$fildata";};  РїСЂРё СѓРґР°Р»РµРЅРёРё СЃРѕС…СЂР°РЅСЏС‚СЊ 2 РІ РєРѕР»РѕРЅРєСѓ РѕР± СѓРґР°Р»РµРЅРёРё
+// РР·РІРёРЅРёС‚Рµ, С„Р°Р№Р» РЅР°Р№С‚Рё РЅРµ СѓРґР°Р»РѕСЃСЊ -  Р’РѕР·РјРѕР¶РЅРѕ С„Р°Р№Р» СѓСЃС‚Р°СЂРµР» , РїРµСЂРµРјРµС‰С‘РЅ РёР»Рё РЅРµ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ РїСЂР°РІРёР»Р°Рј С…РѕСЃС‚РёРЅРіР°
 $datarazm=$fildata[$cnt][8];$xdataupload=strdbstounixtime ($datarazm);
 $dataskac=$fildata[$cnt][10];$xdatalastload=strdbstounixtime ($dataskac);
-if (is_dir ($fildata[$cnt][5])) $fildata[$cnt][6]=2;//папки не имеет смысла пытаться удалять
-//важно после попытки удаления программа более не пытается удалять уже удаленные файлы помечая их флагом 2 в колонке удаления.
+if (is_dir ($fildata[$cnt][5])) $fildata[$cnt][6]=2;//РїР°РїРєРё РЅРµ РёРјРµРµС‚ СЃРјС‹СЃР»Р° РїС‹С‚Р°С‚СЊСЃСЏ СѓРґР°Р»СЏС‚СЊ
+//РІР°Р¶РЅРѕ РїРѕСЃР»Рµ РїРѕРїС‹С‚РєРё СѓРґР°Р»РµРЅРёСЏ РїСЂРѕРіСЂР°РјРјР° Р±РѕР»РµРµ РЅРµ РїС‹С‚Р°РµС‚СЃСЏ СѓРґР°Р»СЏС‚СЊ СѓР¶Рµ СѓРґР°Р»РµРЅРЅС‹Рµ С„Р°Р№Р»С‹ РїРѕРјРµС‡Р°СЏ РёС… С„Р»Р°РіРѕРј 2 РІ РєРѕР»РѕРЅРєРµ СѓРґР°Р»РµРЅРёСЏ.
 $razn=$dateinunix-$xdatalastload;
 $toomanydays=1295684*2;
 if ($razn>$toomanydays) {// echo "File <font color=blue>".$fildata[$cnt][5]."</font> (ID ".$fildata[$cnt][0]." is hosted> 30 days ($datarazm)<br>";//noaction
-// если файл есть уже 30 дней то можно проверять и дату последней скачки если она конечно же есть
+// РµСЃР»Рё С„Р°Р№Р» РµСЃС‚СЊ СѓР¶Рµ 30 РґРЅРµР№ С‚Рѕ РјРѕР¶РЅРѕ РїСЂРѕРІРµСЂСЏС‚СЊ Рё РґР°С‚Сѓ РїРѕСЃР»РµРґРЅРµР№ СЃРєР°С‡РєРё РµСЃР»Рё РѕРЅР° РєРѕРЅРµС‡РЅРѕ Р¶Рµ РµСЃС‚СЊ
 if ($debug) echo "[debug] this file is dara rasm= $datarazm ($xdataupload) datascac=$dataskac  ($xdatalastload) razn=$razn<br>";
 $razn2=$dateinunix-$xdatalastload;
-if (!($fildata[$cnt][6]==2)) if ($xdatalastload<1) {echo "File  <blu>".$fildata[$cnt][5]."</blu> ни разу не загружался. <br>";};// затычка
+if (!($fildata[$cnt][6]==2)) if ($xdatalastload<1) {echo "File  <blu>".$fildata[$cnt][5]."</blu> РЅРё СЂР°Р·Сѓ РЅРµ Р·Р°РіСЂСѓР¶Р°Р»СЃСЏ. <br>";};// Р·Р°С‚С‹С‡РєР°
 
 if (($xdatalastload>0)AND(!($fildata[$cnt][6]==2))) { if ($razn2>$toomanydays) { echo "File <blu>".$fildata[$cnt][5]."</blu> (ID ".$fildata[$cnt][0]." is outdated ($dataskac)<br>";$enableremove=1; };
 if ($enableremove) if ($pr[88]) if (file_exists ($fildata[$cnt][5]))  {
                 echo "<red>Auto removing outdated file ".$fildata[$cnt][5]."   !</red><br>";
                 logwrite ("A_CHECK:Remove outdated file ".$fildata[$cnt][5]);
-                $fildata[$cnt][6]=2; $edit=1; //  знак удаленного файла - не проверяется
+                $fildata[$cnt][6]=2; $edit=1; //  Р·РЅР°Рє СѓРґР°Р»РµРЅРЅРѕРіРѕ С„Р°Р№Р»Р° - РЅРµ РїСЂРѕРІРµСЂСЏРµС‚СЃСЏ
                 unlink ($fildata[$cnt][5]) ;;
                 $enableremove=0;
                 };
@@ -833,7 +833,7 @@ if ($enableremove) if ($pr[88]) if (file_exists ($fildata[$cnt][5]))  {
 if (!($fildata[$cnt][6]==2))  if (!file_exists ($fildata[$cnt][5])){
         if ($pr[85]) echo "$msfixed ";
         echo "".$fildata[$cnt][5]." ".cmsg ("LNK_NOT");
-         if ($pr[85]) {echo " ".cmsg ("LNK_RMV"); $fildata[$cnt]="";; $fixed++;$edit=1;} // ЭТОПРАВИЛЬНОЕ УДАЛЕНИЕ!!
+         if ($pr[85]) {echo " ".cmsg ("LNK_RMV"); $fildata[$cnt]="";; $fixed++;$edit=1;} // Р­РўРћРџР РђР’РР›Р¬РќРћР• РЈР”РђР›Р•РќРР•!!
          echo "<br>";
         };
 	$cnt++;
@@ -851,13 +851,13 @@ echo "<br>".cmsg (A_FIL_DWN).": $downloadedfiles<br>";
  }//-------------------------------
  //
  //
-//проверкa styles
+//РїСЂРѕРІРµСЂРєa styles
  $cnt=1;
  while ($cnt<$stcnt) {
 	 echo"";break;
  }echo "<br>".cmsg (A_STL_ALL)." ".($stcnt-2)."<br>---------------------------------------<br>";
 
-//планируется стили подключать  просто как папки
+//РїР»Р°РЅРёСЂСѓРµС‚СЃСЏ СЃС‚РёР»Рё РїРѕРґРєР»СЋС‡Р°С‚СЊ  РїСЂРѕСЃС‚Рѕ РєР°Рє РїР°РїРєРё
 
  if ($edit==1) {
 	 @$tempdescr=csvopen ("_conf/styles.cfg","w",1);
@@ -865,7 +865,7 @@ echo "<br>".cmsg (A_FIL_DWN).": $downloadedfiles<br>";
     unset ($tempdescr,$stheader,$stplevel,$stcontent);
  }
 
-// проверка  langset
+// РїСЂРѕРІРµСЂРєР°  langset
 
   $cnt=1;
  while ($cnt<$lscnt) {
@@ -915,7 +915,7 @@ submitkey ("write","ADM_DEL_OFF_TABLES");echo "</form>";dispref () ;}
     ////################################################################
     ////################################################################
 //################################################################
-//удаление неответивших таблиц
+//СѓРґР°Р»РµРЅРёРµ РЅРµРѕС‚РІРµС‚РёРІС€РёС… С‚Р°Р±Р»РёС†
 //################################################################
 function deleteemptytables () {
   // errt, count - gde oni??
@@ -923,8 +923,8 @@ function deleteemptytables () {
 global $errt,$yes,$errortables,$write;
 global $sd,$pr,$mycol,$mycols,$ADM,$tbl;	global $gmheader,$gmplevel,$prauth,$prauthcnt;
 global $dbheader,$dbplevel,$prdbdata,$prdbdatacnt,$sd;
-//linux specsimbols -  чтоб вставить символ жмём Ctrl+Shift+U (появится символ u) отпускаем клавиши - вводим код символа... коды можно подсматривать в том же ООо.
-// - "¦" этот символ конвертируется мля - его нельзя юзать.
+//linux specsimbols -  С‡С‚РѕР± РІСЃС‚Р°РІРёС‚СЊ СЃРёРјРІРѕР» Р¶РјС‘Рј Ctrl+Shift+U (РїРѕСЏРІРёС‚СЃСЏ СЃРёРјРІРѕР» u) РѕС‚РїСѓСЃРєР°РµРј РєР»Р°РІРёС€Рё - РІРІРѕРґРёРј РєРѕРґ СЃРёРјРІРѕР»Р°... РєРѕРґС‹ РјРѕР¶РЅРѕ РїРѕРґСЃРјР°С‚СЂРёРІР°С‚СЊ РІ С‚РѕРј Р¶Рµ РћРћРѕ.
+// - "В¦" СЌС‚РѕС‚ СЃРёРјРІРѕР» РєРѕРЅРІРµСЂС‚РёСЂСѓРµС‚СЃСЏ РјР»СЏ - РµРіРѕ РЅРµР»СЊР·СЏ СЋР·Р°С‚СЊ.
  //2200
  //if ($sd[19]=="utf-8") $errt=iconvx("utf-8","windows-1251",$errt);
  if (!$yes) { echo "To removing aliases you must enable it. (check on box left the key).<br>";return;};
@@ -936,7 +936,7 @@ $fileforerrtname="_local".add_endslash("")."errt";
   echo "$errt";
  $errt=base64_decode($errt);
 echo "decoded=$errt;;";
-$errormassive=explode ("?",$errt ); //опять старые грабли задолбло
+$errormassive=explode ("?",$errt ); //РѕРїСЏС‚СЊ СЃС‚Р°СЂС‹Рµ РіСЂР°Р±Р»Рё Р·Р°РґРѕР»Р±Р»Рѕ
     echo "Starting deleting unneeded tables...<br>";
     //echo "Needed to remove: $errortables<br>";
     echo "Error massive counts:".(count ($errormassive)-1)."<br>";
@@ -967,11 +967,11 @@ echo "total: $total<br>";
 
 
 
-//функция перезаписи однострочных конфигов - полностью оптимизирована
+//С„СѓРЅРєС†РёСЏ РїРµСЂРµР·Р°РїРёСЃРё РѕРґРЅРѕСЃС‚СЂРѕС‡РЅС‹С… РєРѕРЅС„РёРіРѕРІ - РїРѕР»РЅРѕСЃС‚СЊСЋ РѕРїС‚РёРјРёР·РёСЂРѕРІР°РЅР°
 function write ()  
 	{
 	
-	for ($a=0;$a<200;$a++) { global ${"pr".$a};global ${"sd".$a};} //новое чтение конфигов,корректное
+	for ($a=0;$a<200;$a++) { global ${"pr".$a};global ${"sd".$a};} //РЅРѕРІРѕРµ С‡С‚РµРЅРёРµ РєРѕРЅС„РёРіРѕРІ,РєРѕСЂСЂРµРєС‚РЅРѕРµ
 	global $codekey;
 	if ($codekey==7) demo ();
 
@@ -979,16 +979,16 @@ function write ()
 $data=readfullcsv ($desc,"new");$pr=$data[0];
    @$site=csvopen ("_conf/sitedata.cfg","r",1);
 $data=readfullcsv ($site,"new");$sd=$data[0];
-//возможно стоит попробовать масс замену в admin.php  и циклы.
+//РІРѕР·РјРѕР¶РЅРѕ СЃС‚РѕРёС‚ РїРѕРїСЂРѕР±РѕРІР°С‚СЊ РјР°СЃСЃ Р·Р°РјРµРЅСѓ РІ admin.php  Рё С†РёРєР»С‹.
 
-	for ($a=0;$a<count ($pr);$a++) { $pr[$a]=stripslashes (${"pr".$a});} //новое чтение конфигов,корректное
+	for ($a=0;$a<count ($pr);$a++) { $pr[$a]=stripslashes (${"pr".$a});} //РЅРѕРІРѕРµ С‡С‚РµРЅРёРµ РєРѕРЅС„РёРіРѕРІ,РєРѕСЂСЂРµРєС‚РЅРѕРµ
 	for ($a=0;$a<count ($sd);$a++) { 
 		if ($sd14=="A_DEM_NOSQL")if (($a==14) OR($a==17)) continue;  //skip if public demo
 		$sd[$a]=stripslashes (${"sd".$a});}  //PARTIAL EXCHANGE
 	echo "<bb><h2>".cmsg (A_WRITED)."</bb><br>";    
 	
     if (count ($pr)<24)	for ($a=24;$a<200;$a++)
-	{ $sd[$a]="0";	  if ($a>36) $pr[$a]="0";	} //зануляем несделанные  potom mojno ubrat
+	{ $sd[$a]="0";	  if ($a>36) $pr[$a]="0";	} //Р·Р°РЅСѓР»СЏРµРј РЅРµСЃРґРµР»Р°РЅРЅС‹Рµ  potom mojno ubrat
 	
 	for ($a=0;$a<count ($sd);$a++)
 	{ if (strpos ($sd[$a],"\"")!==false) { echo "Possible hack...exit.";exit;}
@@ -1004,9 +1004,9 @@ $data=readfullcsv ($site,"new");$sd=$data[0];
 
 
 
-// ФУНКЦИИ ОТНОСЯЩИЕСЯ К SD
+// Р¤РЈРќРљР¦РР РћРўРќРћРЎРЇР©РР•РЎРЇ Рљ SD
 	// SD ADDED
-	// Теперь функция поддерживает любое число конфигов, максимум легко изменить
+	// РўРµРїРµСЂСЊ С„СѓРЅРєС†РёСЏ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ Р»СЋР±РѕРµ С‡РёСЃР»Рѕ РєРѕРЅС„РёРіРѕРІ, РјР°РєСЃРёРјСѓРј Р»РµРіРєРѕ РёР·РјРµРЅРёС‚СЊ
 	function displayconfigtblsd ()  // GMDATA EDITOR (USERDATA)
 {
 	 global $descfld,$sitefld,$editfld,$pr,$desc,$sd,$site,$ADMM,$prauth,$ADM,$gmlimitcfg,$HASHUSER,$go;
@@ -1018,7 +1018,7 @@ if (($ADM>-1)and($ADM<count ($prauth))AND($gmlimitcfg===0)) if ($go!==cmsg ("A_M
 	{			?>
 		<br><form action=admin.php method=post>
 <?php
-	echo cmsg ("A_USR")."<select name=ADMM>";//админу доступен выбор любого пользователя
+	echo cmsg ("A_USR")."<select name=ADMM>";//Р°РґРјРёРЅСѓ РґРѕСЃС‚СѓРїРµРЅ РІС‹Р±РѕСЂ Р»СЋР±РѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 	for ($ab=1;$ab<count ($prauth)-1;$ab++) {//ab=stroke
 	if ($ab==$ADMM) $asd="selected";else $asd="";
 		echo "<option value=".$ab." $asd >".$prauth[$ab][0]."</option>";	}
@@ -1034,9 +1034,9 @@ hidekey ("write","3");
 	 	echo "<br>".cmsg ("A_USR_PCFG")."<br>";
 		$LOGINUSER=stripslashes ($prauth[$ADMM][0]);
 		$PASSWORDUSER=stripslashes ($prauth[$ADMM][1]);
-	//улучшить предварительную загрузку конфигов чтобы значения не терялись если их не видно !"!!
-        //count ($pr) removed, set 200 to default НЕ ПОМОГЛО , с админ правами все ок, без них труба
-	for ($a=2;$a<201;$a++) { ${"pradm".$a}=stripslashes ($prauth[$ADMM][$a]);} //новое чтение конфигов,корректное
+	//СѓР»СѓС‡С€РёС‚СЊ РїСЂРµРґРІР°СЂРёС‚РµР»СЊРЅСѓСЋ Р·Р°РіСЂСѓР·РєСѓ РєРѕРЅС„РёРіРѕРІ С‡С‚РѕР±С‹ Р·РЅР°С‡РµРЅРёСЏ РЅРµ С‚РµСЂСЏР»РёСЃСЊ РµСЃР»Рё РёС… РЅРµ РІРёРґРЅРѕ !"!!
+        //count ($pr) removed, set 200 to default РќР• РџРћРњРћР“Р›Рћ , СЃ Р°РґРјРёРЅ РїСЂР°РІР°РјРё РІСЃРµ РѕРє, Р±РµР· РЅРёС… С‚СЂСѓР±Р°
+	for ($a=2;$a<201;$a++) { ${"pradm".$a}=stripslashes ($prauth[$ADMM][$a]);} //РЅРѕРІРѕРµ С‡С‚РµРЅРёРµ РєРѕРЅС„РёРіРѕРІ,РєРѕСЂСЂРµРєС‚РЅРѕРµ
 	
 if ($gmlimitcfg!==1) 
 	{
@@ -1063,15 +1063,15 @@ checkbox ($pradm34,"pradm34");	lprint ("A_EXEC") ;if ($pradm42) lprint ("BLOCK")
 checkbox ($pradm35,"pradm35");	lprint ("A_COPY_EXCH") ;if ($pradm42) lprint ("BLOCK"); echo "<br>";
 checkbox ($pradm43,"pradm43");	lprint ("GMP_43") ;if ($pradm42) lprint ("BLOCK"); echo "<br>";
 checkbox ($pradm44,"pradm44");	lprint ("GMP_44") ;if ($pradm42) lprint ("BLOCK"); echo "<br>";
-if ($prauth[$ADM][42]) {  // требуются права суперпользователя для показа этой опции иначе скрытая передача
-    // ещё неплохо бы ее игнорировать на приеме, так как слишком легко подменить .
+if ($prauth[$ADM][42]) {  // С‚СЂРµР±СѓСЋС‚СЃСЏ РїСЂР°РІР° СЃСѓРїРµСЂРїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РґР»СЏ РїРѕРєР°Р·Р° СЌС‚РѕР№ РѕРїС†РёРё РёРЅР°С‡Рµ СЃРєСЂС‹С‚Р°СЏ РїРµСЂРµРґР°С‡Р°
+    // РµС‰С‘ РЅРµРїР»РѕС…Рѕ Р±С‹ РµРµ РёРіРЅРѕСЂРёСЂРѕРІР°С‚СЊ РЅР° РїСЂРёРµРјРµ, С‚Р°Рє РєР°Рє СЃР»РёС€РєРѕРј Р»РµРіРєРѕ РїРѕРґРјРµРЅРёС‚СЊ .
     echo "-------------------------------------------------<br>";
     checkbox ($pradm42,"pradm42");	lprint ("GMP_42");echo "<br>";
 checkbox ($pradm59,"pradm59");	lprint ("NOPASS");echo "<br>";
 checkbox ($pradm60,"pradm60");	lprint ("NOPROF");echo "<br>";
 
 } else {
-    // если нет прав идет скрытая передача параметра здесь
+    // РµСЃР»Рё РЅРµС‚ РїСЂР°РІ РёРґРµС‚ СЃРєСЂС‹С‚Р°СЏ РїРµСЂРµРґР°С‡Р° РїР°СЂР°РјРµС‚СЂР° Р·РґРµСЃСЊ
     hidekey ("pradm42",$pradm42);
     hidekey ("pradm59",$pradm59);
     hidekey ("pradm60",$pradm60);
@@ -1156,45 +1156,45 @@ exit;
 
 // MODIFIED TO WRITE LOGINDATA (SITE RELATED)  
 // SD CONFIG
-// Теперь функция поддерживает любое число конфигов, максимум легко изменить
+// РўРµРїРµСЂСЊ С„СѓРЅРєС†РёСЏ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ Р»СЋР±РѕРµ С‡РёСЃР»Рѕ РєРѕРЅС„РёРіРѕРІ, РјР°РєСЃРёРјСѓРј Р»РµРіРєРѕ РёР·РјРµРЅРёС‚СЊ
 function writeconfigtblsd () 
-{	//echo "Возникла проблема при реконфигурации аккаунта<br>";	exit;	//надобно как то автоопрос чтоли сделать всех переменных  
-	//автоматизировать немного  1- загрузку в html,2- взятие на редактирование 3- сохранение
-	 echo "<bb><h2>Данные записаны.</bb><br></h2>";
-	global $codekey,$LOGINUSER,$PASSWORDUSER,$HASHUSER,$OSTYPE,$go,$gmlimitcfg,$ADMM,$ADM;  // echo "ADMM==".$ADMM ;//тест
-	//if ($gmlimitcfg===1){$ADMM=$ADM;}// тк добавили gmlimitcfg поэтому добавим и этот,хотя изначально gmlim вооб.тут не юзался
-	for ($a=0;$a<200;$a++) { global ${"pradm".$a};} //новое чтение global
-		//кажется сюда цикл влезет
+{	//echo "Р’РѕР·РЅРёРєР»Р° РїСЂРѕР±Р»РµРјР° РїСЂРё СЂРµРєРѕРЅС„РёРіСѓСЂР°С†РёРё Р°РєРєР°СѓРЅС‚Р°<br>";	exit;	//РЅР°РґРѕР±РЅРѕ РєР°Рє С‚Рѕ Р°РІС‚РѕРѕРїСЂРѕСЃ С‡С‚РѕР»Рё СЃРґРµР»Р°С‚СЊ РІСЃРµС… РїРµСЂРµРјРµРЅРЅС‹С…  
+	//Р°РІС‚РѕРјР°С‚РёР·РёСЂРѕРІР°С‚СЊ РЅРµРјРЅРѕРіРѕ  1- Р·Р°РіСЂСѓР·РєСѓ РІ html,2- РІР·СЏС‚РёРµ РЅР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ 3- СЃРѕС…СЂР°РЅРµРЅРёРµ
+	 echo "<bb><h2>Р”Р°РЅРЅС‹Рµ Р·Р°РїРёСЃР°РЅС‹.</bb><br></h2>";
+	global $codekey,$LOGINUSER,$PASSWORDUSER,$HASHUSER,$OSTYPE,$go,$gmlimitcfg,$ADMM,$ADM;  // echo "ADMM==".$ADMM ;//С‚РµСЃС‚
+	//if ($gmlimitcfg===1){$ADMM=$ADM;}// С‚Рє РґРѕР±Р°РІРёР»Рё gmlimitcfg РїРѕСЌС‚РѕРјСѓ РґРѕР±Р°РІРёРј Рё СЌС‚РѕС‚,С…РѕС‚СЏ РёР·РЅР°С‡Р°Р»СЊРЅРѕ gmlim РІРѕРѕР±.С‚СѓС‚ РЅРµ СЋР·Р°Р»СЃСЏ
+	for ($a=0;$a<200;$a++) { global ${"pradm".$a};} //РЅРѕРІРѕРµ С‡С‚РµРЅРёРµ global
+		//РєР°Р¶РµС‚СЃСЏ СЃСЋРґР° С†РёРєР» РІР»РµР·РµС‚
  @$gmdata=csvopen ("_conf/gmdata.cfg","r",1);
 $data=readfullcsv ($gmdata,"new");
-$gmheader=$data[0];$gmplevel=$data[1];$prauth=$data[2];$prauthcnt=$data[3];// тупо счетчик строк - дата 3
+$gmheader=$data[0];$gmplevel=$data[1];$prauth=$data[2];$prauthcnt=$data[3];// С‚СѓРїРѕ СЃС‡РµС‚С‡РёРє СЃС‚СЂРѕРє - РґР°С‚Р° 3
 if ($go==cmsg ("A_CNEW")) {
 	if ($codekey==7) demo ();
 	if ($codekey==9) demo ();
 //	if ($codekey==8) demo ();	 temp for test enabling create users
-//  ADMM - пользователь, настроки которого редактируют.  а пользователь, которые это делает - ,
+//  ADMM - РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ, РЅР°СЃС‚СЂРѕРєРё РєРѕС‚РѕСЂРѕРіРѕ СЂРµРґР°РєС‚РёСЂСѓСЋС‚.  Р° РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ, РєРѕС‚РѕСЂС‹Рµ СЌС‚Рѕ РґРµР»Р°РµС‚ - ,
 if ($codekey==4) needupgrade ();
-$ADMM=($prauthcnt-1) ;echo "Creating new one...<br>";};// ага нихрена он никого не создает!
+$ADMM=($prauthcnt-1) ;echo "Creating new one...<br>";};// Р°РіР° РЅРёС…СЂРµРЅР° РѕРЅ РЅРёРєРѕРіРѕ РЅРµ СЃРѕР·РґР°РµС‚!
 $edit=1;
 
-echo "DEBUG Состояние gmlimitcfg=$gmlimitcfg<br> ";
+echo "DEBUG РЎРѕСЃС‚РѕСЏРЅРёРµ gmlimitcfg=$gmlimitcfg<br> ";
 
   if ((!$prauth[$ADM][42])AND($prauth[$ADMM][59])AND($PASSWORDUSER==true)) { $PASSWORDUSER=FALSE;LPRINT ("DISPASSCH"); }
-// здесь у нас указывается что пользователь хочет изменить пароль.  не даём ему это сделать если стоит запрет на смену пароля.
+// Р·РґРµСЃСЊ Сѓ РЅР°СЃ СѓРєР°Р·С‹РІР°РµС‚СЃСЏ С‡С‚Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ С…РѕС‡РµС‚ РёР·РјРµРЅРёС‚СЊ РїР°СЂРѕР»СЊ.  РЅРµ РґР°С‘Рј РµРјСѓ СЌС‚Рѕ СЃРґРµР»Р°С‚СЊ РµСЃР»Рё СЃС‚РѕРёС‚ Р·Р°РїСЂРµС‚ РЅР° СЃРјРµРЅСѓ РїР°СЂРѕР»СЏ.
 		if ($gmlimitcfg==0)	$prauth[$ADMM][0]=stripslashes ($LOGINUSER); 			
 		echo "<form action=\"admin.php\" method=\"POST\">";
 		if ($PASSWORDUSER==true) { $prauth[$ADMM][1]=hashgen ($PASSWORDUSER);
-	//здесь у нас надо отправить новый кук чтобы пользователь мог не перезаходить после смены пароля.
-		$dbsa=a ( base64_encode($prauth[$ADMM][0]."¦".$PASSWORDUSER));
+	//Р·РґРµСЃСЊ Сѓ РЅР°СЃ РЅР°РґРѕ РѕС‚РїСЂР°РІРёС‚СЊ РЅРѕРІС‹Р№ РєСѓРє С‡С‚РѕР±С‹ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РјРѕРі РЅРµ РїРµСЂРµР·Р°С…РѕРґРёС‚СЊ РїРѕСЃР»Рµ СЃРјРµРЅС‹ РїР°СЂРѕР»СЏ.
+		$dbsa=a ( base64_encode($prauth[$ADMM][0]."В¦".$PASSWORDUSER));
 			if ($ADM==$ADMM) hidekey ("dbsaa",$dbsa); 
 			if ($ADM!==$ADMM) echo "...<br>";
 		} else { $prauth[$ADMM][1]=stripslashes ($HASHUSER);};
 		submitkey ("dalee","CONT");
 		echo "</form>";
 		// prevents fake change password
-		//  Незагруженные переменные остнутся неизмененными!
-		//..$counterusercolumns=count ($prauth[$ADMM]);// представьте себе так надо!
-               $counterusercolumns=count ($gmheader);// а иак лучше создаются новые пользователи в установке по дефолту. а то пишется херь всякая в конец пред юзера.
+		//  РќРµР·Р°РіСЂСѓР¶РµРЅРЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ РѕСЃС‚РЅСѓС‚СЃСЏ РЅРµРёР·РјРµРЅРµРЅРЅС‹РјРё!
+		//..$counterusercolumns=count ($prauth[$ADMM]);// РїСЂРµРґСЃС‚Р°РІСЊС‚Рµ СЃРµР±Рµ С‚Р°Рє РЅР°РґРѕ!
+               $counterusercolumns=count ($gmheader);// Р° РёР°Рє Р»СѓС‡С€Рµ СЃРѕР·РґР°СЋС‚СЃСЏ РЅРѕРІС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»Рё РІ СѓСЃС‚Р°РЅРѕРІРєРµ РїРѕ РґРµС„РѕР»С‚Сѓ. Р° С‚Рѕ РїРёС€РµС‚СЃСЏ С…РµСЂСЊ РІСЃСЏРєР°СЏ РІ РєРѕРЅРµС† РїСЂРµРґ СЋР·РµСЂР°.
 
 		//..if ($counterusercolumns>100) $counterusercolumns=100;
 //		echo "DEBUG Your cnt= $counterusercolumns ADMM=$ADMM ADM=$ADM<br>";
@@ -1203,27 +1203,27 @@ echo "DEBUG Состояние gmlimitcfg=$gmlimitcfg<br> ";
                 if ((!$prauth[$ADM][42])AND(($prauth[$ADMM][60]))) { LPRINT ("DISPROFCH"); exit ();}
               
              
-		for ($a=2;$a<$counterusercolumns-1;$a++) { //попробуем на 1 меньше писать может поможет если там \n \r\n передаются по ум.
-				// счас работает все проверить построе на тесте.
+		for ($a=2;$a<$counterusercolumns-1;$a++) { //РїРѕРїСЂРѕР±СѓРµРј РЅР° 1 РјРµРЅСЊС€Рµ РїРёСЃР°С‚СЊ РјРѕР¶РµС‚ РїРѕРјРѕР¶РµС‚ РµСЃР»Рё С‚Р°Рј \n \r\n РїРµСЂРµРґР°СЋС‚СЃСЏ РїРѕ СѓРј.
+				// СЃС‡Р°СЃ СЂР°Р±РѕС‚Р°РµС‚ РІСЃРµ РїСЂРѕРІРµСЂРёС‚СЊ РїРѕСЃС‚СЂРѕРµ РЅР° С‚РµСЃС‚Рµ.
 
 		if ($gmlimitcfg===1) if ((($a>1)AND($a<16))OR(($a>32)AND($a<37))OR($a==38)OR(($a>41)AND($a<46))OR(($a>49)AND($a<55))OR($a==48)) continue;
              //   echo "isset pradm$a : ".isset(${"pradm".$a})."<br>";
 		//if ($gmlimitcfg===1)if (isset(${"pradm".$a})===false) continue;
-                    //42(су) 59( пароль) 60(профиль) должны точно пропускаться, если нет сделать это
+                    //42(СЃСѓ) 59( РїР°СЂРѕР»СЊ) 60(РїСЂРѕС„РёР»СЊ) РґРѕР»Р¶РЅС‹ С‚РѕС‡РЅРѕ РїСЂРѕРїСѓСЃРєР°С‚СЊСЃСЏ, РµСЃР»Рё РЅРµС‚ СЃРґРµР»Р°С‚СЊ СЌС‚Рѕ
                 $prauth[$ADMM][$a]=stripslashes (${"pradm".$a});
-                //// не вышло просто оставить непоказанное в покое да и нельзя так, вдруг пришлют через GET переменную
-                // дописывать сюда все настройки требующие админа или суперюзверя
+                //// РЅРµ РІС‹С€Р»Рѕ РїСЂРѕСЃС‚Рѕ РѕСЃС‚Р°РІРёС‚СЊ РЅРµРїРѕРєР°Р·Р°РЅРЅРѕРµ РІ РїРѕРєРѕРµ РґР° Рё РЅРµР»СЊР·СЏ С‚Р°Рє, РІРґСЂСѓРі РїСЂРёС€Р»СЋС‚ С‡РµСЂРµР· GET РїРµСЂРµРјРµРЅРЅСѓСЋ
+                // РґРѕРїРёСЃС‹РІР°С‚СЊ СЃСЋРґР° РІСЃРµ РЅР°СЃС‚СЂРѕР№РєРё С‚СЂРµР±СѓСЋС‰РёРµ Р°РґРјРёРЅР° РёР»Рё СЃСѓРїРµСЂСЋР·РІРµСЂСЏ
                 
-		}  //PARTIAL EXCHANGER  запись конфигов проверено
-                if ($go==cmsg ("A_CNEW")) if ($OSTYPE=="LINUX") $prauth[$ADMM][$counterusercolumns].="\n"; // добавляет забытый в перевод строки только для создания юзера.
+		}  //PARTIAL EXCHANGER  Р·Р°РїРёСЃСЊ РєРѕРЅС„РёРіРѕРІ РїСЂРѕРІРµСЂРµРЅРѕ
+                if ($go==cmsg ("A_CNEW")) if ($OSTYPE=="LINUX") $prauth[$ADMM][$counterusercolumns].="\n"; // РґРѕР±Р°РІР»СЏРµС‚ Р·Р°Р±С‹С‚С‹Р№ РІ РїРµСЂРµРІРѕРґ СЃС‚СЂРѕРєРё С‚РѕР»СЊРєРѕ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ СЋР·РµСЂР°.
 //print_r($prauth);
                 //..if (($prauth[$ADM][0])==($prauth[$ADMM][0])) { echo "UserName (Login) cannot be identical<br>"; $edit=0;return;};
-              //это ещё от чего защита?
+              //СЌС‚Рѕ РµС‰С‘ РѕС‚ С‡РµРіРѕ Р·Р°С‰РёС‚Р°?
 
-	//тоже похож на цикл
+	//С‚РѕР¶Рµ РїРѕС…РѕР¶ РЅР° С†РёРєР»
   //..$bugwithemptyfieldsfixlinux=1;
 	 @$tempdescr=csvopen ("_conf/gmdata.cfg","w",1);
-//global $testlinuxlinefeed;$testlinuxlinefeed=1;  неправильно работает - выполняется и перед и после добавления юзера что недопустимо
+//global $testlinuxlinefeed;$testlinuxlinefeed=1;  РЅРµРїСЂР°РІРёР»СЊРЅРѕ СЂР°Р±РѕС‚Р°РµС‚ - РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ Рё РїРµСЂРµРґ Рё РїРѕСЃР»Рµ РґРѕР±Р°РІР»РµРЅРёСЏ СЋР·РµСЂР° С‡С‚Рѕ РЅРµРґРѕРїСѓСЃС‚РёРјРѕ
 echo "--------------------------------------------"							;
    writefullcsv ($tempdescr,$gmheader,$gmplevel,$prauth);$edit=0;
    exit;
@@ -1235,6 +1235,6 @@ echo "--------------------------------------------"							;
 
 
 	endtm ();
-	// формген - модуль для обработки form.cfg для ввода данных в таблицы и для выдачи
+	// С„РѕСЂРјРіРµРЅ - РјРѕРґСѓР»СЊ РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё form.cfg РґР»СЏ РІРІРѕРґР° РґР°РЅРЅС‹С… РІ С‚Р°Р±Р»РёС†С‹ Рё РґР»СЏ РІС‹РґР°С‡Рё
 
 ?>

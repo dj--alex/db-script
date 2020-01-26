@@ -1,25 +1,23 @@
 <?php ob_start ();
 //$writefullcfgdiscrwin=1;
-// СКАЖЕМ НЕТ ШАБЛОНАМ, мы за оригинальное программирование!
-// только ломая шаблоны и стереотипы можно добится чего то нового.
+// РЎРљРђР–Р•Рњ РќР•Рў РЁРђР‘Р›РћРќРђРњ, РјС‹ Р·Р° РѕСЂРёРіРёРЅР°Р»СЊРЅРѕРµ РїСЂРѕРіСЂР°РјРјРёСЂРѕРІР°РЅРёРµ!
+// С‚РѕР»СЊРєРѕ Р»РѕРјР°СЏ С€Р°Р±Р»РѕРЅС‹ Рё СЃС‚РµСЂРµРѕС‚РёРїС‹ РјРѕР¶РЅРѕ РґРѕР±РёС‚СЃСЏ С‡РµРіРѕ С‚Рѕ РЅРѕРІРѕРіРѕ.
 //if (!$languageprofile) $languageprofile="english";
 $verinst="Install v4.5 (c) dj--alex";// service hide
-
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-error_reporting(-1);
+//error_reporting (E_ALL);
+//ini_set('error_reporting',E_ALL^E_NOTICE);
 $ei="<img src=\"_ico/errorcritical.png\">";
 echo "Starting install process dbscript. ";
 echo "<a href=\"https://github.com/dj--alex/db-script/\"> Github</a>";
 echo "<br> Module: $verinst<br>";
 
 if ($_POST["step"]<1) {echo "Checking ini<br><div style=\"position:absolute; z-index:4;  top:0; right:0; color: #FFFFFF ; background: #0000aF \"><img src=\"_style/dbsDeusModuslogo.jpg\"></div>";
-    //переписать msgexiterror  c учётом функции window и вообще сделать там наконец возможность менять размер окна и возможно перемещать его.
+    //РїРµСЂРµРїРёСЃР°С‚СЊ msgexiterror  c СѓС‡С‘С‚РѕРј С„СѓРЅРєС†РёРё window Рё РІРѕРѕР±С‰Рµ СЃРґРµР»Р°С‚СЊ С‚Р°Рј РЅР°РєРѕРЅРµС† РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РјРµРЅСЏС‚СЊ СЂР°Р·РјРµСЂ РѕРєРЅР° Рё РІРѕР·РјРѕР¶РЅРѕ РїРµСЂРµРјРµС‰Р°С‚СЊ РµРіРѕ.
     $phpmem=ini_get ("memory_limit");if ($phpmem<100) echo "$ei settings php.ini memory_limit=$phpmem , recommend inscrease value at least 100M (for big files and dumps - higher)<br>";
     $phppost=ini_get ("post_max_size");if ($phppost<10) echo "$ei settings : php.ini : post_max_size=$phppost , recommend inscrease value at least 10mb (for big files and dumps - higher)<br>";
 $phptag=ini_get ("short_open_tag"); //if (!$phptag) die ("$ei <font color=red>Fatal error</font>: settings : php.ini : dbscript requires short_open_tag=on ! This version unsupport work without it. Installation failed. ");
 $phpsafe=ini_get ("safe_mode"); if ($phpsafe) echo "settings : php.ini : safe_mode is on. recommend off , it not allows use some inbuild settings and some operations you can get errors without it.<br>";
-$phpglob=ini_get ("register_globals"); if ($phpglob) echo"$ei notify: register globals is on. recommended off for security reasons.<br>";
+$phpglob=ini_get ("register_glogals"); if ($phpglob) echo"$ei notify: register globals is on. recommended off for security reasons.<br>";
 $phpfunc=ini_get ("disable_function");if ($phpfunc) echo "$ei notify: disabled functions $phpfunc<br>";
 if (!extension_loaded('iconv')) echo " $ei Warning : php extension iconv non-exist !  <br>";
 if (!extension_loaded('mb_string')) echo "$ei Warning : php extension mb_string non-exist !  <br>";
@@ -48,15 +46,15 @@ echo "Loading core...";
 //echo "step $step G ".$_GET["step"]." P".$_POST["step"]."<br>";;
 if ($_GET["step"]>0) {echo "Invalid initializing..."; exit;}
 
-$nomnu=1;//блокирует вывод интерфейса программы
-$coreloadskip=1; //блокирует загрузку и проверку настроек ядром программы.
-$debugmode=false;// отключение показа сообщений об ошибках
-$installermode=1;// locks default language to english  выключает поддержку lang.cfg соответственно все коды возвращаемые им будут неверными.
-$nolayer=1;// убираем внешние окошким
+$nomnu=1;//Р±Р»РѕРєРёСЂСѓРµС‚ РІС‹РІРѕРґ РёРЅС‚РµСЂС„РµР№СЃР° РїСЂРѕРіСЂР°РјРјС‹
+$coreloadskip=1; //Р±Р»РѕРєРёСЂСѓРµС‚ Р·Р°РіСЂСѓР·РєСѓ Рё РїСЂРѕРІРµСЂРєСѓ РЅР°СЃС‚СЂРѕРµРє СЏРґСЂРѕРј РїСЂРѕРіСЂР°РјРјС‹.
+$debugmode=false;// РѕС‚РєР»СЋС‡РµРЅРёРµ РїРѕРєР°Р·Р° СЃРѕРѕР±С‰РµРЅРёР№ РѕР± РѕС€РёР±РєР°С…
+$installermode=1;// locks default language to english  РІС‹РєР»СЋС‡Р°РµС‚ РїРѕРґРґРµСЂР¶РєСѓ lang.cfg СЃРѕРѕС‚РІРµС‚СЃС‚РІРµРЅРЅРѕ РІСЃРµ РєРѕРґС‹ РІРѕР·РІСЂР°С‰Р°РµРјС‹Рµ РёРј Р±СѓРґСѓС‚ РЅРµРІРµСЂРЅС‹РјРё.
+$nolayer=1;// СѓР±РёСЂР°РµРј РІРЅРµС€РЅРёРµ РѕРєРѕС€РєРёРј
 require ('dbscore.lib'); // i/o file  INCLUDED!
 
-$onloadlocal=opendir ("_conf");
-$errcrtdir=mkdir ("_conf");// langset  styles  required
+@$onloadlocal=opendir ("_conf");
+@$errcrtdir=mkdir ("_conf");// langset  styles  required
 
 //echo "Language profile=$lang";
 
@@ -65,17 +63,17 @@ echo "".$verprogram."<br>";
 if (($onloadlocal==false)AND($errcrtdir==false)) { echo "<font color=red>Fatal error</font>: Cannot write to program folder.<br>You must enable writing to user web-server or programm  ( Set rwxr--r-- for script.)";exit; };
 
 if (!isset ($verprogram)) die ("Core loading failed!");
-if (($vernumb<4.3)or($vernumb>4.9)) die ("Unsupported version core!");
+if (($vernumb<4.4)or($vernumb>4.9)) die ("Unsupported version core!");
 if (!$step) echo "This version is supported by this installer<br>";
 
-//теперь вся конфигурация загружается через initalizeSE //$fldup = get from init// выч как лучше отрезать папку 
+//С‚РµРїРµСЂСЊ РІСЃСЏ РєРѕРЅС„РёРіСѓСЂР°С†РёСЏ Р·Р°РіСЂСѓР¶Р°РµС‚СЃСЏ С‡РµСЂРµР· initalizeSE //$fldup = get from init// РІС‹С‡ РєР°Рє Р»СѓС‡С€Рµ РѕС‚СЂРµР·Р°С‚СЊ РїР°РїРєСѓ 
 //$languageprofile="russian";
 $locale="";
 
 if (!$lang) {$languageprofile="english"; 
 
 $filbas="_conf/sitedata.cfg";
-$site=csvopen ($filbas,"r","0");$data=readfullcsv ($site,"new");
+@$site=csvopen ($filbas,"r","0");$data=readfullcsv ($site,"new");
 if ((!$step)AND($data!==-1)) { echo "Dbscript already installed. You must remove install.php<br>";window ("","") ;echo " <img src=\""."_ico/info.png"."\" border=0><br>   ";
   lprint (INST_CONF_PRES);closewindow();exit;}
 
@@ -89,12 +87,12 @@ if ((!$step)AND($data!==-1)) { echo "Dbscript already installed. You must remove
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=2>
 <TR>
 <form action="install.php" method="post"><img src=_ico/install.png></img>
-<TD WIDTH=75%>Select your language . (after install you can select any language) <br> Выберите предпочитаемый язык . (позже вы сможете выбрать любой) <br>
+<TD WIDTH=75%>Select your language . (after install you can select any language) <br> Р’С‹Р±РµСЂРёС‚Рµ РїСЂРµРґРїРѕС‡РёС‚Р°РµРјС‹Р№ СЏР·С‹Рє . (РїРѕР·Р¶Рµ РІС‹ СЃРјРѕР¶РµС‚Рµ РІС‹Р±СЂР°С‚СЊ Р»СЋР±РѕР№) <br>
     </TD>
 <TD WIDTH=30%>
 <?php echo "<select name=lang>";
 echo "<option value=english>english</option>";
-echo "<option value=russian>русский</option>";
+echo "<option value=russian>СЂСѓСЃСЃРєРёР№</option>";
 echo "<option value=deutsch>deutsch</option>";
 echo "<option value=rustranslit>rustranslit</option>";
 echo "</select>";
@@ -143,7 +141,7 @@ if ($step>1) {
 //============================================//
 if ($step==2)
 {  //$mainhostmysql
-	if (!$NOMYSQL) {$connect=mysqli_connect ($IPDEFSERVSQL, $LOGINSQL , $PASSSQL);
+	if (!$NOMYSQL) {@$connect=mysqli_connect ($IPDEFSERVSQL, $LOGINSQL , $PASSSQL);
 	if ($connect===false) {sqlerr ();} else {echo "";}//lprint (SQLDOWN);
         }
 	echo "".cmsg (INST_SU)."<br>"; 
@@ -196,14 +194,14 @@ echo "You dont have iconv and mb string extensions , encoding forced to cp1251<b
  	if (is_array($line)==false) {
  	if ($OSTYPE=="LINUX") $line.="\n";
  	//if ($OSTYPE=="WINDOWS")	$line.="\r\n";
- 	$line=explode ("¦",$line);
+ 	$line=explode ("В¦",$line);
  	return $line;
  	}
  	if (is_array($line)==true) {
  			for ($a=0;$a<count ($line);$a++)
  			{  if ($OSTYPE=="LINUX") $line[$a].="\n";
 		// 		if ($OSTYPE=="WINDOWS")	$line[$a].="\r\n";
- 				$line[$a]=explode ("¦",$line[$a]);
+ 				$line[$a]=explode ("В¦",$line[$a]);
  			}
  	}
  	return $line;
@@ -215,22 +213,22 @@ closewindow();
  //$lscontent=splitcfgline ($lscontent);
  //  writefullcsv ($tempdescr,$lsheader,$lsplevel,$lscontent);$edit=0;	//reading langset 
 	$filbas="_conf/langset.cfg";
-	$langset=csvopen ($filbas,"r",0);$data=readfullcsv ($langset,"new");
+	@$langset=csvopen ($filbas,"r",0);$data=readfullcsv ($langset,"new");
  if ($data==-1) {
-	$lsheader="language¦selectprofile¦¦¦¦";
-	$lsplevel="0¦0¦0¦0¦0¦";
-	$lscontent[]="default¦".$lang."¦¦¦";
-	$lscontent[]="default¦".$lang."¦¦¦";
-	$path=getcwd ()."/_langdb/"; //наполняем базу langset
+	$lsheader="languageВ¦selectprofileВ¦В¦В¦В¦";
+	$lsplevel="0В¦0В¦0В¦0В¦0В¦";
+	$lscontent[]="defaultВ¦".$lang."В¦В¦В¦";
+	$lscontent[]="defaultВ¦".$lang."В¦В¦В¦";
+	$path=getcwd ()."/_langdb/"; //РЅР°РїРѕР»РЅСЏРµРј Р±Р°Р·Сѓ langset
 		$mask="*.cfg";	$protect[]=".";$nameselect="files";
 		$files=filesselect ($path,$mask,$protect,$nameselect,0);
 		for ($b=0;$b<count ($files);$b++) {//echo "b=$b, ".$files[$b][0]."==file<br>";
 			if (strpos ($files[$b][0],".cfg")==true) {$x[]=str_replace(".cfg","",$files[$b][0]);}
 		}
 		for ($a=0;$a<count ($x);$a++) {
-	$lscontent[]=$x[$a]."¦".$x[$a]."¦¦¦¦";
+	$lscontent[]=$x[$a]."В¦".$x[$a]."В¦В¦В¦В¦";
 		}
- $tempdescr=csvopen ("_conf/langset.cfg","w",1);
+ @$tempdescr=csvopen ("_conf/langset.cfg","w",1);
  $lsheader=splitcfgline ($lsheader);
  $lsplevel=splitcfgline ($lsplevel);
  $lscontent=splitcfgline ($lscontent);
@@ -240,54 +238,54 @@ closewindow();
  }
 //reading pages
  $filbas="_conf/pages.cfg";
-$pages=csvopen ($filbas,"r",0);$data=readfullcsv ($pages,"new");
+@$pages=csvopen ($filbas,"r",0);$data=readfullcsv ($pages,"new");
 if ($data==-1) {
-//$pgheader="1¦012345¦0-pageent1¦str1¦str2¦rus¦exchpage¦rus¦redirect0-no1-y2-sp¦reditime¦";
-$pgheader="0-pageent1¦1page¦2¦russian¦4exchpage¦english¦6redirect0-no1-y2-sp¦7reditime¦8menulevel-1op-2cl¦9skipmenudmstyle¦10openmenu3";
-$pgplevel="¦¦¦¦¦d¦d¦d¦d¦d¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
+//$pgheader="1В¦012345В¦0-pageent1В¦str1В¦str2В¦rusВ¦exchpageВ¦rusВ¦redirect0-no1-y2-spВ¦reditimeВ¦";
+$pgheader="0-pageent1В¦1pageВ¦2В¦russianВ¦4exchpageВ¦englishВ¦6redirect0-no1-y2-spВ¦7reditimeВ¦8menulevel-1op-2clВ¦9skipmenudmstyleВ¦10openmenu3";
+$pgplevel="В¦В¦В¦В¦В¦dВ¦dВ¦dВ¦dВ¦dВ¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦";
 if ($languageprofile=="russian") 
-{$p[]="0¦admin.php¦0¦Конфигурация¦0¦Admin¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="0¦admin.php¦0¦Конфигурация¦0¦Admin¦0¦0¦0¦0¦0¦0¦0¦0";// writefullcsv почему то глотает первую строку иноогда
-$p[]="1¦login.php¦0¦Вход¦0¦Enter¦Вход¦¦0¦1¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="2¦w.php¦0¦Редактор¦0¦Editor¦Редактор¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="3¦getfile.php¦0¦Поиск¦0¦Search¦Поиск¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="4¦r.php?viewid=.ver&base=0¦0¦Версия¦0¦Version¦Версия¦¦0¦1¦1¦¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="5¦filemgr.php¦0¦Файлы¦¦Filemanager¦Файлы¦¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="6¦dblinker.php¦0¦Менеджер баз¦0¦DB manager¦Менеджер баз¦¦¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="7¦admin.php?cmd=myprof¦0¦Мой профиль¦0¦My profile¦Мой профиль¦¦1¦0¦Настройки¦0¦0¦0¦0";
-$p[]="8¦r.php?viewid=.info&base=0¦¦Инфо о мне¦¦About me¦Инфо о мне¦¦0¦0¦0";
-$p[]="9¦r.php?vID=.author&base=0¦0¦О авторе¦¦Author¦О авторе¦¦3¦0¦0";
-$p[]="11¦news.php¦¦Блог¦¦Blog¦d¦d¦1¦0¦Beta¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="12¦nedit.php¦qwe¦Добавить новость¦¦Blog-edit¦d¦d¦0¦0¦¦0¦0¦0¦0";
-$p[]="13¦admin.php?cmd=note¦0¦блокнот¦¦Shared notes¦Общий блокнот¦¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="14¦admin.php?cmd=test¦0¦Самотест¦¦Self-test¦Самотест¦¦0¦0¦0¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="15¦http://code.google.com/p/db-script/issues¦qweqwe¦Сообщить о баге в SVN¦1¦Send bug message¦3¦2¦d¦0¦0¦0¦0¦0";
-//$p[]="13¦r.php?vID=.aboutme&base=0¦0¦Мои данные¦0¦User info¦Мои данные";
+{$p[]="0В¦admin.phpВ¦0В¦РљРѕРЅС„РёРіСѓСЂР°С†РёСЏВ¦0В¦AdminВ¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="0В¦admin.phpВ¦0В¦РљРѕРЅС„РёРіСѓСЂР°С†РёСЏВ¦0В¦AdminВ¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";// writefullcsv РїРѕС‡РµРјСѓ С‚Рѕ РіР»РѕС‚Р°РµС‚ РїРµСЂРІСѓСЋ СЃС‚СЂРѕРєСѓ РёРЅРѕРѕРіРґР°
+$p[]="1В¦login.phpВ¦0В¦Р’С…РѕРґВ¦0В¦EnterВ¦Р’С…РѕРґВ¦В¦0В¦1В¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="2В¦w.phpВ¦0В¦Р РµРґР°РєС‚РѕСЂВ¦0В¦EditorВ¦Р РµРґР°РєС‚РѕСЂВ¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="3В¦getfile.phpВ¦0В¦РџРѕРёСЃРєВ¦0В¦SearchВ¦РџРѕРёСЃРєВ¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="4В¦r.php?viewid=.ver&base=0В¦0В¦Р’РµСЂСЃРёСЏВ¦0В¦VersionВ¦Р’РµСЂСЃРёСЏВ¦В¦0В¦1В¦1В¦В¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="5В¦filemgr.phpВ¦0В¦Р¤Р°Р№Р»С‹В¦В¦FilemanagerВ¦Р¤Р°Р№Р»С‹В¦В¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="6В¦dblinker.phpВ¦0В¦РњРµРЅРµРґР¶РµСЂ Р±Р°Р·В¦0В¦DB managerВ¦РњРµРЅРµРґР¶РµСЂ Р±Р°Р·В¦В¦В¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="7В¦admin.php?cmd=myprofВ¦0В¦РњРѕР№ РїСЂРѕС„РёР»СЊВ¦0В¦My profileВ¦РњРѕР№ РїСЂРѕС„РёР»СЊВ¦В¦1В¦0В¦РќР°СЃС‚СЂРѕР№РєРёВ¦0В¦0В¦0В¦0";
+$p[]="8В¦r.php?viewid=.info&base=0В¦В¦РРЅС„Рѕ Рѕ РјРЅРµВ¦В¦About meВ¦РРЅС„Рѕ Рѕ РјРЅРµВ¦В¦0В¦0В¦0";
+$p[]="9В¦r.php?vID=.author&base=0В¦0В¦Рћ Р°РІС‚РѕСЂРµВ¦В¦AuthorВ¦Рћ Р°РІС‚РѕСЂРµВ¦В¦3В¦0В¦0";
+$p[]="11В¦news.phpВ¦В¦Р‘Р»РѕРіВ¦В¦BlogВ¦dВ¦dВ¦1В¦0В¦BetaВ¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="12В¦nedit.phpВ¦qweВ¦Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІРѕСЃС‚СЊВ¦В¦Blog-editВ¦dВ¦dВ¦0В¦0В¦В¦0В¦0В¦0В¦0";
+$p[]="13В¦admin.php?cmd=noteВ¦0В¦Р±Р»РѕРєРЅРѕС‚В¦В¦Shared notesВ¦РћР±С‰РёР№ Р±Р»РѕРєРЅРѕС‚В¦В¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="14В¦admin.php?cmd=testВ¦0В¦РЎР°РјРѕС‚РµСЃС‚В¦В¦Self-testВ¦РЎР°РјРѕС‚РµСЃС‚В¦В¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="15В¦http://code.google.com/p/db-script/issuesВ¦qweqweВ¦РЎРѕРѕР±С‰РёС‚СЊ Рѕ Р±Р°РіРµ РІ SVNВ¦1В¦Send bug messageВ¦3В¦2В¦dВ¦0В¦0В¦0В¦0В¦0";
+//$p[]="13В¦r.php?vID=.aboutme&base=0В¦0В¦РњРѕРё РґР°РЅРЅС‹РµВ¦0В¦User infoВ¦РњРѕРё РґР°РЅРЅС‹Рµ";
 }
 if ($languageprofile!=="russian") 
-{$p[]="0¦admin.php¦0¦Admin¦0¦Admin¦Конфигурация¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="0¦admin.php¦0¦Admin¦0¦Admin¦Конфигурация¦0¦0¦0¦0¦0¦0¦0¦0";// writefullcsv почему то глотает первую строку иноогда
-$p[]="1¦login.php¦0¦Вход¦0¦Enter¦Вход¦¦0¦1¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="2¦w.php¦0¦Редактор¦0¦Editor¦Редактор¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="3¦getfile.php¦0¦Поиск¦0¦Search¦Поиск¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="4¦r.php?viewid=.ver&base=0¦0¦Версия¦0¦Version¦Версия¦¦0¦1¦1¦¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="5¦filemgr.php¦0¦Файлы¦¦Filemanager¦Файлы¦¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="6¦dblinker.php¦0¦Менеджер баз¦0¦DB manager¦Менеджер баз¦¦¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="7¦admin.php?cmd=myprof¦0¦Мой профиль¦0¦My profile¦Мой профиль¦¦1¦0¦Settings¦0¦0¦0¦0";
-$p[]="8¦r.php?viewid=.info&base=0¦¦Инфо о мне¦¦About me¦Инфо о мне¦¦0¦0¦0";
-$p[]="9¦r.php?vID=.author&base=0¦0¦О авторе¦¦Author¦О авторе¦¦3¦0¦0";
-$p[]="11¦news.php¦¦Блог¦¦Blog¦d¦d¦1¦0¦Beta¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="12¦nedit.php¦qwe¦Добавить новость¦¦Blog-edit¦d¦d¦0¦0¦¦0¦0¦0¦0";
-$p[]="13¦admin.php?cmd=note¦0¦блокнот¦¦Shared notes¦Общий блокнот¦¦0¦0¦0¦0¦0¦0¦0¦0";
-$p[]="14¦admin.php?cmd=test¦0¦Самотест¦¦Self-test¦Самотест¦¦¦0¦0¦0¦0¦0¦0¦0";
-$p[]="15¦http://code.google.com/p/db-script/issues¦qweqwe¦Сообщить о баге в SVN¦1¦Send bug message¦3¦2¦d¦0¦0¦0¦0¦0";
-//$p[]="13¦r.php?vID=.aboutme&base=0¦0¦Мои данные¦0¦User info¦Мои данные";
+{$p[]="0В¦admin.phpВ¦0В¦AdminВ¦0В¦AdminВ¦РљРѕРЅС„РёРіСѓСЂР°С†РёСЏВ¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="0В¦admin.phpВ¦0В¦AdminВ¦0В¦AdminВ¦РљРѕРЅС„РёРіСѓСЂР°С†РёСЏВ¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";// writefullcsv РїРѕС‡РµРјСѓ С‚Рѕ РіР»РѕС‚Р°РµС‚ РїРµСЂРІСѓСЋ СЃС‚СЂРѕРєСѓ РёРЅРѕРѕРіРґР°
+$p[]="1В¦login.phpВ¦0В¦Р’С…РѕРґВ¦0В¦EnterВ¦Р’С…РѕРґВ¦В¦0В¦1В¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="2В¦w.phpВ¦0В¦Р РµРґР°РєС‚РѕСЂВ¦0В¦EditorВ¦Р РµРґР°РєС‚РѕСЂВ¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="3В¦getfile.phpВ¦0В¦РџРѕРёСЃРєВ¦0В¦SearchВ¦РџРѕРёСЃРєВ¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="4В¦r.php?viewid=.ver&base=0В¦0В¦Р’РµСЂСЃРёСЏВ¦0В¦VersionВ¦Р’РµСЂСЃРёСЏВ¦В¦0В¦1В¦1В¦В¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="5В¦filemgr.phpВ¦0В¦Р¤Р°Р№Р»С‹В¦В¦FilemanagerВ¦Р¤Р°Р№Р»С‹В¦В¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="6В¦dblinker.phpВ¦0В¦РњРµРЅРµРґР¶РµСЂ Р±Р°Р·В¦0В¦DB managerВ¦РњРµРЅРµРґР¶РµСЂ Р±Р°Р·В¦В¦В¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="7В¦admin.php?cmd=myprofВ¦0В¦РњРѕР№ РїСЂРѕС„РёР»СЊВ¦0В¦My profileВ¦РњРѕР№ РїСЂРѕС„РёР»СЊВ¦В¦1В¦0В¦SettingsВ¦0В¦0В¦0В¦0";
+$p[]="8В¦r.php?viewid=.info&base=0В¦В¦РРЅС„Рѕ Рѕ РјРЅРµВ¦В¦About meВ¦РРЅС„Рѕ Рѕ РјРЅРµВ¦В¦0В¦0В¦0";
+$p[]="9В¦r.php?vID=.author&base=0В¦0В¦Рћ Р°РІС‚РѕСЂРµВ¦В¦AuthorВ¦Рћ Р°РІС‚РѕСЂРµВ¦В¦3В¦0В¦0";
+$p[]="11В¦news.phpВ¦В¦Р‘Р»РѕРіВ¦В¦BlogВ¦dВ¦dВ¦1В¦0В¦BetaВ¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="12В¦nedit.phpВ¦qweВ¦Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІРѕСЃС‚СЊВ¦В¦Blog-editВ¦dВ¦dВ¦0В¦0В¦В¦0В¦0В¦0В¦0";
+$p[]="13В¦admin.php?cmd=noteВ¦0В¦Р±Р»РѕРєРЅРѕС‚В¦В¦Shared notesВ¦РћР±С‰РёР№ Р±Р»РѕРєРЅРѕС‚В¦В¦0В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="14В¦admin.php?cmd=testВ¦0В¦РЎР°РјРѕС‚РµСЃС‚В¦В¦Self-testВ¦РЎР°РјРѕС‚РµСЃС‚В¦В¦В¦0В¦0В¦0В¦0В¦0В¦0В¦0";
+$p[]="15В¦http://code.google.com/p/db-script/issuesВ¦qweqweВ¦РЎРѕРѕР±С‰РёС‚СЊ Рѕ Р±Р°РіРµ РІ SVNВ¦1В¦Send bug messageВ¦3В¦2В¦dВ¦0В¦0В¦0В¦0В¦0";
+//$p[]="13В¦r.php?vID=.aboutme&base=0В¦0В¦РњРѕРё РґР°РЅРЅС‹РµВ¦0В¦User infoВ¦РњРѕРё РґР°РЅРЅС‹Рµ";
 
 
 
 }
 $pgcontent=$p;$p="";
-	 $tempdescr=csvopen ("_conf/pages.cfg","w",1);
+	 @$tempdescr=csvopen ("_conf/pages.cfg","w",1);
  $pgheader=splitcfgline ($pgheader);
  $pgplevel=splitcfgline ($pgplevel);
 $pgcontent=splitcfgline ($pgcontent);
@@ -296,39 +294,39 @@ $pgcontent=splitcfgline ($pgcontent);
 }
 //reading styles
 $filbas="_conf/styles.cfg";
-$styles=csvopen ($filbas,"r",0);$data=readfullcsv ($styles,"new");
+@$styles=csvopen ($filbas,"r",0);$data=readfullcsv ($styles,"new");
 if ($data==-1) {
-$stheader="style¦properties¦rgbfon¦rgbtext¦¦";
-$stplevel="0¦0¦0¦0¦0¦";
-$p[]="Default¦dbew_b¦ffffff¦000000¦¦";
-$p[]="Default¦dbew_b¦ffffff¦000000¦¦"; // если везде эта ошибка с глотанием нулевой строки то убрать ее
-$p[]="Black_r¦dbr_b¦333333¦ffffff¦¦";
-$p[]="White_r¦dbrw_b¦ffffff¦000000¦¦";
-$p[]="White¦dbew_b¦ffffff¦000000¦¦";
-$p[]="Black¦dbe_b¦333333¦ffffff¦¦";
-$p[]="Matrix¦dbs_b¦333333¦00EE00¦¦";
-$p[]="O_o¦dbrw_b¦ffff00¦dddd00¦¦";
-$p[]="empty¦пустой¦ffffff¦000000¦¦";
-$p[]="red¦dbr_b¦aa0000¦ffffff¦¦";
-$p[]="blue¦dbr_b¦000066¦ffffff¦¦";
-$p[]="cyan_blue_r¦dbrw_b¦55AAEE¦000055¦¦";
-$p[]="cyan_blue_e¦dbew_b¦ccaa44¦441111¦¦";
-$p[]="green_blue¦dbrw_b¦55AA00¦000055¦¦";
-$p[]="contrast¦dbrw_b¦000000¦ffffff¦¦";
-$p[]="salatov¦dbrw_b¦99FF22¦333333¦¦";
-$p[]="fiolet¦dbrw_b¦4b5fac¦11ffff¦¦";
-$p[]="desktoptree¦dbrw_b¦ccaa44¦441111¦¦";
-$p[]="green_blue¦dbew_b¦55AA00¦000055¦¦";
-$p[]="contrast¦dbew_b¦000000¦ffffff¦¦";
-$p[]="salatov¦dbew_b¦99FF22¦333333¦¦";
-$p[]="fiolet¦dbew_b¦4b5fac¦11ffff¦¦";
-$p[]="desktoptree, English¦dbew_b¦ccaa44¦441111¦¦";
-$p[]="desktoptree_en¦ae¦ccaa44¦441111¦¦";
-$p[]="desktoptree_ru¦ar¦ccaa44¦441111¦¦";
+$stheader="styleВ¦propertiesВ¦rgbfonВ¦rgbtextВ¦В¦";
+$stplevel="0В¦0В¦0В¦0В¦0В¦";
+$p[]="DefaultВ¦dbew_bВ¦ffffffВ¦000000В¦В¦";
+$p[]="DefaultВ¦dbew_bВ¦ffffffВ¦000000В¦В¦"; // РµСЃР»Рё РІРµР·РґРµ СЌС‚Р° РѕС€РёР±РєР° СЃ РіР»РѕС‚Р°РЅРёРµРј РЅСѓР»РµРІРѕР№ СЃС‚СЂРѕРєРё С‚Рѕ СѓР±СЂР°С‚СЊ РµРµ
+$p[]="Black_rВ¦dbr_bВ¦333333В¦ffffffВ¦В¦";
+$p[]="White_rВ¦dbrw_bВ¦ffffffВ¦000000В¦В¦";
+$p[]="WhiteВ¦dbew_bВ¦ffffffВ¦000000В¦В¦";
+$p[]="BlackВ¦dbe_bВ¦333333В¦ffffffВ¦В¦";
+$p[]="MatrixВ¦dbs_bВ¦333333В¦00EE00В¦В¦";
+$p[]="O_oВ¦dbrw_bВ¦ffff00В¦dddd00В¦В¦";
+$p[]="emptyВ¦РїСѓСЃС‚РѕР№В¦ffffffВ¦000000В¦В¦";
+$p[]="redВ¦dbr_bВ¦aa0000В¦ffffffВ¦В¦";
+$p[]="blueВ¦dbr_bВ¦000066В¦ffffffВ¦В¦";
+$p[]="cyan_blue_rВ¦dbrw_bВ¦55AAEEВ¦000055В¦В¦";
+$p[]="cyan_blue_eВ¦dbew_bВ¦ccaa44В¦441111В¦В¦";
+$p[]="green_blueВ¦dbrw_bВ¦55AA00В¦000055В¦В¦";
+$p[]="contrastВ¦dbrw_bВ¦000000В¦ffffffВ¦В¦";
+$p[]="salatovВ¦dbrw_bВ¦99FF22В¦333333В¦В¦";
+$p[]="fioletВ¦dbrw_bВ¦4b5facВ¦11ffffВ¦В¦";
+$p[]="desktoptreeВ¦dbrw_bВ¦ccaa44В¦441111В¦В¦";
+$p[]="green_blueВ¦dbew_bВ¦55AA00В¦000055В¦В¦";
+$p[]="contrastВ¦dbew_bВ¦000000В¦ffffffВ¦В¦";
+$p[]="salatovВ¦dbew_bВ¦99FF22В¦333333В¦В¦";
+$p[]="fioletВ¦dbew_bВ¦4b5facВ¦11ffffВ¦В¦";
+$p[]="desktoptree, EnglishВ¦dbew_bВ¦ccaa44В¦441111В¦В¦";
+$p[]="desktoptree_enВ¦aeВ¦ccaa44В¦441111В¦В¦";
+$p[]="desktoptree_ruВ¦arВ¦ccaa44В¦441111В¦В¦";
 
 $stcontent=$p;$p="";
 
-	 $tempdescr=csvopen ("_conf/styles.cfg","w",1);
+	 @$tempdescr=csvopen ("_conf/styles.cfg","w",1);
 $stheader=splitcfgline ($stheader);
  $stplevel=splitcfgline ($stplevel);
 $stcontent=splitcfgline ($stcontent);
@@ -339,17 +337,17 @@ $err.=writefullcsv ($tempdescr,$stheader,$stplevel,$stcontent);$edit=0;
 
 //reading filescripts
 $filbas="_conf/filescript.cfg";
-$filescripts=csvopen ($filbas,"r",0);$data=readfullcsv ($filescripts,"new");
+@$filescripts=csvopen ($filbas,"r",0);$data=readfullcsv ($filescripts,"new");
 if ($data==-1) {
-$filescriptheader="ID¦NAME¦Script¦Plevel¦keynames-icon¦russian¦english¦f1_russian¦f1_english¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
-$filescriptplevel="0¦d¦0¦0¦0¦0¦0¦d¦0¦0¦0¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d0¦0¦0¦0¦0¦";
-$p[]="0¦¦mencoder %path%%file% -oac mp3lame -ovc x264 -o %path%%file%.avi¦0¦0¦перекодить в h264¦encode h264¦0¦0¦0¦0¦0¦";
-$p[]="1¦¦mencoder %path%%file% -oac mp3lame -ovc x264 -o %path%%file%.avi¦0¦0¦перекодить в h264¦encode h264¦0¦0¦0¦0¦0¦";
-$p[]="2¦¦mencoder %path%%file% -oac mp3lame -ovc mpg -o %path%%file%.avi¦0¦0¦перекодить в mpeg¦encode mpeg¦0¦0¦0¦0¦0¦0¦"; // если везде эта ошибка с глотанием нулевой строки то убрать ее
+$filescriptheader="IDВ¦NAMEВ¦ScriptВ¦PlevelВ¦keynames-iconВ¦russianВ¦englishВ¦f1_russianВ¦f1_englishВ¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦";
+$filescriptplevel="0В¦dВ¦0В¦0В¦0В¦0В¦0В¦dВ¦0В¦0В¦0В¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦d0В¦0В¦0В¦0В¦0В¦";
+$p[]="0В¦В¦mencoder %path%%file% -oac mp3lame -ovc x264 -o %path%%file%.aviВ¦0В¦0В¦РїРµСЂРµРєРѕРґРёС‚СЊ РІ h264В¦encode h264В¦0В¦0В¦0В¦0В¦0В¦";
+$p[]="1В¦В¦mencoder %path%%file% -oac mp3lame -ovc x264 -o %path%%file%.aviВ¦0В¦0В¦РїРµСЂРµРєРѕРґРёС‚СЊ РІ h264В¦encode h264В¦0В¦0В¦0В¦0В¦0В¦";
+$p[]="2В¦В¦mencoder %path%%file% -oac mp3lame -ovc mpg -o %path%%file%.aviВ¦0В¦0В¦РїРµСЂРµРєРѕРґРёС‚СЊ РІ mpegВ¦encode mpegВ¦0В¦0В¦0В¦0В¦0В¦0В¦"; // РµСЃР»Рё РІРµР·РґРµ СЌС‚Р° РѕС€РёР±РєР° СЃ РіР»РѕС‚Р°РЅРёРµРј РЅСѓР»РµРІРѕР№ СЃС‚СЂРѕРєРё С‚Рѕ СѓР±СЂР°С‚СЊ РµРµ
 $filescriptcontent=$p;$p="";
-//почему то данные не сохраняются в скрипте - только шапка - все остальное теряется.
+//РїРѕС‡РµРјСѓ С‚Рѕ РґР°РЅРЅС‹Рµ РЅРµ СЃРѕС…СЂР°РЅСЏСЋС‚СЃСЏ РІ СЃРєСЂРёРїС‚Рµ - С‚РѕР»СЊРєРѕ С€Р°РїРєР° - РІСЃРµ РѕСЃС‚Р°Р»СЊРЅРѕРµ С‚РµСЂСЏРµС‚СЃСЏ.
 
-	 $tempdescr=csvopen ("_conf/filescripts.cfg","w",1);
+	 @$tempdescr=csvopen ("_conf/filescripts.cfg","w",1);
 $filescriptheader=splitcfgline ($filescriptheader);
  $filescriptplevel=splitcfgline ($filescriptplevel);
 $filescriptcontent=splitcfgline ($filescriptcontent);
@@ -359,11 +357,11 @@ $err.=writefullcsv ($tempdescr,$filescriptheader,$filescriptplevel,$filescriptco
 
 
 $filbas="_conf/gmdata.cfg";
-$gmdata=csvopen ($filbas,"r","0");$data=readfullcsv ($gmdata,"new");
+@$gmdata=csvopen ($filbas,"r","0");$data=readfullcsv ($gmdata,"new");
 if ($data==-1) {
 //reading gmdata
-$gmheader="LOGIN¦PASSWORD¦Администрирование¦редактирование¦продвинутый поиск¦масс. удаления¦Операции с заголовками¦perm_4¦perm_5¦perm_6¦Уровень прав¦Истечение прав* (-1,нет)¦perm_9¦perm_10¦perm_11¦Зарегистрированное имя¦Не показывать инструкции¦Редактор - неточные совпадения¦Редактор - поиск по любому полю¦Выводить сортировку*¦Выводить постранично*¦Стиль¦Язык¦б22¦б23¦b25¦b26¦b27¦b28¦b29¦b30¦b31¦b32¦b33¦b34¦b35¦b36¦b37¦b38¦b39¦b40¦b41¦b42¦b43¦b44¦b45¦b46¦b47¦b48¦b49¦b50¦b51¦b52¦b53¦b54¦b55¦b56¦b57¦b58¦b59¦b60¦b61¦b62¦b63¦b64¦b65¦b66¦b67¦b68¦b69¦b70¦b71¦b72¦b73¦b74¦b75¦b76¦b77¦b78¦b79¦b80¦b81¦b82¦b83¦b84¦b85¦b86¦b87¦b88¦b89¦b90¦b91¦b92¦b93¦b94¦b95¦b96¦b97¦b98¦b99 ¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦";
-$gmplevel="a¦d¦a¦a¦d¦d¦d¦d¦d¦d¦a¦d¦d¦d¦d¦a¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦";
+$gmheader="LOGINВ¦PASSWORDВ¦РђРґРјРёРЅРёСЃС‚СЂРёСЂРѕРІР°РЅРёРµВ¦СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµВ¦РїСЂРѕРґРІРёРЅСѓС‚С‹Р№ РїРѕРёСЃРєВ¦РјР°СЃСЃ. СѓРґР°Р»РµРЅРёСЏВ¦РћРїРµСЂР°С†РёРё СЃ Р·Р°РіРѕР»РѕРІРєР°РјРёВ¦perm_4В¦perm_5В¦perm_6В¦РЈСЂРѕРІРµРЅСЊ РїСЂР°РІВ¦РСЃС‚РµС‡РµРЅРёРµ РїСЂР°РІ* (-1,РЅРµС‚)В¦perm_9В¦perm_10В¦perm_11В¦Р—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅРЅРѕРµ РёРјСЏВ¦РќРµ РїРѕРєР°Р·С‹РІР°С‚СЊ РёРЅСЃС‚СЂСѓРєС†РёРёВ¦Р РµРґР°РєС‚РѕСЂ - РЅРµС‚РѕС‡РЅС‹Рµ СЃРѕРІРїР°РґРµРЅРёСЏВ¦Р РµРґР°РєС‚РѕСЂ - РїРѕРёСЃРє РїРѕ Р»СЋР±РѕРјСѓ РїРѕР»СЋВ¦Р’С‹РІРѕРґРёС‚СЊ СЃРѕСЂС‚РёСЂРѕРІРєСѓ*В¦Р’С‹РІРѕРґРёС‚СЊ РїРѕСЃС‚СЂР°РЅРёС‡РЅРѕ*В¦РЎС‚РёР»СЊВ¦РЇР·С‹РєВ¦Р±22В¦Р±23В¦b25В¦b26В¦b27В¦b28В¦b29В¦b30В¦b31В¦b32В¦b33В¦b34В¦b35В¦b36В¦b37В¦b38В¦b39В¦b40В¦b41В¦b42В¦b43В¦b44В¦b45В¦b46В¦b47В¦b48В¦b49В¦b50В¦b51В¦b52В¦b53В¦b54В¦b55В¦b56В¦b57В¦b58В¦b59В¦b60В¦b61В¦b62В¦b63В¦b64В¦b65В¦b66В¦b67В¦b68В¦b69В¦b70В¦b71В¦b72В¦b73В¦b74В¦b75В¦b76В¦b77В¦b78В¦b79В¦b80В¦b81В¦b82В¦b83В¦b84В¦b85В¦b86В¦b87В¦b88В¦b89В¦b90В¦b91В¦b92В¦b93В¦b94В¦b95В¦b96В¦b97В¦b98В¦b99 В¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦";
+$gmplevel="aВ¦dВ¦aВ¦aВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦aВ¦dВ¦dВ¦dВ¦dВ¦aВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦";
 
 $ADMM=0;
 for ($a=0;$a<200;$a++) {
@@ -378,11 +376,11 @@ $prauth[$ADMM][21]="Default";$prauth[$ADMM][10]=10;
  if ($OSTYPE=="LINUX") $prauth[$ADMM][199].="sayfuck\n";
  //$prauth[$ADMM][198]=$prauth[$ADMM][198]."sayfuck2\n"; $prauth[$ADMM][199]="199sayfuck2\n"; $prauth[$ADMM][200]="200fuck\n";
 $prauth[1]=$prauth[0];// eto i est sohranenie!!!!!!!!!!!!!!!!!!!!1111
-//..$prauth="";// тут добавляем нашего юзера
- //$prauthimploded=implode ($prauth[$ADMM],"¦");
+//..$prauth="";// С‚СѓС‚ РґРѕР±Р°РІР»СЏРµРј РЅР°С€РµРіРѕ СЋР·РµСЂР°
+ //$prauthimploded=implode ($prauth[$ADMM],"В¦");
 //if ($OSTYPE=="LINUX") $prauthimploded.="sayfuck\n";/
 //$prauthimploded.="sayfuck2\n";
-	 $tempdescr=csvopen ("_conf/gmdata.cfg","w",1);
+	 @$tempdescr=csvopen ("_conf/gmdata.cfg","w",1);
 	 $gmheader=splitcfgline ($gmheader);
  $gmplevel=splitcfgline ($gmplevel);
 //$prauth=splitcfgline ($prauthimploded);
@@ -391,12 +389,12 @@ $prauth[1]=$prauth[0];// eto i est sohranenie!!!!!!!!!!!!!!!!!!!!1111
 }
 
 $filbas="_conf/denywords.cfg";
-$deny=csvopen ($filbas,"r",0);$data=readfullcsv ($deny,"new");
+@$deny=csvopen ($filbas,"r",0);$data=readfullcsv ($deny,"new");
 if ($data==-1) { 
 //reading denyword
-$dnheader="word¦plevel¦special";
-$dnplevel="4#1#1¦4¦";
-	 $tempdescr=csvopen ("_conf/denywords.cfg","w",1);
+$dnheader="wordВ¦plevelВ¦special";
+$dnplevel="4#1#1В¦4В¦";
+	 @$tempdescr=csvopen ("_conf/denywords.cfg","w",1);
 	 $dnheader=splitcfgline ($dnheader);
  $dnplevel=splitcfgline ($dnplevel);
 $dncontent=splitcfgline ($dncontent);
@@ -405,41 +403,41 @@ $dncontent=splitcfgline ($dncontent);
 }
 
 $filbas="_conf/dbdata.cfg";
-$dbdata=csvopen ($filbas,"r","0");$data=readfullcsv ($dbdata,"new");
+@$dbdata=csvopen ($filbas,"r","0");$data=readfullcsv ($dbdata,"new");
 if ($data==-1) {
 //reading dbdata
-$dbheader="File base¦Base visual name¦Поддержка картинок¦Tип scr¦Режим 3 (Категория)¦Таблица Mysql¦Хост Mysql ¦Тип категории¦Колонка картин¦Выбирать базу¦Режим 1 (Имя)¦Режим 2 (Код)¦Use Mysql¦Права на запись¦Права требуемые базой¦Треб. виртуальный ID¦Отбор колонок¦reserved17¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd¦hd";
-$dbplevel="d¦5¦d¦d¦d¦d¦d¦d¦d¦d¦a¦d¦a¦d¦5¦5¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦d¦dr";
+$dbheader="File baseВ¦Base visual nameВ¦РџРѕРґРґРµСЂР¶РєР° РєР°СЂС‚РёРЅРѕРєВ¦TРёРї scrВ¦Р РµР¶РёРј 3 (РљР°С‚РµРіРѕСЂРёСЏ)В¦РўР°Р±Р»РёС†Р° MysqlВ¦РҐРѕСЃС‚ Mysql В¦РўРёРї РєР°С‚РµРіРѕСЂРёРёВ¦РљРѕР»РѕРЅРєР° РєР°СЂС‚РёРЅВ¦Р’С‹Р±РёСЂР°С‚СЊ Р±Р°Р·СѓВ¦Р РµР¶РёРј 1 (РРјСЏ)В¦Р РµР¶РёРј 2 (РљРѕРґ)В¦Use MysqlВ¦РџСЂР°РІР° РЅР° Р·Р°РїРёСЃСЊВ¦РџСЂР°РІР° С‚СЂРµР±СѓРµРјС‹Рµ Р±Р°Р·РѕР№В¦РўСЂРµР±. РІРёСЂС‚СѓР°Р»СЊРЅС‹Р№ IDВ¦РћС‚Р±РѕСЂ РєРѕР»РѕРЅРѕРєВ¦reserved17В¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hdВ¦hd";
+$dbplevel="dВ¦5В¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦aВ¦dВ¦aВ¦dВ¦5В¦5В¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dВ¦dr";
 $prdbdata="";//
-	 $tempdescr=csvopen ("_conf/dbdata.cfg","w",1);
+	 @$tempdescr=csvopen ("_conf/dbdata.cfg","w",1);
 $dbheader=splitcfgline ($dbheader);
  $dbplevel=splitcfgline ($dbplevel);
 //$pgcontent=splitcfgline ($pgcontent);
 $err.=writefullcsv ($tempdescr,$dbheader,$dbplevel,$prdbdata);$edit=0;
 //writing dbdata
 }
-if ($languageprofile!=="russian") $sitedata="dbslogo.gif¦Welcome string.¦1¦80% Nimbus Roman No9 L¦by name¦by code¦by code2¦showall¦¦¦¦0¦999¦¦root¦localhost¦Dbscript¦¦512¦".$encodingforce."¦main fields¦select field¦all fields¦by comm¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
-if ($languageprofile=="russian") $sitedata="dbslogo.gif¦Добро пожаловать в наш сервис. Выберите базу и способ поиска и введите название объекта поиска.¦1¦80% Nimbus Roman No9 L¦по названию¦по коду ¦по названию2¦отобразить всё¦mp3pereim.php¦127.0.0.1¦D:/system/www/dj/filemgr/¦0¦999¦¦root¦localhost¦Dbscript¦¦2048¦".$encodingforce."¦по важным полям¦выбрать поле¦по всем полям¦по комментариям¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
+if ($languageprofile!=="russian") $sitedata="dbslogo.gifВ¦Welcome string.В¦1В¦80% Nimbus Roman No9 LВ¦by nameВ¦by codeВ¦by code2В¦showallВ¦В¦В¦В¦0В¦999В¦В¦rootВ¦localhostВ¦DbscriptВ¦В¦512В¦".$encodingforce."В¦main fieldsВ¦select fieldВ¦all fieldsВ¦by commВ¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦";
+if ($languageprofile=="russian") $sitedata="dbslogo.gifВ¦Р”РѕР±СЂРѕ РїРѕР¶Р°Р»РѕРІР°С‚СЊ РІ РЅР°С€ СЃРµСЂРІРёСЃ. Р’С‹Р±РµСЂРёС‚Рµ Р±Р°Р·Сѓ Рё СЃРїРѕСЃРѕР± РїРѕРёСЃРєР° Рё РІРІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ РѕР±СЉРµРєС‚Р° РїРѕРёСЃРєР°.В¦1В¦80% Nimbus Roman No9 LВ¦РїРѕ РЅР°Р·РІР°РЅРёСЋВ¦РїРѕ РєРѕРґСѓ В¦РїРѕ РЅР°Р·РІР°РЅРёСЋ2В¦РѕС‚РѕР±СЂР°Р·РёС‚СЊ РІСЃС‘В¦mp3pereim.phpВ¦127.0.0.1В¦D:/system/www/dj/filemgr/В¦0В¦999В¦В¦rootВ¦localhostВ¦DbscriptВ¦В¦2048В¦".$encodingforce."В¦РїРѕ РІР°Р¶РЅС‹Рј РїРѕР»СЏРјВ¦РІС‹Р±СЂР°С‚СЊ РїРѕР»РµВ¦РїРѕ РІСЃРµРј РїРѕР»СЏРјВ¦РїРѕ РєРѕРјРјРµРЅС‚Р°СЂРёСЏРјВ¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦";
    //patch for windows-1251 menu editing in utf-8 mode
 //    ?/if (($encodingforce=="utf-8")AND(1==1)) $sitedata=iconv("windows-1251","utf-8",$sitedata);
-    //if (($encodingforce=="utf-8")AND(1==1)) $sitedata=iconv("utf-8","windows-1251",$sitedata);// FUUUUU  ??????  или кракозябры - что лучше??
-$property="".$verchar."¦".$verchar."¦1¦1¦1¦1¦¦1¦1¦¦¦¦1¦¦¦0¦¦¦¦¦¦¦1¦1¦1¦¦1¦50¦default¦1¦1¦1¦1¦1¦¦1¦¦1¦1¦/media/D/¦1000¦¦html,gif,bmp,png¦127.0.0.1¦20¦1¦1¦on¦¦on¦¦¦on¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦";
+    //if (($encodingforce=="utf-8")AND(1==1)) $sitedata=iconv("utf-8","windows-1251",$sitedata);// FUUUUU  ??????  РёР»Рё РєСЂР°РєРѕР·СЏР±СЂС‹ - С‡С‚Рѕ Р»СѓС‡С€Рµ??
+$property="".$verchar."В¦".$verchar."В¦1В¦1В¦1В¦1В¦В¦1В¦1В¦В¦В¦В¦1В¦В¦В¦0В¦В¦В¦В¦В¦В¦В¦1В¦1В¦1В¦В¦1В¦50В¦defaultВ¦1В¦1В¦1В¦1В¦1В¦В¦1В¦В¦1В¦1В¦/media/D/В¦1000В¦В¦html,gif,bmp,pngВ¦127.0.0.1В¦20В¦1В¦1В¦onВ¦В¦onВ¦В¦В¦onВ¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦В¦";
  //patch for windows-1251 menu editing in utf-8 mode
     //if (($encodingforce=="utf-8")AND(1==1)) $property=iconv("windows-1251","utf-8",$property);
-$sd=explode ("¦",$sitedata);
-$pr=explode ("¦",$property);
+$sd=explode ("В¦",$sitedata);
+$pr=explode ("В¦",$property);
 	$sd[14]=$LOGINSQL;
 	$sd[17]=$PASSSQL; 
 	$pr[43]=$IPDEFSERVSQL; 
 	$pr[41]=$fmgfldr; 
 	$pr[34]=$sharedconf;
 	$pr[8]=1; //debug off
-$sitedata=implode ("¦",$sd);
-$property=implode ("¦",$pr);
+$sitedata=implode ("В¦",$sd);
+$property=implode ("В¦",$pr);
 $pr[34]=0;
 $filbas="_conf/sitedata.cfg";
 $site=csvopen ($filbas,"w",1);
-$err.=fwrite ($site,$sitedata);//годится полн для открытого потока и однострочного файла
+$err.=fwrite ($site,$sitedata);//РіРѕРґРёС‚СЃСЏ РїРѕР»РЅ РґР»СЏ РѕС‚РєСЂС‹С‚РѕРіРѕ РїРѕС‚РѕРєР° Рё РѕРґРЅРѕСЃС‚СЂРѕС‡РЅРѕРіРѕ С„Р°Р№Р»Р°
 fclose ($site);
 $filbas="_conf/property.cfg";
 $desc=csvopen ($filbas,"w",1);
@@ -447,10 +445,10 @@ $err.=fwrite ($desc,$property);
 fclose ($site);
 //echo "Error:$err<br>";
 //if ($err>3) die ("Fatal error, configs skipped ,write protect>?");
-	//если нет pages,styles создаются с содержимым заранее сохраненным тут
-	//langdb формируется по папке,все заголовки берутся отсюда
-	//gm содержит только 1 чел, db,dn,ed -только заголовки
-	//sitedata,property никуда не перемещаются,остальные могуть быть перемещены после создания на шаге 5 
+	//РµСЃР»Рё РЅРµС‚ pages,styles СЃРѕР·РґР°СЋС‚СЃСЏ СЃ СЃРѕРґРµСЂР¶РёРјС‹Рј Р·Р°СЂР°РЅРµРµ СЃРѕС…СЂР°РЅРµРЅРЅС‹Рј С‚СѓС‚
+	//langdb С„РѕСЂРјРёСЂСѓРµС‚СЃСЏ РїРѕ РїР°РїРєРµ,РІСЃРµ Р·Р°РіРѕР»РѕРІРєРё Р±РµСЂСѓС‚СЃСЏ РѕС‚СЃСЋРґР°
+	//gm СЃРѕРґРµСЂР¶РёС‚ С‚РѕР»СЊРєРѕ 1 С‡РµР», db,dn,ed -С‚РѕР»СЊРєРѕ Р·Р°РіРѕР»РѕРІРєРё
+	//sitedata,property РЅРёРєСѓРґР° РЅРµ РїРµСЂРµРјРµС‰Р°СЋС‚СЃСЏ,РѕСЃС‚Р°Р»СЊРЅС‹Рµ РјРѕРіСѓС‚СЊ Р±С‹С‚СЊ РїРµСЂРµРјРµС‰РµРЅС‹ РїРѕСЃР»Рµ СЃРѕР·РґР°РЅРёСЏ РЅР° С€Р°РіРµ 5 
 }
 if ($step>4) {
 	}
@@ -465,7 +463,7 @@ if (($step==5)AND(!$sharedconf)) $step=7;
 if ($step==5)
 {   if ($sharedconf) {
 	lprint ("INST_SHARED_SEL");echo "<br>";
-		// файлы к этому моменту уже должны быть сгенерированы и хотя бы быть в наличии
+		// С„Р°Р№Р»С‹ Рє СЌС‚РѕРјСѓ РјРѕРјРµРЅС‚Сѓ СѓР¶Рµ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ СЃРіРµРЅРµСЂРёСЂРѕРІР°РЅС‹ Рё С…РѕС‚СЏ Р±С‹ Р±С‹С‚СЊ РІ РЅР°Р»РёС‡РёРё
 		$path=getcwd ()."/_conf/";	//	$path2=$fldup."/_conf";$path3=getcwd ()."/_langdb/";
 		$mask="*.cfg";	$protect[]="*.php";$nameselect="files";
 		filesselect ($path,$mask,$protect,$nameselect,7);
@@ -505,7 +503,7 @@ if ($step==6)
 	if ($err==false) { $error=1;continue; }
 	$err=csvopen ("_conf/".$files[$a],"move",$fldup."/_conf/".$files[$a]);
 		}
-	if ($error==1) echo "<br>File write access denied $fldup/_conf/<br>Interrupted<br>"; // почему нам не дали прав?
+	if ($error==1) echo "<br>File write access denied $fldup/_conf/<br>Interrupted<br>"; // РїРѕС‡РµРјСѓ РЅР°Рј РЅРµ РґР°Р»Рё РїСЂР°РІ?
 	echo "<br>".cmsg ("")."<br>";
 	submitkey ("loginstate","DALEE");
 	
@@ -547,9 +545,9 @@ ob_flush ();
 
 //============================================//
 
-///Понятно,что предки приносили в жертву девственниц Они были не дураки, чтобы жертвовать теми кто даёт
+///РџРѕРЅСЏС‚РЅРѕ,С‡С‚Рѕ РїСЂРµРґРєРё РїСЂРёРЅРѕСЃРёР»Рё РІ Р¶РµСЂС‚РІСѓ РґРµРІСЃС‚РІРµРЅРЅРёС† РћРЅРё Р±С‹Р»Рё РЅРµ РґСѓСЂР°РєРё, С‡С‚РѕР±С‹ Р¶РµСЂС‚РІРѕРІР°С‚СЊ С‚РµРјРё РєС‚Рѕ РґР°С‘С‚
 
-function lightcore () { // проверено!!!  не добавлять в ядро!!
+function lightcore () { // РїСЂРѕРІРµСЂРµРЅРѕ!!!  РЅРµ РґРѕР±Р°РІР»СЏС‚СЊ РІ СЏРґСЂРѕ!!
  //echo "Lightcore clean start <br>";
  if (!file_exists("adminc.php")) {copy ("admin.php","adminc.php");
  cleancodex ("admin.php","//SYSTEM KEY_START","//SYSTEM KEY_END");};
@@ -557,9 +555,9 @@ function lightcore () { // проверено!!!  не добавлять в ядро!!
  cleancodex ("dbscore.lib","//SYSTEM KEY_START","//SYSTEM KEY_END");} ;
 
 }
-// Малиган. пожалуйста сделай возм хотя бы главную и регу чтобы можно было смотреть на английском языке (кнопки с флажками и попытка обнаружить принадлежность IP к стране)
+// РњР°Р»РёРіР°РЅ. РїРѕР¶Р°Р»СѓР№СЃС‚Р° СЃРґРµР»Р°Р№ РІРѕР·Рј С…РѕС‚СЏ Р±С‹ РіР»Р°РІРЅСѓСЋ Рё СЂРµРіСѓ С‡С‚РѕР±С‹ РјРѕР¶РЅРѕ Р±С‹Р»Рѕ СЃРјРѕС‚СЂРµС‚СЊ РЅР° Р°РЅРіР»РёР№СЃРєРѕРј СЏР·С‹РєРµ (РєРЅРѕРїРєРё СЃ С„Р»Р°Р¶РєР°РјРё Рё РїРѕРїС‹С‚РєР° РѕР±РЅР°СЂСѓР¶РёС‚СЊ РїСЂРёРЅР°РґР»РµР¶РЅРѕСЃС‚СЊ IP Рє СЃС‚СЂР°РЅРµ)
 function cleancodex ($file,$from,$to) {
- echo "<font color=red>cleancodex clean start $file<br></font>";   // удаляет все упоминания о активации и системе защиты. для создания открытой версии.
+ echo "<font color=red>cleancodex clean start $file<br></font>";   // СѓРґР°Р»СЏРµС‚ РІСЃРµ СѓРїРѕРјРёРЅР°РЅРёСЏ Рѕ Р°РєС‚РёРІР°С†РёРё Рё СЃРёСЃС‚РµРјРµ Р·Р°С‰РёС‚С‹. РґР»СЏ СЃРѕР·РґР°РЅРёСЏ РѕС‚РєСЂС‹С‚РѕР№ РІРµСЂСЃРёРё.
 $index = strip_tags (file_get_contents($file));
 
 $cdestfile="";$d="";
@@ -567,8 +565,8 @@ $array=file($file) ;
 $k = count($array) ; $a=0;
 while ($a<$k) {
 	//echo " ";
-//	echo $a."--".$array[$a]; ;// выдача "в чистом виде" для тестов
-	$a++;// а не пропускает ли он чего?
+//	echo $a."--".$array[$a]; ;// РІС‹РґР°С‡Р° "РІ С‡РёСЃС‚РѕРј РІРёРґРµ" РґР»СЏ С‚РµСЃС‚РѕРІ
+	$a++;// Р° РЅРµ РїСЂРѕРїСѓСЃРєР°РµС‚ Р»Рё РѕРЅ С‡РµРіРѕ?
 	$b=$array[$a-1];$strleng=strlen ($b);
 
     if (strpos ($b,$from)!==false) { $startskipmode=1;	}
@@ -577,11 +575,11 @@ while ($a<$k) {
 
 	}
         //$cdestfile=."//cleaned by cleancode";
-$datafile = fopen ($file,"w") or die ("Не удалось записать, извините.");
-fwrite ($datafile ,$cdestfile);
-fflush ($datafile);
-fclose ($datafile);
-//echo ("<a href=\"adminf.php\">Ваш файл тут.</a> Не забудьте нажать F5 для обновления.");
+$datafile = fopen ($file,"w") or die ("РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РїРёСЃР°С‚СЊ, РёР·РІРёРЅРёС‚Рµ.");
+@fwrite ($datafile ,$cdestfile);
+@fflush ($datafile);
+@fclose ($datafile);
+//echo ("<a href=\"adminf.php\">Р’Р°С€ С„Р°Р№Р» С‚СѓС‚.</a> РќРµ Р·Р°Р±СѓРґСЊС‚Рµ РЅР°Р¶Р°С‚СЊ F5 РґР»СЏ РѕР±РЅРѕРІР»РµРЅРёСЏ.");
 }
 
 if ($licenseprint) {

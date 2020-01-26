@@ -1,0 +1,727 @@
+html,
+/*плашки по бокам*/
+body  {
+	margin: 0;
+	padding: 0;
+	background: #333;
+
+}
+body  {
+	/*background: #333; переместил в dbscript но можно вернуть если менять стиль
+        font : $systemshrift;
+	font: 100.01% Arial, sans-serif;*/
+
+    }
+    /*влияет на навигацию */
+a  {
+	text-decoration: none;
+
+}
+/* портит минименю*/
+imgxxx  {
+	border: none;
+	display: block;
+    
+}
+h1  {
+	margin: 15px 0;
+	font: bold 26px/30px Arial, sans-serif;
+ 
+}
+h3  {
+	margin: 15px 0 -15px 0;
+	font: bold 115%/120% Arial, sans-serif;
+}
+h4  {
+	margin: 0;
+	font: bold 100%/150% Arial, sans-serif;
+}
+h5  {
+	margin: 0;
+}
+h6  {
+	margin: 0;
+
+}
+p  {
+	margin: 15px 0;
+    
+}
+ol  {
+	margin: 20px 0;
+	padding: 0 0 0 70px;
+    
+}
+ol li  {
+	padding: 5px 0;
+	font-weight: bold;
+}
+blockquote  {
+	margin: 10px 40px;
+	border: 1px solid #343434;
+	background: #CCC url('../images/bg_blockquote.gif') no-repeat 0 100%;
+	padding: 15px 10px 15px 55px;
+	color: #666;
+	font-size: 88%;
+}
+.left  {
+	float: left;
+}
+.right  {
+	float: right;
+}
+#container  {
+	width: 920px;
+	margin: 0 auto;
+	position: relative;
+
+}
+/* header ------------------------------------------------------------------- */
+#header  {
+	height: 83px;
+		background: #333;
+        
+}
+/* logo */
+#logo  {
+	float: left;
+	margin: 0 13px;
+	display: inline;
+
+}
+/* drop layer */
+#dropform  {
+	display: none;
+	position: absolute;
+	top: 0;
+	right: 110px;
+	background: #033669 url('../images/bg_dropform.gif') repeat-x 0 100%;
+	width: 140px;
+    padding: 5px 20px;
+	font: 75%/150% Arial, sans-serif;
+}
+#dropform form  {
+	margin: 0;
+	padding: 0;
+
+}
+#dropform label  {
+	display: block;
+	color: #FFF;
+	padding-top: 3px;
+}
+#dropform input.text  {
+	width: 135px;
+	border: 1px solid #000;
+	padding: 2px;
+	font: 11px Arial, sans-serif;
+}
+#dropform a  {
+	color: #333;
+}
+#dropform a:hover  {
+	color: #FFF;
+}
+#dropform div  {
+	padding: 10px 0;
+	text-align: center;
+}
+#dropform input.button  {
+	margin: 0 auto;
+	margin-bottom: -32px;
+	position: relative;
+	display: block;
+}
+
+/* top navigation  login*/
+#top-navigation  {
+	margin: 0;
+	padding: 0 45px;
+	list-style: none;
+	float: right;
+	font: bold 76%/100% Arial, sans-serif;
+}
+#top-navigation li  {
+	float: left;
+	margin: 0 10px;
+	background: #369 url('../images/top_inact.gif') repeat-x 0 100%;
+}
+#top-navigation li:hover,
+#top-navigation li.hover  {
+	background: #C93 url('../images/top_act.gif') repeat-x 0 100%;
+}
+#top-navigation a  {
+	display: block;
+	color: #FFF;
+	text-decoration: none;
+	padding: 5px 20px 5px 30px;
+	position: relative;
+}
+#tn_login  {
+	background: url('../images/i_key.gif') no-repeat 7px 50%;
+}
+#tn_signup  {
+	background: url('../images/i_sign.gif') no-repeat 6px 50%;
+}
+/* main navigation */
+#navigation  {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	clear: left;
+	font: bold 66%/100% Arial, sans-serif;
+	position: absolute;
+	left: 15px;
+	top: 61px;
+}
+#navigation li  {
+	float: left;
+	background: #2E5D8B url('../images/bg_navigation.gif') repeat-x 0 100%;
+	position: relative;
+}
+/*декорация меню */
+#navigation a  {
+	padding: 5px 15px;
+	float: left;
+	color: #FFF;
+	text-decoration: none;
+}
+#navigation li ul  {
+	display: none;
+}
+#navigation li:hover ul,
+#navigation li.hover ul  {
+	display: block;
+}
+#navigation li:hover,
+#navigation li.hover  {
+	background: #FFF;
+}
+#navigation li:hover a,
+#navigation li.hover a  {
+	color: #369;
+}
+#navigation ul  {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	z-index: 99;
+	list-style: none;
+	width: 115px;
+}
+#navigation ul li  {
+	float: left;
+	width: 100%;
+	background: #2B557F url('../images/bg_subnav.gif') repeat-x 0 100%;
+}
+#navigation ul li:hover,
+#navigation ul li.hover  {
+	background: #C93;
+}
+#navigation ul li a  {
+	width: 107px;
+	padding: 8px 4px;
+	color: #FFF !important;
+}
+#navigation ul li ul  {
+	display: none !important;
+	position: absolute;
+	top: 0;
+	left: 115px;
+}
+#navigation li ul li:hover ul,
+#navigation li ul li.hover ul  {
+	display: block !important;
+}
+/* search form */
+.search  {
+	float: right;
+	margin: 0;
+	padding: 29px 8px 0 0;
+	clear: right;
+}
+.search input  {
+	float: left;
+}
+.search input.text  {
+	border: none;
+	border-left: 2px solid #FFF;
+	border-bottom: 2px solid #FFF;
+	background: url('../images/bg_search.gif') repeat-x;
+	font: 11px Arial, sans-serif;
+	width: 145px;
+	padding: 4px 2px;
+	height: 13px;
+}
+/* main body -----------------------------------------------------------------*/
+#main  {
+	width: 100%;
+	overflow: hidden;
+	padding: 10px 0;
+	clear: both;
+	background: #<?=$rgbfon ?>;
+	color: #<?=$rgbtext ?>;
+    }
+.doors  {
+	margin: 0 8px;
+	background: url('../images/grad.gif') repeat-x;
+	position: relative;
+    }
+.door-left  {
+	background: url('../images/leftdoor.gif') no-repeat;
+}
+.door-right  {
+	background: url('../images/rightdoor.gif') no-repeat 100% 0;
+	padding: 0 0 3px 0;
+}
+.doors .wrap  {
+	height: 204px;
+}
+.box  {
+	width: 270px;
+	float: left;
+	border-left: 1px solid #999;
+	margin: 0 0 -9999px 0;
+	padding: 0 10px 9999px 20px;
+	margin-left: -1px;
+	color: #333;
+	font-size: 12px;
+	overflow: hidden;
+}
+.box ul  {
+	margin: 0;
+	padding: 0 0 0 18px;
+	list-style: none;
+}
+.box ul li  {
+	padding: 0 0 0 7px;
+	background: url('../images/bullet.gif') no-repeat 0 50%;
+}
+.buttons  {
+	padding: 0 !important;
+	clear: right;
+	
+}
+.buttons li  {
+	float: left;
+	border: 0;
+	background: #023568 url('../images/bg_but_inact.gif') repeat-x 0 100% !important;
+	margin: 15px 25px 0 0;
+	padding: 0 !important;
+}
+.buttons li:hover,
+.buttons li.hover  {
+	background: #DFC081 url('../images/bg_but_act.gif') repeat-x 0 100% !important;
+}
+.buttons a  {
+	color: #FFF;
+	padding: 3px 5px 3px 24px;
+	white-space: nowrap;
+	float: left;
+	font-weight: bold;
+}
+.samples  {
+	background: url('../images/i_tutorials.gif') no-repeat 5px 50%;
+}
+.signup  {
+	background: url('../images/i_signup.gif') no-repeat 4px 50%;
+}
+.hd  {
+	margin: 10px auto;
+	padding-right: 10px;
+    }
+#subscribe  {
+	position: absolute;
+	top: 204px;
+	left: 10px;
+	z-index: 80;
+	background: #D7B062 url('../images/bg_subscribe.gif') repeat-x;
+	font: bold 75%/180% Arial, sans-serif;
+   }
+#subscribe a  {
+	padding: 4px 8px 4px 25px;
+	color: #FFF;
+	background: url('../images/i_subscribe.gif') no-repeat 5px 50%;
+}
+.wrap  {
+	width: 100%;
+	resize: 1;
+	overflow: hidden;
+	color: #<?=$rgbtext?>
+}
+.leftcol  {
+	float: left;
+	width: 160px;
+	padding: 20px;
+}
+.logos  {
+	margin: 0;
+	padding: 30px 0;
+	list-style: none;
+	width: 100%;
+	overflow: hidden;
+}
+.logos li  {
+	float: left;
+	width: 100%;
+	padding: 10px 0;
+}
+.logos a  {
+	float: left;
+}
+.center  {
+	float: right;
+	width: 600px;
+	padding: 10px;
+	font-size: 88%;
+}
+.center a  {
+	color: #369;
+}
+.center a:hover  {
+	color: #C93;
+}
+/* bottom --------------------------------------------------------------------*/
+#bottom  {
+	margin: 37px 0 0 0;
+	padding: 5px 0;
+	background: #369 url('../images/bg_footer.gif') repeat-x 0 100%;
+	width: 100%;
+	overflow: hidden;
+}
+.paypal  {
+	float: left;
+	padding: 10px 18px;
+	display: inline;
+}
+.second-navigation  {
+	float: left;
+	margin: 0;
+	padding-left: 13px;
+	list-style: none;
+	font: bold 75%/180% Arial, sans-serif;
+	color: #FFF;
+}
+.second-navigation li  {
+	overflow: hidden;
+}
+.second-navigation a  {
+	color: #FFF;
+	padding: 0 0 0 20px;
+	display: block;
+	float: left;
+}
+.second-navigation a:hover  {
+	color: #C93;
+}
+#off_site  {
+	background: url('../images/i_templates.gif') no-repeat 0 50%;
+}
+#sn_tutorials  {
+	background: url('../images/i_tutorials.gif') no-repeat 0 50%;
+}
+#addons_download  {
+	background: url('../images/i_clips.gif') no-repeat 0 50%;
+}
+#sn_signup  {
+	background: url('../images/i_signup.gif') no-repeat 0 50%;
+}
+#bottom .txt  {
+	float: left;
+	width: 400px;
+	padding: 0 0 0 35px;
+	color: #FFF;
+	font-size: 68%;
+}
+.contact  {
+	width: 265px;
+	float: right;
+}
+.contact h6  {
+	padding: 0 0 0 20px;
+	background: url('../images/i_contact.gif') no-repeat 0 50%;
+}
+.contact ul  {
+	margin: 0;
+	padding: 0 0 0 20px;
+	list-style: none;
+	font: bold 75%/150% Arial, sans-serif;
+	color: #FFF;
+}
+.contact ul a  {
+	color: #FFF;
+	font-weight: normal;
+}
+.contact ul a:hover  {
+	text-decoration: underline;
+}
+/* footer --------------------------------------------------------------------*/
+#footer  {
+	padding: 10px;
+	font: bold 75%/110% Arial, sans-serif;
+	color: #FFF;
+	background: #333;
+}
+#footer a  {
+	color: #FFF;
+		background: #333;
+}
+#footer a:hover  {
+	text-decoration: underline;
+}
+/* second page ---------------------------------------------------------------*/
+#sidebar  {
+	background: #EEE;
+	width: 213px;
+	float: left;
+	overflow: hidden;
+	margin: -10px 0 -9999px 0;
+	padding: 0 0 9989px 0;
+	color: #333;
+	
+}
+#left-navigation  {
+	margin: 50px 0;
+	padding: 0;
+	list-style: none;
+	width: 100%;
+	overflow: hidden;
+}
+#left-navigation li  {
+	float: left;
+	width: 100%;
+}
+#left-navigation li a  {
+	display: block;
+	width: 180px;
+	padding: 10px 15px;
+	color: #333;
+	font-size: 90%;
+}
+#left-navigation li a:hover,
+#left-navigation li a.current  {
+	background: url('../images/lm_act.gif') no-repeat;
+}
+.cb  {
+	width: 185px;
+	padding: 12px;
+	margin: 8px 0 0 0;
+	background: url('../images/bg_cb.gif') no-repeat 100% 0;
+}
+#sidebar h3  {
+	margin: 0;
+	padding: 3px 0;
+	font: bold 90%/100% Arial, sans-serif;
+	border-bottom: 1px solid #999;
+	color: #333;
+}
+.cb p  {
+	margin: 10px 3px;
+	font-size: 75%;
+}
+#content  {
+	width: 670px;
+	float: right;
+	padding-right: 5px;
+	color: #333;
+}
+#content p  {
+	font-size: 88%;
+	
+}
+/* Та хрень снизу, на которой написано  Service provided by Dj--alex*/
+.service {
+	text-align: center;
+	color:white;
+	background-color: #333;
+
+	}
+	
+.service a {
+	text-align: center;
+	color:gray;
+	background-color: #333;
+	}
+/* end*/
+
+/* HACK для class WrapX */
+#wrapx {
+	margin-left: 12px;
+	margin-right: 12px;
+	}
+
+/* Добиваем до нормального вида злосчастную таблицу Изменить в DBmanager */
+#dbmgr_edit {
+	margin-left:14px;
+	margin-top:13px;
+	margin-bottom:13px;
+	border:3px;
+	border-style:dashed;
+	border-color: gray;
+	}
+#myTable {
+	margin-left:14px;
+	margin-top:13px;
+	margin-bottom:13px;
+	border:3px;
+	border-style:dashed;
+	border-color: gray;
+	}
+table#dbmgr_edit td {
+    border:0;
+	}
+table#dbmgr_edit tr {
+    border:0;
+	padding-left:2px;
+	font-size:14px;
+	background: url('../images/bg_search.gif') repeat-x;
+	}
+#dbmgr_txta {
+	height: 17px;
+	padding: 0 0 0 0 ;
+	border: 1px;
+	border-style: dotted;
+	border-color:green;
+	margin: 0px;
+	background: url('../images/bg_but_act.gif') repeat-x;
+	}
+	
+textarea {
+	<!--height: 17px; BUG FIXED -->
+	padding: 0 0 0 0 ;
+	border: 1px;
+	border-style: dotted;
+	border-color:green;
+	margin: 0px;
+	background: url('../images/bginput.gif') repeat-x;
+	background-position:bottom;
+	opacity: 0.8;
+	}
+#dbmgr_txt{
+	height: 17px;
+	padding: 0 0 0 0 ;
+	margin-left:2px;
+	border-style: dotted;
+	border-color:green;
+	background: url('../images/bg_subscribe.gif') repeat-x;
+	opacity: 0.8;
+	}
+input[type=submit] {
+	margin-top:2px;
+	text-align:center;
+	height: 20px;
+	margin-left:2px;
+	border: 0px;
+	background: url('../images/button_alt.gif') repeat-x  !important;
+	opacity: 0.8
+	}
+
+input[type="submit"]:hover {
+	margin-top:2px;
+	height: 20px;
+	padding: 0 0 0 0 ;
+	margin-left:2px;
+	border: 0px;
+	background: url('../images/button_alt.gif') repeat-x !important;
+	border=0;
+	opacity: 1;
+	}
+input[type="text"] {
+	height: 17px;
+	padding: 0 0 0 0 ;
+	border: 1px;
+	border-style: dotted;
+	border-color:green;
+	margin: 0px;
+	background: url('../images/bginput.gif') repeat-x;
+	}
+select {
+	background: url('../images/select.gif') repeat-x;
+	}
+option {
+	background: url('../images/select.gif') repeat-x;
+	}
+h2 {
+	font-size:14;
+	margin-left: 50px;
+	margin-top:24px;
+	color:white !important;
+	}
+.text {
+	height: 17px;
+	padding: 0 0 0 0 ;
+	border: 1px;
+	border-style: dotted;
+	border-color:green;
+	margin: 0px;
+	background: url('../images/bginput.gif') repeat-x;
+	}
+	
+input[name=userfile] {
+	xmargin-left: 500px;
+	padding: 0 0 0 0 ;
+	}
+	
+input[name=go],input[name=go]:hover  {
+	xmargin-left: 584px;
+	padding: 0 0 0 0 ;
+	}
+	
+table td {
+    border:1;
+	}
+
+bb {
+  font-weight: bold; 
+        	}
+
+ii {
+     font-weight: italic;
+  	}
+uu {
+  text-decoration: underline;
+	}
+
+red {
+  color: red;
+	}
+
+grn {
+  color: green;
+	}
+
+yel {
+  color: yellow;
+	}
+
+gray {
+  color: gray;
+	}
+
+
+tbig {
+     font-size-adjust: 0.6;
+	}
+
+tsmall {
+     font-size-adjust: 0.3;
+	}
+
+
+#myTable {
+   
+    	}
+#Adminpanel
+        {
+
+   /* font-size:12px; uncontrolled;*/
+	}
+
+table tr {
+    border:1;
+	padding-left:2px;
+	/* font-size:12px;*/
+	max-width:400px;
+	}

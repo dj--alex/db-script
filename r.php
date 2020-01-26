@@ -1,10 +1,10 @@
-<?// Данная программа относится к пакету DBSCRIPT v1.8 (с) dj--alex
+<?// Р”Р°РЅРЅР°СЏ РїСЂРѕРіСЂР°РјРјР° РѕС‚РЅРѕСЃРёС‚СЃСЏ Рє РїР°РєРµС‚Сѓ DBSCRIPT v1.8 (СЃ) dj--alex
 //
-require_once ('dbscore.lib'); // функция подготовки к работе и авторизации
+require_once ('dbscore.lib'); // С„СѓРЅРєС†РёСЏ РїРѕРґРіРѕС‚РѕРІРєРё Рє СЂР°Р±РѕС‚Рµ Рё Р°РІС‚РѕСЂРёР·Р°С†РёРё
 
 autoexecsql ();
-/*SELECT `name`,(SUBSTRING_INDEX(SUBSTRING_INDEX(`data`,' ', Номер),' ', -1)+0) AS `money` FROM `character` WHERE (SUBSTRING_INDEX(SUBSTRING_INDEX(`data`,' ', Номер),' ', -1)+0)>1000000;
-1325  деньги --- SEARCH по субстроке   неподдерживается */
+/*SELECT `name`,(SUBSTRING_INDEX(SUBSTRING_INDEX(`data`,' ', РќРѕРјРµСЂ),' ', -1)+0) AS `money` FROM `character` WHERE (SUBSTRING_INDEX(SUBSTRING_INDEX(`data`,' ', РќРѕРјРµСЂ),' ', -1)+0)>1000000;
+1325  РґРµРЅСЊРіРё --- SEARCH РїРѕ СЃСѓР±СЃС‚СЂРѕРєРµ   РЅРµРїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ */
 //import_request_variables ("PG","");
 
 if (($vID[0]=="!")AND(strtolower ($vID[1])=="m")) {$vID[0]="#";$vID[1]="";}
@@ -15,19 +15,19 @@ global $verreadfile,$vID,$mzdata,$multisearch,$cmd;
 $verreadfile="Viewer v4.2.4 (c) dj--alex";
 
 ### readfile  readdescripters return data info
-##	$data=array ( // не настроено -  выдача данных функцией
+##	$data=array ( // РЅРµ РЅР°СЃС‚СЂРѕРµРЅРѕ -  РІС‹РґР°С‡Р° РґР°РЅРЅС‹С… С„СѓРЅРєС†РёРµР№
 ##		0 => $headerreal,			//headerreal , all  example $data[0][$column]
 	##	1 => $plevels,				//plevels , all
 	##  2 => $headerrealnumbers,	//headerrealnumbers, all
-	##  3 => $headervirtual,		//sql only  csv - copy headerreal в версии 3.3.7 всегда содержит копию $data[0]
+	##  3 => $headervirtual,		//sql only  csv - copy headerreal РІ РІРµСЂСЃРёРё 3.3.7 РІСЃРµРіРґР° СЃРѕРґРµСЂР¶РёС‚ РєРѕРїРёСЋ $data[0]
 	##	4 => $datatypos,			//sql only  csv - connect (!!!)
 	##	5 => $fieldlen,				//sql only  csv - cfgmod (!!)
 	##	6 => $mycols,				// example - echo $data[6] ) ;
-	##	7 => $fixdetect ,  // пока что юзаются только в сверке хэдеров
-	##	8 => $warndetect ,// пока что юзаются только в сверке хэдеров
-	##	9 => $plinkdb,    // линк на базу данных  берем из plevel, all
-	##	10 => $plinkrow ); //линк на колонку\режим, all
-##		11 => $plinkkol, ); //линк на колонку, all
+	##	7 => $fixdetect ,  // РїРѕРєР° С‡С‚Рѕ СЋР·Р°СЋС‚СЃСЏ С‚РѕР»СЊРєРѕ РІ СЃРІРµСЂРєРµ С…СЌРґРµСЂРѕРІ
+	##	8 => $warndetect ,// РїРѕРєР° С‡С‚Рѕ СЋР·Р°СЋС‚СЃСЏ С‚РѕР»СЊРєРѕ РІ СЃРІРµСЂРєРµ С…СЌРґРµСЂРѕРІ
+	##	9 => $plinkdb,    // Р»РёРЅРє РЅР° Р±Р°Р·Сѓ РґР°РЅРЅС‹С…  Р±РµСЂРµРј РёР· plevel, all
+	##	10 => $plinkrow ); //Р»РёРЅРє РЅР° РєРѕР»РѕРЅРєСѓ\СЂРµР¶РёРј, all
+##		11 => $plinkkol, ); //Р»РёРЅРє РЅР° РєРѕР»РѕРЅРєСѓ, all
 	##	12 => $plinkname ); //name column, all
 //13  $plinkhlpdb[$a]=$pdata[5]; //link to help db also used as name 
 //14  $plinkhlprow[$a]=$pdata[6]; 
@@ -98,10 +98,10 @@ if ($cmd[0]==="help") { if ($adm==1) {
                        //echo "hide passed!"; echo "ipat kolotit Server #".$srvdata[$a][0]."<br>";
                        $userplevel=$prauth[$ADM][10]+(1 AND $srvdata[$a][7]!="a"); // check admin only 
                         if ($srvdata[$a][8]<1) if ((($srvdata[$a][7])<$userplevel)OR(($srvdata[$a][7]=="a")AND($prauth[$ADM][2]=="on"))) {
-                                   //     echo "plevel passed!<br>";ccука заклинило его на первой записи,урод.
+                                   //     echo "plevel passed!<br>";ccСѓРєР° Р·Р°РєР»РёРЅРёР»Рѕ РµРіРѕ РЅР° РїРµСЂРІРѕР№ Р·Р°РїРёСЃРё,СѓСЂРѕРґ.
                                   $fp =  fsockopen ($srvdata[$a][1],$srvdata[$a][4],$error,$errstr,1);
                                   $x="error=$error; rrstr=$errstr<br>";
-                               //..   echo "блджад!! $a";
+                               //..   echo "Р±Р»РґР¶Р°Рґ!! $a";
                                   if ($fp) { $online="<font color=green id=okfnt>Online</font>";} else {$online="<font color=red id=errfnt>Offline</font>";};
                                   if ($prauth[$ADM][10]>0) $service=$srvdata[$a][4]; //only for stuff
                                   if ($srvdata[$a][8]=="0") { $inf="Info: ".$srvdata[$a][9].". Sysname: ".$srvdata[$a][6] ;} else { $inf="";};
@@ -110,7 +110,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
                             }
                             //	NOT USED $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
                         
-                                //$a,"ID¦ServerIP¦Login¦Password¦Port¦DbType¦Sysname¦Plvl¦Hide¦Info".$addOSenter);
+                                //$a,"IDВ¦ServerIPВ¦LoginВ¦PasswordВ¦PortВ¦DbTypeВ¦SysnameВ¦PlvlВ¦HideВ¦Info".$addOSenter);
                     }
                     exit;}
 
@@ -130,7 +130,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
                                 //echo "output=";print_r ($output)
                                 } ;
                             }
-                       //"ID¦Command¦Parameters¦PLVL¦Info¦ReqPage¦ReqData¦ReqAutorun¦P".$addOSenter);
+                       //"IDВ¦CommandВ¦ParametersВ¦PLVLВ¦InfoВ¦ReqPageВ¦ReqDataВ¦ReqAutorunВ¦P".$addOSenter);
                     }
                     exit;}
 
@@ -139,14 +139,14 @@ if ($cmd[0]==="help") { if ($adm==1) {
 		if (!isset ($mode)) {$mode=$m;}	//."&mode=".  -->  ."&m=".
 		if ($vID==="_NULL_") { lprint ("RF_DECODER_RS"); exit; }
 		if (!isset ($review)) $review=0;
-		if (($go==cmsg(BROWSE))OR(($review==1)AND($mode==3))) {$mode=9; }; //автовключение обзора категориий  бесмысленно если она не подд.
+		if (($go==cmsg(BROWSE))OR(($review==1)AND($mode==3))) {$mode=9; }; //Р°РІС‚РѕРІРєР»СЋС‡РµРЅРёРµ РѕР±Р·РѕСЂР° РєР°С‚РµРіРѕСЂРёРёР№  Р±РµСЃРјС‹СЃР»РµРЅРЅРѕ РµСЃР»Рё РѕРЅР° РЅРµ РїРѕРґРґ.
 		if ($go==cmsg(BEST)) {$mode=5 ;}; // shows editor selected products
 		if ($go==cmsg(ASSEMBLY)) {$mode=11 ;  }; // 9  free unlinked must be linked in disable to createPC.php
 
-		$enterpoint=$verreadfile; // для показа точки входа
+		$enterpoint=$verreadfile; // РґР»СЏ РїРѕРєР°Р·Р° С‚РѕС‡РєРё РІС…РѕРґР°
 
-		// screen передает vID2  ($vID2)  однако функция его не принимает в CSV
-		// начало аналога getfile
+		// screen РїРµСЂРµРґР°РµС‚ vID2  ($vID2)  РѕРґРЅР°РєРѕ С„СѓРЅРєС†РёСЏ РµРіРѕ РЅРµ РїСЂРёРЅРёРјР°РµС‚ РІ CSV
+		// РЅР°С‡Р°Р»Рѕ Р°РЅР°Р»РѕРіР° getfile
 
 		if (!isset ($tbl)) {$tbl=$base;} // support old links  recommended
 		if (!isset ($vID2)) {$vID2=$myrowvid;} // support old links  recommended
@@ -157,13 +157,13 @@ if ($cmd[0]==="help") { if ($adm==1) {
 		If ($prauth[$ADM][4]==true) {$adm=1;} else { $gmlimitcfg=1;} ;// { $adm=$ADM;
 
 		//$writefile=0;
-		//If ($prauth[$ADM][3]==true) {$writefile=1;} ;//разрешение показывать кнопку редактирования
+		//If ($prauth[$ADM][3]==true) {$writefile=1;} ;//СЂР°Р·СЂРµС€РµРЅРёРµ РїРѕРєР°Р·С‹РІР°С‚СЊ РєРЅРѕРїРєСѓ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ
 		//if ($ADM<1) {$adm=0;$writefile=0;		}
 
 
 		//commands require auth  includes  VERSION
 		if ($cmd[0]=="config") {
-	?> <br>Для продолжения необходимо выбрать тип заголовка <br>
+	?> <br>Р”Р»СЏ РїСЂРѕРґРѕР»Р¶РµРЅРёСЏ РЅРµРѕР±С…РѕРґРёРјРѕ РІС‹Р±СЂР°С‚СЊ С‚РёРї Р·Р°РіРѕР»РѕРІРєР° <br>
 	<form action=w.php>
 	<?php 	submitkey ("write","CF_USRS");
 	submitkey ("write","CF_DB");
@@ -186,7 +186,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 		if (($cmd[0]==="time")OR($cmd[0]==="TIME"))	{ echo "Server time: ".date ("d.m.Y H-i-s")."<br>";exit;};
 		
 
-		if ($prauth[$ADM][2]) {  //модуль совместимости с conf файлами.
+		if ($prauth[$ADM][2]) {  //РјРѕРґСѓР»СЊ СЃРѕРІРјРµСЃС‚РёРјРѕСЃС‚Рё СЃ conf С„Р°Р№Р»Р°РјРё.
 			unset ($data);
 			if ($cmd[0]=="phpinfo") {phpinfo ();exit;};
                         if ($cmd[0]=="installnewkey") {installnewkey (1);exit;};
@@ -204,7 +204,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
     		if ($cmd[0]=="J3QQ4-H7H2V-2HCH4-M3HK8-6M8VW") {window ("","");echo "Many years ago exist a windows 98se operating system...";closewindow();exit;}
 
 
-		If ($prauth[$ADM][2]==true) {  // команды ТОЛЬКО для администриторов
+		If ($prauth[$ADM][2]==true) {  // РєРѕРјР°РЅРґС‹ РўРћР›Р¬РљРћ РґР»СЏ Р°РґРјРёРЅРёСЃС‚СЂРёС‚РѕСЂРѕРІ
 		if (($cmd[0]==="genactcode")AND($prauth[$ADM][42])) { echo genactcode();exit;}
 		 if (($cmd[0]==="genactcode")AND(!$prauth[$ADM][42])) { msgexiterror ("notrights"," superuser","admin.php"); }
 		if ($cmd[0]==="hashgen") { echo hashgen($cmd[1]);exit;}
@@ -243,10 +243,10 @@ if ($cmd[0]==="help") { if ($adm==1) {
 		}
 		
 		
-		//if ($sd[9]) {$dbs_ips_nolog=explode (",",$sd[9]);// пример разбивки массива по запятым,быстрый
+		//if ($sd[9]) {$dbs_ips_nolog=explode (",",$sd[9]);// РїСЂРёРјРµСЂ СЂР°Р·Р±РёРІРєРё РјР°СЃСЃРёРІР° РїРѕ Р·Р°РїСЏС‚С‹Рј,Р±С‹СЃС‚СЂС‹Р№
 			//print_r ($dbs_ips_nolog);
-			//if (in_array($dbs_ip, $dbs_ips_nolog)) return 0; } //  пока любые типы
-		// конец команд только для админов
+			//if (in_array($dbs_ip, $dbs_ips_nolog)) return 0; } //  РїРѕРєР° Р»СЋР±С‹Рµ С‚РёРїС‹
+		// РєРѕРЅРµС† РєРѕРјР°РЅРґ С‚РѕР»СЊРєРѕ РґР»СЏ Р°РґРјРёРЅРѕРІ
 
 
 			if ($cmd[0]=="keygen") {
@@ -261,7 +261,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 		}
 		
 	rfsysdatareq();
-	$tblint=$tbl;settype($tblint,integer);// разрешает базу называть по имени.
+	$tblint=$tbl;settype($tblint,integer);// СЂР°Р·СЂРµС€Р°РµС‚ Р±Р°Р·Сѓ РЅР°Р·С‹РІР°С‚СЊ РїРѕ РёРјРµРЅРё.
 	if ($cfgmod===0) {
 	if ($tblint==false) $tbl=getidbyid ($prdbdata,1,"realid",$tbl);
 	}
@@ -276,14 +276,14 @@ if ($cmd[0]==="help") { if ($adm==1) {
 		}
 
 		if ($vID===".info") {
-		if ($languageprofile=="russian") echo cmsg ("Y_PLVL")." -- ".$prauth[$ADM][10]."<br>".cmsg ("Y_LG")." ".$_SERVER['PHP_AUTH_USER']."(".$prauth[$ADM][0].")(".$prauth[$ADM][15].")<br>IP ".$dbs_ip." Host:".gethostbyaddr ($dbs_ip).", № $tbl<br><br>".cmsg ("Y_").":".$USERDAT;
+		if ($languageprofile=="russian") echo cmsg ("Y_PLVL")." -- ".$prauth[$ADM][10]."<br>".cmsg ("Y_LG")." ".$_SERVER['PHP_AUTH_USER']."(".$prauth[$ADM][0].")(".$prauth[$ADM][15].")<br>IP ".$dbs_ip." Host:".gethostbyaddr ($dbs_ip).", в„– $tbl<br><br>".cmsg ("Y_").":".$USERDAT;
 		if ($languageprofile!=="russian") echo "Your plevel is -- ".$prauth[$ADM][10]."<br>Your login and names ".$_SERVER['PHP_AUTH_USER']."(".$prauth[$ADM][0].")(".$prauth[$ADM][15].")<br>IP ".$dbs_ip." Host:".gethostbyaddr ($dbs_ip).", Number $tbl<br><br>About you:".$USERDAT;
 		
                 exit;
 		}
 
-		//показ версии dbscript   тепер будет смотреть все модули (ищет сам)
-		//методика  во всех php показать строки из кавычек где содержится $ver* и = после $ver*
+		//РїРѕРєР°Р· РІРµСЂСЃРёРё dbscript   С‚РµРїРµСЂ Р±СѓРґРµС‚ СЃРјРѕС‚СЂРµС‚СЊ РІСЃРµ РјРѕРґСѓР»Рё (РёС‰РµС‚ СЃР°Рј)
+		//РјРµС‚РѕРґРёРєР°  РІРѕ РІСЃРµС… php РїРѕРєР°Р·Р°С‚СЊ СЃС‚СЂРѕРєРё РёР· РєР°РІС‹С‡РµРє РіРґРµ СЃРѕРґРµСЂР¶РёС‚СЃСЏ $ver* Рё = РїРѕСЃР»Рµ $ver*
 		if ($vID===".ver") {
 			echo lprint ("VCORE").": ".$verprogram."<br>";
 			echo lprint ("VCONF").": ".$pr[1]."<br>";
@@ -300,7 +300,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 			}
 			unset ($files);
 	echo "";if ($live) echo "<font color=green id=xfnt>live</font>!!";
-			// а теперь убираем части програмного кода :)
+			// Р° С‚РµРїРµСЂСЊ СѓР±РёСЂР°РµРј С‡Р°СЃС‚Рё РїСЂРѕРіСЂР°РјРЅРѕРіРѕ РєРѕРґР° :)
 			echo "<br>";
                           if ($coreSE==1) echo "You use non-commercial Dbscript 4 SE  Linux edition.";
 
@@ -342,7 +342,7 @@ if ($cmd[0]==="help") { if ($adm==1) {
 				} 
 
 			exit;}
-			//НОВЫЙ РЕЖИМ ПОИСКА НЕ ТЕРЯЮЩИЙ НАСТРОЙКИ
+			//РќРћР’Р«Р™ Р Р•Р–РРњ РџРћРРЎРљРђ РќР• РўР•Р РЇР®Р©РР™ РќРђРЎРўР РћР™РљР
 			if (($pr[24])AND($intf==="master-mode")) {
 				// MASTER MODE
 				if ($pr[7]) { print "<form action=r.php method=post>";} else {  print "<form action=disable method=post>";} ;
@@ -372,10 +372,10 @@ echo "!";if ($live) echo "<font color=green id=xfnt>live</font>!";
 
 	if (!$pr[7])  print lprint ("CONNLINK:")."<font color=green id=xfnt>".$prdbdata[$tbl][1]."</font>"; // perekl zapr
 
-	if ((($adm==1)OR($deftbl==false))AND($pr[7])) { //перекл разр
-		$writefile=0; // пришлось добавить такую вот затычку ,без нее и список думает что это редактор :)
+	if ((($adm==1)OR($deftbl==false))AND($pr[7])) { //РїРµСЂРµРєР» СЂР°Р·СЂ
+		$writefile=0; // РїСЂРёС€Р»РѕСЃСЊ РґРѕР±Р°РІРёС‚СЊ С‚Р°РєСѓСЋ РІРѕС‚ Р·Р°С‚С‹С‡РєСѓ ,Р±РµР· РЅРµРµ Рё СЃРїРёСЃРѕРє РґСѓРјР°РµС‚ С‡С‚Рѕ СЌС‚Рѕ СЂРµРґР°РєС‚РѕСЂ :)
 		printlink ($prauth,$prdbdata,$ADM,$tbl,$grouplist,"tbl",lprint ("CONNLINK:"),$groupdb,$ipfilter,6);// master mode menu
-		If ($prauth[$ADM][3]==true) {$writefile=1;} ;//разрешение показывать кнопку редактирования 
+		If ($prauth[$ADM][3]==true) {$writefile=1;} ;//СЂР°Р·СЂРµС€РµРЅРёРµ РїРѕРєР°Р·С‹РІР°С‚СЊ РєРЅРѕРїРєСѓ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ 
 		if ($ADM<1) {$adm=0;$writefile=0;		}
 		submitkey ("write","A_USRGO");
 			} ;
@@ -383,14 +383,14 @@ echo "!";if ($live) echo "<font color=green id=xfnt>live</font>!";
  if (($adm==0)AND($deftbl==true)) { ?>
 	<form action="r.php" method=post>
 		<input type=hidden name=tbl value=<?=$deftbl; ?>>
-			<input type=submit name=write value=Войти>
-	<?php };// для случая выбранной по умолч базы.
+			<input type=submit name=write value=Р’РѕР№С‚Рё>
+	<?php };// РґР»СЏ СЃР»СѓС‡Р°СЏ РІС‹Р±СЂР°РЅРЅРѕР№ РїРѕ СѓРјРѕР»С‡ Р±Р°Р·С‹.
 
  print "</form>";
 
  $readfile=1;
  
- require ('readfilemenu.php');  // специальное указание для header.php
+ require ('readfilemenu.php');  // СЃРїРµС†РёР°Р»СЊРЅРѕРµ СѓРєР°Р·Р°РЅРёРµ РґР»СЏ header.php
  echo "</CENTER>";
  
  if (!isset ($mode)) exit;
@@ -401,30 +401,30 @@ echo "!";if ($live) echo "<font color=green id=xfnt>live</font>!";
 
 			$lock=$pr[11];
 
-			// настройка лимита и сортировки
+			// РЅР°СЃС‚СЂРѕР№РєР° Р»РёРјРёС‚Р° Рё СЃРѕСЂС‚РёСЂРѕРІРєРё
 			if ($printlimit and $limitenable) {
 				settype ($printlimit,"integer");
 				if ($printlimit==false) {
 					msgexiterror ("limit","disable","disable");
 				} else {$addlimit=" LIMIT $printlimit";};
 			}
-			if ($selectenable) { $addgroup=" GROUP BY ".$field.""; }   // короче видимо все придется проверять перед исполнением
-			$addsql=$addgroup.$addlimit;// CSV с сортировкой отстанет...   // field на соответствие field... маразм а делать надо.
-			//окончание лимита и сортировки
+			if ($selectenable) { $addgroup=" GROUP BY ".$field.""; }   // РєРѕСЂРѕС‡Рµ РІРёРґРёРјРѕ РІСЃРµ РїСЂРёРґРµС‚СЃСЏ РїСЂРѕРІРµСЂСЏС‚СЊ РїРµСЂРµРґ РёСЃРїРѕР»РЅРµРЅРёРµРј
+			$addsql=$addgroup.$addlimit;// CSV СЃ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№ РѕС‚СЃС‚Р°РЅРµС‚...   // field РЅР° СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРµ field... РјР°СЂР°Р·Рј Р° РґРµР»Р°С‚СЊ РЅР°РґРѕ.
+			//РѕРєРѕРЅС‡Р°РЅРёРµ Р»РёРјРёС‚Р° Рё СЃРѕСЂС‚РёСЂРѕРІРєРё
 
 			if ($lock) { if ($adm==0) msgexiterror ("disabled",0,"getfile.php"); }
 
 			if (($mode<>2)AND($mode<>4)AND(strlen($vID)<$sd[13]))
 			{
-				print "<bb>Ошибка ввода</bb><br>";
-				echo cmsg ("MORE_LET")."$sd[13]".cmsg("LET");echo "<form  action=disable method=post>"; hidekey ("go","Назад");echo "</form> ";
+				print "<bb>РћС€РёР±РєР° РІРІРѕРґР°</bb><br>";
+				echo cmsg ("MORE_LET")."$sd[13]".cmsg("LET");echo "<form  action=disable method=post>"; hidekey ("go","РќР°Р·Р°Рґ");echo "</form> ";
 				exit (1);
 			}
 
 			if (($daysleft<-12)AND($vID!=="")AND($ADM>0)) expire ();
 
 			if (!isset ($mode))  msgexiterror ("lostvar",0,"disable");
-			//процедура дешифрации значения					//PART OF ID tbl
+			//РїСЂРѕС†РµРґСѓСЂР° РґРµС€РёС„СЂР°С†РёРё Р·РЅР°С‡РµРЅРёСЏ					//PART OF ID tbl
 			$filbas=$prdbdata[$tbl][0];		$namebas=$prdbdata[$tbl][1];
 			$needscr=$prdbdata[$tbl][2];	$scrdir=$filbas."scr";
 			$formatscr=$prdbdata[$tbl][3];	$category=$prdbdata[$tbl][4];
@@ -439,18 +439,18 @@ echo "!";if ($live) echo "<font color=green id=xfnt>live</font>!";
 			$reserved16=$prdbdata[$tbl][16];	$reserved17=$prdbdata[$tbl][17];$res16=$reserved16;
                         $dbtype=$prdbdata[$tbl][12];
                         $encode=$prdbdata[$tbl][21];
-			// $DB - коды баз из decc  $DBC - содержимое для перебора, не более того
+			// $DB - РєРѕРґС‹ Р±Р°Р· РёР· decc  $DBC - СЃРѕРґРµСЂР¶РёРјРѕРµ РґР»СЏ РїРµСЂРµР±РѕСЂР°, РЅРµ Р±РѕР»РµРµ С‚РѕРіРѕ
 			$floodlimit=$sd[12];
-// где-то не здесь баг связ с появлением тупого окна при попытке посм конфиг без прав админа.
+// РіРґРµ-С‚Рѕ РЅРµ Р·РґРµСЃСЊ Р±Р°Рі СЃРІСЏР· СЃ РїРѕСЏРІР»РµРЅРёРµРј С‚СѓРїРѕРіРѕ РѕРєРЅР° РїСЂРё РїРѕРїС‹С‚РєРµ РїРѕСЃРј РєРѕРЅС„РёРі Р±РµР· РїСЂР°РІ Р°РґРјРёРЅР°.
 if ($tbl) if (($dbtype!=="mysql")AND($dbtype!=="fdb")AND($dbtype!=="pg")AND($dbtype!=="ibase")) msgexiterror ("SCP",$dbtype,"admin.php");
 ###########################
 ###########################
 ###########################
 			//MYSQLMODESTART
-//вывод комментариев, для них не требуются права
+//РІС‹РІРѕРґ РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ, РґР»СЏ РЅРёС… РЅРµ С‚СЂРµР±СѓСЋС‚СЃСЏ РїСЂР°РІР°
 if (($cm==1)AND($mode==0)) {
 print "<html><bb>".cmsg ("COMM").":</bb><br>";
-// вообшще вместо этого безобразия надо бы сделать просто JS ку   //print $d ;//method2
+// РІРѕРѕР±С€С‰Рµ РІРјРµСЃС‚Рѕ СЌС‚РѕРіРѕ Р±РµР·РѕР±СЂР°Р·РёСЏ РЅР°РґРѕ Р±С‹ СЃРґРµР»Р°С‚СЊ РїСЂРѕСЃС‚Рѕ JS РєСѓ   //print $d ;//method2
 $comfile="_local/scrcomm/".$scrdir."/".$scrc.".txt";
 $imgfile="_local/scrcomm/".$scrdir."/".$scrc."$formatscr";
  $wr = fopen ($comfile,"r");
@@ -462,13 +462,13 @@ if (($needscr==true)AND($formatscr)) if ($wrimg) echo "<img src=\"$imgfile\">";
 
 exit;
 }
-			// Проверка уровня прав на чтение
+			// РџСЂРѕРІРµСЂРєР° СѓСЂРѕРІРЅСЏ РїСЂР°РІ РЅР° С‡С‚РµРЅРёРµ
 			if ($prauth[$ADM][10]<$needrights){msgexiterror ("notrights",$needrights,"disable");}
 
 			###################################
 			#PREPARING FOR SELECT FIELD FOR DB#
 			###################################
-			//ПЕРЕМЕЩЕНО  РЕЖИМ 7 ОБЩИЙ ВХОД
+			//РџР•Р Р•РњР•Р©Р•РќРћ  Р Р•Р–РРњ 7 РћР‘Р©РР™ Р’РҐРћР”
 			if (!$pr[8]) { echo "DEBUG Field state: $field ; ";
 			echo "Selected: $selectedfield<br>"; }
 			if ($field===false) { echo "fields - false";};
@@ -480,7 +480,7 @@ exit;
 		}
 
 
-			// подготовка к мультипоиску
+			// РїРѕРґРіРѕС‚РѕРІРєР° Рє РјСѓР»СЊС‚РёРїРѕРёСЃРєСѓ
 
 //global $tbl;
 function multistart ()
@@ -496,27 +496,27 @@ function multistart ()
 				$mv=array();
 				if (is_array ($vID)) {$mv=$vID;print_r ($vID);} else {	$mv=explode(";",$vID,$multilimit+1);}
 				//	for ($a=0;$a<$mvcnt;$a++) {  echo "Number - $a - Named - $mv[$a]<bR>"; };
-				return $mv; // дб возвращен массив из значения
+				return $mv; // РґР± РІРѕР·РІСЂР°С‰РµРЅ РјР°СЃСЃРёРІ РёР· Р·РЅР°С‡РµРЅРёСЏ
 			}
 			$mvcnt=count($mv);			//	echo "Total on massive entered ".$mvcnt." but allowed ".$multilimit."<br>";
 			if ($mvcnt>$pr[27]) { $mvcnt=$multilimit ;			//	echo " mvcnt  $mvcnt...  limit  $multilimit...   c27 $pr[27]...<br>";
 			lprint ("RF_MULTILIM");echo "$multilimit<br>"; }
 			// echo $mv; //	for ($a=0;$a<$multilimit;$a++) {  echo "Number - $a - Named - $mv[$a]<bR>"; }; // debug
-			// конец подготовки
+			// РєРѕРЅРµС† РїРѕРґРіРѕС‚РѕРІРєРё
 	if ($cfgmod>0)	{ echo "Configuration selected $filbas<br>";rfsysdatareq();}
 	//$data=		readdescripters ();
 
-// отключено чтобы не было сообщения об ошибке
-if ($vID=="") if (($go=="Обзор")OR($mode==5)OR($mode==9)OR($mode==4)) { echo ""; } else {exit (1); };
+// РѕС‚РєР»СЋС‡РµРЅРѕ С‡С‚РѕР±С‹ РЅРµ Р±С‹Р»Рѕ СЃРѕРѕР±С‰РµРЅРёСЏ РѕР± РѕС€РёР±РєРµ
+if ($vID=="") if (($go=="РћР±Р·РѕСЂ")OR($mode==5)OR($mode==9)OR($mode==4)) { echo ""; } else {exit (1); };
 
 
 			if (($cmd[0]==="LPRINT")OR($cmd[0]==="lprint")) { lprint ($cmd[1]); exit;} //.5286742
 
 			$vID= trim ($vID);
 			// FIXED MESSAGE 
-			//if ($vID[0]===".") { exit;echo "__READ_UNKNOWN_COMMAND";$act="READ Unknown command $vID"; logwrite ($act) ; exit;};  // логируемся
+			//if ($vID[0]===".") { exit;echo "__READ_UNKNOWN_COMMAND";$act="READ Unknown command $vID"; logwrite ($act) ; exit;};  // Р»РѕРіРёСЂСѓРµРјСЃСЏ
 			$nametbl=$prdbdata[$tbl][1];
-			if ($pr[12]) {$act="READ_M $mode B $tbl($nametbl) Find $vID"; logwrite ($act) ;};  // логируемся // где тут выдает херню что типа SQL не подключен , хотя он ещё накер не нужен.
+			if ($pr[12]) {$act="READ_M $mode B $tbl($nametbl) Find $vID"; logwrite ($act) ;};  // Р»РѕРіРёСЂСѓРµРјСЃСЏ // РіРґРµ С‚СѓС‚ РІС‹РґР°РµС‚ С…РµСЂРЅСЋ С‡С‚Рѕ С‚РёРїР° SQL РЅРµ РїРѕРґРєР»СЋС‡РµРЅ , С…РѕС‚СЏ РѕРЅ РµС‰С‘ РЅР°РєРµСЂ РЅРµ РЅСѓР¶РµРЅ.
 
 			//multisearch=1 zone   non-global start
 
@@ -524,14 +524,14 @@ if ($vID=="") if (($go=="Обзор")OR($mode==5)OR($mode==9)OR($mode==4)) { echo "";
 			if ($multisearch==1) {
 				for ($aa=0;$aa<$mvcnt;$aa++)  {$vID=$mv[$aa];
 				$vID= trim ($vID);
-				echo "<font color=magenta><bb>№ ".($aa+1)." - $mv[$aa] <br></font></bb>";
+				echo "<font color=magenta><bb>в„– ".($aa+1)." - $mv[$aa] <br></font></bb>";
 				search () ;}
 			}
 			// multisearch end
 		
 			
 			if ($mode<4) { exit; }
-			// глобализация всех переменных касающихся движка  стр5
+			// РіР»РѕР±Р°Р»РёР·Р°С†РёСЏ РІСЃРµС… РїРµСЂРµРјРµРЅРЅС‹С… РєР°СЃР°СЋС‰РёС…СЃСЏ РґРІРёР¶РєР°  СЃС‚СЂ5
                         
 function search ()
 			{	global $go,$olddvID,$selectedfield,$field,$fields;
@@ -543,61 +543,61 @@ function search ()
 				global	 $tblmysqlselect,$md1column,$md2column,$dbtype,$writeright;
 				global $DBC,$vIDold,$mvcnt,$b,$dbc,$prdbdata,$scrnum,$mycol,$mycols;
 				global $myrow;//bugs with screen without it
-				global $res16;//maybe bug with res16 передаче
+				global $res16;//maybe bug with res16 РїРµСЂРµРґР°С‡Рµ
 				global $vID2;
-				global $limitenable,$selectenable,$field,$printlimit,$addsql,$kol,$dbtype,$xfgetlimit;//  глобализация как обычно млин
+				global $limitenable,$selectenable,$field,$printlimit,$addsql,$kol,$dbtype,$xfgetlimit;//  РіР»РѕР±Р°Р»РёР·Р°С†РёСЏ РєР°Рє РѕР±С‹С‡РЅРѕ РјР»РёРЅ
                                 global $oldmode;
-                                                            if (($oldmode>7)and($oldmode<8)) {// затычка для случая с сбросом искомой колонки
+                                                            if (($oldmode>7)and($oldmode<8)) {// Р·Р°С‚С‹С‡РєР° РґР»СЏ СЃР»СѓС‡Р°СЏ СЃ СЃР±СЂРѕСЃРѕРј РёСЃРєРѕРјРѕР№ РєРѕР»РѕРЅРєРё
                                 $x=explode (".",$oldmode);
                                 $kol=$x[1]; $mode= 7;if ($debug)echo "Reselect column for mode 7 : $kol";
                                 }
-                                //echo "dbtype=$dbtype;"; тут он есть , где потерялся тогда??
+                                //echo "dbtype=$dbtype;"; С‚СѓС‚ РѕРЅ РµСЃС‚СЊ , РіРґРµ РїРѕС‚РµСЂСЏР»СЃСЏ С‚РѕРіРґР°??
 				###########################################################
 				//MYSQLMODESEARCHSTART					NON-GLOBAL MODES //
 				###########################################################
 
-				//процедура поиска по имени - mode 1 - SQL
+				//РїСЂРѕС†РµРґСѓСЂР° РїРѕРёСЃРєР° РїРѕ РёРјРµРЅРё - mode 1 - SQL
 				if (($mode == 1)AND($prdbdata[$tbl][12]!="fdb")) {
 					 $connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 					 dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
-					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
+					$data=readdescripters ();// РїРѕР»СѓС‡РµРЅРёРµ РґР°РЅРЅС‹С… Р·Р°РіРѕР»РѕРІРєР° РјР°СЃСЃРёРІ mycol РєРѕР»-РІРѕ mycols
 					global $query,$connect;
 					global $mzdata,$mycols,$myrow,$findrecords,$scrcolumn;
 					$query = "SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md1column]." LIKE '%".$vID."%'";
 					if (($prdbdata[$tbl][15]>0)AND ($vID2!=="")) { $query = $query." AND ".$mycol[$prdbdata[$tbl][15]]."= '".$vID2."'";};
-					$query=$query.$addsql;// сортировка, лимит
+					$query=$query.$addsql;// СЃРѕСЂС‚РёСЂРѕРІРєР°, Р»РёРјРёС‚
 					selectedprintsql ($data);
 					if ($multisearch==0) {exit (1); }
 				}
-				//процедура поиска по коду  - mode 2 - SQL
+				//РїСЂРѕС†РµРґСѓСЂР° РїРѕРёСЃРєР° РїРѕ РєРѕРґСѓ  - mode 2 - SQL
 				if (($mode == 2)AND($prdbdata[$tbl][12]!="fdb")) {
 					$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 					dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
-					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
+					$data=readdescripters ();// РїРѕР»СѓС‡РµРЅРёРµ РґР°РЅРЅС‹С… Р·Р°РіРѕР»РѕРІРєР° РјР°СЃСЃРёРІ mycol РєРѕР»-РІРѕ mycols
 					global $query,$connect;
 					global $mzdata,$mycols,$myrow,$findrecords,$scrcolumn;
 					settype ($vID,"integer");
 					if ($vID==0)  msgexiterror ("needcode",$mode,"disable");
 					$query = "SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE ".$mycol[$md2column]."= ".$vID;
 					if (($prdbdata[$tbl][15]>0)AND ($vID2!=="")) { $query = $query." AND ".$mycol[$prdbdata[$tbl][15]]."= '".$vID2."'";};
-					$query=$query.$addsql;// сортировка, лимит
+					$query=$query.$addsql;// СЃРѕСЂС‚РёСЂРѕРІРєР°, Р»РёРјРёС‚
 					selectedprintsql ($data);
 					if ($multisearch==0) {exit (1); }
 				}
 
 
 
-				//mode 3 процедура SQL поиска по категории
+				//mode 3 РїСЂРѕС†РµРґСѓСЂР° SQL РїРѕРёСЃРєР° РїРѕ РєР°С‚РµРіРѕСЂРёРё
 				if (($mode == 3)AND($prdbdata[$tbl][12]!="fdb")) {
 					$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 					dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 					if ($categorymode==false) {   msgexiterror ("nocategory",$mode,"disable");  }
-					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
+					$data=readdescripters ();// РїРѕР»СѓС‡РµРЅРёРµ РґР°РЅРЅС‹С… Р·Р°РіРѕР»РѕРІРєР° РјР°СЃСЃРёРІ mycol РєРѕР»-РІРѕ mycols
 					$myrow=$data[0];
 					global $query,$connect,$mzdata,$mycols,$myrow,$findrecords,$scrcolumn;
 					$query = "SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE ".$mycol[$category]." LIKE '%".$vID."%'";
 					if (($prdbdata[$tbl][15]>0)AND ($vID2!=="")) { $query = $query." AND ".$mycol[$prdbdata[$tbl][15]]."= '".$vID2."'";};
-					$query=$query.$addsql;// сортировка, лимит
+					$query=$query.$addsql;// СЃРѕСЂС‚РёСЂРѕРІРєР°, Р»РёРјРёС‚
 					selectedprintsql ($data);
 					if ($multisearch==0) {exit (1); }
 				}
@@ -609,8 +609,8 @@ function search ()
 					dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
 					global $fullfield;
 					if ($categorymode==false) {   msgexiterror ("nocategory",$mode,"disable");  }
-					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
-					$myrow=$data[0];// bordf\derК
+					$data=readdescripters ();// РїРѕР»СѓС‡РµРЅРёРµ РґР°РЅРЅС‹С… Р·Р°РіРѕР»РѕРІРєР° РјР°СЃСЃРёРІ mycol РєРѕР»-РІРѕ mycols
+					$myrow=$data[0];// bordf\derРљ
 					$namecategorycol=$myrow[$category];
 					$query="SELECT DISTINCT $namecategorycol FROM `".$prdbdata[$tbl][5]."` WHERE ".$mycol[$category]." LIKE '%".$vID."%'";
 					if ($vID=="!101") $query="SELECT DISTINCT $namecategorycol FROM `".$prdbdata[$tbl][5]."`";
@@ -632,7 +632,7 @@ function search ()
 
 
 
-				//mode 8 процедура SQL поиска по любой колонке
+				//mode 8 РїСЂРѕС†РµРґСѓСЂР° SQL РїРѕРёСЃРєР° РїРѕ Р»СЋР±РѕР№ РєРѕР»РѕРЅРєРµ
 				if (($mode == 8)AND($prdbdata[$tbl][12]!="fdb")) {
 					global $presettedmode;
 					$mode=6; $presettedmode=3;
@@ -642,12 +642,12 @@ function search ()
 					//ubrat vse vybory polej ne svyazannye s tekushim mode==7( po menu)
 					global $presettedmode,$res16,$mznumb,$codekey,$fullfield;
 					echo "kol=$kol";$field=$kol;
-					global $prauth,$ADM;// добавлено для переключения продвинутого поиска
+					global $prauth,$ADM;// РґРѕР±Р°РІР»РµРЅРѕ РґР»СЏ РїРµСЂРµРєР»СЋС‡РµРЅРёСЏ РїСЂРѕРґРІРёРЅСѓС‚РѕРіРѕ РїРѕРёСЃРєР°
 					//	echo "Field activated first $field<br>"; //TO DELETE AFTE
 					$mode=6; $mode7=1;//$presettedmode=1.1; bylo 1.1
 					$eid=encodevID ($vID);  $eolddid=encodevID ($olddvID);  //setup id
 					{ 		$selectedfield="!1".$field;
-					// если field выбран то выполняется
+					// РµСЃР»Рё field РІС‹Р±СЂР°РЅ С‚Рѕ РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ
 	?> 	<form action="r.php" method=post>
 <?php if ($multisearch==1) {// urlencode ($oldvID);serialize ($olddvID); $vID="!S".$vID;
 			hidekey ("vID",$eolddid); 	 } else {  hidekey ("vID",$eid);	 };
@@ -661,25 +661,25 @@ hidekey ("selectedfield",$selectedfield);
 hidekey ("review",$review);
 hidekey ("vID2",$vID2);
 hidekey ("kol",$kol);
-//	submitkey ("go","R_SEL_ROW");// проверить чтобудет если искать по значению сортировки удаляем уже не нужно :))
+//	submitkey ("go","R_SEL_ROW");// РїСЂРѕРІРµСЂРёС‚СЊ С‡С‚РѕР±СѓРґРµС‚ РµСЃР»Рё РёСЃРєР°С‚СЊ РїРѕ Р·РЅР°С‡РµРЅРёСЋ СЃРѕСЂС‚РёСЂРѕРІРєРё СѓРґР°Р»СЏРµРј СѓР¶Рµ РЅРµ РЅСѓР¶РЅРѕ :))
 echo " </form> ";
 			 }
 
 				}
 
 
-				//mode 6 процедура SQL поиска по выбранной колонке
+				//mode 6 РїСЂРѕС†РµРґСѓСЂР° SQL РїРѕРёСЃРєР° РїРѕ РІС‹Р±СЂР°РЅРЅРѕР№ РєРѕР»РѕРЅРєРµ
 				if (($mode == 6)AND($prdbdata[$tbl][12]!="fdb")) {
 					$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 					global $categorymode,$mode,$fullfield;
 					global $mode6,$m6field,$m6count;
 					global $mycols,$mycol,$del,$res16,$presettedmode,$selectedfield,$fields;
 					global $partquery,$vID,$mznumb;
-					$res16=$prdbdata[$tbl][16];// Лимит колонок
+					$res16=$prdbdata[$tbl][16];// Р›РёРјРёС‚ РєРѕР»РѕРЅРѕРє
 					if ($mode7==1) { $res16=$selectedfield ;};
 					$a=prefixdecode ($res16); //echo "PREFIX $res16";
 					dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
-					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
+					$data=readdescripters ();// РїРѕР»СѓС‡РµРЅРёРµ РґР°РЅРЅС‹С… Р·Р°РіРѕР»РѕРІРєР° РјР°СЃСЃРёРІ mycol РєРѕР»-РІРѕ mycols
 					//$mycol[$md1column]".."
 					$mode6=array ();
 					global $query,$connect;
@@ -689,7 +689,7 @@ echo " </form> ";
 					$query = "SELECT * FROM `".$prdbdata[$tbl][5]."` WHERE ".$partquery ;
 					if (($prdbdata[$tbl][15]>0)AND ($vID2!=="")) { $query = $query." AND ".$mycol[$prdbdata[$tbl][15]]."= '".$vID2."'";};
 					//if (!$pr[8]) { echo "AFTER DECODE categorymode=$categorymode,mode=$mode,m6count=$m6count,	 mode6=$mode6,m6field=$m6field,mycols=$mycols,mycol=$mycol,del=$del,partquery=$partquery,vID=$vID<br>";}
-                                        $query=$query.$addsql;// сортировка, лимит
+                                        $query=$query.$addsql;// СЃРѕСЂС‚РёСЂРѕРІРєР°, Р»РёРјРёС‚
 					selectedprintsql ($data);
 					if ($multisearch==0) {exit (1); }
 				}
@@ -705,61 +705,61 @@ echo " </form> ";
 				###########################################################
 
 
-				//	if (($prdbdata[$tbl][15]>0)AND ($vID2!=="")) { $query = $query." AND ".$mycol[$prdbdata[$tbl][15]]."= '".$vID2."'";}; // не внедрено т.к. есть ошибка с вызовом из screen которая заставляет правильно от 1 рез.
+				//	if (($prdbdata[$tbl][15]>0)AND ($vID2!=="")) { $query = $query." AND ".$mycol[$prdbdata[$tbl][15]]."= '".$vID2."'";}; // РЅРµ РІРЅРµРґСЂРµРЅРѕ С‚.Рє. РµСЃС‚СЊ РѕС€РёР±РєР° СЃ РІС‹Р·РѕРІРѕРј РёР· screen РєРѕС‚РѕСЂР°СЏ Р·Р°СЃС‚Р°РІР»СЏРµС‚ РїСЂР°РІРёР»СЊРЅРѕ РѕС‚ 1 СЂРµР·.
 
 
 
-				// процедура поиска по имени  - mode 1 - CSV
+				// РїСЂРѕС†РµРґСѓСЂР° РїРѕРёСЃРєР° РїРѕ РёРјРµРЅРё  - mode 1 - CSV
 				if (($mode == 1)AND($prdbdata[$tbl][12]=="fdb"))
 				{
 					$findrecords=0;echo cmsg ("RF_RESSRCH").$namebas." - ".$vID.":\n\n";
 					$vIDold=$vID; $vID=strtolower ($vID);
-					//  $f=fopen ("_data/".$filbas,"r") or die ("Файл базы не найден");
-					// echo ""; $z=xfgetcsv ($f,$xfgetlimit,"¦");
+					//  $f=fopen ("_data/".$filbas,"r") or die ("Р¤Р°Р№Р» Р±Р°Р·С‹ РЅРµ РЅР°Р№РґРµРЅ");
+					// echo ""; $z=xfgetcsv ($f,$xfgetlimit,"В¦");
 					// $mycol=$z;$myrow=array ();$selected=array ();//added
 					//$md1column=1;$md2column=0;
 					//echo "$cfgmod=cfg;$filbas=fil;$namebas=na,;$md1column=md1;$md2column=md2;<br>";
 					$data=readdescripters ();$f=$data[4];
-					//echo "$cfgmod=cfg;$filbas=fil;$namebas=na,;$md1column=md1;$md2column=md2;<br>";rd вообще не возвр данные.
-					rfsysdatareq (); // возвращаем потерянные хер знает где переменные
-					for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
-						$k = count($dbc);//echo "md1=$md1column";// dbc-стр табл  к- число кол з-заголовок
+					//echo "$cfgmod=cfg;$filbas=fil;$namebas=na,;$md1column=md1;$md2column=md2;<br>";rd РІРѕРѕР±С‰Рµ РЅРµ РІРѕР·РІСЂ РґР°РЅРЅС‹Рµ.
+					rfsysdatareq (); // РІРѕР·РІСЂР°С‰Р°РµРј РїРѕС‚РµСЂСЏРЅРЅС‹Рµ С…РµСЂ Р·РЅР°РµС‚ РіРґРµ РїРµСЂРµРјРµРЅРЅС‹Рµ
+					for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"В¦");$a++) {
+						$k = count($dbc);//echo "md1=$md1column";// dbc-СЃС‚СЂ С‚Р°Р±Р»  Рє- С‡РёСЃР»Рѕ РєРѕР» Р·-Р·Р°РіРѕР»РѕРІРѕРє
 						$findid=strpos(strtolower($dbc[$md1column]),strtolower($vID));
-						if (($findid!==false)&&($dbc[$md1column]!=="")) { //  проверка условия, не может быть удалена
+						if (($findid!==false)&&($dbc[$md1column]!=="")) { //  РїСЂРѕРІРµСЂРєР° СѓСЃР»РѕРІРёСЏ, РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СѓРґР°Р»РµРЅР°
 							$selected[]=$dbc;   //added
 						}
 					}
-					// echo "selectedprintcsv ($mycol,$selected); ".$mycol[0].$selected[0]."--".$selected[0][0]."<br>"; вывод
+					// echo "selectedprintcsv ($mycol,$selected); ".$mycol[0].$selected[0]."--".$selected[0][0]."<br>"; РІС‹РІРѕРґ
 					selectedprintcsv ($data,$mycol,$selected);
 					//fclose ($f);
 					if ($multisearch==0) {exit (1); }
-					// $k= count($dbc) - вычисление кол-ва столбцов
+					// $k= count($dbc) - РІС‹С‡РёСЃР»РµРЅРёРµ РєРѕР»-РІР° СЃС‚РѕР»Р±С†РѕРІ
 				}
 
 
 
 
-				//поиск по коду - mode 2 - CSV
+				//РїРѕРёСЃРє РїРѕ РєРѕРґСѓ - mode 2 - CSV
 
 				if (($mode == 2)AND($prdbdata[$tbl][12]=="fdb"))
 				{
 					$data=readdescripters ();$f=$data[4];$cfgmod=$data[5];
-					rfsysdatareq (); // возвращаем потерянные хер знает где переменные
-					if (!$cfgmod) { // сделано только для конфигурации, в остальных случаях эти базы мало отличаются
+					rfsysdatareq (); // РІРѕР·РІСЂР°С‰Р°РµРј РїРѕС‚РµСЂСЏРЅРЅС‹Рµ С…РµСЂ Р·РЅР°РµС‚ РіРґРµ РїРµСЂРµРјРµРЅРЅС‹Рµ
+					if (!$cfgmod) { // СЃРґРµР»Р°РЅРѕ С‚РѕР»СЊРєРѕ РґР»СЏ РєРѕРЅС„РёРіСѓСЂР°С†РёРё, РІ РѕСЃС‚Р°Р»СЊРЅС‹С… СЃР»СѓС‡Р°СЏС… СЌС‚Рё Р±Р°Р·С‹ РјР°Р»Рѕ РѕС‚Р»РёС‡Р°СЋС‚СЃСЏ
 						settype ($vID,"integer");
 						if ($vID==0)  msgexiterror ("needcode",$mode,"disable");
 					}
 					$findrecords=0;echo cmsg ("RF_RESSRCH").$namebas." - ".$vID.":\n\n";
-					for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
-						$k = count($dbc); // dbc-стр табл  к- число кол з-заголовок
-						if ($dbc[$md2column]==$vID) $selected[]=$dbc;  // c проверкой
+					for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"В¦");$a++) {
+						$k = count($dbc); // dbc-СЃС‚СЂ С‚Р°Р±Р»  Рє- С‡РёСЃР»Рѕ РєРѕР» Р·-Р·Р°РіРѕР»РѕРІРѕРє
+						if ($dbc[$md2column]==$vID) $selected[]=$dbc;  // c РїСЂРѕРІРµСЂРєРѕР№
 					}
 					selectedprintcsv ($data,$mycol,$selected);
 					if ($multisearch==0) {exit (1); }
 				}
 
 
-				//mode 8 процедура CSV поиска по любой колонке
+				//mode 8 РїСЂРѕС†РµРґСѓСЂР° CSV РїРѕРёСЃРєР° РїРѕ Р»СЋР±РѕР№ РєРѕР»РѕРЅРєРµ
 				if (($mode == 8)AND($prdbdata[$tbl][12]=="fdb")) {
 					global $presettedmode;
 					$mode=6; $presettedmode=3;
@@ -767,8 +767,8 @@ echo " </form> ";
 
 				if (($mode == 7)AND($prdbdata[$tbl][12]=="fdb")) {
 			//ubrat vse vybory polej ne svyazannye s tekushim mode==7( po menu)
-					if ($debug)echo "m7 Текущий vID $vID res16 $res16 STR595<br>";
-					global $prauth,$ADM,$codekey;// добавлено для переключения продвинутого поиска
+					if ($debug)echo "m7 РўРµРєСѓС‰РёР№ vID $vID res16 $res16 STR595<br>";
+					global $prauth,$ADM,$codekey;// РґРѕР±Р°РІР»РµРЅРѕ РґР»СЏ РїРµСЂРµРєР»СЋС‡РµРЅРёСЏ РїСЂРѕРґРІРёРЅСѓС‚РѕРіРѕ РїРѕРёСЃРєР°
 					global $presettedmode,$mzdata,$mzcnt,$res16,$mznumb,$mycol,$fullfield;
 					if ($debug)echo "kol=$kol";$field=$kol;
 					///	echo "encodevID  $eid;  encodevID(old) $eolddid ";
@@ -776,8 +776,8 @@ echo " </form> ";
 					//..	if (!$cfgmod)  $f=csvopen ("_data/".$filbas,"r","0");
 					//..	if ($cfgmod==1)  $f=csvopen ("_conf/".$filbas,"r","0");echo "<br>";
 					$eid=encodevID ($vID);  $eolddid=encodevID ($olddvID);  //setup id
-					if (($field===false)OR($go=="Выбрать_колонку")) {
-						echo "Выберите поле для поиска:<br>";// Вставлено для выбора поля
+					if (($field===false)OR($go=="Р’С‹Р±СЂР°С‚СЊ_РєРѕР»РѕРЅРєСѓ")) {
+						echo "Р’С‹Р±РµСЂРёС‚Рµ РїРѕР»Рµ РґР»СЏ РїРѕРёСЃРєР°:<br>";// Р’СЃС‚Р°РІР»РµРЅРѕ РґР»СЏ РІС‹Р±РѕСЂР° РїРѕР»СЏ
 						if ($debug)echo "result res16=$res16 selfield $selectedfield STR603 a=$a m6=$m6field[0] , $m6field[1] , $m6field[2] <br>";
 						if ($debug)echo " do (574) readdesc mznumb1=".$mznumb[1]." mycols".$mycols." mzdata1=".$mzdata[1]." plevel=".$plevel[1]." mycol1=".$mycol[1]."<br>";
 
@@ -787,7 +787,7 @@ echo " </form> ";
 						$a=prefixdecode ($res16);
 						decodecols ($res16);
 						if ($debug)echo "result res16=$res16 selfield $selectedfield STR607 a=$a m6=$m6field[0] , $m6field[1] , $m6field[2] <br>";
-						// echo "Всего колонок $mycols - ищем значения из списка $mznumb[0];$mznumb[1];$mznumb[2];$mznumb[3]<br>";
+						// echo "Р’СЃРµРіРѕ РєРѕР»РѕРЅРѕРє $mycols - РёС‰РµРј Р·РЅР°С‡РµРЅРёСЏ РёР· СЃРїРёСЃРєР° $mznumb[0];$mznumb[1];$mznumb[2];$mznumb[3]<br>";
 ?>	<form action="r.php" method=post>
 <?php 	if ($multisearch==1) {
 	hidekey ("vID",$eolddid); 	 } else {  hidekey ("vID",$eid); };
@@ -828,41 +828,41 @@ hidekey ("kol",$kol);
 					}
 				}
 
-				//mode 6 процедура CSV поиска по новой колонке  НЕ СДЕЛАНО
-				// процедура поиска по имени  - mode 1 - CSV
+				//mode 6 РїСЂРѕС†РµРґСѓСЂР° CSV РїРѕРёСЃРєР° РїРѕ РЅРѕРІРѕР№ РєРѕР»РѕРЅРєРµ  РќР• РЎР”Р•Р›РђРќРћ
+				// РїСЂРѕС†РµРґСѓСЂР° РїРѕРёСЃРєР° РїРѕ РёРјРµРЅРё  - mode 1 - CSV
 				if (($mode == 6)AND($prdbdata[$tbl][12]=="fdb"))
 				{
-					if ($debug) echo "m6 Текущий vID $vID<br>";
+					if ($debug) echo "m6 РўРµРєСѓС‰РёР№ vID $vID<br>";
 					//echo "result res16=$res16   STR656";
-					global $categorymode,$mode; // добавлено для совместимости с  decodecols ()
+					global $categorymode,$mode; // РґРѕР±Р°РІР»РµРЅРѕ РґР»СЏ СЃРѕРІРјРµСЃС‚РёРјРѕСЃС‚Рё СЃ  decodecols ()
 					global $mode6,$m6field,$m6count,$mycols,$mycol,$del;
 					global $partquery,$vID,$mzcnt,$mznumb,$presettedmode,$xfgetlimit,$fullfield;
 					$mznumb=array ();
 					// TEST ZONE
-					$res16=$prdbdata[$tbl][16];// Лимит колонок
+					$res16=$prdbdata[$tbl][16];// Р›РёРјРёС‚ РєРѕР»РѕРЅРѕРє
 					if ($mode7==1) { $res16=$selectedfield ;};
 					if ($debug)echo "$res16 - ";
-					$a=prefixdecode ($res16);//echo "decoded $a=$res16 $categorymode STR 668";	//декодирование строки
-					$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
+					$a=prefixdecode ($res16);//echo "decoded $a=$res16 $categorymode STR 668";	//РґРµРєРѕРґРёСЂРѕРІР°РЅРёРµ СЃС‚СЂРѕРєРё
+					$data=readdescripters ();// РїРѕР»СѓС‡РµРЅРёРµ РґР°РЅРЅС‹С… Р·Р°РіРѕР»РѕРІРєР° РјР°СЃСЃРёРІ mycol РєРѕР»-РІРѕ mycols
 					global $mzdata; $mzcnt=count ($mzdata);//$mycol[$md1column]".."
 					$mycol=$mzdata;//echo "result res16=$res16 ?STR671";
 					$mode6=array ();decodecols ();//echo "result res16=$res16 STR 672";
 					for ($aaa=0;$aaa<count ($mode6);$aaa++)	{ $fndcolumn=$mznumb[$aaa];
 					$findrecords=0;
-					//echo "Результаты поиска в ".$namebas." - по колонке ".$mzdata[$fndcolumn]."($fndcolumn) -- ".$vID.":\n\n";
+					//echo "Р РµР·СѓР»СЊС‚Р°С‚С‹ РїРѕРёСЃРєР° РІ ".$namebas." - РїРѕ РєРѕР»РѕРЅРєРµ ".$mzdata[$fndcolumn]."($fndcolumn) -- ".$vID.":\n\n";
 					$vIDold=$vID; $vID=strtolower ($vID);
                                         if ($vID=="!0") {$vID=="";$notnull=1;};
 					$f=$data[4];
 					$data=readdescripters ();	$f=$data[4];
-                                        //mode 6- список всех используемых в этой сессии колонок  если есть ошибки в мультипоиске можно передавать его после первой итерации
+                                        //mode 6- СЃРїРёСЃРѕРє РІСЃРµС… РёСЃРїРѕР»СЊР·СѓРµРјС‹С… РІ СЌС‚РѕР№ СЃРµСЃСЃРёРё РєРѕР»РѕРЅРѕРє  РµСЃР»Рё РµСЃС‚СЊ РѕС€РёР±РєРё РІ РјСѓР»СЊС‚РёРїРѕРёСЃРєРµ РјРѕР¶РЅРѕ РїРµСЂРµРґР°РІР°С‚СЊ РµРіРѕ РїРѕСЃР»Рµ РїРµСЂРІРѕР№ РёС‚РµСЂР°С†РёРё
                                         //echo "1count mode6 ".count ($mode6) ."count=$a of $k -- fndcol=$fndcolumn; vid=$vID ; ".$dbc[$fndcolumn]."<br>";
-                                        //$dbc=xfgetcsv ($f,$xfgetlimit,"¦");
-                                        //echo $dbc;echo " ($f,$xfgetlimit,¦); ";
-					for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
+                                        //$dbc=xfgetcsv ($f,$xfgetlimit,"В¦");
+                                        //echo $dbc;echo " ($f,$xfgetlimit,В¦); ";
+					for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"В¦");$a++) {
                                             	$k = count($dbc);$myrow=$dbc;
                                               //  echo "count=$a of $k -- fndcol=$fndcolumn; vid=$vID ; ".$dbc[$fndcolumn]."<br>";
-						// for ($b=0;$b<$k;$b++) {  Бла бла бла;Фэнтэзи;Комедия;Боевик  ищет фигово переключает на 1,4 films al где то производися сброс значения и оно уже не восстанавливается
-						// $mode7=1 если вход был оттуда.копать здесь надо.
+						// for ($b=0;$b<$k;$b++) {  Р‘Р»Р° Р±Р»Р° Р±Р»Р°;Р¤СЌРЅС‚СЌР·Рё;РљРѕРјРµРґРёСЏ;Р‘РѕРµРІРёРє  РёС‰РµС‚ С„РёРіРѕРІРѕ РїРµСЂРµРєР»СЋС‡Р°РµС‚ РЅР° 1,4 films al РіРґРµ С‚Рѕ РїСЂРѕРёР·РІРѕРґРёСЃСЏ СЃР±СЂРѕСЃ Р·РЅР°С‡РµРЅРёСЏ Рё РѕРЅРѕ СѓР¶Рµ РЅРµ РІРѕСЃСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ
+						// $mode7=1 РµСЃР»Рё РІС…РѕРґ Р±С‹Р» РѕС‚С‚СѓРґР°.РєРѕРїР°С‚СЊ Р·РґРµСЃСЊ РЅР°РґРѕ.
 						if (!$fullfield) $findid=strpos(strtolower($dbc[$fndcolumn]),$vID);
                                                 if ($fullfield) if (($dbc[$fndcolumn]==$vID)) {$selected[]=$dbc;};
                                                 if ($fullfield) if (($dbc[$fndcolumn]==false)AND(false==$vID)) {$selected[]=$dbc;};
@@ -884,11 +884,11 @@ hidekey ("kol",$kol);
 
 
 
-				// поиск по категории
-				// процедура ищет фразу потом ищет все коды до следующей фразы
-				// проблема в $prdbdata[$a][category] - это одна и та же колонка :)
-				// будет сделана после покупки
-				//режим категории один - выполняется преобразование цифр
+				// РїРѕРёСЃРє РїРѕ РєР°С‚РµРіРѕСЂРёРё
+				// РїСЂРѕС†РµРґСѓСЂР° РёС‰РµС‚ С„СЂР°Р·Сѓ РїРѕС‚РѕРј РёС‰РµС‚ РІСЃРµ РєРѕРґС‹ РґРѕ СЃР»РµРґСѓСЋС‰РµР№ С„СЂР°Р·С‹
+				// РїСЂРѕР±Р»РµРјР° РІ $prdbdata[$a][category] - СЌС‚Рѕ РѕРґРЅР° Рё С‚Р° Р¶Рµ РєРѕР»РѕРЅРєР° :)
+				// Р±СѓРґРµС‚ СЃРґРµР»Р°РЅР° РїРѕСЃР»Рµ РїРѕРєСѓРїРєРё
+				//СЂРµР¶РёРј РєР°С‚РµРіРѕСЂРёРё РѕРґРёРЅ - РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ С†РёС„СЂ
 
 				//script update csv 2,3,4 cat to 1 else return false
 
@@ -898,18 +898,18 @@ hidekey ("kol",$kol);
 				{
 					echo "READFILE:OLD_CORE_MODE.<br>";
 					updatedb326 ($filbas);
-					$findrecords=0 ;// общее количество найденных позиций
-					//$category =1; категория содержится в этой переменной - this will reset category  TEST ONLY!
+					$findrecords=0 ;// РѕР±С‰РµРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РЅР°Р№РґРµРЅРЅС‹С… РїРѕР·РёС†РёР№
+					//$category =1; РєР°С‚РµРіРѕСЂРёСЏ СЃРѕРґРµСЂР¶РёС‚СЃСЏ РІ СЌС‚РѕР№ РїРµСЂРµРјРµРЅРЅРѕР№ - this will reset category  TEST ONLY!
 					if (($category==="")||($category===false)) msgexiterror ("nocategory",$mode,"disable");
 
-					if ($vID!=="!101") { echo "По вашему запросу ".$vID." было найдено:\n\n"; }
+					if ($vID!=="!101") { echo "РџРѕ РІР°С€РµРјСѓ Р·Р°РїСЂРѕСЃСѓ ".$vID." Р±С‹Р»Рѕ РЅР°Р№РґРµРЅРѕ:\n\n"; }
 					$vIDorig=$vID; $vID=strtolower ($vID); $found=0;
-					 $f=fopen ("_data/".$filbas,"r") or die ("Не удалось выполнить подключение к базе, попробуйте позже.");
-					echo ""; $z=xfgetcsv ($f,$xfgetlimit,"¦"); // заголовок
-					for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
+					 $f=fopen ("_data/".$filbas,"r") or die ("РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹РїРѕР»РЅРёС‚СЊ РїРѕРґРєР»СЋС‡РµРЅРёРµ Рє Р±Р°Р·Рµ, РїРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕР·Р¶Рµ.");
+					echo ""; $z=xfgetcsv ($f,$xfgetlimit,"В¦"); // Р·Р°РіРѕР»РѕРІРѕРє
+					for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"В¦");$a++) {
 						if (($limitenable)AND($findrecords>$printlimit)) {
-							echo "Всего значений : $findrecords<br><br> ";exit;};
-							$k = count($dbc)-$tablemysqlselect;  // удаление колонки, определено в prop
+							echo "Р’СЃРµРіРѕ Р·РЅР°С‡РµРЅРёР№ : $findrecords<br><br> ";exit;};
+							$k = count($dbc)-$tablemysqlselect;  // СѓРґР°Р»РµРЅРёРµ РєРѕР»РѕРЅРєРё, РѕРїСЂРµРґРµР»РµРЅРѕ РІ prop
 							echo "<tbody><table border=3 width=100% bgcolor=white>"; echo "<tr>";
 
 							for ($b=0;$b<$k;$b++) {
@@ -923,7 +923,7 @@ hidekey ("kol",$kol);
 								if  (($found==1)AND($content1!=="")AND($content1int==0)) { $found=0;}
 								//	  if  (($found==2)AND($content2!=="")) { $found=0;} //OR($findid2!==false)
 								if (($findid1!==false)OR($found==1))  {
-									$scrnum=$dbc[$scrcolumn];$found=1;//$findrecords++; # возможно ошибка 2-раза
+									$scrnum=$dbc[$scrcolumn];$found=1;//$findrecords++; # РІРѕР·РјРѕР¶РЅРѕ РѕС€РёР±РєР° 2-СЂР°Р·Р°
 									$data=wordwrap ($dbc[$b],82,"\n");
 									if (($findid1!==false)AND($b==0)) { echo "<bb><cite>$data</cite></bb></tr>"; continue; }
 									//if (($findid2!==false)AND($b==0)) { echo "<bb><cite>$data</cite></bb></tr>"; continue; }
@@ -944,20 +944,20 @@ hidekey ("kol",$kol);
 								//insertion m3c4 old
 							} //b
 
-					}  // процедура сообщения об отсутствии искомого объекта  1 из 3
-					// Режим категории 4 очень сильно тормозит систему. подобно основному режиму 4
+					}  // РїСЂРѕС†РµРґСѓСЂР° СЃРѕРѕР±С‰РµРЅРёСЏ РѕР± РѕС‚СЃСѓС‚СЃС‚РІРёРё РёСЃРєРѕРјРѕРіРѕ РѕР±СЉРµРєС‚Р°  1 РёР· 3
+					// Р РµР¶РёРј РєР°С‚РµРіРѕСЂРёРё 4 РѕС‡РµРЅСЊ СЃРёР»СЊРЅРѕ С‚РѕСЂРјРѕР·РёС‚ СЃРёСЃС‚РµРјСѓ. РїРѕРґРѕР±РЅРѕ РѕСЃРЅРѕРІРЅРѕРјСѓ СЂРµР¶РёРјСѓ 4
 //DELETED
 
 		if ((($findrecords===0)AND($adm==1)) OR (($findrecords===0)AND($pr[3]==1))) {
-		print "<font color=red id=errfnt><bb>Не найдено</bb><br></font>";
+		print "<font color=red id=errfnt><bb>РќРµ РЅР°Р№РґРµРЅРѕ</bb><br></font>";
 		}
-		// restart engine m3с1
-				fclose ($f);if ($multisearch==0) {echo "Всего значений : $findrecords<br><br> ";exit (1); }
+		// restart engine m3СЃ1
+				fclose ($f);if ($multisearch==0) {echo "Р’СЃРµРіРѕ Р·РЅР°С‡РµРЅРёР№ : $findrecords<br><br> ";exit (1); }
 				}
 
 
 
-				// режим категории 1  (в 4-м ищет :) )не ищет конкретные значение в отличие от режима 2 которых их пытается найти везде.
+				// СЂРµР¶РёРј РєР°С‚РµРіРѕСЂРёРё 1  (РІ 4-Рј РёС‰РµС‚ :) )РЅРµ РёС‰РµС‚ РєРѕРЅРєСЂРµС‚РЅС‹Рµ Р·РЅР°С‡РµРЅРёРµ РІ РѕС‚Р»РёС‡РёРµ РѕС‚ СЂРµР¶РёРјР° 2 РєРѕС‚РѕСЂС‹С… РёС… РїС‹С‚Р°РµС‚СЃСЏ РЅР°Р№С‚Рё РІРµР·РґРµ.
 
 
 
@@ -966,28 +966,28 @@ hidekey ("kol",$kol);
 				if ($prdbdata[$tbl][12]=="fdb")
 				if (($mode == 3)and($categorymode>1)and($categorymode!==4))
 				{	updatedb326 ($filbas);
-				// апдейтер для улучшенного формата написан
-				// осталось сделать обработку файла в ноовм формате (_conv326)
+				// Р°РїРґРµР№С‚РµСЂ РґР»СЏ СѓР»СѓС‡С€РµРЅРЅРѕРіРѕ С„РѕСЂРјР°С‚Р° РЅР°РїРёСЃР°РЅ
+				// РѕСЃС‚Р°Р»РѕСЃСЊ СЃРґРµР»Р°С‚СЊ РѕР±СЂР°Р±РѕС‚РєСѓ С„Р°Р№Р»Р° РІ РЅРѕРѕРІРј С„РѕСЂРјР°С‚Рµ (_conv326)
 				echo "READFILE:OLD_CORE_MODE.<br>";
-				// общее количество найденных позиций
+				// РѕР±С‰РµРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РЅР°Р№РґРµРЅРЅС‹С… РїРѕР·РёС†РёР№
 				//if ($vID!=="!101") { echo cmsg ("RF_RESSRCH)."".$namebas." - ".$vID.":\n\n";}
-				//$category =1; категория содержится в этой переменной - this will reset category  TEST ONLY!
-				if (($category==="")||($category===false)) // отправка назад если вошли без категорий.
+				//$category =1; РєР°С‚РµРіРѕСЂРёСЏ СЃРѕРґРµСЂР¶РёС‚СЃСЏ РІ СЌС‚РѕР№ РїРµСЂРµРјРµРЅРЅРѕР№ - this will reset category  TEST ONLY!
+				if (($category==="")||($category===false)) // РѕС‚РїСЂР°РІРєР° РЅР°Р·Р°Рґ РµСЃР»Рё РІРѕС€Р»Рё Р±РµР· РєР°С‚РµРіРѕСЂРёР№.
 				{
 					msgexiterror ("nocategory",$mode,"disable");
 				}
-				//  !101 - tablemysqlselect - hostmysqlselect - - функции из prop  потом как альт. включить  основной скрипт
-				//если колонка 1findid!==false то это заголовок и он может иметь описание. только выделить его.выделяя
-				//если колонка 1findid==false то проверяем колонку 2findid!==false  пишем стд модулем
-				//если колонка 1==false и 2==false пишем значение 3 если уже находились такие
-				//echo $findrecords;//if ($vID!=="!101") { echo "По вашему запросу ".$vID." было найдено:\n\n"; }
+				//  !101 - tablemysqlselect - hostmysqlselect - - С„СѓРЅРєС†РёРё РёР· prop  РїРѕС‚РѕРј РєР°Рє Р°Р»СЊС‚. РІРєР»СЋС‡РёС‚СЊ  РѕСЃРЅРѕРІРЅРѕР№ СЃРєСЂРёРїС‚
+				//РµСЃР»Рё РєРѕР»РѕРЅРєР° 1findid!==false С‚Рѕ СЌС‚Рѕ Р·Р°РіРѕР»РѕРІРѕРє Рё РѕРЅ РјРѕР¶РµС‚ РёРјРµС‚СЊ РѕРїРёСЃР°РЅРёРµ. С‚РѕР»СЊРєРѕ РІС‹РґРµР»РёС‚СЊ РµРіРѕ.РІС‹РґРµР»СЏСЏ
+				//РµСЃР»Рё РєРѕР»РѕРЅРєР° 1findid==false С‚Рѕ РїСЂРѕРІРµСЂСЏРµРј РєРѕР»РѕРЅРєСѓ 2findid!==false  РїРёС€РµРј СЃС‚Рґ РјРѕРґСѓР»РµРј
+				//РµСЃР»Рё РєРѕР»РѕРЅРєР° 1==false Рё 2==false РїРёС€РµРј Р·РЅР°С‡РµРЅРёРµ 3 РµСЃР»Рё СѓР¶Рµ РЅР°С…РѕРґРёР»РёСЃСЊ С‚Р°РєРёРµ
+				//echo $findrecords;//if ($vID!=="!101") { echo "РџРѕ РІР°С€РµРјСѓ Р·Р°РїСЂРѕСЃСѓ ".$vID." Р±С‹Р»Рѕ РЅР°Р№РґРµРЅРѕ:\n\n"; }
 				$vIDorig=$vID; $vID=strtolower ($vID); $found=0;
-				 $f=fopen ("_data/".$filbas,"r") or die ("Не удалось выполнить подключение к базе, попробуйте позже.");
-				echo ""; $z=xfgetcsv ($f,$xfgetlimit,"¦"); // заголовок
-				for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
+				 $f=fopen ("_data/".$filbas,"r") or die ("РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹РїРѕР»РЅРёС‚СЊ РїРѕРґРєР»СЋС‡РµРЅРёРµ Рє Р±Р°Р·Рµ, РїРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕР·Р¶Рµ.");
+				echo ""; $z=xfgetcsv ($f,$xfgetlimit,"В¦"); // Р·Р°РіРѕР»РѕРІРѕРє
+				for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"В¦");$a++) {
 					if (($limitenable)AND($findrecords>$printlimit)) {
-						echo "Всего значений : $findrecords<br><br> ";exit;};
-						$k = count($dbc)-$tablemysqlselect;  // удаление колонки, определено в prop
+						echo "Р’СЃРµРіРѕ Р·РЅР°С‡РµРЅРёР№ : $findrecords<br><br> ";exit;};
+						$k = count($dbc)-$tablemysqlselect;  // СѓРґР°Р»РµРЅРёРµ РєРѕР»РѕРЅРєРё, РѕРїСЂРµРґРµР»РµРЅРѕ РІ prop
 						echo "<tbody><table border=3 width=100% bgcolor=white>"; echo "<tr>";
 						for ($b=0;$b<$k;$b++) {
 							//	echo "_SYS_content -- ".$content." findid -- ".$findid." vID -- ".$vID."\n";
@@ -1014,13 +1014,13 @@ hidekey ("kol",$kol);
 		hidekey ("kol",$kol);
 			echo "</form>" ; break;
 							}
-		// режим категории 2 позволяет смотреть колонку 2, режим 3 - не позволяет (только findid1)
-		// любое ненулевое значение первой колонки трактуется как новая категория в отличие от 1
+		// СЂРµР¶РёРј РєР°С‚РµРіРѕСЂРёРё 2 РїРѕР·РІРѕР»СЏРµС‚ СЃРјРѕС‚СЂРµС‚СЊ РєРѕР»РѕРЅРєСѓ 2, СЂРµР¶РёРј 3 - РЅРµ РїРѕР·РІРѕР»СЏРµС‚ (С‚РѕР»СЊРєРѕ findid1)
+		// Р»СЋР±РѕРµ РЅРµРЅСѓР»РµРІРѕРµ Р·РЅР°С‡РµРЅРёРµ РїРµСЂРІРѕР№ РєРѕР»РѕРЅРєРё С‚СЂР°РєС‚СѓРµС‚СЃСЏ РєР°Рє РЅРѕРІР°СЏ РєР°С‚РµРіРѕСЂРёСЏ РІ РѕС‚Р»РёС‡РёРµ РѕС‚ 1
 							if ($categorymode===3) {
 
 								if ((($findrecords===0)AND($adm==1)) OR (($findrecords===0)AND($pr[3]==1))) {
-									print "<font color=red id=errfnt><bb>Не найдено</bb><br></font>";
-									print "Среди категорий не удалось найти искомую группу.<br>Поискать среди наименований?";
+									print "<font color=red id=errfnt><bb>РќРµ РЅР°Р№РґРµРЅРѕ</bb><br></font>";
+									print "РЎСЂРµРґРё РєР°С‚РµРіРѕСЂРёР№ РЅРµ СѓРґР°Р»РѕСЃСЊ РЅР°Р№С‚Рё РёСЃРєРѕРјСѓСЋ РіСЂСѓРїРїСѓ.<br>РџРѕРёСЃРєР°С‚СЊ СЃСЂРµРґРё РЅР°РёРјРµРЅРѕРІР°РЅРёР№?";
 		?>
 				<form action="r.php" method=post><?php 						hidekey ("vID",$vID); hidekey ("mode",1);
 		hidekey ("adm",$adm);	hidekey ("commode",$commode);
@@ -1029,7 +1029,7 @@ hidekey ("kol",$kol);
 	echo "<p align=center>";submitkey ("go","YES");echo "</p></form>";
 	echo "<form action=disable method=post> 	<p align=center>";submitkey ("go","NO"); echo "</p></form>";			}
 							}
-							// restart engine m3с2
+							// restart engine m3СЃ2
 							if ($categorymode==2) {
 								if (($findid2!==false)OR($found==2)) {
 									$scrnum=$dbc[$scrcolumn];$found=2;
@@ -1046,12 +1046,12 @@ hidekey ("kol",$kol);
 						}
 				}
 				if ((($findrecords===0)AND($adm==1)) OR (($findrecords===0)AND($pr[3]==1))) {
-					print "<font color=red id=errfnt><bb>Не найдено</bb><br></font>";
+					print "<font color=red id=errfnt><bb>РќРµ РЅР°Р№РґРµРЅРѕ</bb><br></font>";
 						}
 
 
-				// restart engine m3с3
-				fclose ($f);if ($multisearch==0) {echo "Всего значений : $findrecords<br><br> ";exit (1); }  }
+				// restart engine m3СЃ3
+				fclose ($f);if ($multisearch==0) {echo "Р’СЃРµРіРѕ Р·РЅР°С‡РµРЅРёР№ : $findrecords<br><br> ";exit (1); }  }
 
 			}
 
@@ -1065,7 +1065,7 @@ hidekey ("kol",$kol);
 			//				GLOBAL MODE								 //
 			###########################################################
 
-			//Искать все - режим 4 - global mode   SQL
+			//РСЃРєР°С‚СЊ РІСЃРµ - СЂРµР¶РёРј 4 - global mode   SQL
 
 			if (($mode == 4)AND($prdbdata[$tbl][12]!="fdb")) {
 				global $query,$connect;
@@ -1073,9 +1073,9 @@ hidekey ("kol",$kol);
 				global $findrecords,$scrcolumn;
 				$connect=dbs_connect ($prdbdata[$tbl][6],$sd[14],$sd[17],$dbtype);
 				dbs_selectdb ($prdbdata[$tbl][9], $connect,$dbtype);
-				$data=readdescripters ();// получение данных заголовка массив mycol кол-во mycols
+				$data=readdescripters ();// РїРѕР»СѓС‡РµРЅРёРµ РґР°РЅРЅС‹С… Р·Р°РіРѕР»РѕРІРєР° РјР°СЃСЃРёРІ mycol РєРѕР»-РІРѕ mycols
 				$query = "SELECT * FROM `".$prdbdata[$tbl][5]."`";
-				$query=$query.$addsql;// сортировка, лимит
+				$query=$query.$addsql;// СЃРѕСЂС‚РёСЂРѕРІРєР°, Р»РёРјРёС‚
 				$oldvID=-1;
 				selectedprintsql ($data);
 			}
@@ -1083,10 +1083,10 @@ hidekey ("kol",$kol);
 			
 			
 			if (($mode == 4)AND($prdbdata[$tbl][12]=="fdb"))
-			{ echo "<uu>Режим отображения всех данных.</uu>";	$multisearch=0;
+			{ echo "<uu>Р РµР¶РёРј РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РІСЃРµС… РґР°РЅРЅС‹С….</uu>";	$multisearch=0;
 			$data=readdescripters ();$f=$data[4];
-			//$f=$data[4];  ++$enabledataconnreturn=1; ошибка init 495
-			for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"¦");$a++) {
+			//$f=$data[4];  ++$enabledataconnreturn=1; РѕС€РёР±РєР° init 495
+			for ($a=0;$dbc=xfgetcsv ($f,$xfgetlimit,"В¦");$a++) {
 				$k = count($dbc);   $selected[]=$dbc;    }
 				$oldvID=-1;
 				selectedprintcsv ($data,$mycol,$selected);
@@ -1096,8 +1096,8 @@ hidekey ("kol",$kol);
 
 
 			echo "<br>";
-			//Мультипоиск по коду - режим 5 - global mode   CSV&SQL
-			// Режим отображения предварительно настроенных кодов.
+			//РњСѓР»СЊС‚РёРїРѕРёСЃРє РїРѕ РєРѕРґСѓ - СЂРµР¶РёРј 5 - global mode   CSV&SQL
+			// Р РµР¶РёРј РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РїСЂРµРґРІР°СЂРёС‚РµР»СЊРЅРѕ РЅР°СЃС‚СЂРѕРµРЅРЅС‹С… РєРѕРґРѕРІ.
 
 
 
@@ -1108,31 +1108,31 @@ hidekey ("kol",$kol);
 			$activetable=$prdbdata[$tbl][1];
 			//echo "Active table: $activetable [$tablemysqlselect'$tblmysqlselect]; Given data total:$boxcnt<br>";
 			echo cmsg(A_BEST).".<br>";
-			$filbas=$userfolder."/best.cfg";  // возможно будет дб в initse  с созданием шапки если файла вообще нет+++
+			$filbas=$userfolder."/best.cfg";  // РІРѕР·РјРѕР¶РЅРѕ Р±СѓРґРµС‚ РґР± РІ initse  СЃ СЃРѕР·РґР°РЅРёРµРј С€Р°РїРєРё РµСЃР»Рё С„Р°Р№Р»Р° РІРѕРѕР±С‰Рµ РЅРµС‚+++
   				 $best=csvopen ($filbas,"r",0);$data=readfullcsv ($best,"new");
  				// $data=readdescripters ();
    			$bestheader=$data[0];$bestplevel=$data[1];$bestcontent=$data[2];$bestcnt=$data[3];
-  			$strokedata=$activetable."¦".$tablemysqlselect."¦".$tblmysqlselect."¦"; // FORMAT^    tablename;id1Xid2;id1Xid2
+  			$strokedata=$activetable."В¦".$tablemysqlselect."В¦".$tblmysqlselect."В¦"; // FORMAT^    tablename;id1Xid2;id1Xid2
   			 fclose ($best);
   
   /*//$editor=csvopen ("editor.cfg","r",1);
 				//if ($editor===false) echo "Config cannot be loaded...";
-				for ($a=0;$e=xfgetcsv ($editor,912,"¦");$a++) {
-					if ($tbl==$e[0]) {$srch = count($e);  $selected= $e[0];echo "Лучшие товары по мнению редакции<br>"; break;}
+				for ($a=0;$e=xfgetcsv ($editor,912,"В¦");$a++) {
+					if ($tbl==$e[0]) {$srch = count($e);  $selected= $e[0];echo "Р›СѓС‡С€РёРµ С‚РѕРІР°СЂС‹ РїРѕ РјРЅРµРЅРёСЋ СЂРµРґР°РєС†РёРё<br>"; break;}
 				}
 				*/
    for ($a=0;$a<$bestcnt;$a++) {
-  	if ($bestcontent[$a]!=="") if (strpos ( implode ($bestcontent[$a],"¦"),$strokedata)!==false) {
+  	if ($bestcontent[$a]!=="") if (strpos ( implode ($bestcontent[$a],"В¦"),$strokedata)!==false) {
   		$rewritecnt=$a;
   		//echo "Found $rewritecnt contains ".$bestcontent[$rewritecnt][0]."<br>";
  // 		echo "Already present, remove first please. Address:$rewritecnt of $bestcnt<br>";exit;
   	}
-  	//проверка работает успешно , первая запись делается идеально правильно.
+  	//РїСЂРѕРІРµСЂРєР° СЂР°Р±РѕС‚Р°РµС‚ СѓСЃРїРµС€РЅРѕ , РїРµСЂРІР°СЏ Р·Р°РїРёСЃСЊ РґРµР»Р°РµС‚СЃСЏ РёРґРµР°Р»СЊРЅРѕ РїСЂР°РІРёР»СЊРЅРѕ.
   }
   				if ($rewritecnt==false) msgexiterror ("nobest",$prdbdata[$tbl][1],"getfile.php");
  //$string=explode ("",$)
 
-				$mode=2;$multisearch=1;// немного пользуемся мультипоиском :)
+				$mode=2;$multisearch=1;// РЅРµРјРЅРѕРіРѕ РїРѕР»СЊР·СѓРµРјСЃСЏ РјСѓР»СЊС‚РёРїРѕРёСЃРєРѕРј :)
 				for ($aa=3;$aa<count ($bestcontent[$rewritecnt]);$aa++)
 				{ $string=explode ("+",$bestcontent[$rewritecnt][$aa]);
 				$vID=$string[0];$vID2=$string[1];  //no +
@@ -1148,7 +1148,7 @@ hidekey ("kol",$kol);
 
 
 			//global mode 9 - no needs vID   (old 6)
-			// возможно это была бы корзина покупок или по крайней мере личный список типа 5 режима
+			// РІРѕР·РјРѕР¶РЅРѕ СЌС‚Рѕ Р±С‹Р»Р° Р±С‹ РєРѕСЂР·РёРЅР° РїРѕРєСѓРїРѕРє РёР»Рё РїРѕ РєСЂР°Р№РЅРµР№ РјРµСЂРµ Р»РёС‡РЅС‹Р№ СЃРїРёСЃРѕРє С‚РёРїР° 5 СЂРµР¶РёРјР°
 			if (($mode == 9)AND($prdbdata[$tbl][12]!="fdb")){ msgexiterror ("errorcfg",$mode,"admin.php");}
 			if (($mode == 9)AND($prdbdata[$tbl][12]=="fdb")){ msgexiterror ("errorcfg",$mode,"admin.php");}
 
@@ -1156,8 +1156,8 @@ hidekey ("kol",$kol);
 			// mode 10 - find comment  sql
 			if ($mode == 10) {
 				$scrdir="_local/scrcomm/".$scrdir;
-				 $dircb=opendir ($scrdir);if (!$dircb) {echo "Для этой базы нет комментариев.";exit ;};
-				//echo "Файл комментариев = $comfile ";
+				 $dircb=opendir ($scrdir);if (!$dircb) {echo "Р”Р»СЏ СЌС‚РѕР№ Р±Р°Р·С‹ РЅРµС‚ РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ.";exit ;};
+				//echo "Р¤Р°Р№Р» РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ = $comfile ";
 				while (($filescb[]=readdir($dircb))!==false) ;
 				$dircntcb= count ($filescb)-1;
 				$commcount=$dircntcb-2;
@@ -1169,12 +1169,12 @@ hidekey ("kol",$kol);
 						echo "<br>";
 						$comm= file_get_contents ($comfile,"r");
 						$aaa=strpos ($comm, $vID);
-						if ($aaa!==false) echo "<font color=gray id=dfnt>".$filescb[$aa]." содержит </font><br>".$comm."<br><br>";
+						if ($aaa!==false) echo "<font color=gray id=dfnt>".$filescb[$aa]." СЃРѕРґРµСЂР¶РёС‚ </font><br>".$comm."<br><br>";
 					}
 
 				}
-				echo "Всего комментариев в группе : ".$commcount."<br>";
-				//	$scrnum; - то что нужно
+				echo "Р’СЃРµРіРѕ РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ РІ РіСЂСѓРїРїРµ : ".$commcount."<br>";
+				//	$scrnum; - С‚Рѕ С‡С‚Рѕ РЅСѓР¶РЅРѕ
 				if ($multisearch==0) {exit (1); }
 			}
 			// mode 10 end sql find comment
@@ -1185,7 +1185,7 @@ hidekey ("kol",$kol);
 			###########################################################
 			//				GLOBAL MODE	END							 //
 			###########################################################
-			//Планируется для будущих режимов. вне пространства и времени
+			//РџР»Р°РЅРёСЂСѓРµС‚СЃСЏ РґР»СЏ Р±СѓРґСѓС‰РёС… СЂРµР¶РёРјРѕРІ. РІРЅРµ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІР° Рё РІСЂРµРјРµРЅРё
 
 
 			if ($mode > 10) {msgexiterror ("errorcfg",$mode,"admin.php");}
@@ -1196,8 +1196,8 @@ hidekey ("kol",$kol);
 			###########################################################
 			//				FUNCTION ZONE							 //
 			###########################################################
-			// выводит рисунок если надо или ссылку на него и занимается отработкой комментариев если есть
-			// для первых двух режимов вычисляется всегда по 0 колонке, для остальных по колонке категории
+			// РІС‹РІРѕРґРёС‚ СЂРёСЃСѓРЅРѕРє РµСЃР»Рё РЅР°РґРѕ РёР»Рё СЃСЃС‹Р»РєСѓ РЅР° РЅРµРіРѕ Рё Р·Р°РЅРёРјР°РµС‚СЃСЏ РѕС‚СЂР°Р±РѕС‚РєРѕР№ РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ РµСЃР»Рё РµСЃС‚СЊ
+			// РґР»СЏ РїРµСЂРІС‹С… РґРІСѓС… СЂРµР¶РёРјРѕРІ РІС‹С‡РёСЃР»СЏРµС‚СЃСЏ РІСЃРµРіРґР° РїРѕ 0 РєРѕР»РѕРЅРєРµ, РґР»СЏ РѕСЃС‚Р°Р»СЊРЅС‹С… РїРѕ РєРѕР»РѕРЅРєРµ РєР°С‚РµРіРѕСЂРёРё
 
 
 
@@ -1215,7 +1215,7 @@ hidekey ("kol",$kol);
 			{
 				//global $tbl;
 				$tbl=1;
-				header('WWW-Authenticate: Basic realm="Модуль данных dbscript "');
+				header('WWW-Authenticate: Basic realm="РњРѕРґСѓР»СЊ РґР°РЅРЅС‹С… dbscript "');
 				header('HTTP/1.0 401 Unauthorized');   echo "<form action='getfile.php' METHOD='post'>\n"; //{$_SERVER['PHP_SELF']}
 				echo "<input type='hidden' name='SeenBefore' value='0' />\n";
 				echo "<input type='hidden' name='OldAuth' value='{$_SERVER['PHP_AUTH_USER']}' />\n";
@@ -1232,12 +1232,12 @@ echo"no_smsg";
 
 			function helplog ()
 			{
-			echo "Данная информация могла устареть в вашей версии программы<br>";
-			echo "<a href='_logs'>Читать текущие логи (Общий,отмена,ошибки перевода, рапорты.</a><br>";
-				print "Полная расшифровка полей есть в описании, здесь упомянуты важные данные:<br>";
-				print "M - режим просмотра ";//1- по фамилии, 3 - по группе.<br>";
-				print "B - подключаемая база  ";//0 - физические лица 1 - организации и юр.лица.<br>";
-				print "Далее указывается какой IP и действие(я).<br>";
+			echo "Р”Р°РЅРЅР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ РјРѕРіР»Р° СѓСЃС‚Р°СЂРµС‚СЊ РІ РІР°С€РµР№ РІРµСЂСЃРёРё РїСЂРѕРіСЂР°РјРјС‹<br>";
+			echo "<a href='_logs'>Р§РёС‚Р°С‚СЊ С‚РµРєСѓС‰РёРµ Р»РѕРіРё (РћР±С‰РёР№,РѕС‚РјРµРЅР°,РѕС€РёР±РєРё РїРµСЂРµРІРѕРґР°, СЂР°РїРѕСЂС‚С‹.</a><br>";
+				print "РџРѕР»РЅР°СЏ СЂР°СЃС€РёС„СЂРѕРІРєР° РїРѕР»РµР№ РµСЃС‚СЊ РІ РѕРїРёСЃР°РЅРёРё, Р·РґРµСЃСЊ СѓРїРѕРјСЏРЅСѓС‚С‹ РІР°Р¶РЅС‹Рµ РґР°РЅРЅС‹Рµ:<br>";
+				print "M - СЂРµР¶РёРј РїСЂРѕСЃРјРѕС‚СЂР° ";//1- РїРѕ С„Р°РјРёР»РёРё, 3 - РїРѕ РіСЂСѓРїРїРµ.<br>";
+				print "B - РїРѕРґРєР»СЋС‡Р°РµРјР°СЏ Р±Р°Р·Р°  ";//0 - С„РёР·РёС‡РµСЃРєРёРµ Р»РёС†Р° 1 - РѕСЂРіР°РЅРёР·Р°С†РёРё Рё СЋСЂ.Р»РёС†Р°.<br>";
+				print "Р”Р°Р»РµРµ СѓРєР°Р·С‹РІР°РµС‚СЃСЏ РєР°РєРѕР№ IP Рё РґРµР№СЃС‚РІРёРµ(СЏ).<br>";
 			}
 
 
@@ -1250,8 +1250,8 @@ echo"no_smsg";
 				$actions="";
 		 		window ($script,$actions);
 		 		if ($languageprofile=="russian") {
-		 			echo "<br>Dbscript (DBS) - программа для командной работы с базами данных с настраиваемыми гибкими ограничениями доступа";
-		 			echo "<br>Автор программы: Фуфаев А.В. (aka Dj--alex)  Разработка:2006-2008";
+		 			echo "<br>Dbscript (DBS) - РїСЂРѕРіСЂР°РјРјР° РґР»СЏ РєРѕРјР°РЅРґРЅРѕР№ СЂР°Р±РѕС‚С‹ СЃ Р±Р°Р·Р°РјРё РґР°РЅРЅС‹С… СЃ РЅР°СЃС‚СЂР°РёРІР°РµРјС‹РјРё РіРёР±РєРёРјРё РѕРіСЂР°РЅРёС‡РµРЅРёСЏРјРё РґРѕСЃС‚СѓРїР°";
+		 			echo "<br>РђРІС‚РѕСЂ РїСЂРѕРіСЂР°РјРјС‹: Р¤СѓС„Р°РµРІ Рђ.Р’. (aka Dj--alex)  Р Р°Р·СЂР°Р±РѕС‚РєР°:2006-2008";
 
 		 		}
 		 		if ($languageprofile!=="russian") {
@@ -1264,17 +1264,17 @@ echo"no_smsg";
 			}
 
 
-/*  Sample windows   он используется или нет? может удалить его и оставить window
+/*  Sample windows   РѕРЅ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РёР»Рё РЅРµС‚? РјРѕР¶РµС‚ СѓРґР°Р»РёС‚СЊ РµРіРѕ Рё РѕСЃС‚Р°РІРёС‚СЊ window
 
-	$script=array ( //  Для special режима иконка задаетс как параметр data
-		'message' => "Сообщение",				// сообщение
+	$script=array ( //  Р”Р»СЏ special СЂРµР¶РёРјР° РёРєРѕРЅРєР° Р·Р°РґР°РµС‚СЃ РєР°Рє РїР°СЂР°РјРµС‚СЂ data
+		'message' => "РЎРѕРѕР±С‰РµРЅРёРµ",				// СЃРѕРѕР±С‰РµРЅРёРµ
 		'icon' => "info" ,
-      'mainheader' => "Главный хедер");
+      'mainheader' => "Р“Р»Р°РІРЅС‹Р№ С…РµРґРµСЂ");
 
-	$actions=array ( //  Для special режима иконка задаетс как параметр data
-		'OK' => "r.php?tbl=22&mode=8&vID=118257",			// заголовок
-		'Отмена' => "admin.php",				// сообщение
-		'Повторить' => "admin.php?write=Импорт_Экспорт");
+	$actions=array ( //  Р”Р»СЏ special СЂРµР¶РёРјР° РёРєРѕРЅРєР° Р·Р°РґР°РµС‚СЃ РєР°Рє РїР°СЂР°РјРµС‚СЂ data
+		'OK' => "r.php?tbl=22&mode=8&vID=118257",			// Р·Р°РіРѕР»РѕРІРѕРє
+		'РћС‚РјРµРЅР°' => "admin.php",				// СЃРѕРѕР±С‰РµРЅРёРµ
+		'РџРѕРІС‚РѕСЂРёС‚СЊ' => "admin.php?write=РРјРїРѕСЂС‚_Р­РєСЃРїРѕСЂС‚");
 
 //window ($script,$actions);closewindow ();
 

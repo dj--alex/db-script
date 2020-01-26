@@ -1,0 +1,11 @@
+#myTablex {
+	margin-left:7px;
+	margin-top:11px;
+	margin-bottom:11px;
+	border:1px;
+	border-style:dashed;
+	background: #CCC url('../images/bg_blockquote.gif') no-repeat 0 100%;
+	border-color: gray;
+	color: #369;
+	font-size: 88%;
+	}
